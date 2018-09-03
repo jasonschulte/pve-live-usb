@@ -139,7 +139,7 @@ e338d542ba01aa5b5aa203f5c94a3633  usr/include/linux/elfcore.h
 b74d0a3ea809d9844f117748e589651b  usr/include/linux/errno.h
 93d24524902216143ec707aa8a246e9a  usr/include/linux/errqueue.h
 1fc11c44b0af7fd66666aed2b3934316  usr/include/linux/ethtool.h
-4735d056b52f33bfb80e93fbcbf44ee3  usr/include/linux/eventpoll.h
+17bd8a4824d97f21f796cf46ac08e5f4  usr/include/linux/eventpoll.h
 9f1a919c08472696c656109b2ab186d7  usr/include/linux/fadvise.h
 fb2b073509694cd9c53ef5d948de6b00  usr/include/linux/falloc.h
 cf5296dcaf22fdbf6a2447539f1b7329  usr/include/linux/fanotify.h
@@ -196,7 +196,7 @@ b3e0b07909e9b1ffe7ea9a7bf520a9c1  usr/include/linux/if_bonding.h
 a66c86324ba37ab0d4f424c7bb9788eb  usr/include/linux/if_bridge.h
 86e94fe84b12ec0652c0d35d48c48c02  usr/include/linux/if_cablemodem.h
 2e0d74d7fad8d650bbf709e373888597  usr/include/linux/if_eql.h
-9aa211bebce910f98e28d98862a68dfd  usr/include/linux/if_ether.h
+72319d70a46dd422e66e171daff49cfe  usr/include/linux/if_ether.h
 88c76aa4265a2ec6eb925999f18f9383  usr/include/linux/if_fc.h
 ef27c2a94005bf2a0155d93e615f38ed  usr/include/linux/if_fddi.h
 4177e4720a47738422a5975fa86d299c  usr/include/linux/if_frad.h
@@ -261,7 +261,7 @@ dd7d9355c65558c6b8b9351cb09ac9a6  usr/include/linux/kernelcapi.h
 9e369d756a977a7f37ccb948198f835e  usr/include/linux/kexec.h
 c587d0a679df1b8ee5ca944e09e69981  usr/include/linux/keyboard.h
 dcf11b42496e9807afc4260b39e0a033  usr/include/linux/keyctl.h
-b5caae06d5434398867531517ab94f43  usr/include/linux/kvm.h
+53475e78b6332581ff71aeae31d34df4  usr/include/linux/kvm.h
 38977f16cc10a2a8fd87d0a39ee34266  usr/include/linux/kvm_para.h
 1933bda9d99044cd03a260faa3acba0e  usr/include/linux/l2tp.h
 86ae5922d3b62969fdbeb6fcc95161c9  usr/include/linux/libc-compat.h
@@ -467,7 +467,7 @@ e486e5d9a9d3b4df7cec2cded112f934  usr/include/linux/nfsacl.h
 e476e5065105191f68b44b6b4683b3ad  usr/include/linux/nfsd/export.h
 f8408701e612711e76fdaa7e9b091813  usr/include/linux/nfsd/nfsfh.h
 c7cc5cfef558fc09f22f0e33c9a31cd4  usr/include/linux/nfsd/stats.h
-9509d4300655f0b726106c1f751975ff  usr/include/linux/nl80211.h
+5bf4ef5949aacbe9a7bb0206ccf33c26  usr/include/linux/nl80211.h
 cd1f0834427006b63c04a8fe2fe1855e  usr/include/linux/nubus.h
 57a194a50ba83820fbd6e5c72d58851d  usr/include/linux/nvme_ioctl.h
 2a63706b45cffc147bb1e0d8dce2296e  usr/include/linux/nvram.h
@@ -480,7 +480,7 @@ fd1b6fd0e17636f669869d1444dff764  usr/include/linux/openvswitch.h
 363b2155e75f32d2a72049ea069d96e7  usr/include/linux/parport.h
 940e52bd5f3adef82974eb90634028f4  usr/include/linux/patchkey.h
 556e9d9e5d4b9493e11dcca5be10d84b  usr/include/linux/pci.h
-e7b7470913a21aaa6b789af8f41e4dde  usr/include/linux/pci_regs.h
+eeae976cda71e5708858aa31f850a9be  usr/include/linux/pci_regs.h
 643cc68507aa6c0f7a8528b1d5612ef8  usr/include/linux/perf_event.h
 1efaa8d8a614bd28c3e41a7e0e0bae98  usr/include/linux/personality.h
 31731644889ddb61dc1a8b601eba4c02  usr/include/linux/pfkeyv2.h
@@ -500,8 +500,8 @@ a6b7090067966bb8e858269de256f869  usr/include/linux/ppp-comp.h
 2b1ad4022414f3e1d74753ce823a9cf5  usr/include/linux/ppp-ioctl.h
 e670cb387f61df0354317a7d71490daa  usr/include/linux/ppp_defs.h
 6e10fcc0f7aa6ebe5bd811278a05eb95  usr/include/linux/pps.h
-69cddc1b37d205dc9f4fa75e26244feb  usr/include/linux/prctl.h
-7948362369582603f23044c199a561e7  usr/include/linux/psci.h
+0c866b9f8695c36b3f87192681f0b7f2  usr/include/linux/prctl.h
+4da132c9a6fdc5ba49048b9d308235a6  usr/include/linux/psci.h
 1aee32c73d748172960f82628ad11099  usr/include/linux/ptp_clock.h
 a00556571627ed42d9ba25c20ca8b26b  usr/include/linux/ptrace.h
 ea1073a4ef51fade8c038b686744bae4  usr/include/linux/qnx4_fs.h
@@ -510,7 +510,7 @@ bc3b6276e4e0f1b95c9217e65593220a  usr/include/linux/qnxtypes.h
 7edace77a8e1a5424aa8bd7aa11eddcf  usr/include/linux/radeonfb.h
 20b4cedb07c96a4a60c4172b829159ab  usr/include/linux/raid/md_p.h
 76060467e914d657c0ecd54e843f628c  usr/include/linux/raid/md_u.h
-6f18c872ac0648cf7f4c70e80c9ca8a7  usr/include/linux/random.h
+784dbde2467423583e07caaa126e1e27  usr/include/linux/random.h
 8239192bcb6da785e7970cbc94a803df  usr/include/linux/raw.h
 01e765f19d1aa9871f2b573b4409df2a  usr/include/linux/rds.h
 862d98aba69c67fde8363196d0c54c60  usr/include/linux/reboot.h
@@ -531,7 +531,7 @@ bde07b5bb4188fe33a3b6fc2817a1e2e  usr/include/linux/scif_ioctl.h
 00a066045fa960a5a82810bd836918dd  usr/include/linux/screen_info.h
 c94a094d461cc5588e2e29a29b7902d9  usr/include/linux/sctp.h
 8d8cd9268df7d298626e2bab855f42dc  usr/include/linux/sdla.h
-0935d2e5f142ceeeeddb28f4d0e368f2  usr/include/linux/seccomp.h
+67e560b5b287248c4ca1cf97566e0ac3  usr/include/linux/seccomp.h
 941b53ed1e60bf9bdaa949f80f2cc872  usr/include/linux/securebits.h
 0ecd7d0a2bc6192236f1c0e475205528  usr/include/linux/selinux_netlink.h
 1618d5d53283120ca445d201cf4fc7b4  usr/include/linux/sem.h
@@ -607,7 +607,7 @@ a9f4dcb792ab79c0fbd5741b0f4ccaa3  usr/include/linux/udf_fs_i.h
 f9c191cb72634d0320e5238420c5f886  usr/include/linux/un.h
 84811f1c2eed3d30426975fc81175cca  usr/include/linux/unistd.h
 3a65f5850522bc81ce4f679e52a6948c  usr/include/linux/unix_diag.h
-2f947d81dcc2a3cb7c451303ed9f2751  usr/include/linux/usb/audio.h
+e124e8a5d8cd9a685b1a613ebcc3ac22  usr/include/linux/usb/audio.h
 6a199a7d2982f6f94ae9164ac6e695d1  usr/include/linux/usb/cdc-wdm.h
 a9a1a902343b3ebc711d9bd5df63f735  usr/include/linux/usb/cdc.h
 202c1490c6814973e71f62932cd4421d  usr/include/linux/usb/ch11.h
@@ -630,7 +630,7 @@ b92cdde868b332b5e311169125756570  usr/include/linux/uvcvideo.h
 6041469b5505e69ef5fa1d5f00d713cc  usr/include/linux/v4l2-dv-timings.h
 abd361773b51e44dcb1cd773cf8c67c0  usr/include/linux/v4l2-mediabus.h
 b97f7085a932e6f8f1bdaac24943d340  usr/include/linux/v4l2-subdev.h
-75168a4b54ec2b9e19425f7214d5b6e9  usr/include/linux/version.h
+23878493439d3916c70e868719e8f480  usr/include/linux/version.h
 051654f3bc5de6b714561eee6cd4cf71  usr/include/linux/veth.h
 01ffdf829123eb37eae695da9330f7e6  usr/include/linux/vfio.h
 74db22aa05e43670542e4651710131b1  usr/include/linux/vhost.h
@@ -726,8 +726,8 @@ ff4ff52e8945486186030a2bd49ad121  usr/include/x86_64-linux-gnu/asm/kvm_para.h
 a64229e824cd0fd3b12e0ac812d9cc52  usr/include/x86_64-linux-gnu/asm/ldt.h
 241a3a99e394efd14a28ebaca4cae484  usr/include/x86_64-linux-gnu/asm/mce.h
 016e56e5d960b6c4c18cb8c91cf6f3b4  usr/include/x86_64-linux-gnu/asm/mman.h
-a8606cb7f0b36b7ffed407a409829c9d  usr/include/x86_64-linux-gnu/asm/msgbuf.h
-dfe369a3ee749ad4544fe9762fdcbb0b  usr/include/x86_64-linux-gnu/asm/msr-index.h
+01ca31421d0d4ace722fd9eaf53007a2  usr/include/x86_64-linux-gnu/asm/msgbuf.h
+cd28e21ed205a8807d9de737c7322020  usr/include/x86_64-linux-gnu/asm/msr-index.h
 ee95e928880b1d301be9a1a14258eb75  usr/include/x86_64-linux-gnu/asm/msr.h
 9c83d2d64c0798e3d84e11e18263c9ae  usr/include/x86_64-linux-gnu/asm/mtrr.h
 29dbb685f25e0e09aa59624964e2b815  usr/include/x86_64-linux-gnu/asm/param.h
@@ -744,7 +744,7 @@ c28024cd832395bf87a1b643bf73205c  usr/include/x86_64-linux-gnu/asm/ptrace-abi.h
 36eb2a82010cc2b8194bde001a28c7a5  usr/include/x86_64-linux-gnu/asm/resource.h
 4c70824d4de314ea5fb3444c4b2f37e1  usr/include/x86_64-linux-gnu/asm/sembuf.h
 a630a111f4c481c3065e36eafa8ee450  usr/include/x86_64-linux-gnu/asm/setup.h
-c1f66b7faa2dfa17efdbdf1e416be250  usr/include/x86_64-linux-gnu/asm/shmbuf.h
+853c5a485fb30b094e2ea1f08c44b124  usr/include/x86_64-linux-gnu/asm/shmbuf.h
 18af34d1d3a5d6c644db98a9017e22ae  usr/include/x86_64-linux-gnu/asm/sigcontext.h
 7e957f771c6a94385680109d3e247c2a  usr/include/x86_64-linux-gnu/asm/sigcontext32.h
 518276a631f6ae6e722d47c8e36bd663  usr/include/x86_64-linux-gnu/asm/siginfo.h
@@ -770,5 +770,5 @@ f0871115936c14646185e20750a636ef  usr/include/x86_64-linux-gnu/asm/vsyscall.h
 3165e5505b74f5785fc1a0cc85d9825f  usr/include/xen/gntalloc.h
 466d53569de7e5f222fc8467a98b51d7  usr/include/xen/gntdev.h
 4e8e92efba225dec08ddb0b2121ab6a0  usr/include/xen/privcmd.h
-d361a80a7373c2d558e282aa9e0909f0  usr/share/doc/linux-libc-dev/changelog.Debian.gz
+04a7012db38adca649102250b054d3c7  usr/share/doc/linux-libc-dev/changelog.Debian.gz
 308320c27270d3f9cc576305d56d6eb4  usr/share/doc/linux-libc-dev/copyright

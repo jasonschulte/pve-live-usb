@@ -492,7 +492,7 @@ Maintainer: Niko Tyni <ntyni@debian.org>
 Architecture: all
 Multi-Arch: foreign
 Source: perl
-Version: 5.24.1-3+deb9u3
+Version: 5.24.1-3+deb9u4
 Replaces: libansicolor-perl (<< 4.04), libarchive-tar-perl (<< 2.04.01), libattribute-handlers-perl (<< 0.99), libautodie-perl (<< 2.29-2), libcpan-meta-perl (<< 2.150005), libcpan-meta-requirements-perl (<< 2.140), libcpan-meta-yaml-perl (<< 0.018), libdigest-perl (<< 1.17.01), libexperimental-perl (<< 0.016), libextutils-cbuilder-perl (<< 0.280225), libextutils-command-perl (<< 7.10.02), libextutils-install-perl (<< 2.04), libextutils-parsexs-perl (<< 3.310000), libfile-spec-perl (<< 3.6301), libhttp-tiny-perl (<< 0.056.001), libi18n-langtags-perl (<< 0.40), libio-zlib-perl (<< 1.10), libjson-pp-perl (<< 2.27300.01), liblocale-codes-perl (<< 3.37), liblocale-maketext-perl (<< 1.26.01), liblocale-maketext-simple-perl (<< 0.21.01), libmath-bigint-perl (<< 1.999715), libmath-complex-perl (<< 1.59), libmodule-corelist-perl (<< 5.20170114.24), libmodule-load-conditional-perl (<< 0.64), libmodule-load-perl (<< 0.32), libmodule-metadata-perl (<< 1.000031), libnet-perl, libnet-ping-perl (<< 2.43.01), libpackage-constants-perl, libparams-check-perl (<< 0.38), libparent-perl (<< 0.234), libparse-cpan-meta-perl (<< 1.4417.001), libperl-ostype-perl (<< 1.009), libpod-escapes-perl (<< 1.07), libpod-parser-perl (<< 1.63), libpod-simple-perl (<< 3.32), libtest-harness-perl (<< 3.36.01), libtest-simple-perl (<< 1.001014), libtest-tester-perl (<< 0.114), libtest-use-ok-perl (<< 0.16), libthread-queue-perl (<< 3.09), libtime-local-perl (<< 1.2300), libunicode-collate-perl (<< 1.14), libversion-perl (<< 1:0.9916), libversion-requirements-perl, perl-base (<< 5.22.0~), perl-modules, podlators-perl
 Provides: libansicolor-perl, libarchive-tar-perl, libattribute-handlers-perl, libautodie-perl, libcpan-meta-perl, libcpan-meta-requirements-perl, libcpan-meta-yaml-perl, libdigest-perl, libexperimental-perl, libextutils-cbuilder-perl, libextutils-command-perl, libextutils-install-perl, libextutils-parsexs-perl, libfile-spec-perl, libhttp-tiny-perl, libi18n-langtags-perl, libio-zlib-perl, libjson-pp-perl, liblocale-codes-perl, liblocale-maketext-perl, liblocale-maketext-simple-perl, libmath-bigint-perl, libmath-complex-perl, libmodule-corelist-perl, libmodule-load-conditional-perl, libmodule-load-perl, libmodule-metadata-perl, libnet-perl, libnet-ping-perl, libparams-check-perl, libparent-perl, libparse-cpan-meta-perl, libperl-ostype-perl, libpod-escapes-perl, libpod-parser-perl, libpod-simple-perl, libtest-harness-perl, libtest-simple-perl, libtest-tester-perl, libtest-use-ok-perl, libthread-queue-perl, libtime-local-perl, libunicode-collate-perl, libversion-perl, libversion-requirements-perl, perl-modules, podlators-perl
 Depends: perl-base (>= 5.24.1-1)
@@ -735,7 +735,7 @@ Installed-Size: 7551
 Maintainer: Niko Tyni <ntyni@debian.org>
 Architecture: amd64
 Source: perl
-Version: 5.24.1-3+deb9u3
+Version: 5.24.1-3+deb9u4
 Replaces: libfile-path-perl (<< 2.12.01), libfile-temp-perl (<< 0.2304), libio-socket-ip-perl (<< 0.37), libscalar-list-utils-perl (<< 1:1.42.02), libsocket-perl (<< 2.020.03), libxsloader-perl (<< 0.22), perl (<< 5.10.1-12), perl-modules (<< 5.20.1-3)
 Provides: libfile-path-perl, libfile-temp-perl, libio-socket-ip-perl, libscalar-list-utils-perl, libsocket-perl, libxsloader-perl, perlapi-5.24.1
 Pre-Depends: libc6 (>= 2.23), dpkg (>= 1.17.17)
@@ -775,10 +775,10 @@ Maintainer: Niko Tyni <ntyni@debian.org>
 Architecture: amd64
 Multi-Arch: same
 Source: perl
-Version: 5.24.1-3+deb9u3
+Version: 5.24.1-3+deb9u4
 Replaces: libarchive-tar-perl (<= 1.38-2), libcompress-raw-bzip2-perl (<< 2.069), libcompress-raw-zlib-perl (<< 2.069), libcompress-zlib-perl (<< 2.069.001), libdigest-md5-perl (<< 2.54), libdigest-sha-perl (<< 5.95.01), libencode-perl (<< 2.86), libio-compress-base-perl (<< 2.069.001), libio-compress-bzip2-perl (<< 2.069.001), libio-compress-perl (<< 2.069.001), libio-compress-zlib-perl (<< 2.069.001), libmime-base64-perl (<< 3.15), libmodule-corelist-perl (<< 2.14-2), libstorable-perl (<< 2.56.01), libsys-syslog-perl (<< 0.33.01), libthreads-perl (<< 2.07), libthreads-shared-perl (<< 1.51), libtime-hires-perl (<< 1.9733), libtime-piece-perl (<< 1.31), perl (<< 5.22.0~), perl-base (<< 5.22.0~)
 Provides: libcompress-raw-bzip2-perl, libcompress-raw-zlib-perl, libcompress-zlib-perl, libdigest-md5-perl, libdigest-sha-perl, libencode-perl, libio-compress-base-perl, libio-compress-bzip2-perl, libio-compress-perl, libio-compress-zlib-perl, libmime-base64-perl, libstorable-perl, libsys-syslog-perl, libthreads-perl, libthreads-shared-perl, libtime-hires-perl, libtime-piece-perl, perl-cross-config
-Depends: libbz2-1.0, libc6 (>= 2.23), libdb5.3, libgdbm3 (>= 1.8.3), zlib1g (>= 1:1.2.2.3), perl-modules-5.24 (>= 5.24.1-3+deb9u3)
+Depends: libbz2-1.0, libc6 (>= 2.23), libdb5.3, libgdbm3 (>= 1.8.3), zlib1g (>= 1:1.2.2.3), perl-modules-5.24 (>= 5.24.1-3+deb9u4)
 Breaks: dh-make-perl (<< 0.73-1), ftpmirror (<< 1.96+dfsg-13), libcompress-raw-bzip2-perl (<< 2.069), libcompress-raw-zlib-perl (<< 2.069), libcompress-zlib-perl (<< 2.069.001), libdigest-md5-perl (<< 2.54), libdigest-sha-perl (<< 5.95.01), libencode-perl (<< 2.86), libhtml-template-compiled-perl (<< 0.95-1), libio-compress-base-perl (<< 2.069.001), libio-compress-bzip2-perl (<< 2.069.001), libio-compress-perl (<< 2.069.001), libio-compress-zlib-perl (<< 2.069.001), libload-perl (<< 0.20-1), libmime-base64-perl (<< 3.15), libnet-jifty-perl (<< 0.14-1), libperl-apireference-perl (<< 0.09-1), libregexp-optimizer-perl (<< 0.15-3), libsoap-lite-perl (<< 0.712-4), libstorable-perl (<< 2.56.01), libsys-syslog-perl (<< 0.33.01), libthreads-perl (<< 2.07), libthreads-shared-perl (<< 1.51), libtime-hires-perl (<< 1.9733), libtime-piece-perl (<< 1.31), libxml-parser-lite-tree-perl (<< 0.14-1), libyaml-perl (<< 0.73-1), mrtg (<< 2.16.3-3.1)
 Description: shared Perl library
  This package contains the shared Perl library, used by applications
@@ -936,6 +936,33 @@ Description: Versatile e-mail processor
  forward certain incoming mail automatically to someone.
 Homepage: http://www.procmail.org/
 
+Package: git-man
+Status: install ok installed
+Priority: optional
+Section: doc
+Installed-Size: 1588
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Architecture: all
+Multi-Arch: foreign
+Source: git
+Version: 1:2.17.0-1ubuntu1
+Replaces: git (<< 1:1.7.4~rc1), git-core (<< 1:1.7.0.4-1.)
+Breaks: git (<< 1:1.7.4~rc1)
+Description: fast, scalable, distributed revision control system (manual pages)
+ Git is popular version control system designed to handle very large
+ projects with speed and efficiency; it is used for many high profile
+ open source projects, most notably the Linux kernel.
+ .
+ Git falls in the category of distributed source code management tools.
+ Every Git working directory is a full-fledged repository with full
+ revision tracking capabilities, not dependent on network access or a
+ central server.
+ .
+ This package provides reference documentation for use by the 'man'
+ utility and the 'git help' command.
+Homepage: https://git-scm.com/
+Original-Maintainer: Gerrit Pape <pape@smarden.org>
+
 Package: libsm6
 Status: install ok installed
 Priority: optional
@@ -1030,7 +1057,7 @@ Maintainer: Debian Samba Maintainers <pkg-samba-maint@lists.alioth.debian.org>
 Architecture: amd64
 Multi-Arch: same
 Source: samba
-Version: 2:4.5.12+dfsg-2+deb9u2
+Version: 2:4.5.12+dfsg-2+deb9u3
 Depends: libbsd0 (>= 0.0), libc6 (>= 2.14)
 Pre-Depends: dpkg (>= 1.15.6~)
 Breaks: libpam-smbpass (<< 2:3.4.1), libsmbclient (<< 2:3.4.1), samba (<< 2:3.4.1), samba-common (<< 2:3.4.1), samba-tools (<< 2:3.4.1), smbclient (<< 2:3.4.1), smbfs (<< 2:3.4.1), swat (<< 2:3.4.1), winbind (<< 2:3.4.1)
@@ -1795,9 +1822,9 @@ Maintainer: Debian Samba Maintainers <pkg-samba-maint@lists.alioth.debian.org>
 Architecture: amd64
 Multi-Arch: same
 Source: samba
-Version: 2:4.5.12+dfsg-2+deb9u2
+Version: 2:4.5.12+dfsg-2+deb9u3
 Replaces: libdcerpc-server0 (<< 2:4.0.9), libdcerpc0 (<< 2:4.0.9), libgensec0 (<< 2:4.0.9), libndr-standard0 (<< 2:4.0.9), libndr0 (<< 2:4.0.9), libnetapi0 (<< 2:4.0.9), libregistry0 (<< 2:4.0.9), libsamba-credentials0 (<< 2:4.0.9), libsamba-hostconfig0 (<< 2:4.0.9), libsamba-policy0 (<< 2:4.0.9), libsamba-util0 (<< 2:4.0.9), libsamdb0 (<< 2:4.0.9), libsmbclient-raw0 (<< 2:4.0.9), libsmbd0 (<< 2:4.0.9), libtorture0 (<< 2:4.0.9), samba (<< 2:4.3.3+dfsg-1)
-Depends: libacl1 (>= 2.2.51-8), libattr1 (>= 1:2.4.46-8), libbsd0 (>= 0.5.0), libc6 (>= 2.15), libcap2 (>= 1:2.10), libcups2 (>= 1.6.0), libgnutls30 (>= 3.5.6), libldap-2.4-2 (>= 2.4.7), libldb1 (>= 1:1.1.20), libpam0g (>= 0.99.7.1), libpopt0 (>= 1.14), libpython2.7 (>= 2.7), libsystemd0, libtalloc2 (>= 2.1.0), libtdb1 (>= 1.3.0), libtevent0 (>= 0.9.25), libwbclient0 (= 2:4.5.12+dfsg-2+deb9u2), python-talloc (>= 2.1.6), zlib1g (>= 1:1.1.4)
+Depends: libacl1 (>= 2.2.51-8), libattr1 (>= 1:2.4.46-8), libbsd0 (>= 0.5.0), libc6 (>= 2.15), libcap2 (>= 1:2.10), libcups2 (>= 1.6.0), libgnutls30 (>= 3.5.6), libldap-2.4-2 (>= 2.4.7), libldb1 (>= 1:1.1.20), libpam0g (>= 0.99.7.1), libpopt0 (>= 1.14), libpython2.7 (>= 2.7), libsystemd0, libtalloc2 (>= 2.1.0), libtdb1 (>= 1.3.0), libtevent0 (>= 0.9.25), libwbclient0 (= 2:4.5.12+dfsg-2+deb9u3), python-talloc (>= 2.1.6), zlib1g (>= 1:1.1.4)
 Breaks: libdcerpc-server0 (<< 2:4.0.9), libdcerpc0 (<< 2:4.0.9), libgensec0 (<< 2:4.0.9), libndr-standard0 (<< 2:4.0.9), libndr0 (<< 2:4.0.9), libnetapi0 (<< 2:4.0.9), libregistry0 (<< 2:4.0.9), libsamba-credentials0 (<< 2:4.0.9), libsamba-hostconfig0 (<< 2:4.0.9), libsamba-policy0 (<< 2:4.0.9), libsamba-util0 (<< 2:4.0.9), libsamdb0 (<< 2:4.0.9), libsmbclient-raw0 (<< 2:4.0.9), libsmbd0 (<< 2:4.0.9), libtorture0 (<< 2:4.0.9)
 Conflicts: libpam-smbpass (<< 2:4), samba (<< 2:4), samba-common-bin (<< 2:4), samba-dsdb-modules (<< 2:4.1.9+dfsg-2), winbind (<< 2:4)
 Description: Samba core libraries
@@ -3113,6 +3140,35 @@ Description: shared libraries for terminal handling (wide character support)
  compiled with ncursesw, which includes support for wide characters.
 Homepage: http://invisible-island.net/ncurses/
 
+Package: liberror-perl
+Status: install ok installed
+Priority: optional
+Section: perl
+Installed-Size: 62
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Architecture: all
+Version: 0.17025-1
+Depends: perl
+Description: Perl module for error/exception handling in an OO-ish way
+ The Error module provides two interfaces.  Firstly "Error" provides a
+ procedural interface to exception handling. Secondly "Error" is a base class
+ for errors/exceptions that can either be thrown, for subsequent catch, or can
+ simply be recorded.
+ .
+ Errors in the class "Error" should not be thrown directly, but the user
+ should throw errors from a sub-class of "Error".
+ .
+ Warning: Using the "Error" module is no longer recommended due to the
+ black-magical nature of its syntactic sugar, which often tends to break. Its
+ maintainers have stopped actively writing code that uses it, and discourage
+ people from doing so.
+ .
+ Recommended alternatives are Exception::Class (libexception-class-perl),
+ Error::Exception (not packaged), TryCatch (libtrycatch-perl), and Try::Tiny
+ (libtry-tiny-perl).
+Original-Maintainer: Debian Perl Group <pkg-perl-maintainers@lists.alioth.debian.org>
+Homepage: https://metacpan.org/release/Error
+
 Package: bash
 Essential: yes
 Status: install ok installed
@@ -3964,7 +4020,7 @@ Maintainer: Alessandro Ghedini <ghedo@debian.org>
 Architecture: amd64
 Multi-Arch: same
 Source: curl
-Version: 7.52.1-5+deb9u5
+Version: 7.52.1-5+deb9u6
 Depends: libc6 (>= 2.17), libcomerr2 (>= 1.01), libgnutls30 (>= 3.5.6), libgssapi-krb5-2 (>= 1.14+dfsg), libidn2-0 (>= 0.6), libk5crypto3 (>= 1.6.dfsg.2), libkrb5-3 (>= 1.6.dfsg.2), libldap-2.4-2 (>= 2.4.7), libnettle6, libnghttp2-14 (>= 1.12.0), libpsl5 (>= 0.13.0), librtmp1 (>= 2.4+20131018.git79459a2-3~), libssh2-1 (>= 1.7.0), zlib1g (>= 1:1.1.4)
 Recommends: ca-certificates
 Description: easy-to-use client-side URL transfer library (GnuTLS flavour)
@@ -5087,10 +5143,10 @@ Maintainer: Laszlo Boszormenyi (GCS) <gcs@debian.org>
 Architecture: amd64
 Multi-Arch: same
 Source: fuse
-Version: 2.9.7-1
+Version: 2.9.7-1+deb9u1
 Depends: libc6 (>= 2.17)
 Suggests: fuse
-Conflicts: fuse (<< 2.9.7-1)
+Conflicts: fuse (<< 2.9.7-1+deb9u1)
 Description: Filesystem in Userspace (library)
  Filesystem in Userspace (FUSE) is a simple interface for userspace programs to
  export a virtual filesystem to the Linux kernel. It also aims to provide a
@@ -5370,12 +5426,12 @@ Package: linux-libc-dev
 Status: install ok installed
 Priority: optional
 Section: devel
-Installed-Size: 4495
+Installed-Size: 4519
 Maintainer: Debian Kernel Team <debian-kernel@lists.debian.org>
 Architecture: amd64
 Multi-Arch: same
 Source: linux
-Version: 4.9.88-1+deb9u1
+Version: 4.9.110-3+deb9u4
 Provides: linux-kernel-headers
 Description: Linux support headers for userspace development
  This package provides userspaces headers from the Linux kernel.  These
@@ -5891,7 +5947,7 @@ Maintainer: Debian Samba Maintainers <pkg-samba-maint@lists.alioth.debian.org>
 Architecture: all
 Multi-Arch: foreign
 Source: samba
-Version: 2:4.5.12+dfsg-2+deb9u2
+Version: 2:4.5.12+dfsg-2+deb9u3
 Replaces: samba (<< 3.0.20b-1), samba-doc (<< 2:4.0.5~), samba4-common (<< 4.0.0~alpha7-1)
 Depends: ucf, debconf (>= 0.5) | debconf-2.0
 Pre-Depends: dpkg (>= 1.15.6~)
@@ -7421,12 +7477,12 @@ Package: libprocps6
 Status: install ok installed
 Priority: important
 Section: libs
-Installed-Size: 117
+Installed-Size: 121
 Maintainer: Craig Small <csmall@debian.org>
 Architecture: amd64
 Multi-Arch: same
 Source: procps
-Version: 2:3.3.12-3
+Version: 2:3.3.12-3+deb9u1
 Replaces: procps (<< 1:3.3.2-1)
 Depends: libc6 (>= 2.14), libsystemd0 (>= 209)
 Description: library for accessing process information from /proc
@@ -8142,9 +8198,9 @@ Maintainer: Debian Samba Maintainers <pkg-samba-maint@lists.alioth.debian.org>
 Architecture: amd64
 Multi-Arch: same
 Source: samba
-Version: 2:4.5.12+dfsg-2+deb9u2
+Version: 2:4.5.12+dfsg-2+deb9u3
 Replaces: samba-doc (<< 2:4.0.5~)
-Depends: libbsd0 (>= 0.0), libc6 (>= 2.14), libtalloc2 (>= 2.0.4~git20101213), libtevent0 (>= 0.9.12), samba-libs (= 2:4.5.12+dfsg-2+deb9u2)
+Depends: libbsd0 (>= 0.0), libc6 (>= 2.14), libtalloc2 (>= 2.0.4~git20101213), libtevent0 (>= 0.9.12), samba-libs (= 2:4.5.12+dfsg-2+deb9u3)
 Pre-Depends: dpkg (>= 1.15.6~)
 Conflicts: samba-doc (<< 2:4.0.5~)
 Description: shared library for communication with SMB/CIFS servers
@@ -8483,7 +8539,7 @@ Installed-Size: 690
 Maintainer: Craig Small <csmall@debian.org>
 Architecture: amd64
 Multi-Arch: foreign
-Version: 2:3.3.12-3
+Version: 2:3.3.12-3+deb9u1
 Provides: watch
 Depends: libc6 (>= 2.15), libncurses5 (>= 6), libncursesw5 (>= 6), libprocps6, libtinfo5 (>= 6), lsb-base (>= 3.0-10), init-system-helpers (>= 1.29~)
 Recommends: psmisc
@@ -8608,8 +8664,8 @@ Installed-Size: 203
 Maintainer: Debian OpenSSH Maintainers <debian-ssh@lists.debian.org>
 Architecture: all
 Source: openssh
-Version: 1:7.4p1-10+deb9u3
-Depends: openssh-client (>= 1:7.4p1-10+deb9u3), openssh-server (>= 1:7.4p1-10+deb9u3)
+Version: 1:7.4p1-10+deb9u4
+Depends: openssh-client (>= 1:7.4p1-10+deb9u4), openssh-server (>= 1:7.4p1-10+deb9u4)
 Pre-Depends: dpkg (>= 1.17.5)
 Description: secure shell client and server (metapackage)
  This metapackage is a convenient way to install both the OpenSSH client
@@ -8643,9 +8699,9 @@ Installed-Size: 651
 Maintainer: Niko Tyni <ntyni@debian.org>
 Architecture: amd64
 Multi-Arch: allowed
-Version: 5.24.1-3+deb9u3
+Version: 5.24.1-3+deb9u4
 Replaces: perl-modules (<< 5.22.0~)
-Depends: perl-base (= 5.24.1-3+deb9u3), perl-modules-5.24 (>= 5.24.1-3+deb9u3), libperl5.24 (= 5.24.1-3+deb9u3)
+Depends: perl-base (= 5.24.1-3+deb9u4), perl-modules-5.24 (>= 5.24.1-3+deb9u4), libperl5.24 (= 5.24.1-3+deb9u4)
 Pre-Depends: dpkg (>= 1.17.17)
 Recommends: netbase, rename
 Suggests: perl-doc, libterm-readline-gnu-perl | libterm-readline-perl-perl, make
@@ -9497,10 +9553,10 @@ Maintainer: Debian OpenSSH Maintainers <debian-ssh@lists.debian.org>
 Architecture: amd64
 Multi-Arch: foreign
 Source: openssh
-Version: 1:7.4p1-10+deb9u3
+Version: 1:7.4p1-10+deb9u4
 Replaces: ssh, ssh-krb5
 Provides: ssh-server
-Depends: adduser (>= 3.9), dpkg (>= 1.9.0), libpam-modules (>= 0.72-9), libpam-runtime (>= 0.76-14), lsb-base (>= 4.1+Debian3), openssh-client (= 1:7.4p1-10+deb9u3), openssh-sftp-server, procps, ucf (>= 0.28), debconf (>= 0.5) | debconf-2.0, init-system-helpers (>= 1.18~), libaudit1 (>= 1:2.2.1), libc6 (>= 2.17), libcomerr2 (>= 1.01), libgssapi-krb5-2 (>= 1.14+dfsg), libkrb5-3 (>= 1.13~alpha1+dfsg), libpam0g (>= 0.99.7.1), libselinux1 (>= 1.32), libssl1.0.2 (>= 1.0.2d), libsystemd0, libwrap0 (>= 7.6-4~), zlib1g (>= 1:1.1.4)
+Depends: adduser (>= 3.9), dpkg (>= 1.9.0), libpam-modules (>= 0.72-9), libpam-runtime (>= 0.76-14), lsb-base (>= 4.1+Debian3), openssh-client (= 1:7.4p1-10+deb9u4), openssh-sftp-server, procps, ucf (>= 0.28), debconf (>= 0.5) | debconf-2.0, init-system-helpers (>= 1.18~), libaudit1 (>= 1:2.2.1), libc6 (>= 2.17), libcomerr2 (>= 1.01), libgssapi-krb5-2 (>= 1.14+dfsg), libkrb5-3 (>= 1.13~alpha1+dfsg), libpam0g (>= 0.99.7.1), libselinux1 (>= 1.32), libssl1.0.2 (>= 1.0.2d), libsystemd0, libwrap0 (>= 7.6-4~), zlib1g (>= 1:1.1.4)
 Recommends: libpam-systemd, ncurses-term, xauth
 Suggests: molly-guard, monkeysphere, rssh, ssh-askpass, ufw
 Conflicts: sftp, ssh-socks, ssh2
@@ -9541,10 +9597,10 @@ Installed-Size: 1461
 Maintainer: Debian Samba Maintainers <pkg-samba-maint@lists.alioth.debian.org>
 Architecture: amd64
 Source: samba
-Version: 2:4.5.12+dfsg-2+deb9u2
+Version: 2:4.5.12+dfsg-2+deb9u3
 Replaces: samba (<< 2.999+3.0.alpha21-4), samba-doc (<< 2:4.0.5~), samba4-clients (<< 4.0.5), smbget
 Provides: samba-client
-Depends: samba-common (= 2:4.5.12+dfsg-2+deb9u2), libarchive13 (>= 3.0.4), libbsd0 (>= 0.0), libc6 (>= 2.14), libpopt0 (>= 1.14), libreadline7 (>= 6.0), libsmbclient (>= 2:4.0.3+dfsg1), libtalloc2 (>= 2.0.4~git20101213), libtevent0 (>= 0.9.9), libwbclient0 (= 2:4.5.12+dfsg-2+deb9u2), samba-libs (= 2:4.5.12+dfsg-2+deb9u2)
+Depends: samba-common (= 2:4.5.12+dfsg-2+deb9u3), libarchive13 (>= 3.0.4), libbsd0 (>= 0.0), libc6 (>= 2.14), libpopt0 (>= 1.14), libreadline7 (>= 6.0), libsmbclient (>= 2:4.0.3+dfsg1), libtalloc2 (>= 2.0.4~git20101213), libtevent0 (>= 0.9.9), libwbclient0 (= 2:4.5.12+dfsg-2+deb9u3), samba-libs (= 2:4.5.12+dfsg-2+deb9u3)
 Pre-Depends: dpkg (>= 1.15.6~)
 Suggests: cifs-utils, heimdal-clients
 Conflicts: samba-doc (<< 2:4.0.5~), samba4-clients (<< 4.0.5)
@@ -9639,9 +9695,9 @@ Installed-Size: 106
 Maintainer: Debian OpenSSH Maintainers <debian-ssh@lists.debian.org>
 Architecture: amd64
 Source: openssh
-Version: 1:7.4p1-10+deb9u3
+Version: 1:7.4p1-10+deb9u4
 Replaces: openssh-server (<< 1:6.5p1-5)
-Depends: openssh-client (= 1:7.4p1-10+deb9u3), libc6 (>= 2.17)
+Depends: openssh-client (= 1:7.4p1-10+deb9u4), libc6 (>= 2.17)
 Recommends: openssh-server | ssh-server
 Breaks: openssh-server (<< 1:6.5p1-5)
 Enhances: openssh-server, ssh-server
@@ -13483,7 +13539,7 @@ Maintainer: Debian OpenSSH Maintainers <debian-ssh@lists.debian.org>
 Architecture: amd64
 Multi-Arch: foreign
 Source: openssh
-Version: 1:7.4p1-10+deb9u3
+Version: 1:7.4p1-10+deb9u4
 Replaces: ssh, ssh-krb5
 Provides: rsh-client, ssh-client
 Depends: adduser (>= 3.10), dpkg (>= 1.7.0), passwd, libc6 (>= 2.17), libedit2 (>= 2.11-20080614), libgssapi-krb5-2 (>= 1.14+dfsg), libselinux1 (>= 1.32), libssl1.0.2 (>= 1.0.2d), zlib1g (>= 1:1.1.4)
@@ -14064,6 +14120,40 @@ Description: Log rotation utility
  runs as a daily cron job.
 Homepage: https://github.com/logrotate/logrotate
 
+Package: git
+Status: install ok installed
+Priority: optional
+Section: vcs
+Installed-Size: 31376
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Architecture: amd64
+Multi-Arch: foreign
+Version: 1:2.17.0-1ubuntu1
+Replaces: git-core (<< 1:1.7.0.4-1.), gitweb (<< 1:1.7.4~rc1)
+Provides: git-completion, git-core
+Depends: libc6 (>= 2.16), libcurl3-gnutls (>= 7.16.2), libexpat1 (>= 2.0.1), libpcre3, zlib1g (>= 1:1.2.0), perl, liberror-perl, git-man (>> 1:2.17.0), git-man (<< 1:2.17.0-.)
+Recommends: patch, less, ssh-client
+Suggests: gettext-base, git-daemon-run | git-daemon-sysvinit, git-doc, git-el, git-email, git-gui, gitk, gitweb, git-cvs, git-mediawiki, git-svn
+Breaks: bash-completion (<< 1:1.90-1), cogito (<= 0.18.2+), git-buildpackage (<< 0.6.5), git-core (<< 1:1.7.0.4-1.), gitosis (<< 0.2+20090917-7), gitpkg (<< 0.15), gitweb (<< 1:1.7.4~rc1), guilt (<< 0.33), openssh-client (<< 1:6.8), stgit (<< 0.15), stgit-contrib (<< 0.15)
+Conffiles:
+ /etc/bash_completion.d/git-prompt 7baac5c3ced94ebf2c0e1dde65c3b1a6
+Description: fast, scalable, distributed revision control system
+ Git is popular version control system designed to handle very large
+ projects with speed and efficiency; it is used for many high profile
+ open source projects, most notably the Linux kernel.
+ .
+ Git falls in the category of distributed source code management tools.
+ Every Git working directory is a full-fledged repository with full
+ revision tracking capabilities, not dependent on network access or a
+ central server.
+ .
+ This package provides the git main components with minimal dependencies.
+ Additional functionality, e.g. a graphical user interface and revision
+ tree visualizer, tools for interoperating with other VCS's, or a web
+ interface, is provided as separate git* packages.
+Homepage: https://git-scm.com/
+Original-Maintainer: Gerrit Pape <pape@smarden.org>
+
 Package: libsepol1
 Status: install ok installed
 Priority: required
@@ -14298,8 +14388,8 @@ Section: utils
 Installed-Size: 136
 Maintainer: Laszlo Boszormenyi (GCS) <gcs@debian.org>
 Architecture: amd64
-Version: 2.9.7-1
-Depends: libc6 (>= 2.14), libfuse2 (= 2.9.7-1), adduser, mount (>= 2.19.1), sed (>= 4)
+Version: 2.9.7-1+deb9u1
+Depends: libc6 (>= 2.14), libfuse2 (= 2.9.7-1+deb9u1), adduser, mount (>= 2.19.1), sed (>= 4)
 Conffiles:
  /etc/fuse.conf 298587592c8444196833f317def414f2
 Description: Filesystem in Userspace
@@ -14872,7 +14962,7 @@ Maintainer: Debian Printing Team <debian-printing@lists.debian.org>
 Architecture: amd64
 Multi-Arch: same
 Source: cups
-Version: 2.2.1-8+deb9u1
+Version: 2.2.1-8+deb9u2
 Depends: libavahi-client3 (>= 0.6.16), libavahi-common3 (>= 0.6.16), libc6 (>= 2.16), libgnutls30 (>= 3.5.6), libgssapi-krb5-2 (>= 1.14+dfsg), zlib1g (>= 1:1.2.0)
 Suggests: cups-common
 Breaks: cups (<< 1.5.0)

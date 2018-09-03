@@ -572,6 +572,7 @@ Owners: open-iscsi
 
 Name: openssh-server/permit-root-login
 Template: openssh-server/permit-root-login
+Value: false
 Owners: openssh-server
 
 Name: passwd/make-user

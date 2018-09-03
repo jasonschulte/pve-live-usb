@@ -1,0 +1,1313 @@
+Package: turnkey-b2evolution
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-b2evolution_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/b2evolution
+ManageUrl: http://__IPADDRESS__/
+sha512sum: e7187679f533defbd5f1cb9de55566e72d52b120e63549c2b9a67c68f8d7be39daa7659780a4388d9560faccf1b66329c5e563a5fb0222b57744ecc98da624be
+Description: TurnKey b2evolution
+ TurnKey b2evolution - Content Management system
+
+Package: turnkey-cakephp
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-cakephp_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/cakephp
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 688aa4030e62a0b0f8def927a692c8b05662cb5e1486b18efa782943a6e9a0cfcb8ff1d65da9394653e16880c4cbf49562feebebef8aaf444fdafbc33aa6140d
+Description: TurnKey CakePHP
+ TurnKey CakePHP - PHP Framework
+
+Package: turnkey-codeigniter
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-codeigniter_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/codeigniter
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 525d3c0bc5849a217bd667d46cc63d10ab7c075bb5d689c21dd8dc105d91313f23d9da9d2039c874309f676c35c80d71e82a1afe111612cbeb8188fed92f5194
+Description: TurnKey CodeIgniter
+ TurnKey CodeIgniter - PHP Framework
+
+Package: turnkey-collabtive
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-collabtive_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/collabtive
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 22ffafdb5070427b6188883783bf1654a3702e2a119882afa5b5293db735fec58fb91ea1f82883488f32dbb1319e7ae6c5e23c17a0dc94f36e53498bb51278e4
+Description: TurnKey Collabtive
+ TurnKey Collabtive - GroupWare Software
+
+Package: turnkey-concrete5
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-concrete5_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/concrete5
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 7e723f54c6f2546be6fbdb6054a29767f5e3d40d08482ffbc719818afeb44345f7f8786319fdbc8f5b8dc6d36ba4f60fa8a9aefc2f7f06dc2a84980a70540679
+Description: TurnKey Concrete5
+ TurnKey Concrete5 - Content Management System
+
+Package: turnkey-core
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-core_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/core
+ManageUrl: http://__IPADDRESS__/
+sha512sum: ec4d1b773070cef2b7ca9f001c7eb6398e4ef2ad179f892d9377cbeb1ca8301e581d90b2273a955727883acdeee31c202b5f2aecdb170dd68e79c8654669bc8d
+Description: TurnKey Core
+ TurnKey Core - Common Base for All Appliances
+
+Package: turnkey-drupal7
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-drupal7_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/drupal7
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 7a934bfcd9132117bdb28ff7b14f278ed0abe529da121a532bb4c76771cbe3102f9fba2ef5f1bb046854bb3e2453ba8a5c0e00c715b6370b66dd428430c21688
+Description: TurnKey Drupal 7
+ TurnKey Drupal 7 - Content Management Framework
+
+Package: turnkey-drupal8
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-drupal8_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/drupal8
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 47c1f6164d7c98e737eebbfda1418570400bf7d945e8fdc4655b68a59424177e5bb32f6702a17cddf6886a248736eab3975e2776e34d37667a8b0efdc7d39f1a
+Description: TurnKey Drupal 8
+ TurnKey Drupal 8 - Content Management Framework
+
+Package: turnkey-e107
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-e107_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/e107
+ManageUrl: http://__IPADDRESS__/
+sha512sum: de88ada26ec0b61d3cf31f3efc0d1dea1e62ab8f218a3051899f5b01d40b95e75a7761c5b967d34d163bed87fc4d3d02314da5e17f723cea7c08c82da257d10a
+Description: TurnKey e107
+ TurnKey e107 - Content Management System
+
+Package: turnkey-espocrm
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-espocrm_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/espocrm
+ManageUrl: http://__IPADDRESS__/
+sha512sum: ffa1324bfd69a5d9135c682610031ad32b0b7b643a84ef835b53ef72d5ee52d7ee1f870926bc958d06e8acf53e06aea5b0c31ad582fcf86dc98f2b219829307b
+Description: TurnKey EspoCRM
+ TurnKey EspoCRM - Web based open source CRM
+
+Package: turnkey-foswiki
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-foswiki_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/foswiki
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 70504decbf6d401c76ab0f39a5d27383e5e5a1f4aae5ce065b15aec1d5fa746b50d5e363b970fd8775eb9a610b6e53d06e6ab421914df26a2a7b5a39eb8a3392
+Description: TurnKey Foswiki
+ TurnKey Foswiki - Enterprise Wiki Platform
+
+Package: turnkey-gallery
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-gallery_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/gallery
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 9840f8b3562370ed16063d2967d5f6ddc84a0ab880bd33047e745403c667b1f322acca45008dadadcc282c576387ede208362f31d748b055a1aa3691502a1d71
+Description: TurnKey Gallery
+ TurnKey Gallery - Photo Album Organizer
+
+Package: turnkey-gnusocial
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-gnusocial_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/gnusocial
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 6f49affc654747145c64cf5a227afcf43be4e4c747ac9d5e0bc056f36452d8f0fb2feaf295bc51f40da33254c2de989148e20927b3ca6de1db1c063cdf2e5bc5
+Description: TurnKey GNU social
+ TurnKey GNU social - Open distributed microblogging
+
+Package: turnkey-joomla3
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-joomla3_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/joomla3
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 908d949e203f126b87b3c805cb0f9dc503c48f1512c784d4836f48c62bad93a81da1f301a2317f68263218d68fdd284890c61c263d9a9fbeb382d6ecfd1bad14
+Description: TurnKey Joomla 3
+ TurnKey Joomla 3 - Cutting Edge Content Management
+
+Package: turnkey-lamp
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-lamp_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/lamp
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 8eefc0101434a2a27cb5eba79a435b27e9c1f23182990382b234afcaa5be9e52431aa03cde8e7b38bea21533bc77538823d0f815b4967430c2282e839c608ab9
+Description: TurnKey LAMP Stack
+ TurnKey LAMP Stack - Web Stack (MySQL)
+
+Package: turnkey-lapp
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-lapp_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/lapp
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 314214a1e34cb908a4805b0e4c0ffa778712f0db7490075d9ebfea6a8c1f2c949073acaf18c54778e52d83e19fa2e3015642518ef09716df250837c7afc9e6fd
+Description: TurnKey LAPP Stack
+ TurnKey LAPP Stack - Web Stack (PostgreSQL)
+
+Package: turnkey-lighttpd-php-fastcgi
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-lighttpd-php-fastcgi_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/lighttpd-php-fastcgi
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 809fa1e3ba59c2a27dad90b699789dc6f850dcd27f00841c40040e0d38adb4d10ce7417414b1a6aff0c84fdba0bf8c4c93b48665506d3015fe65b1949954a127
+Description: TurnKey Lighttpd PHP FastCGI Server
+ TurnKey Lighttpd PHP FastCGI Server - Includes Adminer MySQL
+
+Package: turnkey-limesurvey
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-limesurvey_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/limesurvey
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 9f72fab570d0d9c81c84d1824d1d1c119ff347453377410718cca0c842dc756d67ffe5b33dd6f578d2e5a02b9babaa4b7ee6f44936f8c890959f792050524dea
+Description: TurnKey LimeSurvey
+ TurnKey LimeSurvey - Survey Application
+
+Package: turnkey-magento
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-magento_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/magento
+ManageUrl: http://__IPADDRESS__/
+sha512sum: f1c2acc8edd6d064012eb6a738990a8aace2306bd92c81fd5dc88a6c4476715649078dddf146668781361f962b89bc01d19e6117961240021f4d75639f70f7e4
+Description: TurnKey Magento
+ TurnKey Magento - Flexible eCommerce Platform
+
+Package: turnkey-mahara
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-mahara_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/mahara
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 8b1dca31b90132835eec682472878b572eb47838db144a9dcaf0e72de224f03c3187ea633e70689579b59fe4311823b49e55ec9b75ec1a07ac3eb24ee30e50e2
+Description: TurnKey Mahara
+ TurnKey Mahara - Electronic Portfolio
+
+Package: turnkey-mambo
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-mambo_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/mambo
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 39e719737445d927b10a1441e58c64b3f702ffd7dd6f799215fe11e0eaa74830364c4f635fb9f63a1fa72e80f5346526501f1be98fe366a9f1d6ea999a00c9b8
+Description: TurnKey Mambo
+ TurnKey Mambo - Content Management System
+
+Package: turnkey-mantis
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-mantis_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/mantis
+ManageUrl: http://__IPADDRESS__/
+sha512sum: b42324eaaade866df8586bb4ccbe9c482d411a9bc21257505f373be3dfca6e8079c3cb867e0a48183d75e15b0c9e0559a5a8102d20b91e30758e29ae77ca8c7d
+Description: TurnKey Mantis
+ TurnKey Mantis - Bug Tracking System
+
+Package: turnkey-mediawiki
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-mediawiki_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/mediawiki
+ManageUrl: http://__IPADDRESS__/
+sha512sum: c4875f97c1b8d2fd97785d3c58bcf90c3bbffc3602ac7baa1b6a1e39e5dcf783954fac5a6f5970aa9a46c6982728e29db3e514f4d924c8aa4790f7d56f9b93bf
+Description: TurnKey MediaWiki
+ TurnKey MediaWiki - Wikipedia's Wiki Engine
+
+Package: turnkey-mibew
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-mibew_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/mibew
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 2f4cc549cb5876be35c4f3b0445917a5ff5b90303a0673e21a7d43b853ba270920aa4dd77c5fa8afdd3d0e43a4055298bb60a1d171d86dac73e98615a9b194c8
+Description: TurnKey Mibew
+ TurnKey Mibew - Live Support Chat
+
+Package: turnkey-mumble
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-mumble_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/mumble
+ManageUrl: http://__IPADDRESS__/
+sha512sum: ea9fa319674975ffacf5468ca032457f2aa5c0d88fb4ec0ac3a6a7a563fb68992783e25c09514829ff442b15530235a155595154115e439f7c696f89d61a92e8
+Description: TurnKey Mumble
+ TurnKey Mumble - MyMumb-Panel and phpMumbleAdmin Web interfaces
+
+Package: turnkey-mysql
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-mysql_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/mysql
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 1e7cc6c2ef04ca7ed8aa1ee72661223ad0cec93d61d3c52ee46aaa7f1af417feac142686da70778d388b9c69ab9123f2bf3ef18ec1f1d7c4c6f515893fb5984f
+Description: TurnKey MySQL
+ TurnKey MySQL - Relational Database Management System
+
+Package: turnkey-nextcloud
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-nextcloud_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/nextcloud
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 866b539fa2bdb9f8777da0c775b3d54c86b86f6f1b96fa143574d59bd2392c9c6b4feb628d492237b020192202c24719d7c645e1d85d31700c5ba47cdc59d202
+Description: TurnKey Nextcloud
+ TurnKey Nextcloud - Share files, music, calendar
+
+Package: turnkey-nginx-php-fastcgi
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-nginx-php-fastcgi_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/nginx-php-fastcgi
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 09b2b818528d09c7d317d9c80475f96c77694c817d3173696220187a441f046f05928c6be60d80baca642fa99f2eba4ad7236eab085a6f5bb47a97a764ab345a
+Description: TurnKey Nginx PHP FastCGI Server
+ TurnKey Nginx PHP FastCGI Server - Includes Adminer and MySQL
+
+Package: turnkey-observium
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-observium_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/observium
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 2eca8f77104ed3d61729917ec43401d648e3c2ef5a1ca695fd8663b629b03d266e9ce1c01edd07d6e9dea374025346464ebaf7886e18409134360f0f462386c5
+Description: TurnKey Observium
+ TurnKey Observium - Network Management and Monitoring
+
+Package: turnkey-omeka
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-omeka_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/omeka
+ManageUrl: http://__IPADDRESS__/
+sha512sum: d53860978648c2270cb6b6e82b5407b58987ec362b69f1ec96a18a9831a2c8cf0bbef4e3408c206b2de1dd96d27ee50c5723e8e85c5c5492ff3437f6bcba3916
+Description: TurnKey Omeka
+ TurnKey Omeka - CMS and Collections Management
+
+Package: turnkey-openldap
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-openldap_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/openldap
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 42430f82970b38d2e0a6c6746b01f0480111f482ac92f5c5188409515529a6e717c44fe1485bb5923716798b96dc853bd0e36f6574bd56325725044bb1ae2587
+Description: TurnKey OpenLDAP
+ TurnKey OpenLDAP - Open Source LDAP
+
+Package: turnkey-owncloud
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-owncloud_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/owncloud
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 2a641423e5555df70acf22c11e07d4430b2a1452b7223f23e90ed2636248fc27f912a25e2733a8c188cc05fecf153f21c822aa3a9504b93bf7f5f05121fed2f4
+Description: TurnKey ownCloud
+ TurnKey ownCloud - Share files, music, calendar
+
+Package: turnkey-phplist
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-phplist_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/phplist
+ManageUrl: http://__IPADDRESS__/
+sha512sum: d5878fd9b5c9073f030a5f6ab15d19402070fba9fdfa78b9ce9a0ba16de2657c51a89b64331be467576bbdbb7b30918024c608421e098ecfc1bac814ccb88863
+Description: TurnKey PHPlist
+ TurnKey PHPlist - Email Campaign Management
+
+Package: turnkey-postgresql
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-postgresql_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/postgresql
+ManageUrl: http://__IPADDRESS__/
+sha512sum: e24e70872c9475c750896b5d7f509f19af03bc30f35a1b907f24b8e4947baaf35071b6595eee0ce5953eef8612d3eeafeda4edb5ed994f9c5ed42d7e4b34ab34
+Description: TurnKey PostgreSQL
+ TurnKey PostgreSQL - Object-relational Database System
+
+Package: turnkey-prestashop
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-prestashop_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/prestashop
+ManageUrl: http://__IPADDRESS__/
+sha512sum: e1dcfb8953cc3cd7753dcc5b9486f2421dc1d725d89191a1a8c9dceca8b3046167792a8a9a26cda7d906c49b98adc8f8f4479c8b3ea3007f6e6539f81a4d4b43
+Description: TurnKey PrestaShop
+ TurnKey PrestaShop - Easy to use online shop
+
+Package: turnkey-processmaker
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-processmaker_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/processmaker
+ManageUrl: http://__IPADDRESS__/
+sha512sum: e891260e6d61e0a457dab08618831bd927fb25108aa1e8f04d4e0c2c5452d1f719ab1edd00926384ce01d4e3313bbc48ddd0eae032a9a80ee7d0163ff914510e
+Description: TurnKey Process Maker
+ TurnKey Process Maker - Workflow & BPM software
+
+Package: turnkey-redmine
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-redmine_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/redmine
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 4c6ef35913e4774971c7d2e10bb20bebfd0357467000717af75a15fbba72815132596d2c2e6afa78ace6c5bb743e3aa902ef09b56f085f7a3f27339f419940cb
+Description: TurnKey Redmine
+ TurnKey Redmine - Integrated SCM & Project Management
+
+Package: turnkey-revision-control
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-revision-control_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/revision-control
+ManageUrl: http://__IPADDRESS__/
+sha512sum: e21b96ea8871a1faa88cec15f2d0d5c733f7be38f0d7563791781ec6332c7b162865df07cba05ca36f819fab37c27fae4790f3f57a2666a9cf53728fef483159
+Description: TurnKey Revision Control
+ TurnKey Revision Control - All-in-one code repository
+
+Package: turnkey-roundup
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-roundup_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/roundup
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 10224cad762dda66dee10ff2b9213fde646da17de7c97d8e84649814fb3733a81f675edcd9477ddb7dc32d58da0b34a6ea3f83905e4db0eab45a11c35d19b223
+Description: TurnKey Roundup
+ TurnKey Roundup - Issue Tracking System
+
+Package: turnkey-silverstripe
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-silverstripe_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/silverstripe
+ManageUrl: http://__IPADDRESS__/
+sha512sum: fffd55f4f336111e70c245115c01f2dd9ecf0c7f7ed004bae09189d643a5445d77428ba1cbe87f3e4a51fecb45f5aa5db1a3235abadc72a3c18586e199e7128f
+Description: TurnKey SilverStripe
+ TurnKey SilverStripe - CMS and Framework
+
+Package: turnkey-sitracker
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-sitracker_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/sitracker
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 1a5677fa656fd510ec157493c8d33a6645d05540d5392d6d130508dfd3571a392040fcb3373637e1479b7928cd4c8e239b9f26de4f2f404b468d6061f13c45f7
+Description: TurnKey siTracker
+ TurnKey siTracker - Support Incident Tracker
+
+Package: turnkey-tkldev
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-tkldev_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/tkldev
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 9cc8e244d893a14840c21c8f2699b6d7fc411c211c051cc58d5225d9541d2c2f8ab684de8fecb6f01060b70d5bfd8362efeeed7fd6093890b7cfd78d8e6dfc35
+Description: TurnKey TKLDev
+ TurnKey TKLDev - TurnKey appliance development infrastructure
+
+Package: turnkey-trac
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-trac_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/trac
+ManageUrl: http://__IPADDRESS__/
+sha512sum: e3f6c403923316e7ac1f7a347685bb5287a2a75f2ca758f17167b6fb5aef4e31296327f49917788b05d310748e1058083a543aede94dd23f7c8b2d0e6fabfe61
+Description: TurnKey Trac
+ TurnKey Trac - Integrated SCM & Project Management
+
+Package: turnkey-wordpress
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-wordpress_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/wordpress
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 7d300573deb58b99c8e3b559e5f0c6741b7777543d318e5f99823df704aff4dc1431e812c52fc48f6b15c016ed816722fb1515b0a51ce96713a025025deaf489
+Description: TurnKey WordPress
+ TurnKey WordPress - Blog Publishing Platform
+
+Package: turnkey-xoops
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-xoops_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/xoops
+ManageUrl: http://__IPADDRESS__/
+sha512sum: af85553f3dcd420b3bd9a81a9757e6128acf2206720c52511ab9ade36691da6faab7771ff8809108f27ab9355ca11e5751a0aa04ed60bef86eefd9deb560aa14
+Description: TurnKey Xoops
+ TurnKey Xoops - Web Application System
+
+Package: turnkey-zencart
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-zencart_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/zencart
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 5d7a95533fac87a91e0afc3e4ef2510f1420716c1ff156aa176727f59d5ed667bf5c3706fabe113a0b99b7d99e0fd2a139b60786f537ade5f7f5af344097e8f5
+Description: TurnKey ZenCart
+ TurnKey ZenCart - E-Commerce Platform
+
+Package: turnkey-zurmo
+Version: 15.0-1
+Type: lxc
+OS: debian-9
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-9-turnkey-zurmo_15.0-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/zurmo
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 93889ee25339537a6ebf803a88936c6847ec7738d2e9d4fc20248bc2f503e2a73e4a1cf6728317f5902caa4cc4c6cdc24a699a9788e45498550e52d2047968d5
+Description: TurnKey Zurmo CRM
+ TurnKey Zurmo CRM - CRM System (Gamified, Social, Mobile)
+
+Package: turnkey-ansible
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-ansible_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/ansible
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 36259c360f5c0b3935aa3f00f1d3be5aa7b70012f463fd210cbc9a742cc20d9384606fbb49924de139526c3c05aeb449df84bac63d3c3659d38d08ee6ceef01c
+Description: TurnKey Ansible
+ TurnKey Ansible - Radically simple IT automation platform
+
+Package: turnkey-asp-net-apache
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-asp-net-apache_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/asp-net-apache
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 1de5f600fc9e72877c4da2705ed7289185cb4b7afac2224fe58cbd2a863b3838357fcbfccd4a574f6a1a25cb95ed394a4ed8aad437a5517cf89ec50db61a5b89
+Description: TurnKey ASP .Net on Apache
+ TurnKey ASP .Net on Apache - ASP .NET on Apache with Mod mono
+
+Package: turnkey-bugzilla
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-bugzilla_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/bugzilla
+ManageUrl: http://__IPADDRESS__/
+sha512sum: fae9323322c3fc269bfe2c458514d585665f4190e7f9f564cbfdb082df3d85568dd38f8d0684229a76f472aee0a7386d94392d0e9ff42f15898c90fd9b76a3b1
+Description: TurnKey Bugzilla
+ TurnKey Bugzilla - Bug Tracking System
+
+Package: turnkey-canvas
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-canvas_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/canvas
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 0e4d987ab1b36aaaaad82bb59351c239874ff54d8b30c664aef8a737d530a1d6594688763e81e1ff1d0997fcc1c57659476411a9744adc36ff823350c0f9825e
+Description: TurnKey Canvas LMS
+ TurnKey Canvas LMS - Learning Management System
+
+Package: turnkey-couchdb
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-couchdb_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/couchdb
+ManageUrl: http://__IPADDRESS__/
+sha512sum: c7712726f5af9d4aee41a51ea8badeb0572f330dd5ea9caa1d967eb9c6263e1b3d3e5c2edbbf96168dba44d1f06d3f6c1128fb1d5747e972c9f04c833bdd171e
+Description: TurnKey CouchDB
+ TurnKey CouchDB - JSON based DB
+
+Package: turnkey-django
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-django_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/django
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 535b731bfc5a4643e9f65aaf22ea3dac8913e05d46e6a6c251c3b4d464e971b49b6892de2f48c66b5fb6c97afae6f1d59395b4c15933646fa9e8761d5382f4ad
+Description: TurnKey Django
+ TurnKey Django - High-level Python Web Framework
+
+Package: turnkey-dokuwiki
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-dokuwiki_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/dokuwiki
+ManageUrl: http://__IPADDRESS__/
+sha512sum: a4ae4890fccbd1e8bb7425d44eefd1533b452fcc4c0501bdbf2bdba573b8e1755999ff52a6fce6647ee53761c7ef19f2088117154b8be13b2b3cad27fb18ba98
+Description: TurnKey DokuWiki
+ TurnKey DokuWiki - Documentation Wiki Platform
+
+Package: turnkey-domain-controller
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-domain-controller_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/domain-controller
+ManageUrl: http://__IPADDRESS__/
+sha512sum: bf6858185fe194f97cc8aee23badf165f31d84753e9f9d663612703271bbf7935af4ee0a3e2c45bc264727634954d6dc97405eb8cc8b3528ebb6748d67d5b8de
+Description: TurnKey Domain Controller
+ TurnKey Domain Controller - Active Directory (DC) server
+
+Package: turnkey-elgg
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-elgg_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/elgg
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 7d1d522b9c4448d305192ae491dbb6f11498dfee3fb66b0761703c907f6f9357928abb63ed38ee03700440ddc9e37b95a37495b1871ea5b2ce8b259c3f9e046c
+Description: TurnKey Elgg
+ TurnKey Elgg - Social Networking Engine
+
+Package: turnkey-etherpad
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-etherpad_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/etherpad
+ManageUrl: http://__IPADDRESS__/
+sha512sum: c926072729bf289ba103ab706f5cdba4269a2857b849ecc22bef6c5a5a46f18951c4e9011e40d28d59f8301fa1ee9955da2f79906e13650abfd610e3252531b9
+Description: TurnKey Etherpad
+ TurnKey Etherpad - Realtime Document Collaboration
+
+Package: turnkey-ezplatform
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-ezplatform_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/ezplatform
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 91dde2caf104c8173993671aadf515ae3bca868488560dd1e8eabbd1445e424da97702d3ba39c15b44c4b60b643434530633c029e440219f503cc9b27f5094a7
+Description: TurnKey eZPlatform
+ TurnKey eZPlatform - Enterprise Content Management System
+
+Package: turnkey-fileserver
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-fileserver_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/fileserver
+ManageUrl: http://__IPADDRESS__/
+sha512sum: cc4475be44a1991381a614dc5c00978c1973a8c895095eb1d0191d404c9c7d28f0edad4ec1fd842c6e881b6ebb791b3933e18908da9412754a7deed5371134ce
+Description: TurnKey File Server
+ TurnKey File Server - Simple Network Attached Storage
+
+Package: turnkey-foodsoft
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-foodsoft_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/foodsoft
+ManageUrl: http://__IPADDRESS__/
+sha512sum: c4515d5180dca066df22f7fa6dea07fc8f2658844c1b1a6f29b9896e191cbaab1a2e64f3aa9df4c9c1da70c284ec00eb0bc277abcbc83b2ac2fb2b08635813e8
+Description: TurnKey Foodsoft
+ TurnKey Foodsoft - Web management for non-profit food cooperatives
+
+Package: turnkey-ghost
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-ghost_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/ghost
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 364975c99c23189c03b21cd0b949147f22bb6300ee75d73bbdf4f5c0da6e8a7db605eec139180f5e1465dc3439b40a7271631fba3f72087046d297d646796a11
+Description: TurnKey Ghost
+ TurnKey Ghost - A publishing platform for professional bloggers
+
+Package: turnkey-gitlab
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-gitlab_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/gitlab
+ManageUrl: http://__IPADDRESS__/
+sha512sum: c0eff1f6d9acced2b7b0c4a5f6d8d325d45dece252898d5b202fc55e380f7d0eb031e1a919b9f61b0f9674454cbd7cb5e689542e4854c0f81e8f60fa13c99c83
+Description: TurnKey GitLab
+ TurnKey GitLab - Self Hosted Git Management
+
+Package: turnkey-icescrum
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-icescrum_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/icescrum
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 5d5f828aa9f0d4099feb89b0c8c18964ccb51c6ab4e230d55c1b348bcc3903c59126af1680bf0097cfdf6e2b053569668c20947b4ca6b2c016682e3d16531dc9
+Description: TurnKey iceScrum
+ TurnKey iceScrum - Agile Development
+
+Package: turnkey-jenkins
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-jenkins_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/jenkins
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 6bfc839bb416148c6f64f56188150a2474736b9453a385990267a03abd0af649aa91755937a5752beaab54e0f4859b04127c73abf1a9a8517da0f732041f3f12
+Description: TurnKey Jenkins
+ TurnKey Jenkins - Continuas Integration
+
+Package: turnkey-kliqqi
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-kliqqi_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/kliqqi
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 91ff5ef8c0969959f42d1a43e6cbf013610fb01a7417e400a04904e2d004f64157deb00bad0cc85a3bb34930f746152b17c6bb7f76ad224f7c896b60b82e0454
+Description: TurnKey Kliqqi
+ TurnKey Kliqqi - Social publishing CMS
+
+Package: turnkey-laravel
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-laravel_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/laravel
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 23e86a38152afe34186d6a82f974656c37e4b41069b72d318bf30c9245ae2e2610c3c2c034990dce677e7e17280de0fe1a5f782d07f9f8315f9aae6fc4417965
+Description: TurnKey Laravel
+ TurnKey Laravel - PHP framework
+
+Package: turnkey-lxc
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-lxc_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/lxc
+ManageUrl: http://__IPADDRESS__/
+sha512sum: f5e0625632ebd51814c1b924535fe32107db31e2880529d180c06d8b7a8d40a153821eddf4d14bb1fc5347c69df80dddba4407a5a37b55c38e59b7c2613b222f
+Description: TurnKey LXC
+ TurnKey LXC - 1 host, multple TurnKey apps
+
+Package: turnkey-mattermost
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-mattermost_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/mattermost
+ManageUrl: http://__IPADDRESS__/
+sha512sum: a98df0432edac790f9c08704e347fd83ae662b785e3d04a21e9ccfb297df99d130e75178ca1484c3ae93bb2377d0874a88830a54a60676101532e8557495301d
+Description: TurnKey Mattermost
+ TurnKey Mattermost - Open Source, self-hosted Slack-alternative
+
+Package: turnkey-mayan-edms
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-mayan-edms_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/mayan-edms
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 11ccee55ecac8027e751360cae7b8ad49ebc5e48a59d786ca7d25fe7fd3fdbacfafcb666a5f1f961ee16defb6c06149839a163e1b5e90b4aee33f2318c5152c3
+Description: TurnKey Mayan EDMS
+ TurnKey Mayan EDMS - An electronic vault for your documents
+
+Package: turnkey-mediaserver
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-mediaserver_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/mediaserver
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 041acdcc624801b93d620de4da139b9c72fb03e1544eecb4395c2ba8b3285c4f0562366a83cf1e7aa323dee3f213dba4ecc4c13d8ca48a88276fc8eb16232a14
+Description: TurnKey MediaServer
+ TurnKey MediaServer - Simple Network Attached Media Storage
+
+Package: turnkey-moinmoin
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-moinmoin_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/moinmoin
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 34c838419e913ee71f04df2c819fcf324a384ef81b6abe421e806dfb643904c5aebe913bdfac99f0e7b71911672d6f2f7f705c4ae3f091e1dee2a3d7dae8d725
+Description: TurnKey MoinMoin
+ TurnKey MoinMoin - Wiki Engine
+
+Package: turnkey-mongodb
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-mongodb_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/mongodb
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 23127dfef248957dc0807db8542576f5ed8d3930680be7fa648be1ccfcc4cd0f45ca3b3fc284069c3d2fa2cab9b5bf2dda69888bb8aa5780ee7443313184694d
+Description: TurnKey MongoDB
+ TurnKey MongoDB - NoSQL Database
+
+Package: turnkey-moodle
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-moodle_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/moodle
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 1c2f8fb21231d6f04e4678141bd774cfc155c919ae033ac28b0930240cf4d489a07bbe73e26729f58f7fbfcc081b740aff8953bd710481fc4294adc8bb41d63a
+Description: TurnKey Moodle
+ TurnKey Moodle - Course Management System
+
+Package: turnkey-nodejs
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-nodejs_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/nodejs
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 8a0b9c94ee408ec739b22ab5ae46107735ee4cdaf9a5cf334a8011fef5021e01876c57fde5bd8c904662214bf69cc2daf804279cc931018aac4c5334b3e0cec1
+Description: TurnKey Node.js
+ TurnKey Node.js - Asynchronous JavaScript Framework
+
+Package: turnkey-odoo
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-odoo_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/odoo
+ManageUrl: http://__IPADDRESS__/
+sha512sum: b637ebb622322c188d7f2e74574f19ccf4416db0934d0281035f2c7974c2c0cde211d4877c2a99d443be342e5b0e1f42d5f43c348f9e904e54727adfc119c3e0
+Description: TurnKey Odoo
+ TurnKey Odoo - Open Source ERP and CRM
+
+Package: turnkey-openvpn
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-openvpn_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/openvpn
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 0e363b9652857a08e458ab6c98c00bc1bc81166d781fa16b64bfeb3198cd182ff9dec17d8710c78fc2a13ed58330bb27d3bf5d8899af12069486e9cbb9e32d32
+Description: TurnKey OpenVPN
+ TurnKey OpenVPN - Open Source VPN solution
+
+Package: turnkey-orangehrm
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-orangehrm_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/orangehrm
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 76e2b0e4b481f850c7bbb9e8a956457dec8de33ac3f4c8fc9549bea766ee7e6578b54b6b002851fc637e4365c4fb629056e15a5ebbd886144b19534e01cf8bcd
+Description: TurnKey OrangeHRM
+ TurnKey OrangeHRM - Human Resources Management
+
+Package: turnkey-oscommerce
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-oscommerce_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/oscommerce
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 579bdb708bdc234293976ae09595d9f49cb838c2a43852c9bd945516791350bb3e53c6eafc260c36419ea43d1cb1a2d5cfa47b7b0423223824878b0572fbecf5
+Description: TurnKey OSCommerce
+ TurnKey OSCommerce - eCommerce Online Shop
+
+Package: turnkey-otrs
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-otrs_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/otrs
+ManageUrl: http://__IPADDRESS__/
+sha512sum: af0435a9552e28c9f012e95c30172a86aa7fe0512ef9667b8b682ca1693d021dbd2fdfb25a859c25ec806ef2bb3b46d1fbd9ee5a39830a0f97c7359da4dd9133
+Description: TurnKey OTRS
+ TurnKey OTRS - Ticket Request System
+
+Package: turnkey-phpbb
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-phpbb_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/phpbb
+ManageUrl: http://__IPADDRESS__/
+sha512sum: fb28f844db7a7cb682be6ee7aed51c5189486f8be129b3a0d3aac8764dbc28b3428e00a26ef21361516dfe7d80f36f1700673d6da93639c113395bc5f26c79f1
+Description: TurnKey phpBB
+ TurnKey phpBB - Community Forum Solution
+
+Package: turnkey-piwik
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-piwik_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/piwik
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 8c50b51d44d9cd5c72f58447ec11bd18fbb3ffba70a353cf4524859ed07ed01a21857486882564b42ab5cd0e09a77cba1e523a91ecc28e93c463967abd72a9d9
+Description: TurnKey Piwik
+ TurnKey Piwik - Real Time Web Analytics
+
+Package: turnkey-plone
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-plone_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/plone
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 09cbc17b5092bfc1eed37a83e5d307cda5c5bb69bb00038a1a516c6497a244634e62d21ca03fa09de7ea25dd05f3bfc05858bd236ded9479c4e96c3a1587e749
+Description: TurnKey Plone
+ TurnKey Plone - Open Source Content Management
+
+Package: turnkey-punbb
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-punbb_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/punbb
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 3f8253762629eee45b9355bec28a8bd28ee5642bd8a64565cd11941f09fda70abf00097fd0c202ead8e65466c8c361162666bf5e81d8405cbcefd3b3cb2a10e8
+Description: TurnKey PunBB
+ TurnKey PunBB - Forum Software
+
+Package: turnkey-rails
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-rails_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/rails
+ManageUrl: http://__IPADDRESS__/
+sha512sum: cb346966adabd28314929494394091f456ac64132cea5ead640f32c66a6ce1f955ce23617c7f7b71380c985b2aca9cd16d5d74610c5fffebe68db7ce34618c85
+Description: TurnKey Ruby on Rails
+ TurnKey Ruby on Rails - Web Application Framework
+
+Package: turnkey-sahana-eden
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-sahana-eden_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/sahana-eden
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 392cb49dc1a6b3ffaedd534e4a3f73dfb559a4fa70a8aba3e495b8439486f06bfb8bd49c7b74d92c14b6ad959f54c6072e2be896aa8b1e9ea73ddfd8f52ccd78
+Description: TurnKey Sahana Eden
+ TurnKey Sahana Eden - Humanitarian response
+
+Package: turnkey-simpleinvoices
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-simpleinvoices_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/simpleinvoices
+ManageUrl: http://__IPADDRESS__/
+sha512sum: ce423cb3b442498cb9277874a6fe3c276a7f1ee7dc91b00bf779fbf5faedbf70c2becfcca67bf624517ef9a4e6e4326240b14b766b0fc66a42c94b2c57ce379e
+Description: TurnKey SimpleInvoices
+ TurnKey SimpleInvoices - Invoicing System
+
+Package: turnkey-simplemachines
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-simplemachines_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/simplemachines
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 768e2723b2553033e943edc693b3a41823d9f777319384f2cec5376c2278997063d20e6f803b34114787f5e47fa52afeaf1546acbca561cdc0085d8515474460
+Description: TurnKey SimpleMachines
+ TurnKey SimpleMachines - Forum System
+
+Package: turnkey-sugarcrm
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-sugarcrm_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/sugarcrm
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 6ccdb60cd5f639abdba5d4a65da80aeacb934aded34c3c8ee579eaebc09205db00df6b4bf9a97d90ac7a1ad666e37d627e20d6b6369b6f8961200acaf8ade17f
+Description: TurnKey SugarCRM
+ TurnKey SugarCRM - Business & Social CRM Software
+
+Package: turnkey-suitecrm
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-suitecrm_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/suitecrm
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 5dc97ea34c2a952b7c67820181edadd88cdc673b14438ff4e3b668ff617656b3268377ac16fc96bceb2e7b2d9ff6270503d2b97f36813605566da7e761bae068
+Description: TurnKey SuiteCRM
+ TurnKey SuiteCRM - CRM for the world
+
+Package: turnkey-symfony
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-symfony_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/symfony
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 46e5b0ff42fd9adc0cdadba8c65933b0c02da19a0d3e7dc2ef951aac00f6a3ef91daa0f9e9f7ff5b345bc3273510f717ecc593ec038473244232bdcd60bfd62b
+Description: TurnKey Symfony
+ TurnKey Symfony - PHP Web Framework
+
+Package: turnkey-tomcat
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-tomcat_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/tomcat
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 276713b6538f18923fb03c5d7764a592fd726bf6014f18be082270e7546300e553daa10c418d032d7776067b467ed6a8ca62e55d42eb1cad0597961cde2c62d3
+Description: TurnKey Standalone Tomcat
+ TurnKey Standalone Tomcat - Java Servlet and JSP Platform
+
+Package: turnkey-tomcat-apache
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-tomcat-apache_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/tomcat-apache
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 3f927e6e8cec12201ffd8ebcf93d091b66952086520a277b94aa17304b4344948d55cece04e3ba850b0d8f6af4f2977f0ed875a926dcb894ec36a465a4fd8b84
+Description: TurnKey Tomcat on Apache
+ TurnKey Tomcat on Apache - Java Servlet and JSP Platform
+
+Package: turnkey-torrentserver
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-torrentserver_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/torrentserver
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 1d46a9f12225db9179c0622d464b932cc9e340368efcb5c2ce31c7f1d333b2911bf85f26175d210b6df65e37c8489b864518d0a083d2c24e444b4d9db30548e5
+Description: TurnKey Torrent Server
+ TurnKey Torrent Server - File Download and Sharing Server
+
+Package: turnkey-tracks
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-tracks_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/tracks
+ManageUrl: http://__IPADDRESS__/
+sha512sum: dba266869aefd180b0d3418e2097acfab2b9188c0c37b31f89ada51a6aa79b777490b10ad142394ee151d2338ef1e171ca7261a0d62286abd63e6f90bbd5e0e0
+Description: TurnKey Tracks
+ TurnKey Tracks - Getting Things Done (GTD) Application
+
+Package: turnkey-twiki
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-twiki_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/twiki
+ManageUrl: http://__IPADDRESS__/
+sha512sum: f3394c9f3b51fc390c25ffbfee95e7e360b76038e171673e7e8db2bed5c7f473e85ee3ca742882e32dc421c86121c87ece6556333e791e77a6c19a1454f12176
+Description: TurnKey TWiki
+ TurnKey TWiki - Enterprise Wiki Platform
+
+Package: turnkey-typo3
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-typo3_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/typo3
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 32e389f6b7e33ac3c314841cf9adc8a0528d856c8d49e7134f471189b52cf420dc4ec1ef5112f4b8fc821f8817e86279ff03238c90ab5c5b62eaeb199d4845d7
+Description: TurnKey Typo3
+ TurnKey Typo3 - Enterprise CMS
+
+Package: turnkey-ushahidi
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-ushahidi_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/ushahidi
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 8b17d8d257768bab7c4cb567822c26db3ecbf983670fbf434583e8bf4950c2a5ab82550b40c88413e9d05f028e4e870dc2f9f4251b538b9de8d4eb3b1e9e971f
+Description: TurnKey Ushahidi
+ TurnKey Ushahidi - Crowdsource Information
+
+Package: turnkey-vanilla
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-vanilla_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/vanilla
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 281534a004e1e411fe2c2cea4210407fdc850f3e9f516a1a694cdbda82241b5a0fadd4f7624464d01711e177c03c47f3941b966beb23f83fef726401e3275a1a
+Description: TurnKey Vanilla
+ TurnKey Vanilla - Community Forums Evolved
+
+Package: turnkey-vtiger
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-vtiger_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/vtiger
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 1de683806a7b10df65e72da7283afc611beedc3748579562fd2aef22ec43c5eadc5cb9971c42266b0592762f7360ed5e41dbc755080ba2ec4e75de032eb00555
+Description: TurnKey vTiger CRM
+ TurnKey vTiger CRM - Customer Relationship Management
+
+Package: turnkey-web2py
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-web2py_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/web2py
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 2279fbf9ae15b6afe3ade94373c2e9818ddbc1b0786ab9331c1335c2178a33df68f297aea6fff8925a19a83d8ad5118b3b6c11e3cef6db5b027adf13f3e58455
+Description: TurnKey Web2Py
+ TurnKey Web2Py - Python Framework
+
+Package: turnkey-yiiframework
+Version: 14.2-1
+Type: lxc
+OS: debian-8
+Section: turnkeylinux
+Architecture: amd64
+Location: http://mirror.turnkeylinux.org/turnkeylinux/images/proxmox/debian-8-turnkey-yiiframework_14.2-1_amd64.tar.gz
+Infopage: http://www.turnkeylinux.org/yiiframework
+ManageUrl: http://__IPADDRESS__/
+sha512sum: 77850f10cf49069fe3269588a88dab3eae9ae1445226b5bf60c71cd0c46656ffc087935325591ac1e6e32f577d542200ceb3ea476172cdcb4136019fc580e3e9
+Description: TurnKey Yii Framework
+ TurnKey Yii Framework - PHP Framework
+

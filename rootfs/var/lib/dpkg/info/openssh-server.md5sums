@@ -3,7 +3,7 @@
 0136a239bd90c48b8e07ea477e2c23e5  lib/systemd/system/ssh@.service
 4b50d38888a7c2093ea4928dca327287  usr/lib/openssh/ssh-session-cleanup
 f3031894ab52471cf901dec4397f4449  usr/lib/tmpfiles.d/sshd.conf
-0c4b6da99164fb9a9291966b1c5b9902  usr/sbin/sshd
+2af0a0a0d60b13a148681d412e9fbd03  usr/sbin/sshd
 e4f66eb12e8650acbafbfb14a0325b26  usr/share/apport/package-hooks/openssh-server.py
 77862d01cdeb1232790155687382fdad  usr/share/doc/openssh-client/examples/ssh-session-cleanup.service
 8c5592e0d522fa0f8f55f3c104479ef5  usr/share/lintian/overrides/openssh-server

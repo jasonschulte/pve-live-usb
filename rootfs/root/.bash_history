@@ -178,3 +178,216 @@ cat /boot/grub/grub.cfg
 ls -l
 ls -l bootdisk/
 head bootdisk/boot 
+ls -l
+ls -al bootdisk/
+rm bootdisk/boot 
+mkdir bootdisk/boot
+ls -al
+ls -al bootdisk/
+cd bootdisk/
+mv initrd.img casper/
+mv vmlinuz casper/
+ls -al
+ls -al casper/
+echo -n $(sudo du -s --block-size=1 ${OSWORKDIR} | tail -1 | awk '{print $1}') | sudo tee ${BOOTDISK}/casper/filesystem.size
+cd ..
+echo $OSWORKDIR
+export OSWORKDIR=~/osworkdir
+export BOOTDISK=~/bootdisk
+echo -n $(sudo du -s --block-size=1 ${OSWORKDIR} | tail -1 | awk '{print $1}') | sudo tee ${BOOTDISK}/casper/filesystem.size
+ls -al
+ls bootdisk/
+ls bootdisk/casper/
+cat bootdisk/casper/filesystem.size 
+nano /boot/grub/grub.cfg 
+cd bootdisk/
+ls boot/
+mkdir boot/grub
+nano boot/grub/grub.cfg
+cd ..
+grub-install --target=i386-pc --recheck --boot-directory=${BOOTDISK}/boot /dev/sdb
+ls -l bootdisk/
+ls -l bootdisk/boot/
+ls -l bootdisk/boot/grub/
+ls -l bootdisk/boot/grub/i386-pc/
+ls -l
+rm casper_1.394_amd64.deb 
+umount ./bootdisk
+ls -l /etc/pve/
+ls -l /etc/pve/priv/
+cd osworkdir/
+ls -l
+ls etc/pve/
+ls -al etc/
+ls -al etc/pve/
+cd ..
+echo $OSWORKDIR
+sudo rsync -av --dry-run --one-file-system --delete --exclude=/proc/* --exclude=/dev/* --exclude=/sys/* --exclude=/tmp/* --exclude=/lost+found --exclude=/var/tmp/* --exclude=/var/mail/* --exclude=/var/spool/* --exclude=/media/* --exclude=/etc/fstab --exclude=/etc/mtab --exclude=/etc/hosts --exclude=/var/lib/libvirt/images --exclude=${OSWORKDIR} --exclude=${BOOTDISK} / ${OSWORKDIR}
+sudo rsync -av --one-file-system --delete --exclude=/proc/* --exclude=/dev/* --exclude=/sys/* --exclude=/tmp/* --exclude=/lost+found --exclude=/var/tmp/* --exclude=/var/mail/* --exclude=/var/spool/* --exclude=/media/* --exclude=/etc/fstab --exclude=/etc/mtab --exclude=/etc/hosts --exclude=/var/lib/libvirt/images --exclude=${OSWORKDIR} --exclude=${BOOTDISK} / ${OSWORKDIR}
+mount
+mount | grep etc
+df -h
+cp -av /etc/pve/* /root/osworkdir/etc/pve/
+nano osworkdir/etc/network/interfaces
+mount /dev/sdb2 bootdisk/
+mksquashfs ${OSWORKDIR} ${BOOTDISK}/casper/filesystem.squashfs -noappend
+echo -n $(sudo du -s --block-size=1 ${OSWORKDIR} | tail -1 | awk '{print $1}') | sudo tee ${BOOTDISK}/casper/filesystem.size
+nano bootdisk/boot/grub/grub.cfg 
+umount bootdisk
+cat osworkdir/etc/hosts.
+cat osworkdir/etc/hosts
+mount
+cat /etc/fstab 
+cd /etc/systemd/
+find ./ -name pve-cluster.service
+cat system/multi-user.target.wants/pve-cluster.service 
+pmxcfs --help
+man pmxcfs
+echo $OSWORKDIR
+echo $BOOTDISK
+mount /dev/sdb2 /root/bootdisk/
+cp /etc/hosts /root/osworkdir/etc/hosts
+nano /root/osworkdir/etc/hosts
+cd /root/osworkdir/
+rm -rf /etc/pve/*
+cd /etc/pve/
+ls -al
+cd /root/osworkdir/etc/pve/
+rm -rf *
+ls -al
+cd ..
+cd 
+ls -al
+ls osworkdir/etc/pve/
+cat osworkdir/etc/hosts
+mount
+sudo mksquashfs ${OSWORKDIR} ${BOOTDISK}/casper/filesystem.squashfs -noappend
+echo -n $(sudo du -s --block-size=1 ${OSWORKDIR} | tail -1 | awk '{print $1}') | sudo tee ${BOOTDISK}/casper/filesystem.size
+umount bootdisk
+service restart pve-cluster.service
+systemctl restart pve-cluster.service
+ls -l /etc/pve/
+nano osworkdir/etc/network/interfaces
+mount /dev/sdb2 /root/bootdisk/
+sudo mksquashfs ${OSWORKDIR} ${BOOTDISK}/casper/filesystem.squashfs -noappend
+echo -n $(sudo du -s --block-size=1 ${OSWORKDIR} | tail -1 | awk '{print $1}') | sudo tee ${BOOTDISK}/casper/filesystem.size
+ls -lh bootdisk/casper/
+umount bootdisk
+git
+apt install git
+ls -al
+git checkout git@github.com:jasonschulte/mukh-os.git
+git checkout git@github.com:jasonschulte/mukh-os
+git checkout git@github.com:jasonschulte/mukh-os.git
+git clone git@github.com:jasonschulte/mukh-os.git
+ls -l
+git clone git@github.com:jasonschulte/mukh-os.git
+echo $SSH_AUTH_SOCK
+cat .ssh/authorized_keys 
+git clone git@github.com:jasonschulte/mukh-os.git
+echo $SSH_AUTH_SOCK
+nano .ssh/authorized_keys 
+echo $SSH_AUTH_SOCK
+nano /etc/ssh/sshd_config 
+service ssh restart
+echo $SSH_AUTH_SOCK
+service sshd restart
+echo $SSH_AUTH_SOCK
+nano /etc/ssh/sshd_config 
+echo $SSH_AUTH_SOCK
+ip addr
+cat /etc/hosts
+cat /etc/hostname 
+cd osworkdir/
+ls etc/
+ls etc/pve/
+cd /var/log/
+df -hs
+df -hs ./
+du -hs 
+service ssh stop
+service ssh status
+netstat -tnlp
+ip addr
+service ssh start
+reboot
+mount /dev/sdb2 bootdisk/
+cd osworkdir/
+ls root/.ssh/
+cat root/.ssh/authorized_keys 
+ls -al root/.ssh/
+cd etc/network
+cat interfaces
+echo $SSH_AUTH_SOCK
+history |grep git
+git clone git@github.com:jasonschulte/mukh-os.git
+echo $SSH_AUTH_SOCK
+git clone git@github.com:jasonschulte/mukh-os.git
+echo $SSH_AUTH_SOCK
+git clone git@github.com:jasonschulte/mukh-os.git
+echo $SSH_AUTH_SOCK
+git clone git@github.com:jasonschulte/mukh-os.git
+ls -al
+mv osworkdir/* mukh-os/
+ls -al osworkdir/
+rm osworkdir/
+rmdir osworkdir/
+cd mukh-os/
+git status
+git add -A .
+df -h
+pvdisplay 
+lvdisplay 
+shutdown -h now
+pvdisplay 
+pvresize /dev/sda3
+pvdisplay 
+gdisk /dev/sda
+parted /dev/sda
+gdisk /dev/sda
+parted /dev/sda
+gdisk /dev/sda
+parted /dev/sda
+gdisk /dev/dsa
+parted /dev/sda
+gdisk /dev/sda
+reboot
+pvdisplay 
+pvresize /dev/sda3
+pvdisplay 
+vgdisplay 
+lvdisplay 
+lvresize -l +100%FREE /dev/pve/root
+lvdisplay 
+ls -l
+resize2fs /dev/pve/root 
+df -h
+ls -al
+cd mukh-os/
+ls -al
+cat README.md 
+mkdir rootfs
+mv * rootfs/
+ls -al
+mv rootfs/README.md ./
+ls -al
+git status
+git add -A .
+git commit -m "Initial commit"
+git push origin HEAD
+cd ..
+mount /dev/sda2 bootdisk/
+df -h
+cd bootdisk/
+ls -al
+cd ..
+umount bootdisk
+mount /dev/sdb2 bootdisk/
+cd bootdisk/
+df -h
+ls -al
+du -h --max-depth=1
+cat /etc/network/interfaces
+cd ..
+ls -al
+umount bootdisk

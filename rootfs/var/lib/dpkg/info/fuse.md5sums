@@ -1,8 +1,8 @@
-f4fea4f0b9527fbc7c1a57c72a125c52  bin/fusermount
-abae0bbacc79de71d40cda2edeb8c893  bin/ulockmgr_server
+7df932801f20fa879a6eab5cd1cbf746  bin/fusermount
+eabc2bf1910d67dffb0cf18b8223fdc0  bin/ulockmgr_server
 2b4c13fe743923453c0698c4e58c8c7d  lib/udev/rules.d/60-fuse.rules
-b11efb5af409f334818ec4d79229addf  sbin/mount.fuse
-4383606487eb69da9789402394091618  usr/share/doc/fuse/changelog.Debian.gz
+3fc115f293cfda527484a99f57c2dffe  sbin/mount.fuse
+7c72ec4c7a5c034d18caf37e4b4ebfa7  usr/share/doc/fuse/changelog.Debian.gz
 a3fcff97e58cfb9c1211730a0ed70481  usr/share/doc/fuse/changelog.gz
 e8058a8350b49a6cf70ddb4206da8f56  usr/share/doc/fuse/copyright
 e7b1a3fb8aa4d9bf46c5abcf7e17402b  usr/share/initramfs-tools/hooks/fuse

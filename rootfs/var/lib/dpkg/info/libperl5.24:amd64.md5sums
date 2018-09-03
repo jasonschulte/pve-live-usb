@@ -1,6 +1,6 @@
 12072bdba011ea37604453c63300610f  usr/bin/cpan5.24-x86_64-linux-gnu
 ed090a83185bf489c3ba290895a3da61  usr/bin/perl5.24-x86_64-linux-gnu
-8aeeff59c83da347f1d4517d0966cb02  usr/lib/x86_64-linux-gnu/libperl.so.5.24.1
+a83369a3051e2d7974fcda8e6c5afc51  usr/lib/x86_64-linux-gnu/libperl.so.5.24.1
 2070df46368dd143080c85b6b6ca4691  usr/lib/x86_64-linux-gnu/perl/5.24.1/B.pm
 8194da403fc617d4c3abace1f71e9595  usr/lib/x86_64-linux-gnu/perl/5.24.1/B/Concise.pm
 df118b0a08df60243fd9fd9d65904aea  usr/lib/x86_64-linux-gnu/perl/5.24.1/B/Showlex.pm
@@ -12,7 +12,7 @@ df118b0a08df60243fd9fd9d65904aea  usr/lib/x86_64-linux-gnu/perl/5.24.1/B/Showlex
 606ba640c40ea0fc7af76ddeb65debb4  usr/lib/x86_64-linux-gnu/perl/5.24.1/CORE/av.h
 d337e1e4661ab3735e7b59c74b72e943  usr/lib/x86_64-linux-gnu/perl/5.24.1/CORE/bitcount.h
 612f1bc9978de1a039a2a4df3dd04439  usr/lib/x86_64-linux-gnu/perl/5.24.1/CORE/charclass_invlists.h
-3835417c7f2c6699b9b7d25ba9c21bc4  usr/lib/x86_64-linux-gnu/perl/5.24.1/CORE/config.h
+614190ef17e3ad31be8ac6d809887791  usr/lib/x86_64-linux-gnu/perl/5.24.1/CORE/config.h
 51dadd105417c73dafa69e42c5bc3875  usr/lib/x86_64-linux-gnu/perl/5.24.1/CORE/cop.h
 ece9dc171f6d7f318fd8902b8986a5f2  usr/lib/x86_64-linux-gnu/perl/5.24.1/CORE/cv.h
 3cce103191832cb6e732ddd504d97e93  usr/lib/x86_64-linux-gnu/perl/5.24.1/CORE/dosish.h
@@ -49,7 +49,7 @@ f7d7096aafe43321a0b6167c3766a42e  usr/lib/x86_64-linux-gnu/perl/5.24.1/CORE/op_r
 609c3850a8e4504552d8b48af05e72c8  usr/lib/x86_64-linux-gnu/perl/5.24.1/CORE/overload.h
 b183134c080f044c9d77e6b5310b6345  usr/lib/x86_64-linux-gnu/perl/5.24.1/CORE/pad.h
 b29878d1d36330394157136b32aba033  usr/lib/x86_64-linux-gnu/perl/5.24.1/CORE/parser.h
-80e5168215dee787d3fd7dd942b8c75a  usr/lib/x86_64-linux-gnu/perl/5.24.1/CORE/patchlevel-debian.h
+bbbfd6689f012754d907d05776f9a26d  usr/lib/x86_64-linux-gnu/perl/5.24.1/CORE/patchlevel-debian.h
 b1e495efcaf28e34725e37b0113fed6b  usr/lib/x86_64-linux-gnu/perl/5.24.1/CORE/patchlevel.h
 c5536e5f9c44dd861f368a44403da69d  usr/lib/x86_64-linux-gnu/perl/5.24.1/CORE/perl.h
 858ef635f6f5ccd215b8d8940fac9cf0  usr/lib/x86_64-linux-gnu/perl/5.24.1/CORE/perlapi.h
@@ -85,7 +85,7 @@ f8054c2a9e4f17f4c0de5c6b0c8964c7  usr/lib/x86_64-linux-gnu/perl/5.24.1/Compress/
 2582d026d9ceb3392c3be3fa9f77950d  usr/lib/x86_64-linux-gnu/perl/5.24.1/Config.pm
 0141dc853af1c8936e497798c8bea3c3  usr/lib/x86_64-linux-gnu/perl/5.24.1/Config.pod
 43c2fc0c6c7fcce361baeebca99732de  usr/lib/x86_64-linux-gnu/perl/5.24.1/Config_git.pl
-daf07325acd6b4b17d02a9bf8b93ba7b  usr/lib/x86_64-linux-gnu/perl/5.24.1/Config_heavy.pl
+fa440268d4c841b475ad58719235ae95  usr/lib/x86_64-linux-gnu/perl/5.24.1/Config_heavy.pl
 5a7055f7e28044b801f254e4f64fb990  usr/lib/x86_64-linux-gnu/perl/5.24.1/Cwd.pm
 bfa65a83cdc81ae2f0a98f993577bfd0  usr/lib/x86_64-linux-gnu/perl/5.24.1/DB_File.pm
 f0ed0c70c06e29d5629f81fa5b432032  usr/lib/x86_64-linux-gnu/perl/5.24.1/Data/Dumper.pm
@@ -248,7 +248,7 @@ cd0c24d4144ed42af2c382aba1a2bfda  usr/lib/x86_64-linux-gnu/perl/5.24.1/auto/Perl
 0c078a3ec43dcdc71946300c11318856  usr/lib/x86_64-linux-gnu/perl/5.24.1/auto/PerlIO/via/via.so
 c9a4186a3e69c8c79dc5c4a01d3f7a6f  usr/lib/x86_64-linux-gnu/perl/5.24.1/auto/SDBM_File/SDBM_File.so
 5b6ceaa238511dc6a6e7030917635f88  usr/lib/x86_64-linux-gnu/perl/5.24.1/auto/Socket/Socket.so
-568c2371621d744951896a615030006d  usr/lib/x86_64-linux-gnu/perl/5.24.1/auto/Storable/Storable.so
+c1c009be04688c4d3878042d584bcf04  usr/lib/x86_64-linux-gnu/perl/5.24.1/auto/Storable/Storable.so
 c70b995b238ec8be8ff3ed619ca417b4  usr/lib/x86_64-linux-gnu/perl/5.24.1/auto/Sys/Hostname/Hostname.so
 5a41772d7f4674d97d81f512e1ea4681  usr/lib/x86_64-linux-gnu/perl/5.24.1/auto/Sys/Syslog/Syslog.so
 c722aad66609acd47f657cc7015b7ab8  usr/lib/x86_64-linux-gnu/perl/5.24.1/auto/Tie/Hash/NamedCapture/NamedCapture.so
@@ -333,10 +333,10 @@ c5be2844634c0dc0e0b3e5718f03f354  usr/lib/x86_64-linux-gnu/perl/5.24.1/threads.p
 23ed0fddbde6b12446a4611805e2fa50  usr/lib/x86_64-linux-gnu/perl/5.24.1/wait.ph
 b459398d7900fe9921162de56d70a95d  usr/lib/x86_64-linux-gnu/perl/5.24.1/xlocale.ph
 085d5cbc8ea7f6b7880ec0905c8a9798  usr/lib/x86_64-linux-gnu/perl/debian-config-data-5.24.1/README
-530e3629ddfa05326d81921a4e9c4cdb  usr/lib/x86_64-linux-gnu/perl/debian-config-data-5.24.1/config.sh.debug.gz
-129ea43160256ab09dabc15ca281de14  usr/lib/x86_64-linux-gnu/perl/debian-config-data-5.24.1/config.sh.shared.gz
-3401dc470e24b25e8322fc3b1b56f738  usr/lib/x86_64-linux-gnu/perl/debian-config-data-5.24.1/config.sh.static.gz
-e8c87cdf5caceccbf73444d019ec557d  usr/share/doc/libperl5.24/changelog.Debian.gz
+14d41b219c18a8a894730075a4a710e7  usr/lib/x86_64-linux-gnu/perl/debian-config-data-5.24.1/config.sh.debug.gz
+6e236f5ebf9cec04aa76fddff475cf92  usr/lib/x86_64-linux-gnu/perl/debian-config-data-5.24.1/config.sh.shared.gz
+75277b8bb72ce86a501b5da197ea2b8f  usr/lib/x86_64-linux-gnu/perl/debian-config-data-5.24.1/config.sh.static.gz
+ebca62dd8b9d43cf14be64dd112be041  usr/share/doc/libperl5.24/changelog.Debian.gz
 76272aff3e3f22e58052952ad15200b7  usr/share/doc/libperl5.24/copyright
-664f766125e044e567e00768838fe1d5  usr/share/man/man1/cpan5.24-x86_64-linux-gnu.1.gz
-47c3b4dc799e5c5bf27177e91e0a758e  usr/share/man/man1/perl5.24-x86_64-linux-gnu.1.gz
+9d2e0ded1c8d95f0612faa85482f7414  usr/share/man/man1/cpan5.24-x86_64-linux-gnu.1.gz
+203e030c6c9f076dd59022825e23e313  usr/share/man/man1/perl5.24-x86_64-linux-gnu.1.gz
