@@ -1,0 +1,17 @@
+#!/bin/sh
+# postrm script for gnupg1-curl
+#
+# see: dh_installdeb(1)
+
+set -e
+
+if [ "$1" = remove ] ; then
+	dpkg-divert --package gnupg1-curl --rename \
+	   --remove /usr/lib/gnupg1/gpgkeys_curl
+	dpkg-divert --package gnupg1-curl --rename \
+	   --remove /usr/lib/gnupg1/gpgkeys_hkp
+fi
+
+
+
+exit 0

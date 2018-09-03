@@ -1,0 +1,13 @@
+/.
+/usr
+/usr/share
+/usr/share/doc
+/usr/share/doc/python-ipaddr
+/usr/share/doc/python-ipaddr/copyright
+/usr/share/doc/python-ipaddr/changelog.Debian.gz
+/usr/share/doc/python-ipaddr/changelog.gz
+/usr/lib
+/usr/lib/python2.7
+/usr/lib/python2.7/dist-packages
+/usr/lib/python2.7/dist-packages/ipaddr.py
+/usr/lib/python2.7/dist-packages/ipaddr-2.1.11.egg-info

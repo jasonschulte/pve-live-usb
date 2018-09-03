@@ -1,0 +1,16 @@
+95ff7409f2881fc161946d8cd524e995  usr/bin/xorriso
+0b0455ba74056dc473dbbc17d6ed857b  usr/share/doc/xorriso/AUTHORS
+ecfd0d1ac33c179b7b8ff34cf90f19f6  usr/share/doc/xorriso/README.Debian
+a2a5e49bc771a138a04bafd637cdcbac  usr/share/doc/xorriso/README.gz
+1a7620f1030f9550f13722c4c0cde636  usr/share/doc/xorriso/TODO
+f5a4703915191720c4c6d75412f13d7b  usr/share/doc/xorriso/changelog.Debian.amd64.gz
+c231574c74bd4bc0202768eb19d096d5  usr/share/doc/xorriso/changelog.Debian.gz
+c7d5cb7fcfadf1c59d47b7ecd5a599f1  usr/share/doc/xorriso/changelog.gz
+a37510441b2a9e65efd06a32cd983c3e  usr/share/doc/xorriso/copyright
+fb2795b67d64ec0fe0f6505fe1ad2458  usr/share/doc/xorriso/examples/startup_file.txt
+71806019ccb2d32e1e320c63862fcaf2  usr/share/info/xorrecord.info.gz
+f2fecc0c2c1bc1443a71af852261faa7  usr/share/info/xorriso.info.gz
+566237b0b3a8eb5cd91d718f8d062a15  usr/share/info/xorrisofs.info.gz
+90b751f20607df559ad58d267da75b73  usr/share/man/man1/xorrecord.1.gz
+4d21c24464f56f12dca4973b04adf540  usr/share/man/man1/xorriso.1.gz
+5970791ab2d6ad9c1ad3ceead8fa8d47  usr/share/man/man1/xorrisofs.1.gz

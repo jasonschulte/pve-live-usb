@@ -1,0 +1,8 @@
+TARGETS = console-setup.sh rsyslog unattended-upgrades rbdmap rrdcached uuidd postfix smartmontools cron ssh dbus rsync
+INTERACTIVE = console-setup.sh
+postfix: rsyslog
+smartmontools: rsyslog
+cron: rsyslog
+ssh: rsyslog
+dbus: rsyslog
+rsync: rsyslog

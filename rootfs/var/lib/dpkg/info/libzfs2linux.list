@@ -1,0 +1,17 @@
+/.
+/lib
+/lib/libzfs.so.2.0.0
+/lib/libzfs_core.so.1.0.0
+/usr
+/usr/share
+/usr/share/doc
+/usr/share/doc/libzfs2linux
+/usr/share/doc/libzfs2linux/COPYRIGHT
+/usr/share/doc/libzfs2linux/OPENSOLARIS.LICENSE.gz
+/usr/share/doc/libzfs2linux/changelog.Debian.gz
+/usr/share/doc/libzfs2linux/copyright
+/usr/share/lintian
+/usr/share/lintian/overrides
+/usr/share/lintian/overrides/libzfs2linux
+/lib/libzfs.so.2
+/lib/libzfs_core.so.1

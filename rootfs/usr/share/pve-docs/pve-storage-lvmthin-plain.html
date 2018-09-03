@@ -1,0 +1,249 @@
+<!-- asciidoc HEADER -->
+<script type="text/javascript">
+//////////////////////////////////////////////////////////////////////////
+// asciidoc JS helper for Proxmox VE mediawiki pages
+//
+// code based on original asciidoc.js, but re-written using jQuery
+//
+//////////////////////////////////////////////////////////////////////////
+
+var asciidoc = {
+
+    // toc generator
+    toc: function ($content) {
+	var tocholder = $content.find('#toc');
+
+	if (!tocholder) {
+	    return;
+	}
+
+	tocholder.html('');
+	tocholder.hide();
+
+	var html = "<div id=\"toctitle\"><h2>Contents</h2></div><ul>";
+
+	var n = 0;
+	$content.find("div.sect1").each(function(){
+	    var h = jQuery(this).find("h2").first();
+	    var id = h.attr("id");
+	    if (id != null) {
+		n++;
+		html += "<li class=\"toclevel-1\">" +
+		    "<a href=\"#" + id + "\">" +
+		    "<span class=\"toctext\">" + h.html() +
+		    "</span></a></li>";
+	    }
+	});
+
+	html += "</ul>";
+
+	if (n > 3) {
+	    tocholder.html(html);
+	    tocholder.show();
+	}
+    },
+
+    // footnote generator
+    footnotes: function ($content) {
+	var noteholder = $content.find('#footnotes');
+	if (!noteholder) {
+	    return;
+	}
+
+	noteholder.html('');
+
+	// Rebuild footnote entries.
+	var refs = {};
+	var n = 0;
+	var inner_html = '';
+
+	$content.find("span.footnote").each(function(){
+	    n++;
+	    var span = jQuery(this);
+	    var note = span.attr("data-note");
+	    var id = span.attr("id");
+	    if (!note) {
+		// Use [\s\S] in place of . so multi-line matches work.
+		// Because JavaScript has no s (dotall) regex flag.
+		note = span.html().match(/\s*\[([\s\S]*)]\s*/)[1];
+		span.html("[<a id='_footnoteref_" + n + "' href='#_footnote_" +
+			  n + "' title='View footnote' class='footnote'>" + n +
+			  "</a>]");
+		span.attr("data-note", note);
+	    }
+	    inner_html +=
+            "<div class='footnote' id='_footnote_" + n + "'>" +
+		"<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+		n + "</a>. " + note + "</div>";
+
+	    if (id != null) { refs["#"+id] = n; }
+	});
+
+	if (inner_html) { noteholder.html("<hr>" + inner_html); }
+
+	if (n != 0) {
+	    // process footnoterefs.
+	    $content.find("span.footnoteref").each(function(){
+		var span = jQuery(this);
+		var href = span.find("a").first().attr("href");
+		href = href.match(/#.*/)[0];  // in case it return full URL.
+		n = refs[href];
+		span.html("[<a href='#_footnote_" + n +
+			  "' title='View footnote' class='footnote'>" + n + "</a>]");
+	    });
+	}
+    }
+};
+
+// add init to mediawiki resource loader queue
+(window.RLQ=window.RLQ||[]).push(function(){
+    mw.hook('wikipage.content').add(function($content) {
+	asciidoc.toc($content);
+	asciidoc.footnotes($content);
+    });
+});
+</script>
+<div id="toc" class="toc">
+</div>
+<div id="asciidoccontent">
+<style type="text/css" scoped>
+td.hdlist1 {
+   vertical-align: top;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+</style>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Storage pool type: <tt><span class="monospaced">lvmthin</span></tt></p></div>
+<div class="paragraph">
+<p>LVM normally allocates blocks when you create a volume. LVM thin pools
+instead allocates blocks when they are written. This behaviour is
+called thin-provisioning, because volumes can be much larger than
+physically available space.</p></div>
+<div class="paragraph">
+<p>You can use the normal LVM command line tools to manage and create LVM
+thin pools (see <tt><span class="monospaced">man lvmthin</span></tt> for details). Assuming you already have
+a LVM volume group called <tt><span class="monospaced">pve</span></tt>, the following commands create a new
+LVM thin pool (size 100G) called <tt><span class="monospaced">data</span></tt>:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre><tt>lvcreate -L 100G -n data pve
+lvconvert --type thin-pool pve/data</tt></pre>
+</div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configuration">Configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The LVM thin backend supports the common storage properties <tt><span class="monospaced">content</span></tt>, <tt><span class="monospaced">nodes</span></tt>,
+<tt><span class="monospaced">disable</span></tt>, and the following LVM specific properties:</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<tt><span class="monospaced">vgname</span></tt>
+</dt>
+<dd>
+<p>
+LVM volume group name. This must point to an existing volume group.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">thinpool</span></tt>
+</dt>
+<dd>
+<p>
+The name of the LVM thin pool.
+</p>
+</dd>
+</dl></div>
+<div class="listingblock">
+<div class="title">Configuration Example (<tt><span class="monospaced">/etc/pve/storage.cfg</span></tt>)</div>
+<div class="content monospaced">
+<pre><tt>lvmthin: local-lvm
+        thinpool data
+        vgname pve
+        content rootdir,images</tt></pre>
+</div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_file_naming_conventions">File naming conventions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The backend use basically the same naming conventions as the ZFS pool
+backend.</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>vm-&lt;VMID&gt;-&lt;NAME&gt;      // normal VM images</tt></pre>
+</div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_storage_features">Storage Features</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>LVM thin is a block storage, but fully supports snapshots and clones
+efficiently. New volumes are automatically initialized with zero.</p></div>
+<div class="paragraph">
+<p>It must be mentioned that LVM thin pools cannot be shared across
+multiple nodes, so you can only use them as local storage.</p></div>
+<table class="wikitable tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<caption class="title">Table 1. Storage features for backend <tt><span class="monospaced">lvmthin</span></tt></caption>
+<col style="width:20%;">
+<col style="width:20%;">
+<col style="width:20%;">
+<col style="width:20%;">
+<col style="width:20%;">
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top" >Content types  </th>
+<th class="tableblock halign-left valign-top" >Image formats  </th>
+<th class="tableblock halign-left valign-top" >Shared   </th>
+<th class="tableblock halign-left valign-top" >Snapshots </th>
+<th class="tableblock halign-left valign-top" >Clones</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt>images rootdir</tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt>raw</tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">no</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">yes</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">yes</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_examples">Examples</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>List available LVM thin pools on volume group <tt><span class="monospaced">pve</span></tt>:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt># pvesm lvmthinscan pve</tt></pre>
+</div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_see_also">See Also</h2>
+<div class="sectionbody">
+<div class="ulist"><ul>
+<li>
+<p>
+<a href="/wiki/Storage">Storage</a>
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<!-- FOOTER -->
+</div>
+<div id="footnotes"></div>

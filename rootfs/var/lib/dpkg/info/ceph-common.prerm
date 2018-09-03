@@ -1,0 +1,20 @@
+#!/bin/sh
+set -e
+# Automatically added by dh_installdeb
+dpkg-maintscript-helper rm_conffile /etc/bash_completion.d/rbd 10.2.5-1~ -- "$@"
+# End automatically added section
+# Automatically added by dh_installdeb
+dpkg-maintscript-helper rm_conffile /etc/bash_completion.d/rados 10.2.5-1~ -- "$@"
+# End automatically added section
+
+# Automatically added by dh_python2:
+if which pyclean >/dev/null 2>&1; then
+	pyclean -p ceph-common 
+else
+	dpkg -L ceph-common | grep \.py$ | while read file
+	do
+		rm -f "${file}"[co] >/dev/null
+  	done
+fi
+
+# End automatically added section

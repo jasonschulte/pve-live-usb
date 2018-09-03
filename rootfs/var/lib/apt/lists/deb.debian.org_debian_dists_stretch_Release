@@ -1,0 +1,23 @@
+Architectures: amd64
+Codename: stretch
+Components: main
+Date: Wed, 16 May 2018 08:11:55 +0000
+Label: Proxmox Debian repository
+Origin: Proxmox
+Suite: stable
+MD5Sum:
+ 524a533e61fd94cdb03214bffb6599e2              157 Release
+ 565e0fe4f181e9d4e6739fee494c63b1           581612 main/binary-amd64/Packages
+ e06b4a2e26518be4c86a3d7d2f3bb000           217030 main/binary-amd64/Packages.gz
+SHA1:
+ ac5c00e46ac195a90739463ad416b5737ab7d6ba              157 Release
+ 238354d2b96fdd9f28300bec0f1abff58241fd75           581612 main/binary-amd64/Packages
+ ecb4587d6c7f96fc6a0429c193a65710c40cbfb9           217030 main/binary-amd64/Packages.gz
+SHA256:
+ 6538801ad0d4cb8c486ca0381ac65be4f836cad5a49c508de311079e72e2a293              157 Release
+ 641b04430ec827472b5b451d9f3e1523b7837cf8e1adb97d5117a496c9a6464c           581612 main/binary-amd64/Packages
+ c0db6127c7515be1415a3523f728030180ace514930312656c06232cd08b5c77           217030 main/binary-amd64/Packages.gz
+SHA512:
+ 1f4920280950a6e7f73ad77b9f2c967e1e409574d5599ce352a065031a1115c14b0bf7692cd3d73903df682d0aca519eb65482e1003b0c1f735288defcd5c891              157 Release
+ 4ab6dd501316027fe8811c34e7578d1e15c527c1ff892ce0da9237e39a885cc24590a5c743438733902ec1e121cf11ee6d1e633ec9e01ea6f6b36caee585a1ae           581612 main/binary-amd64/Packages
+ cd4aacf7b874d698aa29dcaf9f53b207ef7f91ad23245b666d80ac041c6660736db0256f1c0bec13f8dd52b4e0bb10dd56a6ae5b5d25348fc3d98fe04d3fb339           217030 main/binary-amd64/Packages.gz

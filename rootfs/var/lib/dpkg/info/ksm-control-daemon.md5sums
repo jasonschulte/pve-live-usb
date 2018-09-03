@@ -1,0 +1,5 @@
+a3aaf598a5a3afac6587fbe83829e9f3  lib/systemd/system/ksmtuned.service
+db8eeac3efd9529c50b39c3c364a07b6  usr/sbin/ksmtuned
+675d05c3ad3dfe458789594d0ced0fca  usr/share/doc/ksm-control-daemon/SOURCE
+905c05fdbd2c2e2bc59b1b744058656f  usr/share/doc/ksm-control-daemon/changelog.Debian.gz
+ef6ee83f93e349c5fb966a0438d77c6f  usr/share/doc/ksm-control-daemon/copyright

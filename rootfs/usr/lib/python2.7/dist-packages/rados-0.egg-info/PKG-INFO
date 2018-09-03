@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: rados
+Version: 0
+Summary: Python libraries for the Ceph librados library
+Home-page: UNKNOWN
+Author: UNKNOWN
+Author-email: UNKNOWN
+License: UNKNOWN
+Description: This package contains Python libraries for interacting with Ceph's rados library.
+Platform: UNKNOWN

@@ -1,0 +1,11 @@
+893e52a55c5bf339aaa2c79da4f40655  usr/lib/x86_64-linux-gnu/perl5/5.24/RRDs.pm
+70e09cf6191003921ccc9dee14a73347  usr/lib/x86_64-linux-gnu/perl5/5.24/auto/RRDs/RRDs.so
+d422b5bea77871caa76bda9b97e9e4f4  usr/share/doc/librrds-perl/CONTRIBUTORS.gz
+4fc67a41ecf30384b3eed47b640e2041  usr/share/doc/librrds-perl/NEWS.Debian.gz
+f45bb49ddad0c577bee5450cc314e7ce  usr/share/doc/librrds-perl/NEWS.gz
+ae00806fb5aa6c6317da2323f16dac92  usr/share/doc/librrds-perl/changelog.Debian.amd64.gz
+9fb919274f163a39fa09736f5487f0cc  usr/share/doc/librrds-perl/changelog.Debian.gz
+bab4d1ff9b75cbeab93fd1b6ebbaa0a6  usr/share/doc/librrds-perl/changelog.gz
+1ec67c0aa5988850e4826535cc9f9718  usr/share/doc/librrds-perl/copyright
+024d027df16096842f45a60bf643dbb1  usr/share/lintian/overrides/librrds-perl
+cbb7d8fca888dbe85abc53c20c40e01b  usr/share/man/man3/RRDs.3pm.gz

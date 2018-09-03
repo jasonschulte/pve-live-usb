@@ -1,0 +1,285 @@
+<!-- asciidoc HEADER -->
+<script type="text/javascript">
+//////////////////////////////////////////////////////////////////////////
+// asciidoc JS helper for Proxmox VE mediawiki pages
+//
+// code based on original asciidoc.js, but re-written using jQuery
+//
+//////////////////////////////////////////////////////////////////////////
+
+var asciidoc = {
+
+    // toc generator
+    toc: function ($content) {
+	var tocholder = $content.find('#toc');
+
+	if (!tocholder) {
+	    return;
+	}
+
+	tocholder.html('');
+	tocholder.hide();
+
+	var html = "<div id=\"toctitle\"><h2>Contents</h2></div><ul>";
+
+	var n = 0;
+	$content.find("div.sect1").each(function(){
+	    var h = jQuery(this).find("h2").first();
+	    var id = h.attr("id");
+	    if (id != null) {
+		n++;
+		html += "<li class=\"toclevel-1\">" +
+		    "<a href=\"#" + id + "\">" +
+		    "<span class=\"toctext\">" + h.html() +
+		    "</span></a></li>";
+	    }
+	});
+
+	html += "</ul>";
+
+	if (n > 3) {
+	    tocholder.html(html);
+	    tocholder.show();
+	}
+    },
+
+    // footnote generator
+    footnotes: function ($content) {
+	var noteholder = $content.find('#footnotes');
+	if (!noteholder) {
+	    return;
+	}
+
+	noteholder.html('');
+
+	// Rebuild footnote entries.
+	var refs = {};
+	var n = 0;
+	var inner_html = '';
+
+	$content.find("span.footnote").each(function(){
+	    n++;
+	    var span = jQuery(this);
+	    var note = span.attr("data-note");
+	    var id = span.attr("id");
+	    if (!note) {
+		// Use [\s\S] in place of . so multi-line matches work.
+		// Because JavaScript has no s (dotall) regex flag.
+		note = span.html().match(/\s*\[([\s\S]*)]\s*/)[1];
+		span.html("[<a id='_footnoteref_" + n + "' href='#_footnote_" +
+			  n + "' title='View footnote' class='footnote'>" + n +
+			  "</a>]");
+		span.attr("data-note", note);
+	    }
+	    inner_html +=
+            "<div class='footnote' id='_footnote_" + n + "'>" +
+		"<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+		n + "</a>. " + note + "</div>";
+
+	    if (id != null) { refs["#"+id] = n; }
+	});
+
+	if (inner_html) { noteholder.html("<hr>" + inner_html); }
+
+	if (n != 0) {
+	    // process footnoterefs.
+	    $content.find("span.footnoteref").each(function(){
+		var span = jQuery(this);
+		var href = span.find("a").first().attr("href");
+		href = href.match(/#.*/)[0];  // in case it return full URL.
+		n = refs[href];
+		span.html("[<a href='#_footnote_" + n +
+			  "' title='View footnote' class='footnote'>" + n + "</a>]");
+	    });
+	}
+    }
+};
+
+// add init to mediawiki resource loader queue
+(window.RLQ=window.RLQ||[]).push(function(){
+    mw.hook('wikipage.content').add(function($content) {
+	asciidoc.toc($content);
+	asciidoc.footnotes($content);
+    });
+});
+</script>
+<div id="toc" class="toc">
+</div>
+<div id="asciidoccontent">
+<style type="text/css" scoped>
+td.hdlist1 {
+   vertical-align: top;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+</style>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Storage pool type: <tt><span class="monospaced">zfspool</span></tt></p></div>
+<div class="paragraph">
+<p>This backend allows you to access local ZFS pools (or ZFS file systems
+inside such pools).</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configuration">Configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The backend supports the common storage properties <tt><span class="monospaced">content</span></tt>, <tt><span class="monospaced">nodes</span></tt>,
+<tt><span class="monospaced">disable</span></tt>, and the following ZFS specific properties:</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+pool
+</dt>
+<dd>
+<p>
+Select the ZFS pool/filesystem. All allocations are done within that
+pool.
+</p>
+</dd>
+<dt class="hdlist1">
+blocksize
+</dt>
+<dd>
+<p>
+Set ZFS blocksize parameter.
+</p>
+</dd>
+<dt class="hdlist1">
+sparse
+</dt>
+<dd>
+<p>
+Use ZFS thin-provisioning. A sparse volume is a volume whose
+reservation is not equal to the volume size.
+</p>
+</dd>
+</dl></div>
+<div class="listingblock">
+<div class="title">Configuration Example (<tt><span class="monospaced">/etc/pve/storage.cfg</span></tt>)</div>
+<div class="content monospaced">
+<pre><tt>zfspool: vmdata
+        pool tank/vmdata
+        content rootdir,images
+        sparse</tt></pre>
+</div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_file_naming_conventions">File naming conventions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The backend uses the following naming scheme for VM images:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>vm-&lt;VMID&gt;-&lt;NAME&gt;      // normal VM images
+base-&lt;VMID&gt;-&lt;NAME&gt;    // template VM image (read-only)
+subvol-&lt;VMID&gt;-&lt;NAME&gt;  // subvolumes (ZFS filesystem for containers)</tt></pre>
+</div></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<tt><span class="monospaced">&lt;VMID&gt;</span></tt>
+</dt>
+<dd>
+<p>
+This specifies the owner VM.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">&lt;NAME&gt;</span></tt>
+</dt>
+<dd>
+<p>
+This can be an arbitrary name (<tt><span class="monospaced">ascii</span></tt>) without white space. The
+backend uses <tt><span class="monospaced">disk[N]</span></tt> as default, where <tt><span class="monospaced">[N]</span></tt> is replaced by an
+integer to make the name unique.
+</p>
+</dd>
+</dl></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_storage_features">Storage Features</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>ZFS is probably the most advanced storage type regarding snapshot and
+cloning. The backend uses ZFS datasets for both VM images (format
+<tt><span class="monospaced">raw</span></tt>) and container data (format <tt><span class="monospaced">subvol</span></tt>). ZFS properties are
+inherited from the parent dataset, so you can simply set defaults
+on the parent dataset.</p></div>
+<table class="wikitable tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<caption class="title">Table 1. Storage features for backend <tt><span class="monospaced">zfs</span></tt></caption>
+<col style="width:20%;">
+<col style="width:20%;">
+<col style="width:20%;">
+<col style="width:20%;">
+<col style="width:20%;">
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top" >Content types  </th>
+<th class="tableblock halign-left valign-top" >Image formats  </th>
+<th class="tableblock halign-left valign-top" >Shared </th>
+<th class="tableblock halign-left valign-top" >Snapshots </th>
+<th class="tableblock halign-left valign-top" >Clones</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt>images rootdir</tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt>raw subvol</tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">no</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">yes</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">yes</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_examples">Examples</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>It is recommended to create an extra ZFS file system to store your VM images:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt># zfs create tank/vmdata</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>To enable compression on that newly allocated file system:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt># zfs set compression=on tank/vmdata</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>You can get a list of available ZFS filesystems with:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt># pvesm zfsscan</tt></pre>
+</div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_see_also">See Also</h2>
+<div class="sectionbody">
+<div class="ulist"><ul>
+<li>
+<p>
+<a href="/wiki/Storage">Storage</a>
+</p>
+</li>
+<li>
+<p>
+<a href="/wiki/ZFS_on_Linux">ZFS on Linux</a>
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<!-- FOOTER -->
+</div>
+<div id="footnotes"></div>

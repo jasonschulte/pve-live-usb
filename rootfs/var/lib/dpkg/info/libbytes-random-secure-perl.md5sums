@@ -1,0 +1,8 @@
+859e096567564102ba05f8c636c47f70  usr/share/doc/libbytes-random-secure-perl/changelog.Debian.gz
+a375a71fada4224213d17f42f1fd6cb9  usr/share/doc/libbytes-random-secure-perl/changelog.gz
+892020f8e470e66eff2701f34e49ea4f  usr/share/doc/libbytes-random-secure-perl/copyright
+9de02e16ea640cdf6a74d456d2c6a10b  usr/share/doc/libbytes-random-secure-perl/examples/random-from.pl
+ea2fccc8b37ebf9e2bcc59e2467c54af  usr/share/doc/libbytes-random-secure-perl/examples/random-sha512-oo.pl
+11e53592a6df1d4e47f62f7f371bcf5e  usr/share/doc/libbytes-random-secure-perl/examples/random-sha512.pl
+d774d7b2fa98aaebc4ee33fe898d6ecf  usr/share/man/man3/Bytes::Random::Secure.3pm.gz
+5712aa4269e7c53b218cfcf570a6cadf  usr/share/perl5/Bytes/Random/Secure.pm

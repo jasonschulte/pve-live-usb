@@ -1,0 +1,892 @@
+<!-- asciidoc HEADER -->
+<script type="text/javascript">
+//////////////////////////////////////////////////////////////////////////
+// asciidoc JS helper for Proxmox VE mediawiki pages
+//
+// code based on original asciidoc.js, but re-written using jQuery
+//
+//////////////////////////////////////////////////////////////////////////
+
+var asciidoc = {
+
+    // toc generator
+    toc: function ($content) {
+	var tocholder = $content.find('#toc');
+
+	if (!tocholder) {
+	    return;
+	}
+
+	tocholder.html('');
+	tocholder.hide();
+
+	var html = "<div id=\"toctitle\"><h2>Contents</h2></div><ul>";
+
+	var n = 0;
+	$content.find("div.sect1").each(function(){
+	    var h = jQuery(this).find("h2").first();
+	    var id = h.attr("id");
+	    if (id != null) {
+		n++;
+		html += "<li class=\"toclevel-1\">" +
+		    "<a href=\"#" + id + "\">" +
+		    "<span class=\"toctext\">" + h.html() +
+		    "</span></a></li>";
+	    }
+	});
+
+	html += "</ul>";
+
+	if (n > 3) {
+	    tocholder.html(html);
+	    tocholder.show();
+	}
+    },
+
+    // footnote generator
+    footnotes: function ($content) {
+	var noteholder = $content.find('#footnotes');
+	if (!noteholder) {
+	    return;
+	}
+
+	noteholder.html('');
+
+	// Rebuild footnote entries.
+	var refs = {};
+	var n = 0;
+	var inner_html = '';
+
+	$content.find("span.footnote").each(function(){
+	    n++;
+	    var span = jQuery(this);
+	    var note = span.attr("data-note");
+	    var id = span.attr("id");
+	    if (!note) {
+		// Use [\s\S] in place of . so multi-line matches work.
+		// Because JavaScript has no s (dotall) regex flag.
+		note = span.html().match(/\s*\[([\s\S]*)]\s*/)[1];
+		span.html("[<a id='_footnoteref_" + n + "' href='#_footnote_" +
+			  n + "' title='View footnote' class='footnote'>" + n +
+			  "</a>]");
+		span.attr("data-note", note);
+	    }
+	    inner_html +=
+            "<div class='footnote' id='_footnote_" + n + "'>" +
+		"<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+		n + "</a>. " + note + "</div>";
+
+	    if (id != null) { refs["#"+id] = n; }
+	});
+
+	if (inner_html) { noteholder.html("<hr>" + inner_html); }
+
+	if (n != 0) {
+	    // process footnoterefs.
+	    $content.find("span.footnoteref").each(function(){
+		var span = jQuery(this);
+		var href = span.find("a").first().attr("href");
+		href = href.match(/#.*/)[0];  // in case it return full URL.
+		n = refs[href];
+		span.html("[<a href='#_footnote_" + n +
+			  "' title='View footnote' class='footnote'>" + n + "</a>]");
+	    });
+	}
+    }
+};
+
+// add init to mediawiki resource loader queue
+(window.RLQ=window.RLQ||[]).push(function(){
+    mw.hook('wikipage.content').add(function($content) {
+	asciidoc.toc($content);
+	asciidoc.footnotes($content);
+    });
+});
+</script>
+<div id="toc" class="toc">
+</div>
+<div id="asciidoccontent">
+<style type="text/css" scoped>
+td.hdlist1 {
+   vertical-align: top;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+</style>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>ZFS is a combined file system and logical volume manager designed by
+Sun Microsystems. Starting with Proxmox VE 3.4, the native Linux
+kernel port of the ZFS file system is introduced as optional
+file system and also as an additional selection for the root
+file system. There is no need for manually compile ZFS modules - all
+packages are included.</p></div>
+<div class="paragraph">
+<p>By using ZFS, its possible to achieve maximum enterprise features with
+low budget hardware, but also high performance systems by leveraging
+SSD caching or even SSD only setups. ZFS can replace cost intense
+hardware raid cards by moderate CPU and memory load combined with easy
+management.</p></div>
+<div class="ulist"><div class="title">General ZFS advantages</div><ul>
+<li>
+<p>
+Easy configuration and management with Proxmox VE GUI and CLI.
+</p>
+</li>
+<li>
+<p>
+Reliable
+</p>
+</li>
+<li>
+<p>
+Protection against data corruption
+</p>
+</li>
+<li>
+<p>
+Data compression on file system level
+</p>
+</li>
+<li>
+<p>
+Snapshots
+</p>
+</li>
+<li>
+<p>
+Copy-on-write clone
+</p>
+</li>
+<li>
+<p>
+Various raid levels: RAID0, RAID1, RAID10, RAIDZ-1, RAIDZ-2 and RAIDZ-3
+</p>
+</li>
+<li>
+<p>
+Can use SSD for cache
+</p>
+</li>
+<li>
+<p>
+Self healing
+</p>
+</li>
+<li>
+<p>
+Continuous integrity checking
+</p>
+</li>
+<li>
+<p>
+Designed for high storage capacities
+</p>
+</li>
+<li>
+<p>
+Protection against data corruption
+</p>
+</li>
+<li>
+<p>
+Asynchronous replication over network
+</p>
+</li>
+<li>
+<p>
+Open Source
+</p>
+</li>
+<li>
+<p>
+Encryption
+</p>
+</li>
+<li>
+<p>
+&#8230;
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_hardware">Hardware</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>ZFS depends heavily on memory, so you need at least 8GB to start. In
+practice, use as much you can get for your hardware/budget. To prevent
+data corruption, we recommend the use of high quality ECC RAM.</p></div>
+<div class="paragraph">
+<p>If you use a dedicated cache and/or log disk, you should use an
+enterprise class SSD (e.g. Intel SSD DC S3700 Series). This can
+increase the overall performance significantly.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Important" src="data:image/png;base64,
+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
+EQn3XQAAAABJRU5ErkJggg==">
+</td>
+<td class="content">Do not use ZFS on top of hardware controller which has its
+own cache management. ZFS needs to directly communicate with disks. An
+HBA adapter is the way to go, or something like LSI controller flashed
+in &#8220;IT&#8221; mode.</td>
+</tr></table>
+</div>
+<div class="paragraph">
+<p>If you are experimenting with an installation of Proxmox VE inside a VM
+(Nested Virtualization), don&#8217;t use <tt><span class="monospaced">virtio</span></tt> for disks of that VM,
+since they are not supported by ZFS. Use IDE or SCSI instead (works
+also with <tt><span class="monospaced">virtio</span></tt> SCSI controller type).</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_installation_as_root_file_system">Installation as Root File System</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When you install using the Proxmox VE installer, you can choose ZFS for the
+root file system. You need to select the RAID type at installation
+time:</p></div>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+RAID0
+<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Also called &#8220;striping&#8221;. The capacity of such volume is the sum
+of the capacities of all disks. But RAID0 does not add any redundancy,
+so the failure of a single drive makes the volume unusable.
+</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+RAID1
+<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Also called &#8220;mirroring&#8221;. Data is written identically to all
+disks. This mode requires at least 2 disks with the same size. The
+resulting capacity is that of a single disk.
+</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+RAID10
+<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+A combination of RAID0 and RAID1. Requires at least 4 disks.
+</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+RAIDZ-1
+<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+A variation on RAID-5, single parity. Requires at least 3 disks.
+</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+RAIDZ-2
+<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+A variation on RAID-5, double parity. Requires at least 4 disks.
+</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+RAIDZ-3
+<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+A variation on RAID-5, triple parity. Requires at least 5 disks.
+</p>
+</td>
+</tr>
+</table></div>
+<div class="paragraph">
+<p>The installer automatically partitions the disks, creates a ZFS pool
+called <tt><span class="monospaced">rpool</span></tt>, and installs the root file system on the ZFS subvolume
+<tt><span class="monospaced">rpool/ROOT/pve-1</span></tt>.</p></div>
+<div class="paragraph">
+<p>Another subvolume called <tt><span class="monospaced">rpool/data</span></tt> is created to store VM
+images. In order to use that with the Proxmox VE tools, the installer
+creates the following configuration entry in <tt><span class="monospaced">/etc/pve/storage.cfg</span></tt>:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre><tt>zfspool: local-zfs
+        pool rpool/data
+        sparse
+        content images,rootdir</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>After installation, you can view your ZFS pool status using the
+<tt><span class="monospaced">zpool</span></tt> command:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre><tt># zpool status
+  pool: rpool
+ state: ONLINE
+  scan: none requested
+config:
+
+        NAME        STATE     READ WRITE CKSUM
+        rpool       ONLINE       0     0     0
+          mirror-0  ONLINE       0     0     0
+            sda2    ONLINE       0     0     0
+            sdb2    ONLINE       0     0     0
+          mirror-1  ONLINE       0     0     0
+            sdc     ONLINE       0     0     0
+            sdd     ONLINE       0     0     0
+
+errors: No known data errors</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>The <tt><span class="monospaced">zfs</span></tt> command is used configure and manage your ZFS file
+systems. The following command lists all file systems after
+installation:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre><tt># zfs list
+NAME               USED  AVAIL  REFER  MOUNTPOINT
+rpool             4.94G  7.68T    96K  /rpool
+rpool/ROOT         702M  7.68T    96K  /rpool/ROOT
+rpool/ROOT/pve-1   702M  7.68T   702M  /
+rpool/data          96K  7.68T    96K  /rpool/data
+rpool/swap        4.25G  7.69T    64K  -</tt></pre>
+</div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_bootloader">Bootloader</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The default ZFS disk partitioning scheme does not use the first 2048
+sectors. This gives enough room to install a GRUB boot partition. The
+Proxmox VE installer automatically allocates that space, and installs the
+GRUB boot loader there. If you use a redundant RAID setup, it installs
+the boot loader on all disk required for booting. So you can boot
+even if some disks fail.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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">
+</td>
+<td class="content">It is not possible to use ZFS as root file system with UEFI
+boot.</td>
+</tr></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_zfs_administration">ZFS Administration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section gives you some usage examples for common tasks. ZFS
+itself is really powerful and provides many options. The main commands
+to manage ZFS are <tt><span class="monospaced">zfs</span></tt> and <tt><span class="monospaced">zpool</span></tt>. Both commands come with great
+manual pages, which can be read with:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre><tt># man zpool
+# man zfs</tt></pre>
+</div></div>
+<div class="paragraph">
+<div class="title"><h5>Create a new zpool</h5></div>
+<p>To create a new pool, at least one disk is needed. The <tt><span class="monospaced">ashift</span></tt> should
+have the same sector-size (2 power of <tt><span class="monospaced">ashift</span></tt>) or larger as the
+underlying disk.</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>zpool create -f -o ashift=12 &lt;pool&gt; &lt;device&gt;</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>To activate compression</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>zfs set compression=lz4 &lt;pool&gt;</tt></pre>
+</div></div>
+<div class="paragraph">
+<div class="title"><h5>Create a new pool with RAID-0</h5></div>
+<p>Minimum 1 Disk</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>zpool create -f -o ashift=12 &lt;pool&gt; &lt;device1&gt; &lt;device2&gt;</tt></pre>
+</div></div>
+<div class="paragraph">
+<div class="title"><h5>Create a new pool with RAID-1</h5></div>
+<p>Minimum 2 Disks</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>zpool create -f -o ashift=12 &lt;pool&gt; mirror &lt;device1&gt; &lt;device2&gt;</tt></pre>
+</div></div>
+<div class="paragraph">
+<div class="title"><h5>Create a new pool with RAID-10</h5></div>
+<p>Minimum 4 Disks</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>zpool create -f -o ashift=12 &lt;pool&gt; mirror &lt;device1&gt; &lt;device2&gt; mirror &lt;device3&gt; &lt;device4&gt;</tt></pre>
+</div></div>
+<div class="paragraph">
+<div class="title"><h5>Create a new pool with RAIDZ-1</h5></div>
+<p>Minimum 3 Disks</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>zpool create -f -o ashift=12 &lt;pool&gt; raidz1 &lt;device1&gt; &lt;device2&gt; &lt;device3&gt;</tt></pre>
+</div></div>
+<div class="paragraph">
+<div class="title"><h5>Create a new pool with RAIDZ-2</h5></div>
+<p>Minimum 4 Disks</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>zpool create -f -o ashift=12 &lt;pool&gt; raidz2 &lt;device1&gt; &lt;device2&gt; &lt;device3&gt; &lt;device4&gt;</tt></pre>
+</div></div>
+<div class="paragraph">
+<div class="title"><h5>Create a new pool with cache (L2ARC)</h5></div>
+<p>It is possible to use a dedicated cache drive partition to increase
+the performance (use SSD).</p></div>
+<div class="paragraph">
+<p>As <tt><span class="monospaced">&lt;device&gt;</span></tt> it is possible to use more devices, like it&#8217;s shown in
+"Create a new pool with RAID*".</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>zpool create -f -o ashift=12 &lt;pool&gt; &lt;device&gt; cache &lt;cache_device&gt;</tt></pre>
+</div></div>
+<div class="paragraph">
+<div class="title"><h5>Create a new pool with log (ZIL)</h5></div>
+<p>It is possible to use a dedicated cache drive partition to increase
+the performance(SSD).</p></div>
+<div class="paragraph">
+<p>As <tt><span class="monospaced">&lt;device&gt;</span></tt> it is possible to use more devices, like it&#8217;s shown in
+"Create a new pool with RAID*".</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>zpool create -f -o ashift=12 &lt;pool&gt; &lt;device&gt; log &lt;log_device&gt;</tt></pre>
+</div></div>
+<div class="paragraph">
+<div class="title"><h5>Add cache and log to an existing pool</h5></div>
+<p>If you have an pool without cache and log. First partition the SSD in
+2 partition with <tt><span class="monospaced">parted</span></tt> or <tt><span class="monospaced">gdisk</span></tt></p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Important" src="data:image/png;base64,
+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
+EQn3XQAAAABJRU5ErkJggg==">
+</td>
+<td class="content">Always use GPT partition tables.</td>
+</tr></table>
+</div>
+<div class="paragraph">
+<p>The maximum size of a log device should be about half the size of
+physical memory, so this is usually quite small. The rest of the SSD
+can be used as cache.</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>zpool add -f &lt;pool&gt; log &lt;device-part1&gt; cache &lt;device-part2&gt;</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="title">Changing a failed device</div>
+<div class="content monospaced">
+<pre><tt>zpool replace -f &lt;pool&gt; &lt;old device&gt; &lt;new-device&gt;</tt></pre>
+</div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_activate_e_mail_notification">Activate E-Mail Notification</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>ZFS comes with an event daemon, which monitors events generated by the
+ZFS kernel module. The daemon can also send emails on ZFS events like
+pool errors. Newer ZFS packages ships the daemon in a separate package,
+and you can install it using <tt><span class="monospaced">apt-get</span></tt>:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre><tt># apt-get install zfs-zed</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>To activate the daemon it is necessary to edit <tt><span class="monospaced">/etc/zfs/zed.d/zed.rc</span></tt> with your
+favourite editor, and uncomment the <tt><span class="monospaced">ZED_EMAIL_ADDR</span></tt> setting:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre><tt>ZED_EMAIL_ADDR="root"</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>Please note Proxmox VE forwards mails to <tt><span class="monospaced">root</span></tt> to the email address
+configured for the root user.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Important" src="data:image/png;base64,
+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
+EQn3XQAAAABJRU5ErkJggg==">
+</td>
+<td class="content">The only setting that is required is <tt><span class="monospaced">ZED_EMAIL_ADDR</span></tt>. All
+other settings are optional.</td>
+</tr></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_limit_zfs_memory_usage">Limit ZFS Memory Usage</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>It is good to use at most 50 percent (which is the default) of the
+system memory for ZFS ARC to prevent performance shortage of the
+host. Use your preferred editor to change the configuration in
+<tt><span class="monospaced">/etc/modprobe.d/zfs.conf</span></tt> and insert:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre><tt>options zfs zfs_arc_max=8589934592</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>This example setting limits the usage to 8GB.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Important" src="data:image/png;base64,
+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
+EQn3XQAAAABJRU5ErkJggg==">
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If your root file system is ZFS you must update your initramfs every
+time this value changes:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>update-initramfs -u</tt></pre>
+</div></div>
+</td>
+</tr></table>
+</div>
+<div class="paragraph">
+<div class="title"><h5>SWAP on ZFS</h5></div>
+<p>SWAP on ZFS on Linux may generate some troubles, like blocking the
+server or generating a high IO load, often seen when starting a Backup
+to an external Storage.</p></div>
+<div class="paragraph">
+<p>We strongly recommend to use enough memory, so that you normally do not
+run into low memory situations. Additionally, you can lower the
+&#8220;swappiness&#8221; value. A good value for servers is 10:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>sysctl -w vm.swappiness=10</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>To make the swappiness persistent, open <tt><span class="monospaced">/etc/sysctl.conf</span></tt> with
+an editor of your choice and add the following line:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre><tt>vm.swappiness = 10</tt></pre>
+</div></div>
+<table class="wikitable tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<caption class="title">Table 1. Linux kernel <tt><span class="monospaced">swappiness</span></tt> parameter values</caption>
+<col style="width:33%;">
+<col style="width:66%;">
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top" > Value               </th>
+<th class="tableblock halign-left valign-top" > Strategy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt>vm.swappiness = 0</tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">The kernel will swap only to avoid
+an <em>out of memory</em> condition</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt>vm.swappiness = 1</tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Minimum amount of swapping without
+disabling it entirely.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt>vm.swappiness = 10</tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">This value is sometimes recommended to
+improve performance when sufficient memory exists in a system.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt>vm.swappiness = 60</tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">The default value.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt>vm.swappiness = 100</tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">The kernel will swap aggressively.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- FOOTER -->
+</div>
+<div id="footnotes"></div>

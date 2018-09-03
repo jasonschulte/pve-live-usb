@@ -1,0 +1,41 @@
+#! /bin/sh
+
+# Abort if any command returns an error value
+set -e
+
+case "$1" in
+    purge)
+	rm -rf /var/log/pveproxy
+	rm -rf /var/lib/pve-manager
+    ;;
+
+    remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
+	rm -f /etc/cron.d/pveupdate
+    ;;
+
+    *)
+        echo "postrm called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+# Automatically added by dh_systemd_start
+if [ -d /run/systemd/system ]; then
+	systemctl --system daemon-reload >/dev/null || true
+fi
+# End automatically added section
+# Automatically added by dh_systemd_enable
+if [ "$1" = "remove" ]; then
+	if [ -x "/usr/bin/deb-systemd-helper" ]; then
+		deb-systemd-helper mask pve-daily-update.timer pve-guests.service pvebanner.service pvedaemon.service pvenetcommit.service pveproxy.service pvesr.timer pvestatd.service spiceproxy.service >/dev/null
+	fi
+fi
+
+if [ "$1" = "purge" ]; then
+	if [ -x "/usr/bin/deb-systemd-helper" ]; then
+		deb-systemd-helper purge pve-daily-update.timer pve-guests.service pvebanner.service pvedaemon.service pvenetcommit.service pveproxy.service pvesr.timer pvestatd.service spiceproxy.service >/dev/null
+		deb-systemd-helper unmask pve-daily-update.timer pve-guests.service pvebanner.service pvedaemon.service pvenetcommit.service pveproxy.service pvesr.timer pvestatd.service spiceproxy.service >/dev/null
+	fi
+fi
+# End automatically added section
+

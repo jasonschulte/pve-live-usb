@@ -1,0 +1,12 @@
+#!/bin/sh
+set -e
+# Automatically added by dh_systemd_start
+if [ -d /run/systemd/system ] && [ "$1" = remove ]; then
+	deb-systemd-invoke stop pve-ha-crm.service >/dev/null
+fi
+# End automatically added section
+# Automatically added by dh_systemd_start
+if [ -d /run/systemd/system ] && [ "$1" = remove ]; then
+	deb-systemd-invoke stop pve-ha-lrm.service >/dev/null
+fi
+# End automatically added section

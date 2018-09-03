@@ -1,0 +1,6 @@
+6eaa4f688c640f377c3a77fe141b9388  usr/lib/x86_64-linux-gnu/libsmbclient.so.0.2.3
+8ab5ceb5d57b2a8e6db80d56b6d96dea  usr/share/doc/libsmbclient/NEWS.Debian.gz
+8b3a39722890ae0e5499e0cfd95365c5  usr/share/doc/libsmbclient/changelog.Debian.gz
+bedf99aa0e71d2c782cac8958701a721  usr/share/doc/libsmbclient/copyright
+510a957f89de3717f2ca9f217c2f6702  usr/share/lintian/overrides/libsmbclient
+b61695ecdd4e3e8026c6906dc086d012  usr/share/man/man7/libsmbclient.7.gz

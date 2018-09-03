@@ -1,0 +1,2 @@
+git clone git://git.proxmox.com/git/pve-qemu.git
+git checkout 053dd5777ed0167c1b06b9f152dfe2d415561fe1

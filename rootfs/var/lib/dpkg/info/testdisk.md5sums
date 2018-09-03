@@ -1,0 +1,11 @@
+69b8b93ba52ffc8eea015c3bd4f178ae  usr/bin/fidentify
+f68bea15c598b8c42fbe71c34c68fe9a  usr/bin/photorec
+654f9e4b9b59f2bc4fc7b820cc576454  usr/bin/testdisk
+b91d24a866988af77dd92a495f3af02f  usr/share/doc/testdisk/NEWS.gz
+d2a9c1aadb8dddc6b1c33ccfff1fdadf  usr/share/doc/testdisk/README
+4bd23423789d200b60f17d6615481f19  usr/share/doc/testdisk/changelog.Debian.gz
+d2ea978f0a970679c3141029566f757d  usr/share/doc/testdisk/changelog.gz
+a5b0553fa5e648831428f7d6c299efd3  usr/share/doc/testdisk/copyright
+db283217cd81f4df50e58e8c514bdd9b  usr/share/man/man8/fidentify.8.gz
+da3523edb744d2ca209e076abe930cb5  usr/share/man/man8/photorec.8.gz
+fa416f2138669ca8d689509e3bbcc97f  usr/share/man/man8/testdisk.8.gz

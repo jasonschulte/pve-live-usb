@@ -1,0 +1,17 @@
+/.
+/usr
+/usr/sbin
+/usr/sbin/splat
+/usr/share
+/usr/share/doc
+/usr/share/doc/spl
+/usr/share/doc/spl/changelog.Debian.gz
+/usr/share/doc/spl/copyright
+/usr/share/lintian
+/usr/share/lintian/overrides
+/usr/share/lintian/overrides/spl
+/usr/share/man
+/usr/share/man/man1
+/usr/share/man/man1/splat.1.gz
+/usr/share/man/man5
+/usr/share/man/man5/spl-module-parameters.5.gz

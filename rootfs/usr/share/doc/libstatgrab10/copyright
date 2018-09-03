@@ -1,0 +1,34 @@
+This package was originaly debianized by Tim Bishop <tim@bishnet.net> 
+on Wed, 22 Oct 2003 19:16:49 +0100.
+
+Lot of things were rewritten and updated by Bartosz Fenski <fenio@debian.org>, 
+which is now official maintainer.
+
+It was downloaded from http://www.i-scream.org/libstatgrab/
+
+Upstream Author: dev@i-scream.org
+
+Copyright: (c) 2004 i-scream
+ See also /usr/share/doc/AUTHORS file.
+
+License:                                                                        
+( beware that the following doesn't apply to library                            
+  which license is mentioned at the end of this file )                          
+                                                                                
+This program is free software; you can redistribute it and/or modify it         
+under the terms of the GNU General Public License as published by the           
+Free Software Foundation; either version 2, or (at your option) any             
+later version.                                                                  
+                                                                                
+On Debian systems, the complete text of the GNU General Public License          
+can be found in the file `/usr/share/common-licenses/GPL'.                      
+                                                                                
+License of library:                                                             
+                                                                                
+This program is free software; you can redistribute it and/or modify            
+it under the terms of the GNU Library General Public License as published       
+by the Free Software Foundation; either version 2 of the License, or            
+(at your option) any later version.                                             
+                                                                                
+On Debian systems, the complete text of the GNU Library (now Lesser) public     
+license can be found in the file /usr/share/common-licenses/LGPL               

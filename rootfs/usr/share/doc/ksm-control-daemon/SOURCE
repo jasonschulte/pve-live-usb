@@ -1,0 +1,2 @@
+git clone git://git.proxmox.com/git/ksm-control-daemon.git
+git checkout f8f4727b7deb4ece7a4d4d8b564e87900a7361ea

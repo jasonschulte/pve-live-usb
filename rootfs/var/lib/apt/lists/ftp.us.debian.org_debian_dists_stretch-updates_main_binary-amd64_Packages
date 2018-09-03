@@ -1,0 +1,468 @@
+Package: clamav
+Version: 0.100.1+dfsg-0+deb9u1
+Installed-Size: 706
+Maintainer: ClamAV Team <pkg-clamav-devel@lists.alioth.debian.org>
+Architecture: amd64
+Depends: clamav-freshclam (>= 0.100.1+dfsg) | clamav-data, libc6 (>= 2.15), libclamav7 (>= 0.100.1), libcurl3 (>= 7.16.2), libjson-c3 (>= 0.10), libssl1.1 (>= 1.1.0), zlib1g (>= 1:1.2.3.3)
+Recommends: clamav-base
+Suggests: clamav-docs
+Description: anti-virus utility for Unix - command-line interface
+Multi-Arch: foreign
+Homepage: https://www.clamav.net/
+Description-md5: fb7be82d5591a0f3facf827f0a60c5d6
+Tag: implemented-in::c, interface::commandline, role::program,
+ scope::utility, security::antivirus, use::scanning, works-with::file,
+ works-with::mail
+Section: utils
+Priority: optional
+Filename: pool/main/c/clamav/clamav_0.100.1+dfsg-0+deb9u1_amd64.deb
+Size: 164420
+MD5sum: f4ce87a269db72ce7675f761e7259cbb
+SHA256: 2bc5412a5ccbf6d401e06a28653728fb81484fe6cdd81e7199c25d4aca51b347
+
+Package: clamav-base
+Source: clamav
+Version: 0.100.1+dfsg-0+deb9u1
+Installed-Size: 114
+Maintainer: ClamAV Team <pkg-clamav-devel@lists.alioth.debian.org>
+Architecture: all
+Depends: adduser, logrotate, ucf, debconf (>= 0.5) | debconf-2.0
+Recommends: clamav
+Description: anti-virus utility for Unix - base package
+Homepage: https://www.clamav.net/
+Description-md5: 701912f0a2cc626b57570094858a5b1d
+Tag: interface::commandline, role::app-data, security::antivirus,
+ use::scanning, works-with::file, works-with::mail
+Section: utils
+Priority: optional
+Filename: pool/main/c/clamav/clamav-base_0.100.1+dfsg-0+deb9u1_all.deb
+Size: 66914
+MD5sum: 80eff1bddc05b613e0946f805fb11535
+SHA256: 025f20367e2b27b3683a45bac82cfc3dc005e3dcd589486c1b417d2e8a491e7c
+
+Package: clamav-daemon
+Source: clamav
+Version: 0.100.1+dfsg-0+deb9u1
+Installed-Size: 876
+Maintainer: ClamAV Team <pkg-clamav-devel@lists.alioth.debian.org>
+Architecture: amd64
+Replaces: clamav-base (<< 0.98.1+dfsg-6)
+Depends: adduser, clamav-base (= 0.100.1+dfsg-0+deb9u1), clamav-freshclam (>= 0.100.1+dfsg) | clamav-data, dpkg (>= 1.16.1), lsb-base (>= 3.2-13), procps (>= 1:3.3.2), ucf, debconf (>= 0.5) | debconf-2.0, init-system-helpers (>= 1.18~), libc6 (>= 2.23), libclamav7 (>= 0.100.1), libncurses5 (>= 6), libssl1.1 (>= 1.1.0), libsystemd0, libtinfo5 (>= 6), zlib1g (>= 1:1.2.0.2)
+Recommends: clamdscan
+Suggests: apparmor, clamav-docs, daemon
+Breaks: clamav-base (<< 0.98.1+dfsg-6)
+Description: anti-virus utility for Unix - scanner daemon
+Homepage: https://www.clamav.net/
+Description-md5: dc258511e9e1f62ef33172c190a0fad6
+Tag: implemented-in::c, interface::commandline, interface::daemon,
+ mail::filters, network::server, role::program, security::antivirus,
+ use::scanning, works-with::file, works-with::mail
+Section: utils
+Priority: optional
+Filename: pool/main/c/clamav/clamav-daemon_0.100.1+dfsg-0+deb9u1_amd64.deb
+Size: 252650
+MD5sum: d9229f4c42ca1f0fa14615e248aeab54
+SHA256: 46eeb6f8b87f4c2fe5c230d510bc5e6b4ac6b18adf57e3bf4e08c2dbcb695fcc
+
+Package: clamav-docs
+Source: clamav
+Version: 0.100.1+dfsg-0+deb9u1
+Installed-Size: 949
+Maintainer: ClamAV Team <pkg-clamav-devel@lists.alioth.debian.org>
+Architecture: all
+Description: anti-virus utility for Unix - documentation
+Multi-Arch: foreign
+Homepage: https://www.clamav.net/
+Description-md5: af78818bbdf8851b6358c15693a31419
+Tag: made-of::html, made-of::pdf, mail::filters, role::documentation,
+ security::antivirus, works-with::file, works-with::mail
+Section: doc
+Priority: optional
+Filename: pool/main/c/clamav/clamav-docs_0.100.1+dfsg-0+deb9u1_all.deb
+Size: 704716
+MD5sum: 155ed7b28dd1f519ec3bf9787f3307ff
+SHA256: 7224642256141bffcea9a4b512aaf514ce89ee4e3f7a93bf1972d27d4be5cb05
+
+Package: clamav-freshclam
+Source: clamav
+Version: 0.100.1+dfsg-0+deb9u1
+Installed-Size: 464
+Maintainer: ClamAV Team <pkg-clamav-devel@lists.alioth.debian.org>
+Architecture: amd64
+Provides: clamav-data
+Depends: clamav-base (>= 0.100.1+dfsg-0+deb9u1), dpkg (>= 1.16.1), logrotate, lsb-base (>= 3.2-13), procps (>= 1:3.3.2), ucf, debconf (>= 0.5) | debconf-2.0, init-system-helpers (>= 1.18~), libc6 (>= 2.15), libclamav7 (>= 0.100.1), libssl1.1 (>= 1.1.0), zlib1g (>= 1:1.2.3.3)
+Suggests: apparmor, clamav-docs
+Conflicts: clamav-data, libclamav2, libclamav3
+Description: anti-virus utility for Unix - virus database update utility
+Homepage: https://www.clamav.net/
+Description-md5: 82c68e4f7c984e3d6bdc720ae842fca8
+Tag: implemented-in::c, interface::commandline, interface::daemon,
+ role::program, scope::utility, security::antivirus, use::downloading,
+ works-with::file, works-with::mail
+Section: utils
+Priority: optional
+Filename: pool/main/c/clamav/clamav-freshclam_0.100.1+dfsg-0+deb9u1_amd64.deb
+Size: 167106
+MD5sum: 68d46fc0fbe6ff8a452284a091c327f8
+SHA256: 9a32a9e532d61f52ba2e7bd229bd0281aceb5c343cd3f26d4093b650a152fa1c
+
+Package: clamav-milter
+Source: clamav
+Version: 0.100.1+dfsg-0+deb9u1
+Installed-Size: 549
+Maintainer: ClamAV Team <pkg-clamav-devel@lists.alioth.debian.org>
+Architecture: amd64
+Depends: adduser, clamav-base (>= 0.100.1+dfsg-0+deb9u1), clamav-freshclam (>= 0.100.1+dfsg) | clamav-data, dpkg (>= 1.16.1), logrotate, lsb-base (>= 3.2-13), procps (>= 1:3.3.2), ucf, debconf (>= 0.5) | debconf-2.0, libc6 (>= 2.15), libmilter1.0.1, libssl1.1 (>= 1.1.0)
+Recommends: clamav-daemon
+Suggests: clamav-docs, daemon
+Description: anti-virus utility for Unix - sendmail integration
+Homepage: https://www.clamav.net/
+Description-md5: e47a1194215b5fbde13fb9217c44d83f
+Tag: implemented-in::c, interface::daemon, mail::filters, network::server,
+ role::program, security::antivirus, use::scanning, works-with::mail
+Section: utils
+Priority: extra
+Filename: pool/main/c/clamav/clamav-milter_0.100.1+dfsg-0+deb9u1_amd64.deb
+Size: 206526
+MD5sum: 45204760b0362d262e42b574de135b8d
+SHA256: 5853c9542a019c96451634073779c3db7f101b91e824c9bbc8acc41595fd59c2
+
+Package: clamav-testfiles
+Source: clamav
+Version: 0.100.1+dfsg-0+deb9u1
+Installed-Size: 6538
+Maintainer: ClamAV Team <pkg-clamav-devel@lists.alioth.debian.org>
+Architecture: all
+Description: anti-virus utility for Unix - test files
+Multi-Arch: foreign
+Homepage: https://www.clamav.net/
+Description-md5: 29437a0b8c82cc8179b64405688f062e
+Tag: devel::testing-qa, interface::commandline, role::app-data,
+ security::antivirus, use::checking
+Section: utils
+Priority: optional
+Filename: pool/main/c/clamav/clamav-testfiles_0.100.1+dfsg-0+deb9u1_all.deb
+Size: 2882756
+MD5sum: d33f565f23222e8ba105b306626c8ab0
+SHA256: dde1422e1622bde6bba4b825e2f1b89dc9a1809479367b1a35fe4e17f3ccae31
+
+Package: clamdscan
+Source: clamav
+Version: 0.100.1+dfsg-0+deb9u1
+Installed-Size: 305
+Maintainer: ClamAV Team <pkg-clamav-devel@lists.alioth.debian.org>
+Architecture: amd64
+Replaces: clamd (<< 0.98.5~beta1+dfsg-3)
+Depends: clamav-base (= 0.100.1+dfsg-0+deb9u1), libc6 (>= 2.15), libssl1.1 (>= 1.1.0)
+Suggests: clamav-daemon, clamav-docs
+Breaks: clamd (<< 0.98.5~beta1+dfsg-3)
+Description: anti-virus utility for Unix - scanner client
+Homepage: https://www.clamav.net/
+Description-md5: ad077e4c74b9870b6e7bb55aef11c547
+Section: utils
+Priority: optional
+Filename: pool/main/c/clamav/clamdscan_0.100.1+dfsg-0+deb9u1_amd64.deb
+Size: 124954
+MD5sum: ee33453254f254296b24f184e9dc643e
+SHA256: 63e76ff6846bc2ce51983aafd0c53bb6cbb8448138dc8f3a1555d1091bfaa67c
+
+Package: libclamav-dev
+Source: clamav
+Version: 0.100.1+dfsg-0+deb9u1
+Installed-Size: 129
+Maintainer: ClamAV Team <pkg-clamav-devel@lists.alioth.debian.org>
+Architecture: amd64
+Depends: libbz2-dev, libc6-dev | libc-dev, libclamav7 (= 0.100.1+dfsg-0+deb9u1), libidn11-dev, libssl-dev, libtommath-dev, zlib1g-dev
+Description: anti-virus utility for Unix - development files
+Homepage: https://www.clamav.net/
+Description-md5: 3dc197b6ebfb15522a4b7913ea796763
+Tag: devel::lang:c, devel::library, implemented-in::c, role::devel-lib,
+ security::antivirus, use::scanning
+Section: libdevel
+Priority: optional
+Filename: pool/main/c/clamav/libclamav-dev_0.100.1+dfsg-0+deb9u1_amd64.deb
+Size: 64626
+MD5sum: 76074b4215111693300de70ad461d5cd
+SHA256: 1267bc9266cd07dfeb352cfb09b568552497e13b62ea8b64adf98b87d7d4a7cc
+
+Package: libclamav7
+Source: clamav
+Version: 0.100.1+dfsg-0+deb9u1
+Installed-Size: 2001
+Maintainer: ClamAV Team <pkg-clamav-devel@lists.alioth.debian.org>
+Architecture: amd64
+Depends: libbz2-1.0, libc6 (>= 2.15), libgcc1 (>= 1:3.0), libjson-c3 (>= 0.10), libllvm3.8 (>= 1:3.8.1-19~), libltdl7 (>= 2.4.6), libmspack0 (>= 0.4), libpcre3, libssl1.1 (>= 1.1.0), libstdc++6 (>= 5.2), libtfm1 (>= 0.13), libxml2 (>= 2.7.4), zlib1g (>= 1:1.2.3.4)
+Suggests: libclamunrar7
+Description: anti-virus utility for Unix - library
+Multi-Arch: same
+Homepage: https://www.clamav.net/
+Description-md5: bf2e797d0e7e410776d9200761e01bd6
+Tag: role::shared-lib
+Section: libs
+Priority: optional
+Filename: pool/main/c/clamav/libclamav7_0.100.1+dfsg-0+deb9u1_amd64.deb
+Size: 759436
+MD5sum: 40e03c17511645f7c567ad6d79b2e3e9
+SHA256: 19313c45f9b0aff8b72a7cd2df94f7e034fd94e4d44b1cdbd4703f5881f70c41
+
+Package: dns-root-data
+Version: 2017072601~deb9u1
+Installed-Size: 17
+Maintainer: Debian DNS Maintainers <pkg-dns-devel@lists.alioth.debian.org>
+Architecture: all
+Description: DNS root data including root zone and DNSSEC key
+Homepage: https://data.iana.org/root-anchors/
+Description-md5: bbcb2dc96efef2350f3f0122e975cf90
+Section: misc
+Priority: optional
+Filename: pool/main/d/dns-root-data/dns-root-data_2017072601~deb9u1_all.deb
+Size: 4840
+MD5sum: eb1e4ac413afa0b492abea3092cea0e7
+SHA256: e6c9bfbaa6d088bb8a89ca5b496b774b11523faa775d96722a1dbc99b06325fa
+
+Package: dnsviz
+Version: 0.6.4-1+deb9u1
+Installed-Size: 1661
+Maintainer: Debian DNS Maintainers <pkg-dns-devel@lists.alioth.debian.org>
+Architecture: all
+Depends: python-dnspython, python-m2crypto, python-pygraphviz, python2.7, python:any (<< 2.8), python:any (>= 2.7.5-5~), dns-root-data, libjs-jquery, libjs-jquery-ui, libjs-jquery-ui-theme-redmond, libjs-raphael
+Description: Tools for analyzing and visualizing DNS and DNSSEC behavior
+Homepage: https://github.com/dnsviz/dnsviz
+Description-md5: 4f2e5db401d3a48757f46cd4365530b7
+Section: net
+Priority: optional
+Filename: pool/main/d/dnsviz/dnsviz_0.6.4-1+deb9u1_all.deb
+Size: 730912
+MD5sum: 1f0552ad299d529afb518cda50aca1c9
+SHA256: d8d4029b859dc1b419b0dd484866f66e8109d3d39fc64682634283dac4d47691
+
+Package: libdatetime-timezone-perl
+Version: 1:2.09-1+2018e
+Installed-Size: 6780
+Maintainer: Debian Perl Group <pkg-perl-maintainers@lists.alioth.debian.org>
+Architecture: all
+Depends: perl, libclass-singleton-perl, libmodule-runtime-perl, libnamespace-autoclean-perl, libparams-validationcompiler-perl, libspecio-perl, libtry-tiny-perl, perl (>= 5.19.5) | libscalar-list-utils-perl (>= 1:1.33)
+Recommends: libdatetime-perl
+Description: framework exposing the Olson time zone database to Perl
+Homepage: http://datetime.perl.org/
+Description-md5: 49fff32146b7c0ac14d7bcca1f92bfe6
+Tag: devel::lang:perl, devel::library, implemented-in::perl, use::timekeeping
+Section: perl
+Priority: optional
+Filename: pool/main/libd/libdatetime-timezone-perl/libdatetime-timezone-perl_2.09-1+2018e_all.deb
+Size: 269720
+MD5sum: 01dcdd23337420415bb843aa7be8df82
+SHA256: 7168d804b1c16f99735b12847e859e6f79528f04a987f354857bab22c817da7f
+
+Package: tor
+Version: 0.2.9.16-1
+Installed-Size: 4083
+Maintainer: Peter Palfrader <weasel@debian.org>
+Architecture: amd64
+Depends: libc6 (>= 2.17), libevent-2.0-5 (>= 2.0.10-stable), libseccomp2 (>= 0.0.0~20120605), libssl1.1 (>= 1.1.0), libsystemd0, zlib1g (>= 1:1.1.4), adduser, init-system-helpers (>= 1.18~), lsb-base
+Recommends: logrotate, tor-geoipdb, torsocks
+Suggests: mixmaster, torbrowser-launcher, socat, tor-arm, apparmor-utils, obfsproxy, obfs4proxy
+Conflicts: libssl0.9.8 (<< 0.9.8g-9)
+Description: anonymizing overlay network for TCP
+Homepage: https://www.torproject.org/
+Description-md5: 9106e8e4b3843ebd532ba2b89615a92e
+Tag: implemented-in::c, interface::daemon, network::client, network::routing,
+ network::server, role::program, security::cryptography,
+ security::privacy, use::proxying, use::routing
+Section: net
+Priority: optional
+Filename: pool/main/t/tor/tor_0.2.9.16-1_amd64.deb
+Size: 1480200
+MD5sum: c0ed417c5dc250aac4e3c7f8f4da589c
+SHA256: 639960c2a43f67e83e4cebb9cdf75c84873a24f44a6953fbfb0b30f0b6527d9e
+
+Package: tor-dbg
+Source: tor
+Version: 0.2.9.16-1
+Installed-Size: 3357
+Maintainer: Peter Palfrader <weasel@debian.org>
+Architecture: amd64
+Depends: tor (= 0.2.9.16-1)
+Suggests: gdb
+Description: debugging symbols for Tor
+Homepage: https://www.torproject.org/
+Build-Ids: 93c146970f87881dce394e498adf0fe8d3391050 deb9a634091bf7ff01d38d451acdfb44d0ad6d15 df9dc7422cf358c3dc94fe93bb0f7fbebd6b2243
+Description-md5: e8a546d3317d374b2fe6f8a245b9e653
+Tag: role::debug-symbols
+Section: debug
+Priority: extra
+Filename: pool/main/t/tor/tor-dbg_0.2.9.16-1_amd64.deb
+Size: 3026452
+MD5sum: 2c38d279945659bac908857f7c8661a4
+SHA256: f7200b7f83fc011e19dc6b223fe3e221f6af381b266d495e7a9b8f70630dfaf9
+
+Package: tor-geoipdb
+Source: tor
+Version: 0.2.9.16-1
+Installed-Size: 6769
+Maintainer: Peter Palfrader <weasel@debian.org>
+Architecture: all
+Replaces: tor (<< 0.2.4.8)
+Depends: tor (>= 0.2.9.16-1)
+Breaks: tor (<< 0.2.4.8)
+Description: GeoIP database for Tor
+Homepage: https://www.torproject.org/
+Description-md5: d0b50c9cd91157b8c85856fd55e26d14
+Tag: role::app-data, security::privacy
+Section: net
+Priority: extra
+Filename: pool/main/t/tor/tor-geoipdb_0.2.9.16-1_all.deb
+Size: 1203770
+MD5sum: ccd7746996eeaf59d0b93dc3d4776ffd
+SHA256: 6c08366a76979ba89721d19acd13b3e3f5a4c4d859a8341de31fea5ed5c606d2
+
+Package: tzdata
+Version: 2018e-0+deb9u1
+Installed-Size: 3013
+Maintainer: GNU Libc Maintainers <debian-glibc@lists.debian.org>
+Architecture: all
+Replaces: libc0.1, libc0.3, libc6, libc6.1
+Provides: tzdata-stretch
+Depends: debconf (>= 0.5) | debconf-2.0
+Description: time zone and daylight-saving time data
+Multi-Arch: foreign
+Homepage: http://www.iana.org/time-zones
+Description-md5: a77a3cc9a67658dd7cfdc6547391b8f8
+Tag: role::app-data, use::timekeeping
+Section: localization
+Priority: required
+Filename: pool/main/t/tzdata/tzdata_2018e-0+deb9u1_all.deb
+Size: 267412
+MD5sum: 1a782cdf2b47b9e1770a7f23c2621a7f
+SHA256: 64ad373168793f741a7c74956e0ef07c53139ba88327b7025226647ea759b475
+
+Package: libunbound-dev
+Source: unbound
+Version: 1.6.0-3+deb9u1
+Installed-Size: 5683
+Maintainer: Debian DNS Packaging <pkg-dns-devel@lists.alioth.debian.org>
+Architecture: amd64
+Depends: libunbound2 (= 1.6.0-3+deb9u1)
+Description: static library, header files, and docs for libunbound
+Multi-Arch: same
+Homepage: https://www.unbound.net/
+Description-md5: ed3009c5a462f3287f75c961064034a6
+Tag: devel::doc, devel::library, protocol::dns, role::devel-lib,
+ role::documentation
+Section: libdevel
+Priority: optional
+Filename: pool/main/u/unbound/libunbound-dev_1.6.0-3+deb9u1_amd64.deb
+Size: 5264620
+MD5sum: 7cb8e0128cb5e343ae44d03447f0e057
+SHA256: 30fd097b13513f91b2d014bbcb961a166d4503aa66a4f60d2153bac09631fdae
+
+Package: libunbound2
+Source: unbound
+Version: 1.6.0-3+deb9u1
+Installed-Size: 769
+Maintainer: Debian DNS Packaging <pkg-dns-devel@lists.alioth.debian.org>
+Architecture: amd64
+Depends: libc6 (>= 2.17), libgmp10, libhogweed4, libnettle6
+Description: library implementing DNS resolution and validation
+Multi-Arch: same
+Homepage: https://www.unbound.net/
+Description-md5: 2be0d2578ccb5656d253e8013682ad4a
+Tag: role::shared-lib
+Section: libs
+Priority: optional
+Filename: pool/main/u/unbound/libunbound2_1.6.0-3+deb9u1_amd64.deb
+Size: 344946
+MD5sum: 83e1b8190c5e320f3bc6675406948434
+SHA256: 28675f606af509fd104cdea8116172bea80f7600f224bbd1265ddd60655af3f9
+
+Package: python-unbound
+Source: unbound
+Version: 1.6.0-3+deb9u1
+Installed-Size: 341
+Maintainer: Debian DNS Packaging <pkg-dns-devel@lists.alioth.debian.org>
+Architecture: amd64
+Depends: python (<< 2.8), python (>= 2.7~), python:any (<< 2.8), python:any (>= 2.7.5-5~), libc6 (>= 2.14), libunbound2 (>= 1.5.8)
+Description: library implementing DNS resolution and validation (Python bindings)
+Homepage: https://www.unbound.net/
+Description-md5: 103cd64b79e42ad710e19fe727ffce50
+Section: python
+Priority: optional
+Filename: pool/main/u/unbound/python-unbound_1.6.0-3+deb9u1_amd64.deb
+Size: 133718
+MD5sum: 656d85491bd8b5e86763cec870ba0d64
+SHA256: 9a881c4e1beef42270b33ba06c814f12113afabd0ddff200808b198f63ebbb76
+
+Package: python3-unbound
+Source: unbound
+Version: 1.6.0-3+deb9u1
+Installed-Size: 337
+Maintainer: Debian DNS Packaging <pkg-dns-devel@lists.alioth.debian.org>
+Architecture: amd64
+Depends: python3 (<< 3.6), python3 (>= 3.5~), python3:any (>= 3.3.2-2~), libc6 (>= 2.14), libunbound2 (>= 1.5.8)
+Description: library implementing DNS resolution and validation (Python3 bindings)
+Homepage: https://www.unbound.net/
+Description-md5: af30f925fc4c43d06de34592670b36e8
+Section: python
+Priority: optional
+Filename: pool/main/u/unbound/python3-unbound_1.6.0-3+deb9u1_amd64.deb
+Size: 133604
+MD5sum: d4b3b1036c6a2bbd12ed8bd69bb9a514
+SHA256: 3f8f0776adadc4843c5f17aef8951617944bce35b7a2c137d0a3168f986cbe9e
+
+Package: unbound
+Version: 1.6.0-3+deb9u1
+Installed-Size: 2333
+Maintainer: Debian DNS Packaging <pkg-dns-devel@lists.alioth.debian.org>
+Architecture: amd64
+Depends: adduser, dns-root-data (>= 2017072601~), openssl, unbound-anchor, init-system-helpers (>= 1.18~), libc6 (>= 2.17), libevent-2.0-5 (>= 2.0.10-stable), libfstrm0 (>= 0.2.0), libprotobuf-c1 (>= 1.0.0), libpython3.5 (>= 3.5.0~b1), libssl1.1 (>= 1.1.0)
+Suggests: apparmor
+Enhances: munin-node
+Description: validating, recursive, caching DNS resolver
+Homepage: https://www.unbound.net/
+Description-md5: fbeecad8349f6b3042087b256bc69b68
+Tag: implemented-in::c, interface::daemon, network::server, protocol::dns,
+ role::program, security::authentication, security::cryptography,
+ security::privacy, use::checking
+Section: net
+Priority: optional
+Filename: pool/main/u/unbound/unbound_1.6.0-3+deb9u1_amd64.deb
+Size: 620768
+MD5sum: 33aa4c9135213ffcd00065893bef4dcb
+SHA256: bfd1d422c478343c0a80161678c7de84e628b32e1731555e66c09da0700f64a5
+
+Package: unbound-anchor
+Source: unbound
+Version: 1.6.0-3+deb9u1
+Installed-Size: 178
+Maintainer: Debian DNS Packaging <pkg-dns-devel@lists.alioth.debian.org>
+Architecture: amd64
+Replaces: unbound (<< 1.4.13-1)
+Depends: libc6 (>= 2.17), libexpat1 (>= 2.0.1), libssl1.1 (>= 1.1.0), libunbound2 (>= 1.4.1)
+Breaks: unbound (<< 1.4.13-1)
+Description: utility to securely fetch the root DNS trust anchor
+Homepage: https://www.unbound.net/
+Description-md5: f49fb3435120bde9cd4af959aeac719c
+Section: net
+Priority: optional
+Filename: pool/main/u/unbound/unbound-anchor_1.6.0-3+deb9u1_amd64.deb
+Size: 121872
+MD5sum: f1df5d6a19a38e83bda362ea3e2e60c6
+SHA256: a2a1fd6d8b33fa8012918c94d6b4c4e9a282801dd7d1331bee9c24c7f5831f1e
+
+Package: unbound-host
+Source: unbound
+Version: 1.6.0-3+deb9u1
+Installed-Size: 194
+Maintainer: Debian DNS Packaging <pkg-dns-devel@lists.alioth.debian.org>
+Architecture: amd64
+Depends: libc6 (>= 2.4), libunbound2 (>= 1.4.2)
+Description: reimplementation of the 'host' command
+Homepage: https://www.unbound.net/
+Description-md5: 287e113772f55d3575bb8577560cb3eb
+Section: net
+Priority: optional
+Filename: pool/main/u/unbound/unbound-host_1.6.0-3+deb9u1_amd64.deb
+Size: 120020
+MD5sum: 6ad5cf59fbff052880266b56b1a998d9
+SHA256: e43fd7b878cca3cd466bf10751597d05cd6d47402a3768b668eb2f676d49f70c
+

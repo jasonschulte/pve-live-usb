@@ -1,0 +1,15 @@
+/.
+/lib
+/lib/libuutil.so.1.0.1
+/usr
+/usr/share
+/usr/share/doc
+/usr/share/doc/libuutil1linux
+/usr/share/doc/libuutil1linux/COPYRIGHT
+/usr/share/doc/libuutil1linux/OPENSOLARIS.LICENSE.gz
+/usr/share/doc/libuutil1linux/changelog.Debian.gz
+/usr/share/doc/libuutil1linux/copyright
+/usr/share/lintian
+/usr/share/lintian/overrides
+/usr/share/lintian/overrides/libuutil1linux
+/lib/libuutil.so.1

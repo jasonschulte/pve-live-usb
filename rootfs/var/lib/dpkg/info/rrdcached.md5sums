@@ -1,0 +1,13 @@
+4304fe36c485d3295208672ac53f79d6  usr/bin/rrdcached
+d8e2b6f2656227bb3c1ccf7d9a3d947e  usr/share/doc-base/rrdcached
+d422b5bea77871caa76bda9b97e9e4f4  usr/share/doc/rrdcached/CONTRIBUTORS.gz
+4fc67a41ecf30384b3eed47b640e2041  usr/share/doc/rrdcached/NEWS.Debian.gz
+f45bb49ddad0c577bee5450cc314e7ce  usr/share/doc/rrdcached/NEWS.gz
+ae00806fb5aa6c6317da2323f16dac92  usr/share/doc/rrdcached/changelog.Debian.amd64.gz
+9fb919274f163a39fa09736f5487f0cc  usr/share/doc/rrdcached/changelog.Debian.gz
+bab4d1ff9b75cbeab93fd1b6ebbaa0a6  usr/share/doc/rrdcached/changelog.gz
+1ec67c0aa5988850e4826535cc9f9718  usr/share/doc/rrdcached/copyright
+ef8b82b4b4158a2881be151033c59198  usr/share/doc/rrdcached/examples/RRDCached.pm
+8204cab0e8449a664003957b9cea0305  usr/share/doc/rrdcached/examples/rrdcached-size.pl
+4ac859b665565512b9604fb61f0f1a27  usr/share/doc/rrdcached/html/rrdcached.html
+e3b8d23a9bd72e785dad007bf79b82d3  usr/share/man/man1/rrdcached.1.gz

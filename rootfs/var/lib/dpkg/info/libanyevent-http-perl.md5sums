@@ -1,0 +1,5 @@
+ed157d2c602d4f645fa824dd1e46d011  usr/share/doc/libanyevent-http-perl/changelog.Debian.gz
+e7b4afec736a2064fb340ca065ac3891  usr/share/doc/libanyevent-http-perl/changelog.gz
+dd3a37f001c636551d23c009f31d29f6  usr/share/doc/libanyevent-http-perl/copyright
+23d0af86ebcf357281c731b951f7c395  usr/share/man/man3/AnyEvent::HTTP.3pm.gz
+f25836ad1a6dee536fc1acb2b3c421da  usr/share/perl5/AnyEvent/HTTP.pm

@@ -1,0 +1,53 @@
+[OPTIONS]
+
+# enable firewall (cluster wide setting, default is disabled) 
+enable: 1
+
+# default policy for host rules
+policy_in: DROP
+policy_out: ACCEPT
+
+[ALIASES]
+
+myserveralias 10.0.0.111
+mynetworkalias 10.0.0.0/24
+myserveraliasipv6 2001:db8:0:85a3:0:0:ac1f:8001
+myserveraliasipv6short 2001:db8:0:85a3::ac1f:8001
+
+
+[RULES]
+
+IN  SSH(ACCEPT) -i vmbr0
+
+[group group1]
+
+IN  ACCEPT -p tcp -dport 22
+OUT ACCEPT -p tcp -dport 80
+OUT ACCEPT -p icmp
+
+[group group3]
+
+IN  ACCEPT -source 10.0.0.1 
+IN  ACCEPT -source 10.0.0.1-10.0.0.10
+IN  ACCEPT -source 10.0.0.1,10.0.0.2,10.0.0.3
+IN  ACCEPT -source +mynetgroup 
+IN  ACCEPT -source myserveralias
+IN  ACCEPT -source myserveraliasipv6
+IN  ACCEPT -source 2001:db8:0:85a3:0:0:ac1f:8001
+
+[ipset myipset]
+
+192.168.0.1 #mycomment
+172.16.0.10
+192.168.0.0/24
+! 10.0.0.0/8  #nomatch - needs kernel 3.7 or newer
+mynetworkalias
+2001:db8:0:85a3::ac1f:8001
+2001:db8:0:85a3:0:0:ac1f:8002
+
+#global ipset blacklist
+[ipset blacklist]
+
+10.0.0.8
+192.168.0.0/24
+2001:db8:0:85a3:0:0:ac1f:8001

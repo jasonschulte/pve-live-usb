@@ -1,0 +1,16 @@
+/.
+/usr
+/usr/lib
+/usr/lib/x86_64-linux-gnu
+/usr/lib/x86_64-linux-gnu/librrd.so.8.0.0
+/usr/share
+/usr/share/doc
+/usr/share/doc/librrd8
+/usr/share/doc/librrd8/CONTRIBUTORS.gz
+/usr/share/doc/librrd8/NEWS.Debian.gz
+/usr/share/doc/librrd8/NEWS.gz
+/usr/share/doc/librrd8/changelog.Debian.amd64.gz
+/usr/share/doc/librrd8/changelog.Debian.gz
+/usr/share/doc/librrd8/changelog.gz
+/usr/share/doc/librrd8/copyright
+/usr/lib/x86_64-linux-gnu/librrd.so.8

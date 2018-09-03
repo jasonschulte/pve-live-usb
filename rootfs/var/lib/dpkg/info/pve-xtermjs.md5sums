@@ -1,0 +1,13 @@
+8d9f1810aa5563ff6c88bb39a42ab7a9  usr/bin/termproxy
+f8f4dee8d894a0dc761d173502c0b19e  usr/share/doc/pve-xtermjs/SOURCE
+0ecf42090c4633094a38b2a122d2503b  usr/share/doc/pve-xtermjs/changelog.Debian.gz
+b51efbeae8f89b0cb8d66314c23288d0  usr/share/doc/pve-xtermjs/copyright
+83c5c0be425b3f6d9de3829ff1153db9  usr/share/perl5/PVE/CLI/termproxy.pm
+79fdd2c00ae8317f4a4163c9385d9c55  usr/share/pve-xtermjs/fit.js
+cd74f130252425f8a69282e9d12e1aa8  usr/share/pve-xtermjs/index.html.tpl
+911f010248f45e52405208c3917a4c97  usr/share/pve-xtermjs/main.js
+fc904eb412f494f7d00f78b4755447a0  usr/share/pve-xtermjs/style.css
+852c3547a0d22dc16b83bbba725aba70  usr/share/pve-xtermjs/util.js
+d84103242fa2e2f734ea5a948dd7fa85  usr/share/pve-xtermjs/xterm.css
+11d37d81a035cc4cab8b3f6ff6a92e4c  usr/share/pve-xtermjs/xterm.js
+18c065bda3af7e8e790d8cad8c9c5312  usr/share/pve-xtermjs/xterm.js.map

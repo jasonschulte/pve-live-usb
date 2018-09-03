@@ -1,0 +1,9 @@
+f1bc6cbf3dfef0675b07fdea8994e1dc  usr/share/doc/libpve-guest-common-perl/changelog.Debian.gz
+cd07d31fa2c2e6370f6d503d940aff20  usr/share/doc/libpve-guest-common-perl/copyright
+38a7920034e6821c4a87fac91c979c45  usr/share/perl5/PVE/AbstractConfig.pm
+b8ca8cb9f25718e3c154f328215ea66a  usr/share/perl5/PVE/AbstractMigrate.pm
+fa66611780c209b33c0eb71ed63a6bd4  usr/share/perl5/PVE/GuestHelpers.pm
+cb92517b3887b3a93b45ddac4e0e79de  usr/share/perl5/PVE/Replication.pm
+3af9866d89086b44e1855901bab95fdb  usr/share/perl5/PVE/ReplicationConfig.pm
+560537c18b4f2784956a342602ac8c33  usr/share/perl5/PVE/ReplicationState.pm
+e65fba356a488c8905fc1fab03dfb311  usr/share/perl5/PVE/VZDump/Plugin.pm

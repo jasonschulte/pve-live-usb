@@ -1,0 +1,397 @@
+<!-- asciidoc HEADER -->
+<script type="text/javascript">
+//////////////////////////////////////////////////////////////////////////
+// asciidoc JS helper for Proxmox VE mediawiki pages
+//
+// code based on original asciidoc.js, but re-written using jQuery
+//
+//////////////////////////////////////////////////////////////////////////
+
+var asciidoc = {
+
+    // toc generator
+    toc: function ($content) {
+	var tocholder = $content.find('#toc');
+
+	if (!tocholder) {
+	    return;
+	}
+
+	tocholder.html('');
+	tocholder.hide();
+
+	var html = "<div id=\"toctitle\"><h2>Contents</h2></div><ul>";
+
+	var n = 0;
+	$content.find("div.sect1").each(function(){
+	    var h = jQuery(this).find("h2").first();
+	    var id = h.attr("id");
+	    if (id != null) {
+		n++;
+		html += "<li class=\"toclevel-1\">" +
+		    "<a href=\"#" + id + "\">" +
+		    "<span class=\"toctext\">" + h.html() +
+		    "</span></a></li>";
+	    }
+	});
+
+	html += "</ul>";
+
+	if (n > 3) {
+	    tocholder.html(html);
+	    tocholder.show();
+	}
+    },
+
+    // footnote generator
+    footnotes: function ($content) {
+	var noteholder = $content.find('#footnotes');
+	if (!noteholder) {
+	    return;
+	}
+
+	noteholder.html('');
+
+	// Rebuild footnote entries.
+	var refs = {};
+	var n = 0;
+	var inner_html = '';
+
+	$content.find("span.footnote").each(function(){
+	    n++;
+	    var span = jQuery(this);
+	    var note = span.attr("data-note");
+	    var id = span.attr("id");
+	    if (!note) {
+		// Use [\s\S] in place of . so multi-line matches work.
+		// Because JavaScript has no s (dotall) regex flag.
+		note = span.html().match(/\s*\[([\s\S]*)]\s*/)[1];
+		span.html("[<a id='_footnoteref_" + n + "' href='#_footnote_" +
+			  n + "' title='View footnote' class='footnote'>" + n +
+			  "</a>]");
+		span.attr("data-note", note);
+	    }
+	    inner_html +=
+            "<div class='footnote' id='_footnote_" + n + "'>" +
+		"<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+		n + "</a>. " + note + "</div>";
+
+	    if (id != null) { refs["#"+id] = n; }
+	});
+
+	if (inner_html) { noteholder.html("<hr>" + inner_html); }
+
+	if (n != 0) {
+	    // process footnoterefs.
+	    $content.find("span.footnoteref").each(function(){
+		var span = jQuery(this);
+		var href = span.find("a").first().attr("href");
+		href = href.match(/#.*/)[0];  // in case it return full URL.
+		n = refs[href];
+		span.html("[<a href='#_footnote_" + n +
+			  "' title='View footnote' class='footnote'>" + n + "</a>]");
+	    });
+	}
+    }
+};
+
+// add init to mediawiki resource loader queue
+(window.RLQ=window.RLQ||[]).push(function(){
+    mw.hook('wikipage.content').add(function($content) {
+	asciidoc.toc($content);
+	asciidoc.footnotes($content);
+    });
+});
+</script>
+<div id="toc" class="toc">
+</div>
+<div id="asciidoccontent">
+<style type="text/css" scoped>
+td.hdlist1 {
+   vertical-align: top;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+</style>
+<div class="sect1">
+<h2 id="datacenter_configuration_file">NAME</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>datacenter.cfg - Proxmox VE Datacenter Configuration</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_synopsis">SYNOPSIS</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><tt><span class="monospaced">/etc/pve/datacenter.cfg</span></tt></p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_description">DESCRIPTION</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The file <tt><span class="monospaced">/etc/pve/datacenter.cfg</span></tt> is a configuration file for
+Proxmox VE. It contains cluster wide default values used by all nodes.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_file_format">File Format</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The file uses a simple colon separated key/value format. Each line has
+the following format:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>OPTION: value</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>Blank lines in the file are ignored, and lines starting with a <tt><span class="monospaced">#</span></tt>
+character are treated as comments and are also ignored.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_options">Options</h2>
+<div class="sectionbody">
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<tt><span class="monospaced">bwlimit</span></tt>: <tt><span class="monospaced">[clone=&lt;LIMIT&gt;] [,default=&lt;LIMIT&gt;] [,migration=&lt;LIMIT&gt;] [,move=&lt;LIMIT&gt;] [,restore=&lt;LIMIT&gt;]</span></tt> 
+</dt>
+<dd>
+<p>
+Set bandwidth/io limits various operations.
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<tt><span class="monospaced">clone</span></tt>=<tt><span class="monospaced">&lt;LIMIT&gt;</span></tt> 
+</dt>
+<dd>
+<p>
+bandwidth limit in MiB/s for cloning disks
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">default</span></tt>=<tt><span class="monospaced">&lt;LIMIT&gt;</span></tt> 
+</dt>
+<dd>
+<p>
+default bandwidth limit in MiB/s
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">migration</span></tt>=<tt><span class="monospaced">&lt;LIMIT&gt;</span></tt> 
+</dt>
+<dd>
+<p>
+bandwidth limit in MiB/s for migrating guests
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">move</span></tt>=<tt><span class="monospaced">&lt;LIMIT&gt;</span></tt> 
+</dt>
+<dd>
+<p>
+bandwidth limit in MiB/s for moving disks
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">restore</span></tt>=<tt><span class="monospaced">&lt;LIMIT&gt;</span></tt> 
+</dt>
+<dd>
+<p>
+bandwidth limit in MiB/s for restoring guests from backups
+</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">console</span></tt>: <tt><span class="monospaced">&lt;applet | html5 | vv | xtermjs&gt;</span></tt> 
+</dt>
+<dd>
+<p>
+Select the default Console viewer. You can either use the builtin java applet (VNC; deprecated and maps to html5), an external virt-viewer comtatible application (SPICE), an HTML5 based vnc viewer (noVNC), or an HTML5 based console client (xtermjs). If the selected viewer is not available (e.g. SPICE not activated for the VM), the fallback is noVNC.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">email_from</span></tt>: <tt><span class="monospaced">&lt;string&gt;</span></tt> 
+</dt>
+<dd>
+<p>
+Specify email address to send notification from (default is root@$hostname)
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">fencing</span></tt>: <tt><span class="monospaced">&lt;both | hardware | watchdog&gt;</span></tt> (<em>default =</em> <tt><span class="monospaced">watchdog</span></tt>)
+</dt>
+<dd>
+<p>
+Set the fencing mode of the HA cluster. Hardware mode needs a valid configuration of fence devices in /etc/pve/ha/fence.cfg. With both all two modes are used.
+</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Warning" src="data:image/png;base64,
+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
+/F/lgJiyQFHragAAAABJRU5ErkJggg==">
+</td>
+<td class="content"><em>hardware</em> and <em>both</em> are EXPERIMENTAL &amp; WIP</td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">http_proxy</span></tt>: <tt><span class="monospaced">http://.*</span></tt> 
+</dt>
+<dd>
+<p>
+Specify external http proxy which is used for downloads (example: <em>http://username:password@host:port/</em>)
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">keyboard</span></tt>: <tt><span class="monospaced">&lt;da | de | de-ch | en-gb | en-us | es | fi | fr | fr-be | fr-ca | fr-ch | hu | is | it | ja | lt | mk | nl | no | pl | pt | pt-br | sl | sv | tr&gt;</span></tt> 
+</dt>
+<dd>
+<p>
+Default keybord layout for vnc server.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">language</span></tt>: <tt><span class="monospaced">&lt;de | en&gt;</span></tt> 
+</dt>
+<dd>
+<p>
+Default GUI language.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">mac_prefix</span></tt>: <tt><span class="monospaced">(?^i:[a-f0-9]{2}(?::[a-f0-9]{2}){0,2}:?)</span></tt> 
+</dt>
+<dd>
+<p>
+Prefix for autogenerated MAC addresses.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">max_workers</span></tt>: <tt><span class="monospaced">&lt;integer&gt; (1 - N)</span></tt> 
+</dt>
+<dd>
+<p>
+Defines how many workers (per node) are maximal started  on actions like <em>stopall VMs</em> or task from the ha-manager.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">migration</span></tt>: <tt><span class="monospaced">[type=]&lt;secure|insecure&gt; [,network=&lt;CIDR&gt;]</span></tt> 
+</dt>
+<dd>
+<p>
+For cluster wide migration settings.
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<tt><span class="monospaced">network</span></tt>=<tt><span class="monospaced">&lt;CIDR&gt;</span></tt> 
+</dt>
+<dd>
+<p>
+CIDR of the (sub) network that is used for migration.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">type</span></tt>=<tt><span class="monospaced">&lt;insecure | secure&gt;</span></tt> (<em>default =</em> <tt><span class="monospaced">secure</span></tt>)
+</dt>
+<dd>
+<p>
+Migration traffic is encrypted using an SSH tunnel by default. On secure, completely private networks this can be disabled to increase performance.
+</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">migration_unsecure</span></tt>: <tt><span class="monospaced">&lt;boolean&gt;</span></tt> 
+</dt>
+<dd>
+<p>
+Migration is secure using SSH tunnel by default. For secure private networks you can disable it to speed up migration. Deprecated, use the <em>migration</em> property instead!
+</p>
+</dd>
+</dl></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_copyright_and_disclaimer">Copyright and Disclaimer</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Copyright &#169; 2007-2017 Proxmox Server Solutions GmbH</p></div>
+<div class="paragraph">
+<p>This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.</p></div>
+<div class="paragraph">
+<p>This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+Affero General Public License for more details.</p></div>
+<div class="paragraph">
+<p>You should have received a copy of the GNU Affero General Public
+License along with this program.  If not, see
+<a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a></p></div>
+</div>
+</div>
+<!-- FOOTER -->
+</div>
+<div id="footnotes"></div>

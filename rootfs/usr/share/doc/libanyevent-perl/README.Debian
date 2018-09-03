@@ -1,0 +1,13 @@
+Changes in source code
+----------------------
+
+libanyevent-perl has been patched to replace an hardcoded die with a warning.
+
+The problem has been reported here:
+ * http://bugs.debian.org/706453
+ * http://www.nntp.perl.org/group/perl.perl5.porters/2012/02/msg183037.html
+
+AnyEvent.pm hardcodes a die() if IO::Async::Loop::AnyEvent is in use but that
+code can work for some uses. So the file
+debian/patches/replace-abuse-die-with-warn.patch replace the "die" with a warning.
+

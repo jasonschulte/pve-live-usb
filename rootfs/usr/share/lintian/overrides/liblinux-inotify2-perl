@@ -1,0 +1,2 @@
+# A false positive. blhc --all shows nothing to fix.
+liblinux-inotify2-perl: hardening-no-fortify-functions usr/lib/x86_64-linux-gnu/perl5/5.24/auto/Linux/Inotify2/Inotify2.so

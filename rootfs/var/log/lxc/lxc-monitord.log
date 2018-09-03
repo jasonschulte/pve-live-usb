@@ -1,0 +1,6 @@
+lxc-monitord 20180901210958.772 INFO     lxc_monitor - monitor.c:lxc_monitor_sock_name:201 - using monitor socket name "lxc/ad055575fe28ddd5//var/lib/lxc" (length of socket name 33 must be <= 105)
+lxc-monitord 20180901210958.772 NOTICE   lxc_monitord - cmd/lxc_monitord.c:main:457 - lxc-monitord with pid 775 is now monitoring lxcpath /var/lib/lxc.
+lxc-monitord 20180901215356.234 INFO     lxc_monitor - monitor.c:lxc_monitor_sock_name:201 - using monitor socket name "lxc/ad055575fe28ddd5//var/lib/lxc" (length of socket name 33 must be <= 105)
+lxc-monitord 20180901215356.234 NOTICE   lxc_monitord - cmd/lxc_monitord.c:main:457 - lxc-monitord with pid 831 is now monitoring lxcpath /var/lib/lxc.
+lxc-monitord 20180901222255.786 INFO     lxc_monitor - monitor.c:lxc_monitor_sock_name:201 - using monitor socket name "lxc/ad055575fe28ddd5//var/lib/lxc" (length of socket name 33 must be <= 105)
+lxc-monitord 20180901222255.790 NOTICE   lxc_monitord - cmd/lxc_monitord.c:main:457 - lxc-monitord with pid 829 is now monitoring lxcpath /var/lib/lxc.

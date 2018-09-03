@@ -1,0 +1,9 @@
+83aa7861796acc9f650b795be09e1078  usr/lib/x86_64-linux-gnu/perl5/5.24/Crypt/OpenSSL/Bignum.pm
+2083b44e511d6f6308f11d52098f17a5  usr/lib/x86_64-linux-gnu/perl5/5.24/Crypt/OpenSSL/Bignum/CTX.pm
+ef6dcc0695c213fd3df77eb9f6f04576  usr/lib/x86_64-linux-gnu/perl5/5.24/auto/Crypt/OpenSSL/Bignum/Bignum.so
+2dcdbf0fdf1fe47f25bcecc9b992ba08  usr/share/doc/libcrypt-openssl-bignum-perl/README
+e9cd9c78f38b5f1b494346d2da87058c  usr/share/doc/libcrypt-openssl-bignum-perl/changelog.Debian.gz
+9bbb755852b266f202461cd802d602d6  usr/share/doc/libcrypt-openssl-bignum-perl/changelog.gz
+78888b0e5964321920d727ade152ba34  usr/share/doc/libcrypt-openssl-bignum-perl/copyright
+066ebdb31d136a762bd0bf6a2ed8e0f7  usr/share/man/man3/Crypt::OpenSSL::Bignum.3pm.gz
+076a14843eebce58adc20206403b90aa  usr/share/man/man3/Crypt::OpenSSL::Bignum::CTX.3pm.gz

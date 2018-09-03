@@ -1,0 +1,2 @@
+glusterfs-client: arch-dep-package-has-big-usr-share
+glusterfs-client: manpage-has-errors-from-man usr/share/man/man8/mount.glusterfs.8.gz 136: warning [p 3, 1.3i]: cannot adjust line

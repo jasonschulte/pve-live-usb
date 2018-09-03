@@ -1,0 +1,16 @@
+/.
+/usr
+/usr/share
+/usr/share/doc
+/usr/share/doc/libpve-apiclient-perl
+/usr/share/doc/libpve-apiclient-perl/changelog.Debian.gz
+/usr/share/doc/libpve-apiclient-perl/copyright
+/usr/share/doc/libpve-apiclient-perl/examples
+/usr/share/doc/libpve-apiclient-perl/examples/example1.pl
+/usr/share/doc/libpve-apiclient-perl/examples/example2.pl
+/usr/share/doc/libpve-apiclient-perl/examples/perftest1.pl
+/usr/share/perl5
+/usr/share/perl5/PVE
+/usr/share/perl5/PVE/APIClient
+/usr/share/perl5/PVE/APIClient/Exception.pm
+/usr/share/perl5/PVE/APIClient/LWP.pm

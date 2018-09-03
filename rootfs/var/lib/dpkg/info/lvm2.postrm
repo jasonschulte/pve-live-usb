@@ -1,0 +1,40 @@
+#!/bin/sh
+set -e
+# Automatically added by dh_systemd_start
+if [ -d /run/systemd/system ]; then
+	systemctl --system daemon-reload >/dev/null || true
+fi
+# End automatically added section
+# Automatically added by dh_systemd_start
+if [ -d /run/systemd/system ]; then
+	systemctl --system daemon-reload >/dev/null || true
+fi
+# End automatically added section
+# Automatically added by dh_systemd_enable
+if [ "$1" = "remove" ]; then
+	if [ -x "/usr/bin/deb-systemd-helper" ]; then
+		deb-systemd-helper mask lvm2-lvmetad.service lvm2-lvmetad.socket lvm2-lvmpolld.service >/dev/null
+	fi
+fi
+
+if [ "$1" = "purge" ]; then
+	if [ -x "/usr/bin/deb-systemd-helper" ]; then
+		deb-systemd-helper purge lvm2-lvmetad.service lvm2-lvmetad.socket lvm2-lvmpolld.service >/dev/null
+		deb-systemd-helper unmask lvm2-lvmetad.service lvm2-lvmetad.socket lvm2-lvmpolld.service >/dev/null
+	fi
+fi
+# End automatically added section
+# Automatically added by dh_systemd_enable
+if [ "$1" = "remove" ]; then
+	if [ -x "/usr/bin/deb-systemd-helper" ]; then
+		deb-systemd-helper mask lvm2-lvmpolld.socket lvm2-monitor.service >/dev/null
+	fi
+fi
+
+if [ "$1" = "purge" ]; then
+	if [ -x "/usr/bin/deb-systemd-helper" ]; then
+		deb-systemd-helper purge lvm2-lvmpolld.socket lvm2-monitor.service >/dev/null
+		deb-systemd-helper unmask lvm2-lvmpolld.socket lvm2-monitor.service >/dev/null
+	fi
+fi
+# End automatically added section

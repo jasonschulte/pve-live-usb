@@ -1,0 +1,12 @@
+/.
+/usr
+/usr/lib
+/usr/lib/gnupg1
+/usr/lib/gnupg1/gpgkeys_curl
+/usr/lib/gnupg1/gpgkeys_hkp
+/usr/share
+/usr/share/doc
+/usr/share/doc/gnupg1-curl
+/usr/share/doc/gnupg1-curl/changelog.Debian.gz
+/usr/share/doc/gnupg1-curl/changelog.gz
+/usr/share/doc/gnupg1-curl/copyright

@@ -1,0 +1,2 @@
+git clone git://git.proxmox.com/git/proxmox-ve.git
+git checkout 4cee3b809718dff99a5288722b6aae813ef8e382

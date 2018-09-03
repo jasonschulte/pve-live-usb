@@ -1,0 +1,1122 @@
+<!-- asciidoc HEADER -->
+<script type="text/javascript">
+//////////////////////////////////////////////////////////////////////////
+// asciidoc JS helper for Proxmox VE mediawiki pages
+//
+// code based on original asciidoc.js, but re-written using jQuery
+//
+//////////////////////////////////////////////////////////////////////////
+
+var asciidoc = {
+
+    // toc generator
+    toc: function ($content) {
+	var tocholder = $content.find('#toc');
+
+	if (!tocholder) {
+	    return;
+	}
+
+	tocholder.html('');
+	tocholder.hide();
+
+	var html = "<div id=\"toctitle\"><h2>Contents</h2></div><ul>";
+
+	var n = 0;
+	$content.find("div.sect1").each(function(){
+	    var h = jQuery(this).find("h2").first();
+	    var id = h.attr("id");
+	    if (id != null) {
+		n++;
+		html += "<li class=\"toclevel-1\">" +
+		    "<a href=\"#" + id + "\">" +
+		    "<span class=\"toctext\">" + h.html() +
+		    "</span></a></li>";
+	    }
+	});
+
+	html += "</ul>";
+
+	if (n > 3) {
+	    tocholder.html(html);
+	    tocholder.show();
+	}
+    },
+
+    // footnote generator
+    footnotes: function ($content) {
+	var noteholder = $content.find('#footnotes');
+	if (!noteholder) {
+	    return;
+	}
+
+	noteholder.html('');
+
+	// Rebuild footnote entries.
+	var refs = {};
+	var n = 0;
+	var inner_html = '';
+
+	$content.find("span.footnote").each(function(){
+	    n++;
+	    var span = jQuery(this);
+	    var note = span.attr("data-note");
+	    var id = span.attr("id");
+	    if (!note) {
+		// Use [\s\S] in place of . so multi-line matches work.
+		// Because JavaScript has no s (dotall) regex flag.
+		note = span.html().match(/\s*\[([\s\S]*)]\s*/)[1];
+		span.html("[<a id='_footnoteref_" + n + "' href='#_footnote_" +
+			  n + "' title='View footnote' class='footnote'>" + n +
+			  "</a>]");
+		span.attr("data-note", note);
+	    }
+	    inner_html +=
+            "<div class='footnote' id='_footnote_" + n + "'>" +
+		"<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+		n + "</a>. " + note + "</div>";
+
+	    if (id != null) { refs["#"+id] = n; }
+	});
+
+	if (inner_html) { noteholder.html("<hr>" + inner_html); }
+
+	if (n != 0) {
+	    // process footnoterefs.
+	    $content.find("span.footnoteref").each(function(){
+		var span = jQuery(this);
+		var href = span.find("a").first().attr("href");
+		href = href.match(/#.*/)[0];  // in case it return full URL.
+		n = refs[href];
+		span.html("[<a href='#_footnote_" + n +
+			  "' title='View footnote' class='footnote'>" + n + "</a>]");
+	    });
+	}
+    }
+};
+
+// add init to mediawiki resource loader queue
+(window.RLQ=window.RLQ||[]).push(function(){
+    mw.hook('wikipage.content').add(function($content) {
+	asciidoc.toc($content);
+	asciidoc.footnotes($content);
+    });
+});
+</script>
+<div id="toc" class="toc">
+</div>
+<div id="asciidoccontent">
+<style type="text/css" scoped>
+td.hdlist1 {
+   vertical-align: top;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+</style>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph" id="chapter_user_management">
+<p>Proxmox VE supports multiple authentication sources, e.g. Linux PAM,
+an integrated Proxmox VE authentication server, LDAP, Microsoft Active
+Directory.</p></div>
+<div class="paragraph">
+<p>By using the role based user- and permission management for all
+objects (VMs, storages, nodes, etc.) granular access can be defined.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="pveum_users">Users</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Proxmox VE stores user attributes in <tt><span class="monospaced">/etc/pve/user.cfg</span></tt>.
+Passwords are not stored here, users are instead associated with
+<a href="/wiki/User_Management#pveum_authentication_realms">authentication realms</a> described below.
+Therefore a user is internally often identified by its name and
+realm in the form <tt><span class="monospaced">&lt;userid&gt;@&lt;realm&gt;</span></tt>.</p></div>
+<div class="paragraph">
+<p>Each user entry in this file contains the following information:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+First name
+</p>
+</li>
+<li>
+<p>
+Last name
+</p>
+</li>
+<li>
+<p>
+E-mail address
+</p>
+</li>
+<li>
+<p>
+Group memberships
+</p>
+</li>
+<li>
+<p>
+An optional Expiration date
+</p>
+</li>
+<li>
+<p>
+A comment or note about this user
+</p>
+</li>
+<li>
+<p>
+Whether this user is enabled or disabled
+</p>
+</li>
+<li>
+<p>
+Optional two factor authentication keys
+</p>
+</li>
+</ul></div>
+<div class="sect2">
+<h3 id="_system_administrator">System administrator</h3>
+<div class="paragraph">
+<p>The system&#8217;s root user can always log in via the Linux PAM realm and is an
+unconfined administrator. This user cannot be deleted, but attributes can
+still be changed and system mails will be sent to the email address
+assigned to this user.</p></div>
+</div>
+<div class="sect2">
+<h3 id="pveum_groups">Groups</h3>
+<div class="paragraph">
+<p>Each user can be member of several groups. Groups are the preferred
+way to organize access permissions. You should always grant permission
+to groups instead of using individual users. That way you will get a
+much shorter access control list which is easier to handle.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="pveum_authentication_realms">Authentication Realms</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>As Proxmox VE users are just counterparts for users existing on some external
+realm, the realms have to be configured in <tt><span class="monospaced">/etc/pve/domains.cfg</span></tt>.
+The following realms (authentication methods) are available:</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+Linux PAM standard authentication
+</dt>
+<dd>
+<p>
+In this case a system user has to exist (e.g. created via the <tt><span class="monospaced">adduser</span></tt>
+command) on all nodes the user is allowed to login, and the user
+authenticates with their usual system password.
+</p>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>useradd heinz
+passwd heinz
+groupadd watchman
+usermod -a -G watchman heinz</tt></pre></div></div>
+</dd>
+<dt class="hdlist1">
+Proxmox VE authentication server
+</dt>
+<dd>
+<p>
+This is a unix like password store (<tt><span class="monospaced">/etc/pve/priv/shadow.cfg</span></tt>).
+Password are encrypted using the SHA-256 hash method.
+This is the most convenient method for small (or even medium)
+installations where users do not need access to anything outside of
+Proxmox VE. In this case users are fully managed by Proxmox VE and are able to
+change their own passwords via the GUI.
+</p>
+</dd>
+<dt class="hdlist1">
+LDAP
+</dt>
+<dd>
+<p>
+It is possible to authenticate users via an LDAP server (e.g.
+openldap). The server and an optional fallback server can be
+configured and the connection can be encrypted via SSL.
+</p>
+<div class="paragraph">
+<p>Users are searched under a <em>Base Domain Name</em> (<tt><span class="monospaced">base_dn</span></tt>), with the
+user name found in the attribute specified in the <em>User Attribute Name</em>
+(<tt><span class="monospaced">user_attr</span></tt>) field.</p></div>
+<div class="paragraph">
+<p>For instance, if a user is represented via the
+following ldif dataset:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre><tt># user1 of People at ldap-test.com
+dn: uid=user1,ou=People,dc=ldap-test,dc=com
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+uid: user1
+cn: Test User 1
+sn: Testers
+description: This is the first test user.</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>The <em>Base Domain Name</em> would be <tt><span class="monospaced">ou=People,dc=ldap-test,dc=com</span></tt> and the user
+attribute would be <tt><span class="monospaced">uid</span></tt>.</p></div>
+<div class="paragraph">
+<p>If Proxmox VE needs to authenticate (bind) to the ldap server before being
+able to query and authenticate users, a bind domain name can be
+configured via the <tt><span class="monospaced">bind_dn</span></tt> property in <tt><span class="monospaced">/etc/pve/domains.cfg</span></tt>. Its
+password then has to be stored in <tt><span class="monospaced">/etc/pve/priv/ldap/&lt;realmname&gt;.pw</span></tt>
+(e.g. <tt><span class="monospaced">/etc/pve/priv/ldap/my-ldap.pw</span></tt>). This file should contain a
+single line containing the raw password.</p></div>
+</dd>
+<dt class="hdlist1">
+Microsoft Active Directory
+</dt>
+<dd>
+<p>
+A server and authentication domain need to be specified. Like with
+ldap an optional fallback server, optional port, and SSL
+encryption can be configured.
+</p>
+</dd>
+</dl></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_two_factor_authentication">Two factor authentication</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Each realm can optionally be secured additionally by two factor
+authentication. This can be done by selecting one of the available methods
+via the <em>TFA</em> dropdown box when adding or editing an Authentication Realm.
+When a realm has TFA enabled it becomes a requirement and only users with
+configured TFA will be able to login.</p></div>
+<div class="paragraph">
+<p>Currently there are two methods available:</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+Time based OATH (TOTP)
+</dt>
+<dd>
+<p>
+This uses the standard HMAC-SHA1 algorithm where the current time is hashed
+with the user&#8217;s configured key. The time step and password length
+parameters are configured.
+</p>
+<div class="paragraph">
+<p>A user can have multiple keys configured (separated by spaces), and the
+keys can be specified in Base32 (RFC3548) or hexadecimal notation.</p></div>
+<div class="paragraph">
+<p>Proxmox VE provides a key generation tool (<tt><span class="monospaced">oathkeygen</span></tt>) which prints out a
+random key in Base32 notation which can be used directly with various OTP
+tools, such as the <tt><span class="monospaced">oathtool</span></tt> command line tool, the Google authenticator
+or FreeOTP Android apps.</p></div>
+</dd>
+<dt class="hdlist1">
+YubiKey OTP
+</dt>
+<dd>
+<p>
+For authenticating via a YubiKey a Yubico API ID, API KEY and validation
+server URL must be configured, and users must have a YubiKey available. In
+order to get the key ID from a YubiKey, you can trigger the YubiKey once
+after connecting it to USB and copy the first 12 characters of the typed
+password into the user&#8217;s <em>Key IDs</em> field.
+</p>
+<div class="paragraph">
+<p>Please refer to the
+<a href="https://developers.yubico.com/OTP/">YubiKey OTP</a> documentation for how to use the
+<a href="https://www.yubico.com/products/services-software/yubicloud/">YubiCloud</a> or
+<a href="https://developers.yubico.com/Software_Projects/YubiKey_OTP/YubiCloud_Validation_Servers/">
+host your own verification server</a>.</p></div>
+</dd>
+</dl></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="pveum_permission_management">Permission Management</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In order for a user to perform an action (such as listing, modifying or
+deleting a parts of a VM configuration), the user needs to have the
+appropriate permissions.</p></div>
+<div class="paragraph">
+<p>Proxmox VE uses a role and path based permission management system. An entry in
+the permissions table allows a user or group to take on a specific role
+when accessing an <em>object</em> or <em>path</em>. This means an such an access rule can
+be represented as a triple of <em>(path, user, role)</em> or <em>(path, group,
+role)</em>, with the role containing a set of allowed actions, and the path
+representing the target of these actions.</p></div>
+<div class="sect2">
+<h3 id="pveum_roles">Roles</h3>
+<div class="paragraph">
+<p>A role is simply a list of privileges. Proxmox VE comes with a number
+of predefined roles which satisfies most needs.</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<tt><span class="monospaced">Administrator</span></tt>: has all privileges
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">NoAccess</span></tt>: has no privileges (used to forbid access)
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">PVEAdmin</span></tt>: can do most things, but miss rights to modify system settings (<tt><span class="monospaced">Sys.PowerMgmt</span></tt>, <tt><span class="monospaced">Sys.Modify</span></tt>, <tt><span class="monospaced">Realm.Allocate</span></tt>).
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">PVEAuditor</span></tt>: read only access
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">PVEDatastoreAdmin</span></tt>: create and allocate backup space and templates
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">PVEDatastoreUser</span></tt>: allocate backup space and view storage
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">PVEPoolAdmin</span></tt>: allocate pools
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">PVESysAdmin</span></tt>: User ACLs, audit, system console and system logs
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">PVETemplateUser</span></tt>: view and clone templates
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">PVEUserAdmin</span></tt>: user administration
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">PVEVMAdmin</span></tt>: fully administer VMs
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">PVEVMUser</span></tt>: view, backup, config CDROM, VM console, VM power management
+</p>
+</li>
+</ul></div>
+<div class="paragraph">
+<p>You can see the whole set of predefined roles on the GUI.</p></div>
+<div class="paragraph">
+<p>Adding new roles can currently only be done from the command line, like
+this:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum roleadd PVE_Power-only -privs <span style="color: #FF0000">"VM.PowerMgmt VM.Console"</span>
+pveum roleadd Sys_Power-only -privs <span style="color: #FF0000">"Sys.PowerMgmt Sys.Console"</span></tt></pre></div></div>
+</div>
+<div class="sect2">
+<h3 id="_privileges">Privileges</h3>
+<div class="paragraph">
+<p>A privilege is the right to perform a specific action. To simplify
+management, lists of privileges are grouped into roles, which can then
+be used in the permission table. Note that privileges cannot directly be
+assigned to users and paths without being part of a role.</p></div>
+<div class="paragraph">
+<p>We currently use the following privileges:</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+Node / System related privileges
+</dt>
+<dd>
+<div class="ulist"><ul>
+<li>
+<p>
+<tt><span class="monospaced">Permissions.Modify</span></tt>: modify access permissions
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">Sys.PowerMgmt</span></tt>: Node power management (start, stop, reset, shutdown, &#8230;)
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">Sys.Console</span></tt>: console access to Node
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">Sys.Syslog</span></tt>: view Syslog
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">Sys.Audit</span></tt>: view node status/config, Corosync cluster config and HA config
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">Sys.Modify</span></tt>: create/remove/modify node network parameters
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">Group.Allocate</span></tt>: create/remove/modify groups
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">Pool.Allocate</span></tt>: create/remove/modify a pool
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">Realm.Allocate</span></tt>: create/remove/modify authentication realms
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">Realm.AllocateUser</span></tt>: assign user to a realm
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">User.Modify</span></tt>: create/remove/modify user access and details.
+</p>
+</li>
+</ul></div>
+</dd>
+<dt class="hdlist1">
+Virtual machine related privileges
+</dt>
+<dd>
+<div class="ulist"><ul>
+<li>
+<p>
+<tt><span class="monospaced">VM.Allocate</span></tt>: create/remove new VM to server inventory
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">VM.Migrate</span></tt>: migrate VM to alternate server on cluster
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">VM.PowerMgmt</span></tt>: power management (start, stop, reset, shutdown, &#8230;)
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">VM.Console</span></tt>: console access to VM
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">VM.Monitor</span></tt>: access to VM monitor (kvm)
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">VM.Backup</span></tt>: backup/restore VMs
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">VM.Audit</span></tt>: view VM config
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">VM.Clone</span></tt>: clone/copy a VM
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">VM.Config.Disk</span></tt>: add/modify/delete Disks
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">VM.Config.CDROM</span></tt>: eject/change CDROM
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">VM.Config.CPU</span></tt>: modify CPU settings
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">VM.Config.Memory</span></tt>: modify Memory settings
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">VM.Config.Network</span></tt>: add/modify/delete Network devices
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">VM.Config.HWType</span></tt>: modify emulated HW type
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">VM.Config.Options</span></tt>: modify any other VM configuration
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">VM.Snapshot</span></tt>: create/remove VM snapshots
+</p>
+</li>
+</ul></div>
+</dd>
+<dt class="hdlist1">
+Storage related privileges
+</dt>
+<dd>
+<div class="ulist"><ul>
+<li>
+<p>
+<tt><span class="monospaced">Datastore.Allocate</span></tt>: create/remove/modify a data store, delete volumes
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">Datastore.AllocateSpace</span></tt>: allocate space on a datastore
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">Datastore.AllocateTemplate</span></tt>: allocate/upload templates and iso images
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">Datastore.Audit</span></tt>: view/browse a datastore
+</p>
+</li>
+</ul></div>
+</dd>
+</dl></div>
+</div>
+<div class="sect2">
+<h3 id="_objects_and_paths">Objects and Paths</h3>
+<div class="paragraph">
+<p>Access permissions are assigned to objects, such as a virtual machines,
+storages or pools of resources.
+We use file system like paths to address these objects. These paths form a
+natural tree, and permissions of higher levels (shorter path) can
+optionally be propagated down within this hierarchy.</p></div>
+<div class="paragraph" id="pveum_templated_paths">
+<p>Paths can be templated. When an API call requires permissions on a
+templated path, the path may contain references to parameters of the API
+call. These references are specified in curly braces. Some parameters are
+implicitly taken from the API call&#8217;s URI. For instance the permission path
+<tt><span class="monospaced">/nodes/{node}</span></tt> when calling <em>/nodes/mynode/status</em> requires permissions on
+<tt><span class="monospaced">/nodes/mynode</span></tt>, while the path <tt><span class="monospaced">{path}</span></tt> in a PUT request to <tt><span class="monospaced">/access/acl</span></tt>
+refers to the method&#8217;s <tt><span class="monospaced">path</span></tt> parameter.</p></div>
+<div class="paragraph">
+<p>Some examples are:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<tt><span class="monospaced">/nodes/{node}</span></tt>: Access to Proxmox VE server machines
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">/vms</span></tt>: Covers all VMs
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">/vms/{vmid}</span></tt>: Access to specific VMs
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">/storage/{storeid}</span></tt>: Access to a storages
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">/pool/{poolname}</span></tt>: Access to VMs part of a <a href="/wiki/User_Management#pveum_pools">pool</a>
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">/access/groups</span></tt>: Group administration
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">/access/realms/{realmid}</span></tt>: Administrative access to realms
+</p>
+</li>
+</ul></div>
+<div class="sect3">
+<h4 id="_inheritance">Inheritance</h4>
+<div class="paragraph">
+<p>As mentioned earlier, object paths form a file system like tree, and
+permissions can be inherited down that tree (the propagate flag is set
+by default). We use the following inheritance rules:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Permissions for individual users always replace group permissions.
+</p>
+</li>
+<li>
+<p>
+Permissions for groups apply when the user is member of that group.
+</p>
+</li>
+<li>
+<p>
+Permissions replace the ones inherited from an upper level.
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="pveum_pools">Pools</h3>
+<div class="paragraph">
+<p>Pools can be used to group a set of virtual machines and data
+stores. You can then simply set permissions on pools (<tt><span class="monospaced">/pool/{poolid}</span></tt>),
+which are inherited to all pool members. This is a great way simplify
+access control.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_what_permission_do_i_need">What permission do I need?</h3>
+<div class="paragraph">
+<p>The required API permissions are documented for each individual
+method, and can be found at <a href="http://pve.proxmox.com/pve-docs/api-viewer/">http://pve.proxmox.com/pve-docs/api-viewer/</a></p></div>
+<div class="paragraph">
+<p>The permissions are specified as a list which can be interpreted as a
+tree of logic and access-check functions:</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<tt><span class="monospaced">["and", &lt;subtests&gt;...]</span></tt> and <tt><span class="monospaced">["or", &lt;subtests&gt;...]</span></tt>
+</dt>
+<dd>
+<p>
+Each(<tt><span class="monospaced">and</span></tt>) or any(<tt><span class="monospaced">or</span></tt>) further element in the current list has to be true.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">["perm", &lt;path&gt;, [ &lt;privileges&gt;... ], &lt;options&gt;...]</span></tt>
+</dt>
+<dd>
+<p>
+The <tt><span class="monospaced">path</span></tt> is a templated parameter (see
+<a href="/wiki/User_Management#pveum_templated_paths">Objects and Paths</a>). All (or , if the <tt><span class="monospaced">any</span></tt>
+option is used, any) of the listed
+privileges must be allowed on the specified path. If a <tt><span class="monospaced">require-param</span></tt>
+option is specified, then its specified parameter is required even if the
+API call&#8217;s schema otherwise lists it as being optional.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">["userid-group", [ &lt;privileges&gt;... ], &lt;options&gt;...]</span></tt>
+</dt>
+<dd>
+<p>
+The caller must have any of the listed privileges on <tt><span class="monospaced">/access/groups</span></tt>. In
+addition there are two possible checks depending on whether the
+<tt><span class="monospaced">groups_param</span></tt> option is set:
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+<tt><span class="monospaced">groups_param</span></tt> is set: The API call has a non-optional <tt><span class="monospaced">groups</span></tt> parameter
+and the caller must have any of the listed privileges on all of the listed
+groups.
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">groups_param</span></tt> is not set: The user passed via the <tt><span class="monospaced">userid</span></tt> parameter
+must exist and be part of a group on which the caller has any of the listed
+privileges (via the <tt><span class="monospaced">/access/groups/&lt;group&gt;</span></tt> path).
+</p>
+</li>
+</ul></div>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">["userid-param", "self"]</span></tt>
+</dt>
+<dd>
+<p>
+The value provided for the API call&#8217;s <tt><span class="monospaced">userid</span></tt> parameter must refer to the
+user performing the action. (Usually in conjunction with <tt><span class="monospaced">or</span></tt>, to allow
+users to perform an action on themselves even if they don&#8217;t have elevated
+privileges.)
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">["userid-param", "Realm.AllocateUser"]</span></tt>
+</dt>
+<dd>
+<p>
+The user needs <tt><span class="monospaced">Realm.AllocateUser</span></tt> access to <tt><span class="monospaced">/access/realm/&lt;realm&gt;</span></tt>, with
+<tt><span class="monospaced">&lt;realm&gt;</span></tt> referring to the realm of the user passed via the <tt><span class="monospaced">userid</span></tt>
+parameter. Note that the user does not need to exist in order to be
+associated with a realm, since user IDs are passed in the form of
+<tt><span class="monospaced">&lt;username&gt;@&lt;realm&gt;</span></tt>.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">["perm-modify", &lt;path&gt;]</span></tt>
+</dt>
+<dd>
+<p>
+The <tt><span class="monospaced">path</span></tt> is a templated parameter (see
+<a href="/wiki/User_Management#pveum_templated_paths">Objects and Paths</a>). The user needs either the
+<tt><span class="monospaced">Permissions.Modify</span></tt> privilege, or,
+depending on the path, the following privileges as a possible substitute:
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+<tt><span class="monospaced">/storage/...</span></tt>: additionally requires 'Datastore.Allocate`
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">/vms/...</span></tt>: additionally requires 'VM.Allocate`
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">/pool/...</span></tt>: additionally requires 'Pool.Allocate`
+</p>
+<div class="paragraph">
+<p>If the path is empty, <tt><span class="monospaced">Permission.Modify</span></tt> on <tt><span class="monospaced">/access</span></tt> is required.</p></div>
+</li>
+</ul></div>
+</dd>
+</dl></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_command_line_tool">Command Line Tool</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Most users will simply use the GUI to manage users. But there is also
+a full featured command line tool called <tt><span class="monospaced">pveum</span></tt> (short for &#8220;<strong>P</strong>roxmox
+<strong>VE</strong> <strong>U</strong>ser <strong>M</strong>anager&#8221;). Please note that all Proxmox VE command
+line tools are wrappers around the API, so you can also access those
+function through the REST API.</p></div>
+<div class="paragraph">
+<p>Here are some simple usage examples. To show help type:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum</tt></pre></div></div>
+<div class="paragraph">
+<p>or (to show detailed help about a specific command)</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum <span style="font-weight: bold"><span style="color: #0000FF">help</span></span> useradd</tt></pre></div></div>
+<div class="paragraph">
+<p>Create a new user:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum useradd testuser@pve -comment <span style="color: #FF0000">"Just a test"</span></tt></pre></div></div>
+<div class="paragraph">
+<p>Set or Change the password (not all realms support that):</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum passwd testuser@pve</tt></pre></div></div>
+<div class="paragraph">
+<p>Disable a user:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum usermod testuser@pve -enable <span style="color: #993399">0</span></tt></pre></div></div>
+<div class="paragraph">
+<p>Create a new group:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum groupadd testgroup</tt></pre></div></div>
+<div class="paragraph">
+<p>Create a new role:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum roleadd PVE_Power-only -privs <span style="color: #FF0000">"VM.PowerMgmt VM.Console"</span></tt></pre></div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_real_world_examples">Real World Examples</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_administrator_group">Administrator Group</h3>
+<div class="paragraph">
+<p>One of the most wanted features was the ability to define a group of
+users with full administrator rights (without using the root account).</p></div>
+<div class="paragraph">
+<p>Define the group:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum groupadd admin -comment <span style="color: #FF0000">"System Administrators"</span></tt></pre></div></div>
+<div class="paragraph">
+<p>Then add the permission:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum aclmod <span style="color: #990000">/</span> -group admin -role Administrator</tt></pre></div></div>
+<div class="paragraph">
+<p>You can finally add users to the new <em>admin</em> group:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum usermod testuser@pve -group admin</tt></pre></div></div>
+</div>
+<div class="sect2">
+<h3 id="_auditors">Auditors</h3>
+<div class="paragraph">
+<p>You can give read only access to users by assigning the <tt><span class="monospaced">PVEAuditor</span></tt>
+role to users or groups.</p></div>
+<div class="paragraph">
+<p>Example1: Allow user <tt><span class="monospaced">joe@pve</span></tt> to see everything</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum aclmod <span style="color: #990000">/</span> -user joe@pve -role PVEAuditor</tt></pre></div></div>
+<div class="paragraph">
+<p>Example1: Allow user <tt><span class="monospaced">joe@pve</span></tt> to see all virtual machines</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum aclmod /vms -user joe@pve -role PVEAuditor</tt></pre></div></div>
+</div>
+<div class="sect2">
+<h3 id="_delegate_user_management">Delegate User Management</h3>
+<div class="paragraph">
+<p>If you want to delegate user management to user <tt><span class="monospaced">joe@pve</span></tt> you can do
+that with:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum aclmod /access -user joe@pve -role PVEUserAdmin</tt></pre></div></div>
+<div class="paragraph">
+<p>User <tt><span class="monospaced">joe@pve</span></tt> can now add and remove users, change passwords and
+other user attributes. This is a very powerful role, and you most
+likely want to limit that to selected realms and groups. The following
+example allows <tt><span class="monospaced">joe@pve</span></tt> to modify users within realm <tt><span class="monospaced">pve</span></tt> if they
+are members of group <tt><span class="monospaced">customers</span></tt>:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum aclmod /access/realm/pve -user joe@pve -role PVEUserAdmin
+pveum aclmod /access/groups/customers -user joe@pve -role PVEUserAdmin</tt></pre></div></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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">
+</td>
+<td class="content">The user is able to add other users, but only if they are
+members of group <tt><span class="monospaced">customers</span></tt> and within realm <tt><span class="monospaced">pve</span></tt>.</td>
+</tr></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_pools">Pools</h3>
+<div class="paragraph">
+<p>An enterprise is usually structured into several smaller departments,
+and it is common that you want to assign resources to them and
+delegate management tasks. A pool is simply a set of virtual machines
+and data stores. You can create pools on the GUI. After that you can
+add resources to the pool (VMs, Storage).</p></div>
+<div class="paragraph">
+<p>You can also assign permissions to the pool. Those permissions are
+inherited to all pool members.</p></div>
+<div class="paragraph">
+<p>Lets assume you have a software development department, so we first
+create a group</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum groupadd developers -comment <span style="color: #FF0000">"Our software developers"</span></tt></pre></div></div>
+<div class="paragraph">
+<p>Now we create a new user which is a member of that group</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum useradd developer1@pve -group developers -password</tt></pre></div></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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">
+</td>
+<td class="content">The -password parameter will prompt you for a password</td>
+</tr></table>
+</div>
+<div class="paragraph">
+<p>I assume we already created a pool called &#8220;dev-pool&#8221; on the GUI. So we can now assign permission to that pool:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum aclmod /pool/dev-pool<span style="color: #990000">/</span> -group developers -role PVEAdmin</tt></pre></div></div>
+<div class="paragraph">
+<p>Our software developers can now administrate the resources assigned to
+that pool.</p></div>
+</div>
+</div>
+</div>
+<!-- FOOTER -->
+</div>
+<div id="footnotes"></div>

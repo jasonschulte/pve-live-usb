@@ -1,0 +1,2 @@
+/etc/apt/apt.conf.d/10pveapthook
+/etc/apt/trusted.gpg.d/proxmox-ve-release-5.x.gpg

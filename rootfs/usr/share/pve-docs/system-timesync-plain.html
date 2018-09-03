@@ -1,0 +1,165 @@
+<!-- asciidoc HEADER -->
+<script type="text/javascript">
+//////////////////////////////////////////////////////////////////////////
+// asciidoc JS helper for Proxmox VE mediawiki pages
+//
+// code based on original asciidoc.js, but re-written using jQuery
+//
+//////////////////////////////////////////////////////////////////////////
+
+var asciidoc = {
+
+    // toc generator
+    toc: function ($content) {
+	var tocholder = $content.find('#toc');
+
+	if (!tocholder) {
+	    return;
+	}
+
+	tocholder.html('');
+	tocholder.hide();
+
+	var html = "<div id=\"toctitle\"><h2>Contents</h2></div><ul>";
+
+	var n = 0;
+	$content.find("div.sect1").each(function(){
+	    var h = jQuery(this).find("h2").first();
+	    var id = h.attr("id");
+	    if (id != null) {
+		n++;
+		html += "<li class=\"toclevel-1\">" +
+		    "<a href=\"#" + id + "\">" +
+		    "<span class=\"toctext\">" + h.html() +
+		    "</span></a></li>";
+	    }
+	});
+
+	html += "</ul>";
+
+	if (n > 3) {
+	    tocholder.html(html);
+	    tocholder.show();
+	}
+    },
+
+    // footnote generator
+    footnotes: function ($content) {
+	var noteholder = $content.find('#footnotes');
+	if (!noteholder) {
+	    return;
+	}
+
+	noteholder.html('');
+
+	// Rebuild footnote entries.
+	var refs = {};
+	var n = 0;
+	var inner_html = '';
+
+	$content.find("span.footnote").each(function(){
+	    n++;
+	    var span = jQuery(this);
+	    var note = span.attr("data-note");
+	    var id = span.attr("id");
+	    if (!note) {
+		// Use [\s\S] in place of . so multi-line matches work.
+		// Because JavaScript has no s (dotall) regex flag.
+		note = span.html().match(/\s*\[([\s\S]*)]\s*/)[1];
+		span.html("[<a id='_footnoteref_" + n + "' href='#_footnote_" +
+			  n + "' title='View footnote' class='footnote'>" + n +
+			  "</a>]");
+		span.attr("data-note", note);
+	    }
+	    inner_html +=
+            "<div class='footnote' id='_footnote_" + n + "'>" +
+		"<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+		n + "</a>. " + note + "</div>";
+
+	    if (id != null) { refs["#"+id] = n; }
+	});
+
+	if (inner_html) { noteholder.html("<hr>" + inner_html); }
+
+	if (n != 0) {
+	    // process footnoterefs.
+	    $content.find("span.footnoteref").each(function(){
+		var span = jQuery(this);
+		var href = span.find("a").first().attr("href");
+		href = href.match(/#.*/)[0];  // in case it return full URL.
+		n = refs[href];
+		span.html("[<a href='#_footnote_" + n +
+			  "' title='View footnote' class='footnote'>" + n + "</a>]");
+	    });
+	}
+    }
+};
+
+// add init to mediawiki resource loader queue
+(window.RLQ=window.RLQ||[]).push(function(){
+    mw.hook('wikipage.content').add(function($content) {
+	asciidoc.toc($content);
+	asciidoc.footnotes($content);
+    });
+});
+</script>
+<div id="toc" class="toc">
+</div>
+<div id="asciidoccontent">
+<style type="text/css" scoped>
+td.hdlist1 {
+   vertical-align: top;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+</style>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Proxmox VE cluster stack itself relies heavily on the fact that all
+the nodes have precisely synchronized time. Some other components,
+like Ceph, also refuse to work properly if the local time on nodes is
+not in sync.</p></div>
+<div class="paragraph">
+<p>Time synchronization between nodes can be achieved with the &#8220;Network
+Time Protocol&#8221; (<tt><span class="monospaced">NTP</span></tt>). Proxmox VE uses <tt><span class="monospaced">systemd-timesyncd</span></tt> as NTP client
+by default, preconfigured to use a set of public servers. This setup
+works out of the box in most cases.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_custom_ntp_servers">Using Custom NTP Servers</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In some cases, it might be desired to not use the default NTP
+servers. For example, if your Proxmox VE nodes do not have access to the
+public internet (e.g., because of restrictive firewall rules), you
+need to setup local NTP servers and tell <tt><span class="monospaced">systemd-timesyncd</span></tt> to use
+them:</p></div>
+<div class="listingblock">
+<div class="title">File <tt><span class="monospaced">/etc/systemd/timesyncd.conf</span></tt></div>
+<div class="content monospaced">
+<pre><tt>[Time]
+Servers=ntp1.example.com ntp2.example.com ntp3.example.com ntp4.example.com</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>After restarting the synchronization service (<tt><span class="monospaced">systemctl restart
+systemd-timesyncd</span></tt>) you should verify that your newly configured NTP
+servers are used by checking the journal (<tt><span class="monospaced">journalctl --since -1h -u
+systemd-timesyncd</span></tt>):</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre><tt>...
+Oct 07 14:58:36 node1 systemd[1]: Stopping Network Time Synchronization...
+Oct 07 14:58:36 node1 systemd[1]: Starting Network Time Synchronization...
+Oct 07 14:58:36 node1 systemd[1]: Started Network Time Synchronization.
+Oct 07 14:58:36 node1 systemd-timesyncd[13514]: Using NTP server 10.0.0.1:123 (ntp1.example.com).
+Oct 07 14:58:36 nora systemd-timesyncd[13514]: interval/delta/delay/jitter/drift 64s/-0.002s/0.020s/0.000s/-31ppm
+...</tt></pre>
+</div></div>
+</div>
+</div>
+<!-- FOOTER -->
+</div>
+<div id="footnotes"></div>

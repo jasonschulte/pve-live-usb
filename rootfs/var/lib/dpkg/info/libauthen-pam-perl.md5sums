@@ -1,0 +1,9 @@
+b7194da2b126b18a23dec7f1e2bdf23e  usr/lib/x86_64-linux-gnu/perl5/5.24/Authen/PAM.pm
+5b2feec8cf6ed4b6d6c50deb8a811a05  usr/lib/x86_64-linux-gnu/perl5/5.24/Authen/PAM/FAQ.pod
+e5cdfb596496b64ccac83f31b3e873f4  usr/lib/x86_64-linux-gnu/perl5/5.24/auto/Authen/PAM/PAM.so
+0f54fe9a3bce85454a06f2b8b3c25009  usr/share/doc/libauthen-pam-perl/changelog.Debian.amd64.gz
+6cc59aa3b1b11834dfaeba2e8a74304c  usr/share/doc/libauthen-pam-perl/changelog.Debian.gz
+72ce92bfb1ff1ec1ccfc8bb92caf11b1  usr/share/doc/libauthen-pam-perl/changelog.gz
+0400c3f43276a0f2edf594ae73576922  usr/share/doc/libauthen-pam-perl/copyright
+0a4c92b8b5fbdc4493225599ac2ba9f6  usr/share/man/man3/Authen::PAM.3pm.gz
+aa3cf9a94eb388e952b2ab12aaa52b1a  usr/share/man/man3/Authen::PAM::FAQ.3pm.gz

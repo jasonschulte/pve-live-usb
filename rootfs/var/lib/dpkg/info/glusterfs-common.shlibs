@@ -1,0 +1,7 @@
+rot 13 glusterfs-common
+libgfapi 0 glusterfs-common
+libgfchangelog 0 glusterfs-common
+libgfdb 0 glusterfs-common
+libgfrpc 0 glusterfs-common
+libgfxdr 0 glusterfs-common
+libglusterfs 0 glusterfs-common

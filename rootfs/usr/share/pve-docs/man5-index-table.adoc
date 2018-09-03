@@ -1,0 +1,7 @@
+[width="100%",cols="5*d",options="header"]
+|====
+|Name 3+|Title|Link
+|datacenter.cfg(5) 3+|Datacenter Configuration|link:datacenter.cfg.5.html[datacenter.cfg.5]
+|pct.conf(5) 3+|Container Configuration|link:pct.conf.5.html[pct.conf.5]
+|qm.conf(5) 3+|Virtual Machine Configuration|link:qm.conf.5.html[qm.conf.5]
+|====

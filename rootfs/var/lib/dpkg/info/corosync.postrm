@@ -1,0 +1,35 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = purge ]; then
+  rm -rf /var/lib/corosync
+  rm -rf /var/log/corosync
+fi
+
+# Automatically added by dh_installdeb
+dpkg-maintscript-helper rm_conffile /etc/corosync/corosync.conf.example.udpu 2.3.5-1~ -- "$@"
+# End automatically added section
+# Automatically added by dh_installdeb
+dpkg-maintscript-helper rm_conffile /etc/corosync/corosync.conf.example 2.3.5-1~ -- "$@"
+# End automatically added section
+# Automatically added by dh_systemd_start
+if [ -d /run/systemd/system ]; then
+	systemctl --system daemon-reload >/dev/null || true
+fi
+# End automatically added section
+# Automatically added by dh_systemd_enable
+if [ "$1" = "remove" ]; then
+	if [ -x "/usr/bin/deb-systemd-helper" ]; then
+		deb-systemd-helper mask corosync.service >/dev/null
+	fi
+fi
+
+if [ "$1" = "purge" ]; then
+	if [ -x "/usr/bin/deb-systemd-helper" ]; then
+		deb-systemd-helper purge corosync.service >/dev/null
+		deb-systemd-helper unmask corosync.service >/dev/null
+	fi
+fi
+# End automatically added section
+

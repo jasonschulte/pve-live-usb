@@ -1,0 +1,15 @@
+778c81f13687c1bb020b4f3148bc57ab  usr/bin/migratepages
+0e6baf88ed90bf7fbbc28a0d2637832a  usr/bin/numactl
+3504465b7ca1fc3863d389dfe3b5d227  usr/bin/numastat
+edba5a5f720efeb50f6a40a4623518d8  usr/share/doc/numactl/CHANGES.gz
+3c7b374a89883feceaf7c78ee34d62c8  usr/share/doc/numactl/DESIGN
+e1f0ff81ada974937d80bbb7f7377236  usr/share/doc/numactl/README
+eea294dfc7590fc99db4d2c04b9066b5  usr/share/doc/numactl/README.Debian
+776ffdd3735c4dd85f9d114c10637b9a  usr/share/doc/numactl/TODO
+9a2bda23f55e550e82f3df112e2d44c8  usr/share/doc/numactl/buildinfo_amd64.gz
+9638ddfafd4f43472f8ce960f8b357ca  usr/share/doc/numactl/changelog.Debian.gz
+edba5a5f720efeb50f6a40a4623518d8  usr/share/doc/numactl/changelog.gz
+1fe113e4a892a0ae09bc7274eb4c5740  usr/share/doc/numactl/copyright
+7451d0cdd59b8e8aff03be149a599702  usr/share/man/man8/migratepages.8.gz
+e8e33d355ad322e4abaca032e10c73a1  usr/share/man/man8/numactl.8.gz
+950655d7656dac625e23bc5dbd4d1fba  usr/share/man/man8/numastat.8.gz

@@ -1,0 +1,17 @@
+/.
+/usr
+/usr/bin
+/usr/bin/cstream
+/usr/share
+/usr/share/doc
+/usr/share/doc/cstream
+/usr/share/doc/cstream/README
+/usr/share/doc/cstream/TODO
+/usr/share/doc/cstream/buildinfo_amd64.gz
+/usr/share/doc/cstream/changelog.Debian.amd64.gz
+/usr/share/doc/cstream/changelog.Debian.gz
+/usr/share/doc/cstream/changelog.gz
+/usr/share/doc/cstream/copyright
+/usr/share/man
+/usr/share/man/man1
+/usr/share/man/man1/cstream.1.gz

@@ -1,0 +1,2 @@
+libzfs 2 libzfs2linux (>= 0.7.8)
+libzfs_core 1 libzfs2linux (>= 0.7.8)

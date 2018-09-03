@@ -1,0 +1,77 @@
+Sep  1 16:09:58 pve postfix[927]: Postfix is running with backwards-compatible default settings
+Sep  1 16:09:58 pve postfix[927]: See http://www.postfix.org/COMPATIBILITY_README.html for details
+Sep  1 16:09:58 pve postfix[927]: To disable backwards compatibility use "postconf compatibility_level=2" and "postfix reload"
+Sep  1 16:09:59 pve postfix/postfix-script[1048]: starting the Postfix mail system
+Sep  1 16:09:59 pve postfix/master[1050]: daemon started -- version 3.1.8, configuration /etc/postfix
+Sep  1 16:11:38 pve postfix[1555]: Postfix is running with backwards-compatible default settings
+Sep  1 16:11:38 pve postfix[1555]: See http://www.postfix.org/COMPATIBILITY_README.html for details
+Sep  1 16:11:38 pve postfix[1555]: To disable backwards compatibility use "postconf compatibility_level=2" and "postfix reload"
+Sep  1 16:11:39 pve postfix/postfix-script[1561]: refreshing the Postfix mail system
+Sep  1 16:11:39 pve postfix/master[1050]: reload -- version 3.1.8, configuration /etc/postfix
+Sep  1 16:11:39 pve postfix[1599]: Postfix is running with backwards-compatible default settings
+Sep  1 16:11:39 pve postfix[1599]: See http://www.postfix.org/COMPATIBILITY_README.html for details
+Sep  1 16:11:39 pve postfix[1599]: To disable backwards compatibility use "postconf compatibility_level=2" and "postfix reload"
+Sep  1 16:11:39 pve postfix/postfix-script[1605]: refreshing the Postfix mail system
+Sep  1 16:11:39 pve postfix/master[1050]: reload -- version 3.1.8, configuration /etc/postfix
+Sep  1 16:11:39 pve postfix[1772]: Postfix is running with backwards-compatible default settings
+Sep  1 16:11:39 pve postfix[1772]: See http://www.postfix.org/COMPATIBILITY_README.html for details
+Sep  1 16:11:39 pve postfix[1772]: To disable backwards compatibility use "postconf compatibility_level=2" and "postfix reload"
+Sep  1 16:11:39 pve postfix/postfix-script[1778]: refreshing the Postfix mail system
+Sep  1 16:11:39 pve postfix/master[1050]: reload -- version 3.1.8, configuration /etc/postfix
+Sep  1 16:11:39 pve postfix[1830]: Postfix is running with backwards-compatible default settings
+Sep  1 16:11:39 pve postfix[1830]: See http://www.postfix.org/COMPATIBILITY_README.html for details
+Sep  1 16:11:39 pve postfix[1830]: To disable backwards compatibility use "postconf compatibility_level=2" and "postfix reload"
+Sep  1 16:11:39 pve postfix/postfix-script[1836]: refreshing the Postfix mail system
+Sep  1 16:11:39 pve postfix/master[1050]: reload -- version 3.1.8, configuration /etc/postfix
+Sep  1 16:44:28 pve postfix/pickup[1860]: B256D4224: uid=0 from=<root>
+Sep  1 16:44:28 pve postfix/cleanup[22680]: B256D4224: message-id=<20180901214428.B256D4224@pve.l0cal.in>
+Sep  1 16:44:28 pve postfix/qmgr[1861]: B256D4224: from=<root@pve.l0cal.in>, size=1143, nrcpt=1 (queue active)
+Sep  1 16:44:28 pve postfix/local[22688]: error: open database /etc/aliases.db: No such file or directory
+Sep  1 16:44:28 pve postfix/local[22688]: warning: hash:/etc/aliases is unavailable. open database /etc/aliases.db: No such file or directory
+Sep  1 16:44:28 pve postfix/local[22688]: warning: hash:/etc/aliases: lookup of 'root' failed
+Sep  1 16:44:28 pve postfix/local[22688]: B256D4224: to=<root@pve.l0cal.in>, orig_to=<root>, relay=local, delay=0.03, delays=0.02/0/0/0.01, dsn=4.3.0, status=deferred (alias database unavailable)
+Sep  1 16:44:28 pve postfix/local[22688]: using backwards-compatible default setting relay_domains=$mydestination to update fast-flush logfile for domain "pve.l0cal.in"
+Sep  1 16:51:39 pve postfix/qmgr[1861]: B256D4224: from=<root@pve.l0cal.in>, size=1143, nrcpt=1 (queue active)
+Sep  1 16:51:39 pve postfix/local[9020]: error: open database /etc/aliases.db: No such file or directory
+Sep  1 16:51:39 pve postfix/local[9020]: warning: hash:/etc/aliases is unavailable. open database /etc/aliases.db: No such file or directory
+Sep  1 16:51:39 pve postfix/local[9020]: warning: hash:/etc/aliases: lookup of 'root' failed
+Sep  1 16:51:39 pve postfix/local[9020]: B256D4224: to=<root@pve.l0cal.in>, orig_to=<root>, relay=local, delay=430, delays=430/0.01/0/0.01, dsn=4.3.0, status=deferred (alias database unavailable)
+Sep  1 16:51:39 pve postfix/local[9020]: using backwards-compatible default setting relay_domains=$mydestination to update fast-flush logfile for domain "pve.l0cal.in"
+Sep  1 16:53:26 pve postfix[10183]: Postfix is running with backwards-compatible default settings
+Sep  1 16:53:26 pve postfix[10183]: See http://www.postfix.org/COMPATIBILITY_README.html for details
+Sep  1 16:53:26 pve postfix[10183]: To disable backwards compatibility use "postconf compatibility_level=2" and "postfix reload"
+Sep  1 16:53:26 pve postfix/postfix-script[10222]: stopping the Postfix mail system
+Sep  1 16:53:26 pve postfix/master[1050]: terminating on signal 15
+Sep  1 16:53:56 pve postfix[945]: Postfix is running with backwards-compatible default settings
+Sep  1 16:53:56 pve postfix[945]: See http://www.postfix.org/COMPATIBILITY_README.html for details
+Sep  1 16:53:56 pve postfix[945]: To disable backwards compatibility use "postconf compatibility_level=2" and "postfix reload"
+Sep  1 16:53:56 pve postfix/postfix-script[1045]: starting the Postfix mail system
+Sep  1 16:53:56 pve postfix/master[1047]: daemon started -- version 3.1.8, configuration /etc/postfix
+Sep  1 16:58:56 pve postfix/qmgr[1061]: B256D4224: from=<root@pve.l0cal.in>, size=1143, nrcpt=1 (queue active)
+Sep  1 16:58:56 pve postfix/local[1822]: error: open database /etc/aliases.db: No such file or directory
+Sep  1 16:58:56 pve postfix/local[1822]: warning: hash:/etc/aliases is unavailable. open database /etc/aliases.db: No such file or directory
+Sep  1 16:58:56 pve postfix/local[1822]: warning: hash:/etc/aliases: lookup of 'root' failed
+Sep  1 16:58:56 pve postfix/local[1822]: B256D4224: to=<root@pve.l0cal.in>, orig_to=<root>, relay=local, delay=868, delays=868/0.01/0/0.01, dsn=4.3.0, status=deferred (alias database unavailable)
+Sep  1 16:58:56 pve postfix/local[1822]: using backwards-compatible default setting relay_domains=$mydestination to update fast-flush logfile for domain "pve.l0cal.in"
+Sep  1 17:13:56 pve postfix/qmgr[1061]: B256D4224: from=<root@pve.l0cal.in>, size=1143, nrcpt=1 (queue active)
+Sep  1 17:13:56 pve postfix/local[3047]: error: open database /etc/aliases.db: No such file or directory
+Sep  1 17:13:56 pve postfix/local[3047]: warning: hash:/etc/aliases is unavailable. open database /etc/aliases.db: No such file or directory
+Sep  1 17:13:56 pve postfix/local[3047]: warning: hash:/etc/aliases: lookup of 'root' failed
+Sep  1 17:13:56 pve postfix/local[3047]: B256D4224: to=<root@pve.l0cal.in>, orig_to=<root>, relay=local, delay=1767, delays=1767/0.01/0/0.01, dsn=4.3.0, status=deferred (alias database unavailable)
+Sep  1 17:13:56 pve postfix/local[3047]: using backwards-compatible default setting relay_domains=$mydestination to update fast-flush logfile for domain "pve.l0cal.in"
+Sep  1 17:22:29 pve postfix[3917]: Postfix is running with backwards-compatible default settings
+Sep  1 17:22:29 pve postfix[3917]: See http://www.postfix.org/COMPATIBILITY_README.html for details
+Sep  1 17:22:29 pve postfix[3917]: To disable backwards compatibility use "postconf compatibility_level=2" and "postfix reload"
+Sep  1 17:22:29 pve postfix/postfix-script[3956]: stopping the Postfix mail system
+Sep  1 17:22:29 pve postfix/master[1047]: terminating on signal 15
+Sep  1 17:22:55 pve postfix[954]: Postfix is running with backwards-compatible default settings
+Sep  1 17:22:55 pve postfix[954]: See http://www.postfix.org/COMPATIBILITY_README.html for details
+Sep  1 17:22:55 pve postfix[954]: To disable backwards compatibility use "postconf compatibility_level=2" and "postfix reload"
+Sep  1 17:22:55 pve postfix/postfix-script[1054]: starting the Postfix mail system
+Sep  1 17:22:55 pve postfix/master[1056]: daemon started -- version 3.1.8, configuration /etc/postfix
+Sep  1 17:47:55 pve postfix/qmgr[1070]: B256D4224: from=<root@pve.l0cal.in>, size=1143, nrcpt=1 (queue active)
+Sep  1 17:47:55 pve postfix/local[9951]: error: open database /etc/aliases.db: No such file or directory
+Sep  1 17:47:55 pve postfix/local[9951]: warning: hash:/etc/aliases is unavailable. open database /etc/aliases.db: No such file or directory
+Sep  1 17:47:55 pve postfix/local[9951]: warning: hash:/etc/aliases: lookup of 'root' failed
+Sep  1 17:47:55 pve postfix/local[9951]: B256D4224: to=<root@pve.l0cal.in>, orig_to=<root>, relay=local, delay=3807, delays=3807/0.02/0/0, dsn=4.3.0, status=deferred (alias database unavailable)
+Sep  1 17:47:55 pve postfix/local[9951]: using backwards-compatible default setting relay_domains=$mydestination to update fast-flush logfile for domain "pve.l0cal.in"

@@ -1,0 +1,885 @@
+<!-- asciidoc HEADER -->
+<script type="text/javascript">
+//////////////////////////////////////////////////////////////////////////
+// asciidoc JS helper for Proxmox VE mediawiki pages
+//
+// code based on original asciidoc.js, but re-written using jQuery
+//
+//////////////////////////////////////////////////////////////////////////
+
+var asciidoc = {
+
+    // toc generator
+    toc: function ($content) {
+	var tocholder = $content.find('#toc');
+
+	if (!tocholder) {
+	    return;
+	}
+
+	tocholder.html('');
+	tocholder.hide();
+
+	var html = "<div id=\"toctitle\"><h2>Contents</h2></div><ul>";
+
+	var n = 0;
+	$content.find("div.sect1").each(function(){
+	    var h = jQuery(this).find("h2").first();
+	    var id = h.attr("id");
+	    if (id != null) {
+		n++;
+		html += "<li class=\"toclevel-1\">" +
+		    "<a href=\"#" + id + "\">" +
+		    "<span class=\"toctext\">" + h.html() +
+		    "</span></a></li>";
+	    }
+	});
+
+	html += "</ul>";
+
+	if (n > 3) {
+	    tocholder.html(html);
+	    tocholder.show();
+	}
+    },
+
+    // footnote generator
+    footnotes: function ($content) {
+	var noteholder = $content.find('#footnotes');
+	if (!noteholder) {
+	    return;
+	}
+
+	noteholder.html('');
+
+	// Rebuild footnote entries.
+	var refs = {};
+	var n = 0;
+	var inner_html = '';
+
+	$content.find("span.footnote").each(function(){
+	    n++;
+	    var span = jQuery(this);
+	    var note = span.attr("data-note");
+	    var id = span.attr("id");
+	    if (!note) {
+		// Use [\s\S] in place of . so multi-line matches work.
+		// Because JavaScript has no s (dotall) regex flag.
+		note = span.html().match(/\s*\[([\s\S]*)]\s*/)[1];
+		span.html("[<a id='_footnoteref_" + n + "' href='#_footnote_" +
+			  n + "' title='View footnote' class='footnote'>" + n +
+			  "</a>]");
+		span.attr("data-note", note);
+	    }
+	    inner_html +=
+            "<div class='footnote' id='_footnote_" + n + "'>" +
+		"<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+		n + "</a>. " + note + "</div>";
+
+	    if (id != null) { refs["#"+id] = n; }
+	});
+
+	if (inner_html) { noteholder.html("<hr>" + inner_html); }
+
+	if (n != 0) {
+	    // process footnoterefs.
+	    $content.find("span.footnoteref").each(function(){
+		var span = jQuery(this);
+		var href = span.find("a").first().attr("href");
+		href = href.match(/#.*/)[0];  // in case it return full URL.
+		n = refs[href];
+		span.html("[<a href='#_footnote_" + n +
+			  "' title='View footnote' class='footnote'>" + n + "</a>]");
+	    });
+	}
+    }
+};
+
+// add init to mediawiki resource loader queue
+(window.RLQ=window.RLQ||[]).push(function(){
+    mw.hook('wikipage.content').add(function($content) {
+	asciidoc.toc($content);
+	asciidoc.footnotes($content);
+    });
+});
+</script>
+<div id="toc" class="toc">
+</div>
+<div id="asciidoccontent">
+<style type="text/css" scoped>
+td.hdlist1 {
+   vertical-align: top;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+</style>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph" id="chapter_storage">
+<p>The Proxmox VE storage model is very flexible. Virtual machine images
+can either be stored on one or several local storages, or on shared
+storage like NFS or iSCSI (NAS, SAN). There are no limits, and you may
+configure as many storage pools as you like. You can use all
+storage technologies available for Debian Linux.</p></div>
+<div class="paragraph">
+<p>One major benefit of storing VMs on shared storage is the ability to
+live-migrate running machines without any downtime, as all nodes in
+the cluster have direct access to VM disk images. There is no need to
+copy VM image data, so live migration is very fast in that case.</p></div>
+<div class="paragraph">
+<p>The storage library (package <tt><span class="monospaced">libpve-storage-perl</span></tt>) uses a flexible
+plugin system to provide a common interface to all storage types. This
+can be easily adopted to include further storage types in future.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_storage_types">Storage Types</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There are basically two different classes of storage types:</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+Block level storage
+</dt>
+<dd>
+<p>
+Allows to store large <em>raw</em> images. It is usually not possible to store
+other files (ISO, backups, ..) on such storage types. Most modern
+block level storage implementations support snapshots and clones.
+RADOS, Sheepdog and GlusterFS are distributed systems, replicating storage
+data to different nodes.
+</p>
+</dd>
+<dt class="hdlist1">
+File level storage
+</dt>
+<dd>
+<p>
+They allow access to a full featured (POSIX) file system. They are
+more flexible, and allows you to store any content type. ZFS is
+probably the most advanced system, and it has full support for
+snapshots and clones.
+</p>
+</dd>
+</dl></div>
+<table class="wikitable tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<caption class="title">Table 1. Available storage types</caption>
+<col style="width:16%;">
+<col style="width:16%;">
+<col style="width:16%;">
+<col style="width:16%;">
+<col style="width:16%;">
+<col style="width:16%;">
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top" >Description    </th>
+<th class="tableblock halign-left valign-top" >PVE type    </th>
+<th class="tableblock halign-left valign-top" >Level </th>
+<th class="tableblock halign-left valign-top" >Shared</th>
+<th class="tableblock halign-left valign-top" >Snapshots</th>
+<th class="tableblock halign-left valign-top" >Stable</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">ZFS (local)</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt>zfspool</tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">file</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">no</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">yes</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">yes</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Directory</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt>dir</tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">file</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">no</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">no<sup>1</sup></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">yes</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">NFS</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt>nfs</tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">file</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">yes</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">no<sup>1</sup></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">yes</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">CIFS</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt>cifs</tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">file</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">yes</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">no<sup>1</sup></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">yes</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">GlusterFS</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt>glusterfs</tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">file</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">yes</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">no<sup>1</sup></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">yes</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">LVM</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt>lvm</tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">block</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">no<sup>2</sup></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">no</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">yes</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">LVM-thin</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt>lvmthin</tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">block</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">no</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">yes</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">yes</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">iSCSI/kernel</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt>iscsi</tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">block</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">yes</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">no</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">yes</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">iSCSI/libiscsi</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt>iscsidirect</tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">block</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">yes</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">no</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">yes</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Ceph/RBD</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt>rbd</tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">block</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">yes</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">yes</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">yes</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Sheepdog</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt>sheepdog</tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">block</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">yes</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">yes</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">beta</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">ZFS over iSCSI</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt>zfs</tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">block</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">yes</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">yes</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">yes</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><sup>1</sup>: On file based storages, snapshots are possible with the <em>qcow2</em> format.</p></div>
+<div class="paragraph">
+<p><sup>2</sup>: It is possible to use LVM on top of an iSCSI storage. That way
+you get a <tt><span class="monospaced">shared</span></tt> LVM storage.</p></div>
+<div class="sect2">
+<h3 id="_thin_provisioning">Thin Provisioning</h3>
+<div class="paragraph">
+<p>A number of storages, and the Qemu image format <tt><span class="monospaced">qcow2</span></tt>, support <em>thin
+provisioning</em>.  With thin provisioning activated, only the blocks that
+the guest system actually use will be written to the storage.</p></div>
+<div class="paragraph">
+<p>Say for instance you create a VM with a 32GB hard disk, and after
+installing the guest system OS, the root file system of the VM contains
+3 GB of data.  In that case only 3GB are written to the storage, even
+if the guest VM sees a 32GB hard drive. In this way thin provisioning
+allows you to create disk images which are larger than the currently
+available storage blocks. You can create large disk images for your
+VMs, and when the need arises, add more disks to your storage without
+resizing the VMs' file systems.</p></div>
+<div class="paragraph">
+<p>All storage types which have the &#8220;Snapshots&#8221; feature also support thin
+provisioning.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Caution" src="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAKdUlEQVRoge1Ze1AV1x3+zt279wEi
+DWCYGzRVktqa1MEmmtbWR22ncXxUrTDWV/5IqG2wUAUfmUwSkk6V+EAJCEQC6figwZBqZtRxqukf
+tebRZBpFG1S0hiRErwiaKK977+6eX//YPXt37+UiIJlMZnpmdnb33PP4vt97z2VEhG9yc3zdAO60
+/Z/A192+8QScX8Wifr+fWltbzffU1FT4fD72Vew15ASampqovr4eBw8eNPvGjRuHzMxMmj9//tCT
+IKIhu958801yuVwEoNdr48aNNJT7EdHQEdi/fz/JshwTvLiKioqGlMSQLFJfX0+MMRvQsWNSqXLz
+H2jez78fRWLTpk1DRuKOF6irqyOn02kDOP8XGdTz+VFSP91Hatu79NRvZ0SR2LJly5CQuKPJtbW1
+JEmSDdivHp1AwctHSblYSsqFElLOF5PavIvWZU+LIrF169Y7JjHoibt3744CnzXrIQpeOUbKhVJS
+mkpIPV9MyrnNpJwtIuVSNa15/MdRJLZt23ZHJBjRwIu5N954gxYvXgzOudm3aO5E1L5SBNZ1Hoxr
+INLAyH6HJxVP/WkXtu9+37ZeSUkJVq9ePagQO+BMXFNTEwV+ybxHsPeVIjg6zwOkgSWNhuOuUUBC
+KhxJY0AggDSgpwWbn1mO1csftq1ZUFCA0tLSQZXFA0pkVVVVlJOTA6vWsmY9hF07N0AS4OU48LgR
+WLO+FPFxboxMS8G5hlPYmPMI4jwM1P0Jtj67DJyrKHvtNADdjPPz8+FwOCgvL29gmuivrVVUVESF
+yqxZD1PoyjFSL+7QHbapmJTml+n9EzVRtl676ZekNKwl5VQ+KSfzKHR2E+UutodYxhiVl5cPyCf6
+ZUJlZWWUm5trk/wTi6bgtVdf1M2Gq2DEwUgDNBWhUDBqjfSRwwGoIOEP3c3Y/uxirFw0zibMvLw8
+VFZW9tucbkugoqKCVq1aZQO/YslUVJU+D9bVBIDroLgK4hygEDweybYGY8AD6d8yftfASL+j+2O8
+9NwiPJk51kYiNzcXO3fu7BeJPgkUFxdTbm6ure/JZdNRub0QrOMcGFcBrgLgAHEAGqD2ID7OZZsz
+Ji0RcR6HAV4DkaqPJxXouoSywkz8buF9NhIrV65EVVXVbUnEJHDixAlat26drS9n+U+xo/hZMMNh
+yZA+uAbAIKOGMCJlmG3eA/clAYaJEamGBlRdC6QBXZewo3AhVswfbSORk5ODDz/8sE8SvRLw+/1U
+XV0dBb5MgOe6LUNIEqpOwgCUlOCESw4HuAfG3KX7B2kAGaTJ0Jro77yI8ucX4DfzRtlIHD58GH6/
+PyaJXgk0NjZi79695vuUiffrkr91Vt8cHAwc4FZJGiZEKqDcwsi0ZHP+d749POy8MS7iGtBxARWF
+8/CDsQnm3BdeeAHWj6N+EYhspSVbgI5zYYkZGmAwzIEbwA0tUM9NfO+7aeb89HuGRQBWLcSNZxj3
+zvOYMzk5NpjBEHi99mXD5lXdjqGDJh42h7CEOXhnK3448X5z/shUb1jSpIEM8yFuzOUcjAsNcnR0
+KXdG4MEHH8TEiRPN9z0H3sfRE41m+GNcs9i0LjkGTTcrUoGem5g7/V5z/ohElw4O+jxGYQ3qJqmB
+jN/+cbINtcfCJvPYY4+hr3qtVwI+n49lZmaa71fbbuH3hX/FycbPQKSCoIIMQEQcehjVo5Gw8/F3
+3cSvH03H2HuHY1icQzcvYWKGIMiITMwQwjtnruPpqk9w/ZZq7p2RkYEJEyaAYrCIWY36/X7KyMhA
+W1ub2XfP3Qmo3ZKFaQ+P0gmYIdSoOkU4lWSwxGRAdqHL/xm86k27w0blAw3/PncD6yo/xrsfdZj7
+paSkoLGxESNGjAgDZsxWK8X0AZ/Px44fP460tLAzXrnWgUX5r+PYuxf1mG/Gf80sofWy2YuWbg/+
+uONtPLHhPRw+0WIHL8hbwG95rcUGPiEhAYcOHUJSUhI456YZRWqiz+8BIqLm5mZMmjQJN27cMPsT
+E9zYtWE25k4bYzh3mABIBRwOHPgPx+LH/6yDiXPi6pHZcEpk+I5qmtGpCzdQecCPPUevmevLsowj
+R45gypQpcDgc5mVowKaJmBoQTEePHo2GhgaMGxcuum52BLHsqUOoP3oWgLB9Sz7QgpgxJoThw/SS
+IutnaXBKZEpcgD998Uvs+3ubDbzT6URNTQ0mTZoEVVWhaRo459A0TeCy4etVA+JH8RvnHK2trZgz
+Zw5Onz5tjnPJDrxSOAPLZt1nSVIqwDmIVJw6dx1nLt3A3J/cjZThkhE29cvf3o2KA59ja91lcz3G
+GDZv3oylS5fC7XbD6XTC6XRCkiRIktS7Jm5HQLDXNA3Xr19HVlYWPvjgA4vEGLav+RHmTxsJX4rb
+8AsO4kbOIG6GzTD4HvzlmB/PVH9q2zc/Px/Z2dnwer1wu92QZRkulwuSJEGWZZMEY8wkEGVCVvCC
+AOcciqIgPj4e+/btw9SpU83xqkpYteU9HHm7Bf62rnC2RjikisTFSMPV9m4ceucannvVDn7p0qVY
+uHAhgsEggsEgQqFQlAlZnVm0PjOxIKFpGogIqqrC5XKhuroa06dPt4wDcl78F+qPNeNKe6cRoTjs
+ZYOKK+3dON7wBQrKm2H5pMbMmTOxZMkSBAIB9PT0oKenB4FAAIqiQFEUU4hRRyq3I2AlIZ4553A6
+nSgvL8fs2bNtY9eVNaDub58YmhDZWpe+v70bJ5tu4clt/4WihqU4efJkrFixAkRkAg4Gg1AUBaqq
+muDF/pGtX7WQNXeIZ0mSUFRUhAULFtjGPl3ZiJdev4QrbZ16zUQqrrZ342JLN5ZvaEJ3ICz68ePH
+IycnB5qmmZIW4EOhUJTZWEKo+Rx1KsEYY9Zk4XA4IEmSKXnOuRkVJElCYWEhvF4v6urqzDVK9n2M
+zu4Qnl5+L9q/7MHltgBWbr9kA5+eno7c3FzIsoyI5GrTeCzgosU8VmGMmSGLiEwSsixH2WNBQQEA
+2EhUH/wc7330BaaOH479/2zHtS/CFabP58OaNWvg9Xp1EE4nZFmGLMtwu93wer1wuVy2ECpJko2I
+iTNWJrZGI+HEwi6FisUVCAQQCASwZ88eVFZW9lk9JicnY/369fD5fPB4PCbo+Ph4k4TH44HL5YLX
+64XX6zXH9EKE9aUBRkTEGLNJP1Kd4nI4HMjOzkZ8fDyKi4ttJ3eiJSYmYu3atRg1apQJzuv1wuPx
+wOPxwOFwmEBFHnA6nXC5XGYSiywlbns2SnoDANN0hMNZnS0UCpkaOnPmDN566y20tLSY2ktLS8OM
+GTOQkpICt9uNuLg4M2EJ8CJZSZJkZmFBwkrAWpH2+3BXEBEkRIhTVdVMOCL5qKqKy5cvQ1EUaJoG
+VVWRnKx/Jlpt3eVy2QCKu9C68AFr9o0spwd0Oh1ZYggCIlNaiQktiXdhZgKQABcp3ci7LMtM7B0J
+fsAErJoAYItG1mdr+hfvVlACtHDIXkploYXbHvQOikDEe6/ZmjFmAhf9ZvJxOk2Qol88W4kYz32S
+GNQfHLG+TyMTkAVEr88xQfVnkBg7GAKixSIykDYQsL21/wFkW/B5QqT9lwAAAABJRU5ErkJggg==">
+</td>
+<td class="content">If a storage runs full, all guests using volumes on that
+storage receive IO errors. This can cause file system inconsistencies
+and may corrupt your data. So it is advisable to avoid
+over-provisioning of your storage resources, or carefully observe
+free space to avoid such conditions.</td>
+</tr></table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_storage_configuration">Storage Configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>All Proxmox VE related storage configuration is stored within a single text
+file at <tt><span class="monospaced">/etc/pve/storage.cfg</span></tt>. As this file is within <tt><span class="monospaced">/etc/pve/</span></tt>, it
+gets automatically distributed to all cluster nodes. So all nodes
+share the same storage configuration.</p></div>
+<div class="paragraph">
+<p>Sharing storage configuration make perfect sense for shared storage,
+because the same &#8220;shared&#8221; storage is accessible from all nodes. But is
+also useful for local storage types. In this case such local storage
+is available on all nodes, but it is physically different and can have
+totally different content.</p></div>
+<div class="sect2">
+<h3 id="_storage_pools">Storage Pools</h3>
+<div class="paragraph">
+<p>Each storage pool has a <tt><span class="monospaced">&lt;type&gt;</span></tt>, and is uniquely identified by its
+<tt><span class="monospaced">&lt;STORAGE_ID&gt;</span></tt>. A pool configuration looks like this:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre><tt>&lt;type&gt;: &lt;STORAGE_ID&gt;
+        &lt;property&gt; &lt;value&gt;
+        &lt;property&gt; &lt;value&gt;
+        ...</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>The <tt><span class="monospaced">&lt;type&gt;: &lt;STORAGE_ID&gt;</span></tt> line starts the pool definition, which is then
+followed by a list of properties. Most properties have values, but some of
+them come with reasonable default. In that case you can omit the value.</p></div>
+<div class="paragraph">
+<p>To be more specific, take a look at the default storage configuration
+after installation. It contains one special local storage pool named
+<tt><span class="monospaced">local</span></tt>, which refers to the directory <tt><span class="monospaced">/var/lib/vz</span></tt> and is always
+available. The Proxmox VE installer creates additional storage entries
+depending on the storage type chosen at installation time.</p></div>
+<div class="listingblock">
+<div class="title">Default storage configuration (<tt><span class="monospaced">/etc/pve/storage.cfg</span></tt>)</div>
+<div class="content monospaced">
+<pre><tt>dir: local
+        path /var/lib/vz
+        content iso,vztmpl,backup
+
+# default image store on LVM based installation
+lvmthin: local-lvm
+        thinpool data
+        vgname pve
+        content rootdir,images
+
+# default image store on ZFS based installation
+zfspool: local-zfs
+        pool rpool/data
+        sparse
+        content images,rootdir</tt></pre>
+</div></div>
+</div>
+<div class="sect2">
+<h3 id="_common_storage_properties">Common Storage Properties</h3>
+<div class="paragraph">
+<p>A few storage properties are common among different storage types.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+nodes
+</dt>
+<dd>
+<p>
+List of cluster node names where this storage is
+usable/accessible. One can use this property to restrict storage
+access to a limited set of nodes.
+</p>
+</dd>
+<dt class="hdlist1">
+content
+</dt>
+<dd>
+<p>
+A storage can support several content types, for example virtual disk
+images, cdrom iso images, container templates or container root
+directories. Not all storage types support all content types. One can set
+this property to select for what this storage is used for.
+</p>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+images
+</dt>
+<dd>
+<p>
+KVM-Qemu VM images.
+</p>
+</dd>
+<dt class="hdlist1">
+rootdir
+</dt>
+<dd>
+<p>
+Allow to store container data.
+</p>
+</dd>
+<dt class="hdlist1">
+vztmpl
+</dt>
+<dd>
+<p>
+Container templates.
+</p>
+</dd>
+<dt class="hdlist1">
+backup
+</dt>
+<dd>
+<p>
+Backup files (<tt><span class="monospaced">vzdump</span></tt>).
+</p>
+</dd>
+<dt class="hdlist1">
+iso
+</dt>
+<dd>
+<p>
+ISO images
+</p>
+</dd>
+</dl></div>
+</dd>
+<dt class="hdlist1">
+shared
+</dt>
+<dd>
+<p>
+Mark storage as shared.
+</p>
+</dd>
+<dt class="hdlist1">
+disable
+</dt>
+<dd>
+<p>
+You can use this flag to disable the storage completely.
+</p>
+</dd>
+<dt class="hdlist1">
+maxfiles
+</dt>
+<dd>
+<p>
+Maximum number of backup files per VM. Use <tt><span class="monospaced">0</span></tt> for unlimited.
+</p>
+</dd>
+<dt class="hdlist1">
+format
+</dt>
+<dd>
+<p>
+Default image format (<tt><span class="monospaced">raw|qcow2|vmdk</span></tt>)
+</p>
+</dd>
+</dl></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Warning" src="data:image/png;base64,
+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
+/F/lgJiyQFHragAAAABJRU5ErkJggg==">
+</td>
+<td class="content">It is not advisable to use the same storage pool on different
+Proxmox VE clusters. Some storage operation need exclusive access to the
+storage, so proper locking is required. While this is implemented
+within a cluster, it does not work between different clusters.</td>
+</tr></table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_volumes">Volumes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>We use a special notation to address storage data. When you allocate
+data from a storage pool, it returns such a volume identifier. A volume
+is identified by the <tt><span class="monospaced">&lt;STORAGE_ID&gt;</span></tt>, followed by a storage type
+dependent volume name, separated by colon. A valid <tt><span class="monospaced">&lt;VOLUME_ID&gt;</span></tt> looks
+like:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>local:230/example-image.raw</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>local:iso/debian-501-amd64-netinst.iso</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>local:vztmpl/debian-5.0-joomla_1.5.9-1_i386.tar.gz</tt></pre>
+</div></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>iscsi-storage:0.0.2.scsi-14f504e46494c4500494b5042546d2d646744372d31616d61</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>To get the file system path for a <tt><span class="monospaced">&lt;VOLUME_ID&gt;</span></tt> use:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>pvesm path &lt;VOLUME_ID&gt;</tt></pre>
+</div></div>
+<div class="sect2">
+<h3 id="_volume_ownership">Volume Ownership</h3>
+<div class="paragraph">
+<p>There exists an ownership relation for <tt><span class="monospaced">image</span></tt> type volumes. Each such
+volume is owned by a VM or Container. For example volume
+<tt><span class="monospaced">local:230/example-image.raw</span></tt> is owned by VM 230. Most storage
+backends encodes this ownership information into the volume name.</p></div>
+<div class="paragraph">
+<p>When you remove a VM or Container, the system also removes all
+associated volumes which are owned by that VM or Container.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_the_command_line_interface">Using the Command Line Interface</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>It is recommended to familiarize yourself with the concept behind storage
+pools and volume identifiers, but in real life, you are not forced to do any
+of those low level operations on the command line. Normally,
+allocation and removal of volumes is done by the VM and Container
+management tools.</p></div>
+<div class="paragraph">
+<p>Nevertheless, there is a command line tool called <tt><span class="monospaced">pvesm</span></tt> (&#8220;Proxmox VE
+Storage Manager&#8221;), which is able to perform common storage management
+tasks.</p></div>
+<div class="sect2">
+<h3 id="_examples">Examples</h3>
+<div class="paragraph">
+<p>Add storage pools</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>pvesm add &lt;TYPE&gt; &lt;STORAGE_ID&gt; &lt;OPTIONS&gt;
+pvesm add dir &lt;STORAGE_ID&gt; --path &lt;PATH&gt;
+pvesm add nfs &lt;STORAGE_ID&gt; --path &lt;PATH&gt; --server &lt;SERVER&gt; --export &lt;EXPORT&gt;
+pvesm add lvm &lt;STORAGE_ID&gt; --vgname &lt;VGNAME&gt;
+pvesm add iscsi &lt;STORAGE_ID&gt; --portal &lt;HOST[:PORT]&gt; --target &lt;TARGET&gt;</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>Disable storage pools</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>pvesm set &lt;STORAGE_ID&gt; --disable 1</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>Enable storage pools</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>pvesm set &lt;STORAGE_ID&gt; --disable 0</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>Change/set storage options</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>pvesm set &lt;STORAGE_ID&gt; &lt;OPTIONS&gt;
+pvesm set &lt;STORAGE_ID&gt; --shared 1
+pvesm set local --format qcow2
+pvesm set &lt;STORAGE_ID&gt; --content iso</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>Remove storage pools. This does not delete any data, and does not
+disconnect or unmount anything. It just removes the storage
+configuration.</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>pvesm remove &lt;STORAGE_ID&gt;</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>Allocate volumes</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>pvesm alloc &lt;STORAGE_ID&gt; &lt;VMID&gt; &lt;name&gt; &lt;size&gt; [--format &lt;raw|qcow2&gt;]</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>Allocate a 4G volume in local storage. The name is auto-generated if
+you pass an empty string as <tt><span class="monospaced">&lt;name&gt;</span></tt></p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>pvesm alloc local &lt;VMID&gt; '' 4G</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>Free volumes</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>pvesm free &lt;VOLUME_ID&gt;</tt></pre>
+</div></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Warning" src="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAMVUlEQVRogdWZeXDVVZbHP7/f27JB
+wtJIiCERRFlbx5FuHRrRBgtBsRIwCCOrFmGmiDBjYVNlQlgiQjU6IjI4xLJxGf5QGp0Cbaftsu3R
+hu6aYXqgLZoWEsjyyDP7S972e7/l3vnj5cW3Ji9M/zOn6lRS997fvd/vueece+59ipSS/89iv5mP
+ZEQQQsS23RQARVEAUFUVRVFQog0ZyogJSClld3c327Ztw7IsLMuKto90KgBsNhtVVVXMnj2bvLw8
+7Ha7HBEJKWXGKoSQXV1dcsuWLfLSpUsyKkKIIdWyrLTqdrvlU089Jc+cOSM9Ho8Mh8NSCCEzxTRi
+8JWVlbKtre0vAt6yLGmapmxtbZXr1q2TZ86ckW1tbSMikTH4GzduyKqqqkHwsSA1TZOhUChOg8Hg
+oBqGIQ3DSAk+VleuXDliEspwviullD09PbzwwgscO3Yszt91XScQCNDZ2YlhGIPfuFwu7Pb48FJV
+lZycnEG/z8/PRwiBqqqDYzweD88//zyrV69m7ty5jBs3DofDMWRgD0lASik9Hg979uzh2LFjcYEa
+CoVob2/n2q9+hbZ585BGSCWltbVMr61NtSYbN25k7dq1zJkzZ1gSaqrGWPD79+9PAh8MBuns7OTi
+e+8R2rwZCYOaqTTt3cuf6+qSwAMcP36co0eP8vXXX9Pd3Y1hGMg0lk65A1HwdXV1vPHGG0mW7+jo
+4A8/+xn2BAAAI0riQOnu3cyork7Zt3btWtavX89dd92VdieSCEgppdvt5sCBAxw5ciSuLxQK0dTU
+RMOHHyJ37hwh1NSiAKU7djDzxRdT9q9YsYJt27YxY8aMlCTiCEgp5eXLl6mvr+fVV1+NmygYDNLW
+1sY3J09ipLEYQDPw2sBfCTwMLARKgKwhiNxWU8OsXbvi2qLYnnzySSorK1PvRGyqvH79uty6dWtS
+Lg8EAvLKlSvyo1275M8hSV8H+eMBvRPkP9Vslp0tV6W3u12+c7hOTgT5NyAXgtwE8gTIUyn0D9XV
+0jAMqet6klZUVMjPP/88KcWqUcs3NjZy+PBhDh06FGeFqNtcOnECY8+euICVwDWgFtj/m1/wD+8f
+5xtg6uy5ZI+5BSkkU6fexgu7tvLWhd/x1tXL5P/905wAggnzSODavn388Sc/SblDL7/8Mq+99hqX
+L1+OC2zb7t27uX79+u7Dhw+ndJvW1lYaP/qI0EDKS1z0XeDjC7/l9llz+d6EWxjv0imdcgeFRcVo
+fR46vm1Cx8ndP5hP3qjR/GDuX/GbC5/iberl1qirxGjv73+PYRjc8tBDcVhGjRpFRUUF27dvp7i4
+mPz8fFwuV2QHVq1aldLyDQ0NXDt5En91NRIQCRqNHld2HsLUCfu6GD9mNIoVQggDy9RQpYLTbkdV
+7Vh6CH9vJ/fcfz/vALsAN2AlzHv1wAEu1tTExUI0Hl555RXq6upobm4mEAhECEyePDkOvK7rtLS0
+cOP0aby1tUnAo2oNkFAUSTjoRfN+ix7wgjRBShACVVFQRGSkHvTypwtnmXHPQhrbb3D0k1McAdpi
+DBLVhp/+lIvV1UlV7oQJE8jNzcXtduPz+ZIPMtM0aWhooPH99+mtrU1ymVRqUxUQFlJYSBFGCivG
+OSyEaSCFAGlhd+Vy7w/n43BmM3POXWx69hl8AyMTDXTl4EEu7t2bCBGAQCCAruupCdjtdrp3705r
++ViN22YhsUwdyzRBCpACyzIRMnpngCxXNjYlMk4L+ggoYXxp5pbAlX37cDgcSQSEEAxmoVgQg/9n
+AP67bVdAUcFmQ3W6IgtIiWUKLCGwLGvQj69e+m+EsBB6iGB/N/3e9oyNlIgRYm5kiR2JH0L6MkFY
+Ei0UQKAycdJUbIodT3Mjpu6n3xfCptoRlomQCqZpRkhLCykMhLBQSV1HJbalKnvSF3MpNO0OSIEw
+DWyuPCaVzCRv7ER8Ph+mtJM35lZsdjvuxktYhobDkYOCgqJEDWLLaAfSVc1p78SJO2AAvUBggLUN
+KIx2Kgqjv3crY2wOiqaqKKoKihKJCctCC/npbW+jq7sbS7UjkGCZCCkQQkdJsV6mRWHGBH4HLHpx
+F3LcGDq6u7nw2S85++V/4gb0kB9hFoAZwuZwgc2BqjpQVRWbzYXd4cDlysHn7WJi0W2EfH24XA6E
+jKySqhTPtDRPIjB4XUtoPw3sKV/O+KJipJT4V63mq3/7Obu21/LN/5xl9l/PIys7G2fOaBS7E5vN
+QrU7UW0KNlUFp5P8MeO5/8HFhPo7CXr7MMIaQW8neSkMlqnEEYj1s8QJbwXaWpopmDgJh93OqHGF
+LFy9jjunTeHNo2uAvUy54/uMuaUYV24BUpVYpoVEwaY4UVUbitNJ9ugxOBw2tEAPfX29QCjuVB9O
+EmNBTdeRGEj3A56OdkwtgDDCCKFjz8ql6N55/G3VcRouX+SXH72Ht6udcCg4cJiJSPIn8oCloIKU
+KAhURUUIiVCjx128pjtrEiVtFkrMNNOBA+s34XG3YIRDSMtAkSbOrDzuvOchHnmiklEFY3n76G7O
+f/nv9Ht7EMJCSjGoljCxjOBAnaSjhYPowevDZrx04FMSGLwnJEzmAOYCn33wAUYoiGXoSMsEoeNw
+ZTO2aDrzFpWxck0VJVOn4fd2E/T7oneNyOFlGkjLwNTD6FoILRQEa/hDcyhJIuB0OlFVNeVE04B3
+XjnC+d9+hRYKYJlhpDBBGDidDiaUfp/xk24nJ3c0eaPzsKsgzEhtZJkGIuzDNDRCAR99fb309XYh
+NAYPsnQ6IgJSSgoKCihavDilJZ4Aajf8HVf/fAnLCCNNAyktECaqIsgbV8So0WMHrn2RGLBMHREO
+YBg6eiiIFgzQ7/US8vmYoEDuENa/u6oqcwJRPysoKOC+N9+kcNGiJGvkAQuADY+twn3tCuFg/4CV
+DbB0VKHhzHbhdGVhs6kgDKTuR9f86KEAWtBHd0c73p52pB5Av5KewJxnnmHeoUOEw+EkjHEEYi8M
+EHlFKyws5IfHjlG4cGHSxJOA1cATPy7nT388j+73YoYDCEuP1DhSRrKOlFhmmLAWQNMCBHw9tHtu
+8K2nBcsI8uGxf8HoiRBINNTtjz7KQ/X1xL6iRDHGvubZAfr7+1Nuz+TJk6G+nv/atInmX/86rq8A
+WAlUrahk/Fio/8XHjM4fi93pHCgRFCzLQtd1tFAQLeCjs9NNb4cHxdL44J8PozfD7XyXRqNy97p1
+PPz220gp0XU9zriKogw+SaqqGtmB48ePU15enkRASklRURH31tcz6cEHk1JrAfAUcEcPLLjvMU69
+/694uzsI+X3093TS5blBl8eNt72VHk8Tfd9eR+vv4MQ/HkZpiJwttgTL3/Hoo2nBNzY2smjRIhYs
+WEBBQQEulyvyLuT3+2VTUxM7d+7k5MmTKXNuS0sL555+mtYvv0zqE0A7kavhqFL4oAlCCWOygGIi
+qTiHyMnuTBgz/bHHKDt9GillnN8D+P1+ysrKWLJkCdOmTWPWrFmUlpZGCAghpN/vp7m5mZqaGl5/
+/XUKCwtJFLfbzX+sX8+Nr75K6rtZiXr49KVLKf/4Y4QQ6LqeBP6RRx6hvLycadOmMXPmTEpKSsjN
+zf3uZS6WRHV1NadOnUpaTEpJa2sr5zZupOkmSaQqk2csWcLyTz4BQNO0uL7GxkbWr1+fErzNZlMG
+w1lVVSUvL4+SkhL27dvH8uXL8Xg8ceABiouLue+ttyieN2+IK2Z6TRx/5+LFacE3NDRQWVmZFjwk
+nAOxJF566SW2bNnChQsXkmKipKSEB959l9vmzcvo1pZOpz/8ME98+mla8Bs2bGDZsmVpwUOa5/VE
+d0oXE319fXxWXs43Z88m9Q0n03/0I1YPJIRE8OfOnWPHjh2UlZUNCT4tgUQSO3fupKqqigceeGCw
+P/a7VM8emUg0VcbK+fPn2bp1KytWrBgW/JAEEknU1NTw7LPPMn/+/GFBZQI8lZw/f57nnnuO5cuX
+M2XKlGHBD0sgkURdXR2PP/44FRUVNwV+qP7Tp09z8ODBjNxmRAQSSRw4cIBly5axdOnSvwh4RVH4
+4osv2L9/P2VlZRlbfkQEEkls376djo4OQqHE83bk4nK5EEKwZs0aSktLRwR+RATgOxItLS1cu3aN
+vr6+wTfK/4tEfzeeMmUKkydPzhg8jJAAREgEg0H6+vrQNC2pFL8ZUVWVrKws8vPzycnJQVXVjH/s
+/F/lgJiyQFHragAAAABJRU5ErkJggg==">
+</td>
+<td class="content">This really destroys all volume data.</td>
+</tr></table>
+</div>
+<div class="paragraph">
+<p>List storage status</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>pvesm status</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>List storage contents</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>pvesm list &lt;STORAGE_ID&gt; [--vmid &lt;VMID&gt;]</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>List volumes allocated by VMID</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>pvesm list &lt;STORAGE_ID&gt; --vmid &lt;VMID&gt;</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>List iso images</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>pvesm list &lt;STORAGE_ID&gt; --iso</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>List container templates</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>pvesm list &lt;STORAGE_ID&gt; --vztmpl</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>Show file system path for a volume</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>pvesm path &lt;VOLUME_ID&gt;</tt></pre>
+</div></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_see_also">See Also</h2>
+<div class="sectionbody">
+<div class="ulist"><ul>
+<li>
+<p>
+<a href="/wiki/Storage:_Directory">Storage: Directory</a>
+</p>
+</li>
+<li>
+<p>
+<a href="/wiki/Storage:_GlusterFS">Storage: GlusterFS</a>
+</p>
+</li>
+<li>
+<p>
+<a href="/wiki/Storage:_User_Mode_iSCSI">Storage: User Mode iSCSI</a>
+</p>
+</li>
+<li>
+<p>
+<a href="/wiki/Storage:_iSCSI">Storage: iSCSI</a>
+</p>
+</li>
+<li>
+<p>
+<a href="/wiki/Storage:_LVM">Storage: LVM</a>
+</p>
+</li>
+<li>
+<p>
+<a href="/wiki/Storage:_LVM_Thin">Storage: LVM Thin</a>
+</p>
+</li>
+<li>
+<p>
+<a href="/wiki/Storage:_NFS">Storage: NFS</a>
+</p>
+</li>
+<li>
+<p>
+<a href="/wiki/Storage:_CIFS">Storage: CIFS</a>
+</p>
+</li>
+<li>
+<p>
+<a href="/wiki/Storage:_RBD">Storage: RBD</a>
+</p>
+</li>
+<li>
+<p>
+<a href="/wiki/Storage:_ZFS">Storage: ZFS</a>
+</p>
+</li>
+<li>
+<p>
+<a href="/wiki/Storage:_ZFS_over_iSCSI">Storage: ZFS over iSCSI</a>
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<!-- FOOTER -->
+</div>
+<div id="footnotes"></div>

@@ -1,0 +1,193 @@
+<!-- asciidoc HEADER -->
+<script type="text/javascript">
+//////////////////////////////////////////////////////////////////////////
+// asciidoc JS helper for Proxmox VE mediawiki pages
+//
+// code based on original asciidoc.js, but re-written using jQuery
+//
+//////////////////////////////////////////////////////////////////////////
+
+var asciidoc = {
+
+    // toc generator
+    toc: function ($content) {
+	var tocholder = $content.find('#toc');
+
+	if (!tocholder) {
+	    return;
+	}
+
+	tocholder.html('');
+	tocholder.hide();
+
+	var html = "<div id=\"toctitle\"><h2>Contents</h2></div><ul>";
+
+	var n = 0;
+	$content.find("div.sect1").each(function(){
+	    var h = jQuery(this).find("h2").first();
+	    var id = h.attr("id");
+	    if (id != null) {
+		n++;
+		html += "<li class=\"toclevel-1\">" +
+		    "<a href=\"#" + id + "\">" +
+		    "<span class=\"toctext\">" + h.html() +
+		    "</span></a></li>";
+	    }
+	});
+
+	html += "</ul>";
+
+	if (n > 3) {
+	    tocholder.html(html);
+	    tocholder.show();
+	}
+    },
+
+    // footnote generator
+    footnotes: function ($content) {
+	var noteholder = $content.find('#footnotes');
+	if (!noteholder) {
+	    return;
+	}
+
+	noteholder.html('');
+
+	// Rebuild footnote entries.
+	var refs = {};
+	var n = 0;
+	var inner_html = '';
+
+	$content.find("span.footnote").each(function(){
+	    n++;
+	    var span = jQuery(this);
+	    var note = span.attr("data-note");
+	    var id = span.attr("id");
+	    if (!note) {
+		// Use [\s\S] in place of . so multi-line matches work.
+		// Because JavaScript has no s (dotall) regex flag.
+		note = span.html().match(/\s*\[([\s\S]*)]\s*/)[1];
+		span.html("[<a id='_footnoteref_" + n + "' href='#_footnote_" +
+			  n + "' title='View footnote' class='footnote'>" + n +
+			  "</a>]");
+		span.attr("data-note", note);
+	    }
+	    inner_html +=
+            "<div class='footnote' id='_footnote_" + n + "'>" +
+		"<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+		n + "</a>. " + note + "</div>";
+
+	    if (id != null) { refs["#"+id] = n; }
+	});
+
+	if (inner_html) { noteholder.html("<hr>" + inner_html); }
+
+	if (n != 0) {
+	    // process footnoterefs.
+	    $content.find("span.footnoteref").each(function(){
+		var span = jQuery(this);
+		var href = span.find("a").first().attr("href");
+		href = href.match(/#.*/)[0];  // in case it return full URL.
+		n = refs[href];
+		span.html("[<a href='#_footnote_" + n +
+			  "' title='View footnote' class='footnote'>" + n + "</a>]");
+	    });
+	}
+    }
+};
+
+// add init to mediawiki resource loader queue
+(window.RLQ=window.RLQ||[]).push(function(){
+    mw.hook('wikipage.content').add(function($content) {
+	asciidoc.toc($content);
+	asciidoc.footnotes($content);
+    });
+});
+</script>
+<div id="toc" class="toc">
+</div>
+<div id="asciidoccontent">
+<style type="text/css" scoped>
+td.hdlist1 {
+   vertical-align: top;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+</style>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Starting with Proxmox VE 4.0, you can define external metric servers,
+which will be sent various stats about your hosts, virtual machines and storages.</p></div>
+<div class="paragraph">
+<p>Currently supported are:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+graphite (see <a href="http://graphiteapp.org">http://graphiteapp.org</a> )
+</p>
+</li>
+<li>
+<p>
+influxdb (see <a href="https://www.influxdata.com/time-series-platform/influxdb/">https://www.influxdata.com/time-series-platform/influxdb/</a> )
+</p>
+</li>
+</ul></div>
+<div class="paragraph">
+<p>The server definitions are saved in
+ /etc/pve/status.cfg</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_graphite_server_configuration">Graphite server configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The definition of a server is:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>graphite:
+   server your-server
+   port your-port
+   path your-path</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>where your-port defaults to <strong>2003</strong>
+and your-path defaults to <strong>proxmox</strong></p></div>
+<div class="paragraph">
+<p>Proxmox VE sends the data over udp, so the graphite server
+has to be configured for this</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_influxdb_plugin_configuration">Influxdb plugin configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The definition is:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>influxdb:
+   server your-server
+   port your-port</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>Proxmox VE sends the data over udp, so the influxdb server
+has to be configured for this</p></div>
+<div class="paragraph">
+<p>Here is an example configuration for influxdb (on your influxdb server):</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>[[udp]]
+  enabled = true
+  bind-address = "0.0.0.0:8089"
+  database = "proxmox"
+  batch-size = 1000
+  batch-timeout = "1s"</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>With this configuration, your server listens on all IP addresses on
+port 8089, and writes the data in the <strong>proxmox</strong> database</p></div>
+</div>
+</div>
+<!-- FOOTER -->
+</div>
+<div id="footnotes"></div>

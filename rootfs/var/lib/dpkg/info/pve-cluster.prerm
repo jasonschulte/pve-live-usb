@@ -1,0 +1,10 @@
+#!/bin/sh
+set -e
+# Automatically added by dh_installdeb
+dpkg-maintscript-helper rm_conffile /etc/default/pve-cluster 5.0-15 pve-cluster -- "$@"
+# End automatically added section
+# Automatically added by dh_systemd_start
+if [ -d /run/systemd/system ] && [ "$1" = remove ]; then
+	deb-systemd-invoke stop pve-cluster.service >/dev/null
+fi
+# End automatically added section

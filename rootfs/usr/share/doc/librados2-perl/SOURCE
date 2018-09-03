@@ -1,0 +1,2 @@
+git clone git://git.proxmox.com/git/librados2-perl.git
+git checkout 19773ec9990fbeaefff8e4ce384565090d984a38

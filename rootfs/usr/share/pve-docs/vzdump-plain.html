@@ -1,0 +1,865 @@
+<!-- asciidoc HEADER -->
+<script type="text/javascript">
+//////////////////////////////////////////////////////////////////////////
+// asciidoc JS helper for Proxmox VE mediawiki pages
+//
+// code based on original asciidoc.js, but re-written using jQuery
+//
+//////////////////////////////////////////////////////////////////////////
+
+var asciidoc = {
+
+    // toc generator
+    toc: function ($content) {
+	var tocholder = $content.find('#toc');
+
+	if (!tocholder) {
+	    return;
+	}
+
+	tocholder.html('');
+	tocholder.hide();
+
+	var html = "<div id=\"toctitle\"><h2>Contents</h2></div><ul>";
+
+	var n = 0;
+	$content.find("div.sect1").each(function(){
+	    var h = jQuery(this).find("h2").first();
+	    var id = h.attr("id");
+	    if (id != null) {
+		n++;
+		html += "<li class=\"toclevel-1\">" +
+		    "<a href=\"#" + id + "\">" +
+		    "<span class=\"toctext\">" + h.html() +
+		    "</span></a></li>";
+	    }
+	});
+
+	html += "</ul>";
+
+	if (n > 3) {
+	    tocholder.html(html);
+	    tocholder.show();
+	}
+    },
+
+    // footnote generator
+    footnotes: function ($content) {
+	var noteholder = $content.find('#footnotes');
+	if (!noteholder) {
+	    return;
+	}
+
+	noteholder.html('');
+
+	// Rebuild footnote entries.
+	var refs = {};
+	var n = 0;
+	var inner_html = '';
+
+	$content.find("span.footnote").each(function(){
+	    n++;
+	    var span = jQuery(this);
+	    var note = span.attr("data-note");
+	    var id = span.attr("id");
+	    if (!note) {
+		// Use [\s\S] in place of . so multi-line matches work.
+		// Because JavaScript has no s (dotall) regex flag.
+		note = span.html().match(/\s*\[([\s\S]*)]\s*/)[1];
+		span.html("[<a id='_footnoteref_" + n + "' href='#_footnote_" +
+			  n + "' title='View footnote' class='footnote'>" + n +
+			  "</a>]");
+		span.attr("data-note", note);
+	    }
+	    inner_html +=
+            "<div class='footnote' id='_footnote_" + n + "'>" +
+		"<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+		n + "</a>. " + note + "</div>";
+
+	    if (id != null) { refs["#"+id] = n; }
+	});
+
+	if (inner_html) { noteholder.html("<hr>" + inner_html); }
+
+	if (n != 0) {
+	    // process footnoterefs.
+	    $content.find("span.footnoteref").each(function(){
+		var span = jQuery(this);
+		var href = span.find("a").first().attr("href");
+		href = href.match(/#.*/)[0];  // in case it return full URL.
+		n = refs[href];
+		span.html("[<a href='#_footnote_" + n +
+			  "' title='View footnote' class='footnote'>" + n + "</a>]");
+	    });
+	}
+    }
+};
+
+// add init to mediawiki resource loader queue
+(window.RLQ=window.RLQ||[]).push(function(){
+    mw.hook('wikipage.content').add(function($content) {
+	asciidoc.toc($content);
+	asciidoc.footnotes($content);
+    });
+});
+</script>
+<div id="toc" class="toc">
+</div>
+<div id="asciidoccontent">
+<style type="text/css" scoped>
+td.hdlist1 {
+   vertical-align: top;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+</style>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph" id="chapter_vzdump">
+<p>Backups are a requirements for any sensible IT deployment, and Proxmox VE
+provides a fully integrated solution, using the capabilities of each
+storage and each guest system type. This allows the system
+administrator to fine tune via the <tt><span class="monospaced">mode</span></tt> option between consistency
+of the backups and downtime of the guest system.</p></div>
+<div class="paragraph">
+<p>Proxmox VE backups are always full backups - containing the VM/CT
+configuration and all data.  Backups can be started via the GUI or via
+the <tt><span class="monospaced">vzdump</span></tt> command line tool.</p></div>
+<div class="paragraph">
+<div class="title"><h5>Backup Storage</h5></div>
+<p>Before a backup can run, a backup storage must be defined. Refer to
+the Storage documentation on how to add a storage. A backup storage
+must be a file level storage, as backups are stored as regular files.
+In most situations, using a NFS server is a good way to store backups.
+You can save those backups later to a tape drive, for off-site
+archiving.</p></div>
+<div class="paragraph">
+<div class="title"><h5>Scheduled Backup</h5></div>
+<p>Backup jobs can be scheduled so that they are executed automatically
+on specific days and times, for selectable nodes and guest systems.
+Configuration of scheduled backups is done at the Datacenter level in
+the GUI, which will generate a cron entry in /etc/cron.d/vzdump.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_backup_modes">Backup modes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There are several ways to provide consistency (option <tt><span class="monospaced">mode</span></tt>),
+depending on the guest type.</p></div>
+<div class="dlist"><div class="title">Backup modes for VMs:</div><dl>
+<dt class="hdlist1">
+<tt><span class="monospaced">stop</span></tt> mode
+</dt>
+<dd>
+<p>
+This mode provides the highest consistency of the backup, at the cost
+of a short downtime in the VM operation. It works by executing an
+orderly shutdown of the VM, and then runs a background Qemu process to
+backup the VM data. After the backup is started, the VM goes to full
+operation mode if it was previously running. Consistency is guaranteed
+by using the live backup feature.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">suspend</span></tt> mode
+</dt>
+<dd>
+<p>
+This mode is provided for compatibility reason, and suspends the VM
+before calling the <tt><span class="monospaced">snapshot</span></tt> mode. Since suspending the VM results in
+a longer downtime and does not necessarily improve the data
+consistency, the use of the <tt><span class="monospaced">snapshot</span></tt> mode is recommended instead.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">snapshot</span></tt> mode
+</dt>
+<dd>
+<p>
+This mode provides the lowest operation downtime, at the cost of a
+small inconstancy risk.  It works by performing a Proxmox VE live
+backup, in which data blocks are copied while the VM is running. If the
+guest agent is enabled (<tt><span class="monospaced">agent: 1</span></tt>) and running, it calls
+<tt><span class="monospaced">guest-fsfreeze-freeze</span></tt> and <tt><span class="monospaced">guest-fsfreeze-thaw</span></tt> to improve
+consistency.
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p>A technical overview of the Proxmox VE live backup for QemuServer can
+be found online
+<a href="https://git.proxmox.com/?p=pve-qemu.git;a=blob_plain;f=backup.txt">here</a>.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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">
+</td>
+<td class="content">Proxmox VE live backup provides snapshot-like semantics on any
+storage type. It does not require that the underlying storage supports
+snapshots. Also please note that since the backups are done via
+a background Qemu process, a stopped VM will appear as running for a
+short amount of time while the VM disks are being read by Qemu.
+However the VM itself is not booted, only its disk(s) are read.</td>
+</tr></table>
+</div>
+<div class="dlist"><div class="title">Backup modes for Containers:</div><dl>
+<dt class="hdlist1">
+<tt><span class="monospaced">stop</span></tt> mode
+</dt>
+<dd>
+<p>
+Stop the container for the duration of the backup. This potentially
+results in a very long downtime.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">suspend</span></tt> mode
+</dt>
+<dd>
+<p>
+This mode uses rsync to copy the container data to a temporary
+location (see option <tt><span class="monospaced">--tmpdir</span></tt>). Then the container is suspended and
+a second rsync copies changed files. After that, the container is
+started (resumed) again. This results in minimal downtime, but needs
+additional space to hold the container copy.
+</p>
+<div class="paragraph">
+<p>When the container is on a local file system and the target storage of
+the backup is an NFS/CIFS server, you should set <tt><span class="monospaced">--tmpdir</span></tt> to reside on a
+local file system too, as this will result in a many fold performance
+improvement.  Use of a local <tt><span class="monospaced">tmpdir</span></tt> is also required if you want to
+backup a local container using ACLs in suspend mode if the backup
+storage is an NFS server.</p></div>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">snapshot</span></tt> mode
+</dt>
+<dd>
+<p>
+This mode uses the snapshotting facilities of the underlying
+storage. First, the container will be suspended to ensure data consistency.
+A temporary snapshot of the container&#8217;s volumes will be made and the
+snapshot content will be archived in a tar file. Finally, the temporary
+snapshot is deleted again.
+</p>
+</dd>
+</dl></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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">
+</td>
+<td class="content"><tt><span class="monospaced">snapshot</span></tt> mode requires that all backed up volumes are on a storage that
+supports snapshots. Using the <tt><span class="monospaced">backup=no</span></tt> mount point option individual volumes
+can be excluded from the backup (and thus this requirement).</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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">
+</td>
+<td class="content">By default additional mount points besides the Root Disk mount point are
+not included in backups. For volume mount points you can set the <strong>Backup</strong> option
+to include the mount point in the backup. Device and bind mounts are never
+backed up as their content is managed outside the Proxmox VE storage library.</td>
+</tr></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_backup_file_names">Backup File Names</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Newer versions of vzdump encode the guest type and the
+backup time into the filename, for example</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>vzdump-lxc-105-2009_10_09-11_04_43.tar</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>That way it is possible to store several backup in the same
+directory. The parameter <tt><span class="monospaced">maxfiles</span></tt> can be used to specify the
+maximum number of backups to keep.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="vzdump_restore">Restore</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A backup archive can be restored through the Proxmox VE web GUI or through the
+following CLI tools:</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<tt><span class="monospaced">pct restore</span></tt>
+</dt>
+<dd>
+<p>
+Container restore utility
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">qmrestore</span></tt>
+</dt>
+<dd>
+<p>
+Virtual Machine restore utility
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p>For details see the corresponding manual pages.</p></div>
+<div class="sect2">
+<h3 id="_bandwidth_limit">Bandwidth Limit</h3>
+<div class="paragraph">
+<p>Restoring one or more big backups may need a lot of resources, especially
+storage bandwidth for both reading from the backup storage and writing to
+the target storage. This can negatively effect other virtual guest as access
+to storage can get congested.</p></div>
+<div class="paragraph">
+<p>To avoid this you can set bandwidth limits for a backup job. Proxmox VE
+implements two kinds of limits for restoring and archive:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+per-restore limit: denotes the maximal amount of bandwidth for
+  reading from a backup archive
+</p>
+</li>
+<li>
+<p>
+per-storage write limit: denotes the maximal amount of bandwidth used for
+  writing to a specific storage
+</p>
+</li>
+</ul></div>
+<div class="paragraph">
+<p>The read limit indirectly affects the write limit, as we cannot write more
+than we read. A smaller per-job limit will overwrite a bigger per-storage
+limit. A bigger per-job limit will only overwrite the per-storage limit if
+you have &#8216;Data.Allocate&#8217; permissions on the affected storage.</p></div>
+<div class="paragraph">
+<p>You can use the &#8216;--bwlimit &lt;integer&gt;` option from the restore CLI commands
+to set up a restore job specific bandwidth limit.  Kibit/s is used as unit
+for the limit, this means passing `10240&#8217; will limit the read speed of the
+backup to 10 MiB/s, ensuring that the rest of the possible storage bandwidth
+is available for the already running virtual guests, and thus the backup
+does not impact their operations.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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">
+</td>
+<td class="content">You can use &#8216;0` for the <tt><span class="monospaced">bwlimit</span></tt> parameter to disable all limits for
+a specific restore job. This can be helpful if you need to restore a very
+important virtual guest as fast as possible. (Needs `Data.Allocate&#8217;
+permissions on storage)</td>
+</tr></table>
+</div>
+<div class="paragraph">
+<p>Most times your storage&#8217;s generally available bandwidth stays the same over
+time, thus we implemented the possibility to set a default bandwidth limit
+per configured storage, this can be done with:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre><tt># pvesm set STORAGEID --bwlimit KIBs</tt></pre>
+</div></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configuration">Configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Global configuration is stored in <tt><span class="monospaced">/etc/vzdump.conf</span></tt>. The file uses a
+simple colon separated key/value format. Each line has the following
+format:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>OPTION: value</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>Blank lines in the file are ignored, and lines starting with a <tt><span class="monospaced">#</span></tt>
+character are treated as comments and are also ignored. Values from
+this file are used as default, and can be overwritten on the command
+line.</p></div>
+<div class="paragraph">
+<p>We currently support the following options:</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<tt><span class="monospaced">bwlimit</span></tt>: <tt><span class="monospaced">&lt;integer&gt; (0 - N)</span></tt> (<em>default =</em> <tt><span class="monospaced">0</span></tt>)
+</dt>
+<dd>
+<p>
+Limit I/O bandwidth (KBytes per second).
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">compress</span></tt>: <tt><span class="monospaced">&lt;0 | 1 | gzip | lzo&gt;</span></tt> (<em>default =</em> <tt><span class="monospaced">0</span></tt>)
+</dt>
+<dd>
+<p>
+Compress dump file.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">dumpdir</span></tt>: <tt><span class="monospaced">&lt;string&gt;</span></tt> 
+</dt>
+<dd>
+<p>
+Store resulting files to specified directory.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">exclude-path</span></tt>: <tt><span class="monospaced">&lt;string&gt;</span></tt> 
+</dt>
+<dd>
+<p>
+Exclude certain files/directories (shell globs).
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">ionice</span></tt>: <tt><span class="monospaced">&lt;integer&gt; (0 - 8)</span></tt> (<em>default =</em> <tt><span class="monospaced">7</span></tt>)
+</dt>
+<dd>
+<p>
+Set CFQ ionice priority.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">lockwait</span></tt>: <tt><span class="monospaced">&lt;integer&gt; (0 - N)</span></tt> (<em>default =</em> <tt><span class="monospaced">180</span></tt>)
+</dt>
+<dd>
+<p>
+Maximal time to wait for the global lock (minutes).
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">mailnotification</span></tt>: <tt><span class="monospaced">&lt;always | failure&gt;</span></tt> (<em>default =</em> <tt><span class="monospaced">always</span></tt>)
+</dt>
+<dd>
+<p>
+Specify when to send an email
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">mailto</span></tt>: <tt><span class="monospaced">&lt;string&gt;</span></tt> 
+</dt>
+<dd>
+<p>
+Comma-separated list of email addresses that should receive email notifications.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">maxfiles</span></tt>: <tt><span class="monospaced">&lt;integer&gt; (1 - N)</span></tt> (<em>default =</em> <tt><span class="monospaced">1</span></tt>)
+</dt>
+<dd>
+<p>
+Maximal number of backup files per guest system.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">mode</span></tt>: <tt><span class="monospaced">&lt;snapshot | stop | suspend&gt;</span></tt> (<em>default =</em> <tt><span class="monospaced">snapshot</span></tt>)
+</dt>
+<dd>
+<p>
+Backup mode.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">pigz</span></tt>: <tt><span class="monospaced">&lt;integer&gt;</span></tt> (<em>default =</em> <tt><span class="monospaced">0</span></tt>)
+</dt>
+<dd>
+<p>
+Use pigz instead of gzip when N&gt;0. N=1 uses half of cores, N&gt;1 uses N as thread count.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">remove</span></tt>: <tt><span class="monospaced">&lt;boolean&gt;</span></tt> (<em>default =</em> <tt><span class="monospaced">1</span></tt>)
+</dt>
+<dd>
+<p>
+Remove old backup files if there are more than <em>maxfiles</em> backup files.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">script</span></tt>: <tt><span class="monospaced">&lt;string&gt;</span></tt> 
+</dt>
+<dd>
+<p>
+Use specified hook script.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">stdexcludes</span></tt>: <tt><span class="monospaced">&lt;boolean&gt;</span></tt> (<em>default =</em> <tt><span class="monospaced">1</span></tt>)
+</dt>
+<dd>
+<p>
+Exclude temporary files and logs.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">stopwait</span></tt>: <tt><span class="monospaced">&lt;integer&gt; (0 - N)</span></tt> (<em>default =</em> <tt><span class="monospaced">10</span></tt>)
+</dt>
+<dd>
+<p>
+Maximal time to wait until a guest system is stopped (minutes).
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">storage</span></tt>: <tt><span class="monospaced">&lt;string&gt;</span></tt> 
+</dt>
+<dd>
+<p>
+Store resulting file to this storage.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt><span class="monospaced">tmpdir</span></tt>: <tt><span class="monospaced">&lt;string&gt;</span></tt> 
+</dt>
+<dd>
+<p>
+Store temporary files to specified directory.
+</p>
+</dd>
+</dl></div>
+<div class="listingblock">
+<div class="title">Example <tt><span class="monospaced">vzdump.conf</span></tt> Configuration</div>
+<div class="content monospaced">
+<pre><tt>tmpdir: /mnt/fast_local_disk
+storage: my_backup_storage
+mode: snapshot
+bwlimit: 10000</tt></pre>
+</div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_hook_scripts">Hook Scripts</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can specify a hook script with option <tt><span class="monospaced">--script</span></tt>. This script is
+called at various phases of the backup process, with parameters
+accordingly set. You can find an example in the documentation
+directory (<tt><span class="monospaced">vzdump-hook-script.pl</span></tt>).</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_file_exclusions">File Exclusions</h2>
+<div class="sectionbody">
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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">
+</td>
+<td class="content">this option is only available for container backups.</td>
+</tr></table>
+</div>
+<div class="paragraph">
+<p><tt><span class="monospaced">vzdump</span></tt> skips the following files by default (disable with the option
+<tt><span class="monospaced">--stdexcludes 0</span></tt>)</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>/tmp/?*
+/var/tmp/?*
+/var/run/?*pid</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>You can also manually specify (additional) exclude paths, for example:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt># vzdump 777 --exclude-path /tmp/ --exclude-path '/var/foo*'</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>(only excludes tmp directories)</p></div>
+<div class="paragraph">
+<p>Configuration files are also stored inside the backup archive
+(in <tt><span class="monospaced">./etc/vzdump/</span></tt>) and will be correctly restored.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_examples">Examples</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Simply dump guest 777 - no snapshot, just archive the guest private area and
+configuration files to the default dump directory (usually
+<tt><span class="monospaced">/var/lib/vz/dump/</span></tt>).</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt># vzdump 777</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>Use rsync and suspend/resume to create a snapshot (minimal downtime).</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt># vzdump 777 --mode suspend</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>Backup all guest systems and send notification mails to root and admin.</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt># vzdump --all --mode suspend --mailto root --mailto admin</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>Use snapshot mode (no downtime) and non-default dump directory.</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt># vzdump 777 --dumpdir /mnt/backup --mode snapshot</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>Backup more than one guest (selectively)</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt># vzdump 101 102 103 --mailto root</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>Backup all guests excluding 101 and 102</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt># vzdump --mode suspend --exclude 101,102</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>Restore a container to a new CT 600</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt># pct restore 600 /mnt/backup/vzdump-lxc-777.tar</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>Restore a QemuServer VM to VM 601</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt># qmrestore /mnt/backup/vzdump-qemu-888.vma 601</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>Clone an existing container 101 to a new container 300 with a 4GB root
+file system, using pipes</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt># vzdump 101 --stdout | pct restore --rootfs 4 300 -</tt></pre>
+</div></div>
+</div>
+</div>
+<!-- FOOTER -->
+</div>
+<div id="footnotes"></div>

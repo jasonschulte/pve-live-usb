@@ -1,0 +1,6 @@
+d8e26c0f4603f44bc6401ac0305c8fc0  usr/bin/vncterm
+0fcb3be62eb1389c21546d3b9b558e53  usr/share/doc/vncterm/SOURCE
+b45be76dbc6be1398020daea28262c87  usr/share/doc/vncterm/changelog.Debian.gz
+a0ad84ec301daf142ca82cf8383c92a7  usr/share/doc/vncterm/copyright
+f9c95df27d2d2b7997b4265979f4787f  usr/share/man/man1/vncterm.1.gz
+7f0a2eb7b9a27127f4253b1e7bd042ca  usr/share/vncterm/font.data

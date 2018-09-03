@@ -1,0 +1,4 @@
+/etc/cron.d/zfsutils-linux
+/etc/default/zfs
+/etc/sudoers.d/zfs
+/etc/zfs/zfs-functions

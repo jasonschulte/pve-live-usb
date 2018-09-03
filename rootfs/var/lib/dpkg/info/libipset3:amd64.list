@@ -1,0 +1,13 @@
+/.
+/lib
+/lib/x86_64-linux-gnu
+/lib/x86_64-linux-gnu/libipset.so.3.6.0
+/usr
+/usr/share
+/usr/share/doc
+/usr/share/doc/libipset3
+/usr/share/doc/libipset3/NEWS.Debian.gz
+/usr/share/doc/libipset3/changelog.Debian.gz
+/usr/share/doc/libipset3/changelog.gz
+/usr/share/doc/libipset3/copyright
+/lib/x86_64-linux-gnu/libipset.so.3

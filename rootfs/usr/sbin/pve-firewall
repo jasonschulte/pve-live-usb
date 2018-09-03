@@ -1,0 +1,25 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use PVE::SafeSyslog;
+use PVE::Service::pve_firewall;
+
+$SIG{'__WARN__'} = sub {
+    my $err = $@;
+    my $t = $_[0];
+    chomp $t;
+    print STDERR "$t\n";
+    syslog('warning', "%s", $t);
+    $@ = $err;
+};
+
+my $prepare = sub {
+    my $rpcenv = PVE::RPCEnvironment->init('cli');
+
+    $rpcenv->init_request();
+    $rpcenv->set_language($ENV{LANG});
+    $rpcenv->set_user('root@pam');
+};
+
+PVE::Service::pve_firewall->run_cli_handler(prepare => $prepare);

@@ -1,0 +1,2 @@
+git clone git://git.proxmox.com/git/pve-xtermjs.git
+git checkout 7c5d0fa8d0b654e81798b39296a5ba1d562db072

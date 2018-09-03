@@ -1,0 +1,16 @@
+/.
+/lib
+/lib/libnvpair.so.1.0.1
+/usr
+/usr/share
+/usr/share/doc
+/usr/share/doc/libnvpair1linux
+/usr/share/doc/libnvpair1linux/COPYRIGHT
+/usr/share/doc/libnvpair1linux/OPENSOLARIS.LICENSE.gz
+/usr/share/doc/libnvpair1linux/README.Debian
+/usr/share/doc/libnvpair1linux/changelog.Debian.gz
+/usr/share/doc/libnvpair1linux/copyright
+/usr/share/lintian
+/usr/share/lintian/overrides
+/usr/share/lintian/overrides/libnvpair1linux
+/lib/libnvpair.so.1

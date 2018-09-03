@@ -1,0 +1,16 @@
+/.
+/etc
+/etc/apt
+/etc/apt/apt.conf.d
+/etc/apt/apt.conf.d/10pveapthook
+/etc/apt/trusted.gpg.d
+/etc/apt/trusted.gpg.d/proxmox-ve-release-5.x.gpg
+/usr
+/usr/share
+/usr/share/doc
+/usr/share/doc/proxmox-ve
+/usr/share/doc/proxmox-ve/SOURCE
+/usr/share/doc/proxmox-ve/changelog.Debian.gz
+/usr/share/doc/proxmox-ve/copyright
+/usr/share/proxmox-ve
+/usr/share/proxmox-ve/pve-apt-hook

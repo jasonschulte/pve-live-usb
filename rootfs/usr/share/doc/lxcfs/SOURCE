@@ -1,0 +1,2 @@
+git clone git://git.proxmox.com/git/lxcfs.git
+git checkout 92a6c6aa1ab7cc18f3bcf98f31254b97e8ce8e36

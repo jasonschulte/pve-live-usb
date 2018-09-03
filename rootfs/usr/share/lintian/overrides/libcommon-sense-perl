@@ -1,0 +1,2 @@
+# the file is generated at build time and might contain arch-specific information
+libcommon-sense-perl: package-installs-nonbinary-perl-in-usr-lib-perl5 usr/lib/*/common/sense.pm

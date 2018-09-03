@@ -1,0 +1,24 @@
+#! /bin/sh
+
+# Abort if any command returns an error value
+set -e
+
+# This script is called as the first step in removing the package from
+# the system.  This includes cases where the user explicitly asked for
+# the package to be removed, upgrade, automatic removal due to conflicts,
+# and deconfiguration due to temporary removal of a depended-on package.
+
+package_name=pve-manager;
+
+case "$1" in
+  remove|deconfigure|failed-upgrade) : ;;
+  upgrade)
+    if [ -L /usr/doc/$package_name ]; then
+	rm -f /usr/doc/$package_name
+    fi
+    ;;
+  *) echo "$0: didn't understand being called with \`$1'" 1>&2
+     exit 0;;
+esac
+
+exit 0

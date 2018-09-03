@@ -1,0 +1,15 @@
+/.
+/usr
+/usr/lib
+/usr/lib/x86_64-linux-gnu
+/usr/lib/x86_64-linux-gnu/faketime
+/usr/lib/x86_64-linux-gnu/faketime/libfaketime.so.1
+/usr/lib/x86_64-linux-gnu/faketime/libfaketimeMT.so.1
+/usr/share
+/usr/share/doc
+/usr/share/doc/libfaketime
+/usr/share/doc/libfaketime/README.gz
+/usr/share/doc/libfaketime/changelog.Debian.amd64.gz
+/usr/share/doc/libfaketime/changelog.Debian.gz
+/usr/share/doc/libfaketime/changelog.gz
+/usr/share/doc/libfaketime/copyright

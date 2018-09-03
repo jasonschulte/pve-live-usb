@@ -1,0 +1,17 @@
+/.
+/usr
+/usr/share
+/usr/share/doc
+/usr/share/doc/libpve-guest-common-perl
+/usr/share/doc/libpve-guest-common-perl/changelog.Debian.gz
+/usr/share/doc/libpve-guest-common-perl/copyright
+/usr/share/perl5
+/usr/share/perl5/PVE
+/usr/share/perl5/PVE/AbstractConfig.pm
+/usr/share/perl5/PVE/AbstractMigrate.pm
+/usr/share/perl5/PVE/GuestHelpers.pm
+/usr/share/perl5/PVE/Replication.pm
+/usr/share/perl5/PVE/ReplicationConfig.pm
+/usr/share/perl5/PVE/ReplicationState.pm
+/usr/share/perl5/PVE/VZDump
+/usr/share/perl5/PVE/VZDump/Plugin.pm

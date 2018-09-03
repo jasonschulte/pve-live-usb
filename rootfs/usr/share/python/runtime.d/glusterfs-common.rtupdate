@@ -1,0 +1,17 @@
+#! /bin/sh
+set -e
+
+if [ "$1" = rtupdate ]; then
+	pyclean -p glusterfs-common /usr/lib/x86_64-linux-gnu/glusterfs/3.8.8/xlator/features/glupy
+	pycompile -p glusterfs-common  /usr/lib/x86_64-linux-gnu/glusterfs/3.8.8/xlator/features/glupy
+fi
+
+if [ "$1" = rtupdate ]; then
+	pyclean -p glusterfs-common /usr/lib/x86_64-linux-gnu/glusterfs/python/syncdaemon
+	pycompile -p glusterfs-common  /usr/lib/x86_64-linux-gnu/glusterfs/python/syncdaemon
+fi
+
+if [ "$1" = rtupdate ]; then
+	pyclean -p glusterfs-common /usr/lib/x86_64-linux-gnu/glusterfs/glusterfind
+	pycompile -p glusterfs-common  /usr/lib/x86_64-linux-gnu/glusterfs/glusterfind
+fi

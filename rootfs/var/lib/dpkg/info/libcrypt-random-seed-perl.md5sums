@@ -1,0 +1,7 @@
+1b390378ab58cc3c6d04148012259ed3  usr/share/doc/libcrypt-random-seed-perl/TODO
+b6b057eaf02b32b7e3cd6d6cad384327  usr/share/doc/libcrypt-random-seed-perl/changelog.Debian.gz
+ca315403ac38c4848b8ee345c2bd0763  usr/share/doc/libcrypt-random-seed-perl/changelog.gz
+e1baa0a7b4625c20647013d9f9cfa715  usr/share/doc/libcrypt-random-seed-perl/copyright
+831a36c6e2de3e0a3ebf5d79b1d6bacb  usr/share/doc/libcrypt-random-seed-perl/examples/brs.pl
+01e18dc6a56fa0e7ca2169451c6c0826  usr/share/man/man3/Crypt::Random::Seed.3pm.gz
+4141733ec0e77363e21fde7754766881  usr/share/perl5/Crypt/Random/Seed.pm

@@ -1,0 +1,7 @@
+# this seems to be a false positive.
+# blhc only finds missing flags in the test binaries built during configure
+# (which are not used later), and the build log shows "-D_FORTIFY_SOURCE=2".
+libterm-readline-gnu-perl: hardening-no-fortify-functions usr/lib/*/auto/Term/ReadLine/Gnu/Gnu.so
+# Synopsys is actually correct in the POD here, since it refers to
+# # SPP (Synopsys Plus Perl)
+libterm-readline-gnu-perl: spelling-error-in-manpage usr/share/man/man3/Term::ReadLine::Gnu.3pm.gz Synopsys Synopsis

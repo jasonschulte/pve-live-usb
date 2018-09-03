@@ -1,0 +1,56 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: CRIU
+Upstream-Contact: CriuML <criu@openvz.org>
+Source: http://git.criu.org/?p=criu.git
+
+Files: *
+Copyright: 2011-2016, Parallels Inc.
+License: GPL-2
+
+Files: criu/arch/ppc64/misc.S
+Copyright: 1995, 1996, 1998, 2000, 2001 Free Software Foundation, Inc.
+ 2008 Freescale Semiconductor, Inc.
+License: GPL-2+
+
+Files: test/zdtm/static/auto_dev-ioctl.h
+Copyright: 2008, Red Hat, Inc. All rights reserved.
+ 2008, Ian Kent <raven@themaw.net>
+License: GPL-2+
+
+Files: debian/*
+Copyright: 2012-2014 Daniel Baumann <mail@daniel-baumann.ch>
+ 2014-2017, Salvatore Bonaccorso <carnil@debian.org>
+License: GPL-2+
+
+License: GPL-2
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, version 2 of the License.
+ .
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU General Public License for more details.
+ .
+ You should have received a copy of the GNU General Public License
+ along with this program. If not, see <http://www.gnu.org/licenses/>.
+ .
+ The complete text of the GNU General Public License
+ can be found in /usr/share/common-licenses/GPL-2 file.
+
+License: GPL-2+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 2 of the License, or
+ (at your option) any later version.
+ .
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU General Public License for more details.
+ .
+ You should have received a copy of the GNU General Public License
+ along with this program. If not, see <http://www.gnu.org/licenses/>.
+ .
+ The complete text of the GNU General Public License
+ can be found in /usr/share/common-licenses/GPL-2 file.

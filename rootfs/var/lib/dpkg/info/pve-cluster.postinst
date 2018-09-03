@@ -1,0 +1,72 @@
+#!/bin/bash
+
+# abort if any command returns an error value
+set -e
+
+# handle problem with ha-manager <= 2.0-3 which cannot handle a pmxcfs
+# restart correctly
+# TODO: remove in PVE 6.0
+ha_version=$(dpkg-query --showformat='${Version}' --show pve-ha-manager)
+hacfg_version=$(dpkg-query --showformat='${Config-Version}' --show pve-ha-manager)
+
+function handlehaservice {
+  if test -z "$1"; then
+    # no old version, nothing to do
+    true
+  else
+    if dpkg --compare-versions "$ha_version" '<=' '2.0-3' || dpkg --compare-versions "$hacfg_version" '<=' '2.0-3'; then
+      if systemctl --quiet "$2" "pve-ha-lrm.service"; then
+        systemctl "$3" "pve-ha-lrm.service"
+      fi
+      if systemctl --quiet "$2" "pve-ha-crm.service"; then
+        systemctl "$3" "pve-ha-crm.service"
+      fi
+    fi
+  fi
+}
+
+
+case "$1" in
+  configure)
+    handlehaservice "$2" 'is-active' 'stop'
+    ;;
+
+esac
+
+# Automatically added by dh_systemd_enable
+# This will only remove masks created by d-s-h on package removal.
+deb-systemd-helper unmask pve-cluster.service >/dev/null || true
+
+# was-enabled defaults to true, so new installations run enable.
+if deb-systemd-helper --quiet was-enabled pve-cluster.service; then
+	# Enables the unit on first installation, creates new
+	# symlinks on upgrades if the unit file has changed.
+	deb-systemd-helper enable pve-cluster.service >/dev/null || true
+else
+	# Update the statefile to add new symlinks (if any), which need to be
+	# cleaned up on purge. Also remove old symlinks.
+	deb-systemd-helper update-state pve-cluster.service >/dev/null || true
+fi
+# End automatically added section
+# Automatically added by dh_systemd_start
+if [ -d /run/systemd/system ]; then
+	systemctl --system daemon-reload >/dev/null || true
+	if [ -n "$2" ]; then
+		_dh_action=try-restart
+	else
+		_dh_action=start
+	fi
+	deb-systemd-invoke $_dh_action pve-cluster.service >/dev/null || true
+fi
+# End automatically added section
+# Automatically added by dh_installdeb
+dpkg-maintscript-helper rm_conffile /etc/default/pve-cluster 5.0-15 pve-cluster -- "$@"
+# End automatically added section
+
+
+case "$1" in
+  configure)
+    handlehaservice "$2" 'is-enabled' 'start'
+    ;;
+
+esac

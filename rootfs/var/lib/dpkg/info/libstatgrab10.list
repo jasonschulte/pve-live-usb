@@ -1,0 +1,17 @@
+/.
+/usr
+/usr/lib
+/usr/lib/x86_64-linux-gnu
+/usr/lib/x86_64-linux-gnu/libstatgrab.so.10.0.0
+/usr/share
+/usr/share/doc
+/usr/share/doc/libstatgrab10
+/usr/share/doc/libstatgrab10/AUTHORS
+/usr/share/doc/libstatgrab10/NEWS.gz
+/usr/share/doc/libstatgrab10/PLATFORMS
+/usr/share/doc/libstatgrab10/README
+/usr/share/doc/libstatgrab10/changelog.Debian.amd64.gz
+/usr/share/doc/libstatgrab10/changelog.Debian.gz
+/usr/share/doc/libstatgrab10/changelog.gz
+/usr/share/doc/libstatgrab10/copyright
+/usr/lib/x86_64-linux-gnu/libstatgrab.so.10

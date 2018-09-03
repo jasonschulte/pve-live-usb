@@ -1,0 +1,7 @@
+05c21f67d99adef9cceea25f3efaae6e  usr/lib/x86_64-linux-gnu/perl5/5.24/Crypt/OpenSSL/Random.pm
+6be7647407fd7923d5b3af5d7f1ca180  usr/lib/x86_64-linux-gnu/perl5/5.24/auto/Crypt/OpenSSL/Random/Random.so
+5931429a1a07ccd8cf501a2e271c303e  usr/share/doc/libcrypt-openssl-random-perl/changelog.Debian.amd64.gz
+804f98427872784f938a0446ec040338  usr/share/doc/libcrypt-openssl-random-perl/changelog.Debian.gz
+0f041742770bd37e6ee7e46f92e8a5fc  usr/share/doc/libcrypt-openssl-random-perl/changelog.gz
+d708c7c6023ed0a34f9e627b68dace46  usr/share/doc/libcrypt-openssl-random-perl/copyright
+5ebce91be266193778e02bd41344ee13  usr/share/man/man3/Crypt::OpenSSL::Random.3pm.gz

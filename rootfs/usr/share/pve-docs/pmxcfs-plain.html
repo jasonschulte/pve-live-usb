@@ -1,0 +1,590 @@
+<!-- asciidoc HEADER -->
+<script type="text/javascript">
+//////////////////////////////////////////////////////////////////////////
+// asciidoc JS helper for Proxmox VE mediawiki pages
+//
+// code based on original asciidoc.js, but re-written using jQuery
+//
+//////////////////////////////////////////////////////////////////////////
+
+var asciidoc = {
+
+    // toc generator
+    toc: function ($content) {
+	var tocholder = $content.find('#toc');
+
+	if (!tocholder) {
+	    return;
+	}
+
+	tocholder.html('');
+	tocholder.hide();
+
+	var html = "<div id=\"toctitle\"><h2>Contents</h2></div><ul>";
+
+	var n = 0;
+	$content.find("div.sect1").each(function(){
+	    var h = jQuery(this).find("h2").first();
+	    var id = h.attr("id");
+	    if (id != null) {
+		n++;
+		html += "<li class=\"toclevel-1\">" +
+		    "<a href=\"#" + id + "\">" +
+		    "<span class=\"toctext\">" + h.html() +
+		    "</span></a></li>";
+	    }
+	});
+
+	html += "</ul>";
+
+	if (n > 3) {
+	    tocholder.html(html);
+	    tocholder.show();
+	}
+    },
+
+    // footnote generator
+    footnotes: function ($content) {
+	var noteholder = $content.find('#footnotes');
+	if (!noteholder) {
+	    return;
+	}
+
+	noteholder.html('');
+
+	// Rebuild footnote entries.
+	var refs = {};
+	var n = 0;
+	var inner_html = '';
+
+	$content.find("span.footnote").each(function(){
+	    n++;
+	    var span = jQuery(this);
+	    var note = span.attr("data-note");
+	    var id = span.attr("id");
+	    if (!note) {
+		// Use [\s\S] in place of . so multi-line matches work.
+		// Because JavaScript has no s (dotall) regex flag.
+		note = span.html().match(/\s*\[([\s\S]*)]\s*/)[1];
+		span.html("[<a id='_footnoteref_" + n + "' href='#_footnote_" +
+			  n + "' title='View footnote' class='footnote'>" + n +
+			  "</a>]");
+		span.attr("data-note", note);
+	    }
+	    inner_html +=
+            "<div class='footnote' id='_footnote_" + n + "'>" +
+		"<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+		n + "</a>. " + note + "</div>";
+
+	    if (id != null) { refs["#"+id] = n; }
+	});
+
+	if (inner_html) { noteholder.html("<hr>" + inner_html); }
+
+	if (n != 0) {
+	    // process footnoterefs.
+	    $content.find("span.footnoteref").each(function(){
+		var span = jQuery(this);
+		var href = span.find("a").first().attr("href");
+		href = href.match(/#.*/)[0];  // in case it return full URL.
+		n = refs[href];
+		span.html("[<a href='#_footnote_" + n +
+			  "' title='View footnote' class='footnote'>" + n + "</a>]");
+	    });
+	}
+    }
+};
+
+// add init to mediawiki resource loader queue
+(window.RLQ=window.RLQ||[]).push(function(){
+    mw.hook('wikipage.content').add(function($content) {
+	asciidoc.toc($content);
+	asciidoc.footnotes($content);
+    });
+});
+</script>
+<div id="toc" class="toc">
+</div>
+<div id="asciidoccontent">
+<style type="text/css" scoped>
+td.hdlist1 {
+   vertical-align: top;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+</style>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph" id="chapter_pmxcfs">
+<p>The Proxmox Cluster file system (&#8220;pmxcfs&#8221;) is a database-driven file
+system for storing configuration files, replicated in real time to all
+cluster nodes using <tt><span class="monospaced">corosync</span></tt>. We use this to store all PVE related
+configuration files.</p></div>
+<div class="paragraph">
+<p>Although the file system stores all data inside a persistent database
+on disk, a copy of the data resides in RAM. That imposes restriction
+on the maximum size, which is currently 30MB. This is still enough to
+store the configuration of several thousand virtual machines.</p></div>
+<div class="paragraph">
+<p>This system provides the following advantages:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+seamless replication of all configuration to all nodes in real time
+</p>
+</li>
+<li>
+<p>
+provides strong consistency checks to avoid duplicate VM IDs
+</p>
+</li>
+<li>
+<p>
+read-only when a node loses quorum
+</p>
+</li>
+<li>
+<p>
+automatic updates of the corosync cluster configuration to all nodes
+</p>
+</li>
+<li>
+<p>
+includes a distributed locking mechanism
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_posix_compatibility">POSIX Compatibility</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The file system is based on FUSE, so the behavior is POSIX like. But
+some feature are simply not implemented, because we do not need them:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+you can just generate normal files and directories, but no symbolic
+  links, &#8230;
+</p>
+</li>
+<li>
+<p>
+you can&#8217;t rename non-empty directories (because this makes it easier
+  to guarantee that VMIDs are unique).
+</p>
+</li>
+<li>
+<p>
+you can&#8217;t change file permissions (permissions are based on path)
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">O_EXCL</span></tt> creates were not atomic (like old NFS)
+</p>
+</li>
+<li>
+<p>
+<tt><span class="monospaced">O_TRUNC</span></tt> creates are not atomic (FUSE restriction)
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_file_access_rights">File Access Rights</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>All files and directories are owned by user <tt><span class="monospaced">root</span></tt> and have group
+<tt><span class="monospaced">www-data</span></tt>. Only root has write permissions, but group <tt><span class="monospaced">www-data</span></tt> can
+read most files. Files below the following paths:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>/etc/pve/priv/
+/etc/pve/nodes/${NAME}/priv/</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>are only accessible by root.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_technology">Technology</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>We use the <a href="http://www.corosync.org">Corosync Cluster Engine</a> for
+cluster communication, and <a href="http://www.sqlite.org">SQlite</a> for the
+database file. The file system is implemented in user space using
+<a href="http://fuse.sourceforge.net">FUSE</a>.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_file_system_layout">File System Layout</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The file system is mounted at:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>/etc/pve</tt></pre>
+</div></div>
+<div class="sect2">
+<h3 id="_files">Files</h3>
+<table class="wikitable tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:50%;">
+<col style="width:50%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt><tt><span class="monospaced">corosync.conf</span></tt></tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Corosync cluster configuration file (previous to Proxmox VE 4.x this file was called cluster.conf)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt><tt><span class="monospaced">storage.cfg</span></tt></tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Proxmox VE storage configuration</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt><tt><span class="monospaced">datacenter.cfg</span></tt></tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Proxmox VE datacenter wide configuration (keyboard layout, proxy, &#8230;)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt><tt><span class="monospaced">user.cfg</span></tt></tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Proxmox VE access control configuration (users/groups/&#8230;)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt><tt><span class="monospaced">domains.cfg</span></tt></tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Proxmox VE authentication domains</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt><tt><span class="monospaced">status.cfg</span></tt></tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Proxmox VE external metrics server configuration</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt><tt><span class="monospaced">authkey.pub</span></tt></tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Public key used by ticket system</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt><tt><span class="monospaced">pve-root-ca.pem</span></tt></tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Public certificate of cluster CA</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt><tt><span class="monospaced">priv/shadow.cfg</span></tt></tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Shadow password file</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt><tt><span class="monospaced">priv/authkey.key</span></tt></tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Private key used by ticket system</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt><tt><span class="monospaced">priv/pve-root-ca.key</span></tt></tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Private key of cluster CA</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt><tt><span class="monospaced">nodes/&lt;NAME&gt;/pve-ssl.pem</span></tt></tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Public SSL certificate for web server (signed by cluster CA)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt><tt><span class="monospaced">nodes/&lt;NAME&gt;/pve-ssl.key</span></tt></tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Private SSL key for <tt><span class="monospaced">pve-ssl.pem</span></tt></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt><tt><span class="monospaced">nodes/&lt;NAME&gt;/pveproxy-ssl.pem</span></tt></tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Public SSL certificate (chain) for web server (optional override for <tt><span class="monospaced">pve-ssl.pem</span></tt>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt><tt><span class="monospaced">nodes/&lt;NAME&gt;/pveproxy-ssl.key</span></tt></tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Private SSL key for <tt><span class="monospaced">pveproxy-ssl.pem</span></tt> (optional)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt><tt><span class="monospaced">nodes/&lt;NAME&gt;/qemu-server/&lt;VMID&gt;.conf</span></tt></tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">VM configuration data for KVM VMs</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt><tt><span class="monospaced">nodes/&lt;NAME&gt;/lxc/&lt;VMID&gt;.conf</span></tt></tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">VM configuration data for LXC containers</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt><tt><span class="monospaced">firewall/cluster.fw</span></tt></tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Firewall configuration applied to all nodes</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt><tt><span class="monospaced">firewall/&lt;NAME&gt;.fw</span></tt></tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Firewall configuration for individual nodes</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt><tt><span class="monospaced">firewall/&lt;VMID&gt;.fw</span></tt></tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Firewall configuration for VMs and Containers</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_symbolic_links">Symbolic links</h3>
+<table class="wikitable tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:50%;">
+<col style="width:50%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt><tt><span class="monospaced">local</span></tt></tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt><tt><span class="monospaced">nodes/&lt;LOCAL_HOST_NAME&gt;</span></tt></tt></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt><tt><span class="monospaced">qemu-server</span></tt></tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt><tt><span class="monospaced">nodes/&lt;LOCAL_HOST_NAME&gt;/qemu-server/</span></tt></tt></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt><tt><span class="monospaced">lxc</span></tt></tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt><tt><span class="monospaced">nodes/&lt;LOCAL_HOST_NAME&gt;/lxc/</span></tt></tt></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_special_status_files_for_debugging_json">Special status files for debugging (JSON)</h3>
+<table class="wikitable tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<col style="width:50%;">
+<col style="width:50%;">
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt><tt><span class="monospaced">.version</span></tt></tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">File versions (to detect file modifications)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt><tt><span class="monospaced">.members</span></tt></tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Info about cluster members</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt><tt><span class="monospaced">.vmlist</span></tt></tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">List of all VMs</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt><tt><span class="monospaced">.clusterlog</span></tt></tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Cluster log (last 50 entries)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced"><tt><tt><span class="monospaced">.rrd</span></tt></tt></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">RRD data (most recent entries)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_enable_disable_debugging">Enable/Disable debugging</h3>
+<div class="paragraph">
+<p>You can enable verbose syslog messages with:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>echo "1" &gt;/etc/pve/.debug</tt></pre>
+</div></div>
+<div class="paragraph">
+<p>And disable verbose syslog messages with:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>echo "0" &gt;/etc/pve/.debug</tt></pre>
+</div></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_recovery">Recovery</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If you have major problems with your Proxmox VE host, e.g. hardware
+issues, it could be helpful to just copy the pmxcfs database file
+<tt><span class="monospaced">/var/lib/pve-cluster/config.db</span></tt> and move it to a new Proxmox VE
+host. On the new host (with nothing running), you need to stop the
+<tt><span class="monospaced">pve-cluster</span></tt> service and replace the <tt><span class="monospaced">config.db</span></tt> file (needed permissions
+<tt><span class="monospaced">0600</span></tt>). Second, adapt <tt><span class="monospaced">/etc/hostname</span></tt> and <tt><span class="monospaced">/etc/hosts</span></tt> according to the
+lost Proxmox VE host, then reboot and check. (And don&#8217;t forget your
+VM/CT data)</p></div>
+<div class="sect2">
+<h3 id="_remove_cluster_configuration">Remove Cluster configuration</h3>
+<div class="paragraph">
+<p>The recommended way is to reinstall the node after you removed it from
+your cluster. This makes sure that all secret cluster/ssh keys and any
+shared configuration data is destroyed.</p></div>
+<div class="paragraph">
+<p>In some cases, you might prefer to put a node back to local mode without
+reinstall, which is described in
+<a href="/wiki/Cluster_Manager#pvecm_separate_node_without_reinstall">Separate A Node Without Reinstalling</a></p></div>
+</div>
+<div class="sect2">
+<h3 id="_recovering_moving_guests_from_failed_nodes">Recovering/Moving Guests from Failed Nodes</h3>
+<div class="paragraph">
+<p>For the guest configuration files in <tt><span class="monospaced">nodes/&lt;NAME&gt;/qemu-server/</span></tt> (VMs) and
+<tt><span class="monospaced">nodes/&lt;NAME&gt;/lxc/</span></tt> (containers), Proxmox VE sees the containing node <tt><span class="monospaced">&lt;NAME&gt;</span></tt> as
+owner of the respective guest. This concept enables the usage of local locks
+instead of expensive cluster-wide locks for preventing concurrent guest
+configuration changes.</p></div>
+<div class="paragraph">
+<p>As a consequence, if the owning node of a guest fails (e.g., because of a power
+outage, fencing event, ..), a regular migration is not possible (even if all
+the disks are located on shared storage) because such a local lock on the
+(dead) owning node is unobtainable. This is not a problem for HA-managed
+guests, as Proxmox VE&#8217;s High Availability stack includes the necessary
+(cluster-wide) locking and watchdog functionality to ensure correct and
+automatic recovery of guests from fenced nodes.</p></div>
+<div class="paragraph">
+<p>If a non-HA-managed guest has only shared disks (and no other local resources
+which are only available on the failed node are configured), a manual recovery
+is possible by simply moving the guest configuration file from the failed
+node&#8217;s directory in <tt><span class="monospaced">/etc/pve/</span></tt> to an alive node&#8217;s directory (which changes the
+logical owner or location of the guest).</p></div>
+<div class="paragraph">
+<p>For example, recovering the VM with ID <tt><span class="monospaced">100</span></tt> from a dead <tt><span class="monospaced">node1</span></tt> to another
+node <tt><span class="monospaced">node2</span></tt> works with the following command executed when logged in as root
+on any member node of the cluster:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre><tt>mv /etc/pve/nodes/node1/qemu-server/100.conf /etc/pve/nodes/node2/</tt></pre>
+</div></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Warning" src="data:image/png;base64,
+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
+/F/lgJiyQFHragAAAABJRU5ErkJggg==">
+</td>
+<td class="content">Before manually recovering a guest like this, make absolutely sure
+that the failed source node is really powered off/fenced. Otherwise Proxmox VE&#8217;s
+locking principles are violated by the <tt><span class="monospaced">mv</span></tt> command, which can have unexpected
+consequences.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Warning" src="data:image/png;base64,
+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
+/F/lgJiyQFHragAAAABJRU5ErkJggg==">
+</td>
+<td class="content">Guest with local disks (or other local resources which are only
+available on the dead node) are not recoverable like this. Either wait for the
+failed node to rejoin the cluster or restore such guests from backups.</td>
+</tr></table>
+</div>
+</div>
+</div>
+</div>
+<!-- FOOTER -->
+</div>
+<div id="footnotes"></div>

@@ -1,0 +1,20 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use PVE::INotify;
+use PVE::Cluster;
+use PVE::CLI::pvecm;
+
+my $prepare = sub {
+    my $nodename = PVE::INotify::nodename();
+
+    PVE::Cluster::check_cfs_is_mounted();
+    PVE::Cluster::cfs_update();
+
+    # trigger check that we have resolvable name
+    my $local_ip_address = PVE::Cluster::remote_node_ip($nodename);
+};
+
+PVE::CLI::pvecm->run_cli_handler(prepare => $prepare, no_rpcenv => 1);

@@ -1,0 +1,14 @@
+/.
+/usr
+/usr/share
+/usr/share/man
+/usr/share/man/man3
+/usr/share/man/man3/File::chdir.3pm.gz
+/usr/share/perl5
+/usr/share/perl5/File
+/usr/share/perl5/File/chdir.pm
+/usr/share/doc
+/usr/share/doc/libfile-chdir-perl
+/usr/share/doc/libfile-chdir-perl/copyright
+/usr/share/doc/libfile-chdir-perl/changelog.gz
+/usr/share/doc/libfile-chdir-perl/changelog.Debian.gz

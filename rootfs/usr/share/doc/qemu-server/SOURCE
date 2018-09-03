@@ -1,0 +1,2 @@
+git clone git://git.proxmox.com/git/qemu-server.git
+git checkout be15435a12f0a7f2fbdc1f5e976de9e473259b2b

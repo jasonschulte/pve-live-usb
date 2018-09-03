@@ -1,0 +1,98 @@
+#!/bin/sh
+set -e
+# Automatically added by dh_systemd_enable
+# This will only remove masks created by d-s-h on package removal.
+deb-systemd-helper unmask zfs-import-cache.service >/dev/null || true
+
+# was-enabled defaults to true, so new installations run enable.
+if deb-systemd-helper --quiet was-enabled zfs-import-cache.service; then
+	# Enables the unit on first installation, creates new
+	# symlinks on upgrades if the unit file has changed.
+	deb-systemd-helper enable zfs-import-cache.service >/dev/null || true
+else
+	# Update the statefile to add new symlinks (if any), which need to be
+	# cleaned up on purge. Also remove old symlinks.
+	deb-systemd-helper update-state zfs-import-cache.service >/dev/null || true
+fi
+# End automatically added section
+# Automatically added by dh_systemd_enable
+# This will only remove masks created by d-s-h on package removal.
+deb-systemd-helper unmask zfs-import-scan.service >/dev/null || true
+
+# was-enabled defaults to true, so new installations run enable.
+if deb-systemd-helper --quiet was-enabled zfs-import-scan.service; then
+	# Enables the unit on first installation, creates new
+	# symlinks on upgrades if the unit file has changed.
+	deb-systemd-helper enable zfs-import-scan.service >/dev/null || true
+else
+	# Update the statefile to add new symlinks (if any), which need to be
+	# cleaned up on purge. Also remove old symlinks.
+	deb-systemd-helper update-state zfs-import-scan.service >/dev/null || true
+fi
+# End automatically added section
+# Automatically added by dh_systemd_enable
+# This will only remove masks created by d-s-h on package removal.
+deb-systemd-helper unmask zfs-import.target >/dev/null || true
+
+# was-enabled defaults to true, so new installations run enable.
+if deb-systemd-helper --quiet was-enabled zfs-import.target; then
+	# Enables the unit on first installation, creates new
+	# symlinks on upgrades if the unit file has changed.
+	deb-systemd-helper enable zfs-import.target >/dev/null || true
+else
+	# Update the statefile to add new symlinks (if any), which need to be
+	# cleaned up on purge. Also remove old symlinks.
+	deb-systemd-helper update-state zfs-import.target >/dev/null || true
+fi
+# End automatically added section
+# Automatically added by dh_systemd_enable
+# This will only remove masks created by d-s-h on package removal.
+deb-systemd-helper unmask zfs-mount.service >/dev/null || true
+
+# was-enabled defaults to true, so new installations run enable.
+if deb-systemd-helper --quiet was-enabled zfs-mount.service; then
+	# Enables the unit on first installation, creates new
+	# symlinks on upgrades if the unit file has changed.
+	deb-systemd-helper enable zfs-mount.service >/dev/null || true
+else
+	# Update the statefile to add new symlinks (if any), which need to be
+	# cleaned up on purge. Also remove old symlinks.
+	deb-systemd-helper update-state zfs-mount.service >/dev/null || true
+fi
+# End automatically added section
+# Automatically added by dh_systemd_enable
+# This will only remove masks created by d-s-h on package removal.
+deb-systemd-helper unmask zfs-share.service >/dev/null || true
+
+# was-enabled defaults to true, so new installations run enable.
+if deb-systemd-helper --quiet was-enabled zfs-share.service; then
+	# Enables the unit on first installation, creates new
+	# symlinks on upgrades if the unit file has changed.
+	deb-systemd-helper enable zfs-share.service >/dev/null || true
+else
+	# Update the statefile to add new symlinks (if any), which need to be
+	# cleaned up on purge. Also remove old symlinks.
+	deb-systemd-helper update-state zfs-share.service >/dev/null || true
+fi
+# End automatically added section
+# Automatically added by dh_systemd_enable
+# This will only remove masks created by d-s-h on package removal.
+deb-systemd-helper unmask zfs.target >/dev/null || true
+
+# was-enabled defaults to true, so new installations run enable.
+if deb-systemd-helper --quiet was-enabled zfs.target; then
+	# Enables the unit on first installation, creates new
+	# symlinks on upgrades if the unit file has changed.
+	deb-systemd-helper enable zfs.target >/dev/null || true
+else
+	# Update the statefile to add new symlinks (if any), which need to be
+	# cleaned up on purge. Also remove old symlinks.
+	deb-systemd-helper update-state zfs.target >/dev/null || true
+fi
+# End automatically added section
+# Automatically added by dh_systemd_start
+if [ -d /run/systemd/system ]; then
+	systemctl --system daemon-reload >/dev/null || true
+	deb-systemd-invoke start zfs-import-cache.service zfs-import-scan.service zfs-import.target zfs-mount.service zfs-share.service zfs.target >/dev/null || true
+fi
+# End automatically added section

@@ -1,0 +1,13 @@
+/.
+/usr
+/usr/bin
+/usr/bin/dtach
+/usr/share
+/usr/share/doc
+/usr/share/doc/dtach
+/usr/share/doc/dtach/README.gz
+/usr/share/doc/dtach/changelog.Debian.gz
+/usr/share/doc/dtach/copyright
+/usr/share/man
+/usr/share/man/man1
+/usr/share/man/man1/dtach.1.gz

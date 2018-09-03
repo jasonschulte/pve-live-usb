@@ -1,0 +1,68 @@
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: EV
+Upstream-Contact: Marc Lehmann <schmorp@schmorp.de>
+Source: https://metacpan.org/release/EV
+
+Files: *
+Copyright: 2007-2011, Marc Lehmann <schmorp@schmorp.de>
+License: Artistic or GPL-2+
+
+Files: libev/*
+Copyright: 2007, 2008, 2009, 2010, 2011, 2012, 2013, Marc Alexander Lehmann
+License: BSD-2-clause or GPL-2+
+
+Files: libev/ev.c
+Copyright: 2007, 2008, 2009, 2010, 2011, 2012, 2013, Marc Alexander Lehmann
+License: Artistic or GPL-2+
+Comments: includes ECB.H:
+ libecb - http://software.schmorp.de/pkg/libecb.html
+ Copyright: 2009-2015, Marc Alexander Lehmann <libecb@schmorp.de>
+            2011, Emanuele Giaquinta
+ License: BSD-2-clause
+
+Files: debian/*
+Copyright: 2011, 2011, Dmitry E. Oboukhov <unera@debian.org>,
+ 2011, Nicholas Bamber <nicholas@periapt.co.uk>,
+ 2011, Alessandro Ghedini <ghedo@debian.org>
+License: Artistic or GPL-2+
+
+License: Artistic
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the Artistic License, which comes with Perl.
+ .
+ On Debian systems, the complete text of the Artistic License can be
+ found in `/usr/share/common-licenses/Artistic'.
+
+License: BSD-2-clause
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are
+ met:
+ .
+  * Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+ .
+  * Redistributions in binary form must reproduce the above
+    copyright notice, this list of conditions and the following
+    disclaimer in the documentation and/or other materials provided
+    with the distribution.
+ .
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+License: GPL-2+
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2, or (at your option)
+ any later version.
+ .
+ On Debian systems, the complete text of version 2 of the GNU General
+ Public License can be found in `/usr/share/common-licenses/GPL-2'.

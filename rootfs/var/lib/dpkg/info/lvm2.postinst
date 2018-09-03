@@ -1,0 +1,126 @@
+#!/bin/sh
+
+set -e
+
+case "$1" in
+    configure)
+        # For init-scripts
+        mkdir -m 0700 -p /run/lvm
+        vgcfgbackup >/dev/null 2>&1 || :
+        invoke-rc.d lvm2 start || :
+        if [ -x /usr/sbin/update-initramfs ]; then
+            update-initramfs -u
+        fi
+        if dpkg --compare-versions "$2" lt "2.02.133~"; then
+            deb-systemd-helper purge lvm2-activation-early.service lvm2-activation.service >/dev/null
+            deb-systemd-helper unmask lvm2-activation-early.service lvm2-activation.service >/dev/null
+        fi
+    ;;
+esac
+
+# Automatically added by dh_systemd_enable
+# This will only remove masks created by d-s-h on package removal.
+deb-systemd-helper unmask lvm2-lvmpolld.socket >/dev/null || true
+
+# was-enabled defaults to true, so new installations run enable.
+if deb-systemd-helper --quiet was-enabled lvm2-lvmpolld.socket; then
+	# Enables the unit on first installation, creates new
+	# symlinks on upgrades if the unit file has changed.
+	deb-systemd-helper enable lvm2-lvmpolld.socket >/dev/null || true
+else
+	# Update the statefile to add new symlinks (if any), which need to be
+	# cleaned up on purge. Also remove old symlinks.
+	deb-systemd-helper update-state lvm2-lvmpolld.socket >/dev/null || true
+fi
+# End automatically added section
+# Automatically added by dh_systemd_enable
+# This will only remove masks created by d-s-h on package removal.
+deb-systemd-helper unmask lvm2-monitor.service >/dev/null || true
+
+# was-enabled defaults to true, so new installations run enable.
+if deb-systemd-helper --quiet was-enabled lvm2-monitor.service; then
+	# Enables the unit on first installation, creates new
+	# symlinks on upgrades if the unit file has changed.
+	deb-systemd-helper enable lvm2-monitor.service >/dev/null || true
+else
+	# Update the statefile to add new symlinks (if any), which need to be
+	# cleaned up on purge. Also remove old symlinks.
+	deb-systemd-helper update-state lvm2-monitor.service >/dev/null || true
+fi
+# End automatically added section
+# Automatically added by dh_systemd_enable
+if deb-systemd-helper debian-installed lvm2-lvmetad.service; then
+	# This will only remove masks created by d-s-h on package removal.
+	deb-systemd-helper unmask lvm2-lvmetad.service >/dev/null || true
+
+	if deb-systemd-helper --quiet was-enabled lvm2-lvmetad.service; then
+		# Create new symlinks, if any.
+		deb-systemd-helper enable lvm2-lvmetad.service >/dev/null || true
+	fi
+fi
+
+# Update the statefile to add new symlinks (if any), which need to be cleaned
+# up on purge. Also remove old symlinks.
+deb-systemd-helper update-state lvm2-lvmetad.service >/dev/null || true
+# End automatically added section
+# Automatically added by dh_systemd_enable
+if deb-systemd-helper debian-installed lvm2-lvmetad.socket; then
+	# This will only remove masks created by d-s-h on package removal.
+	deb-systemd-helper unmask lvm2-lvmetad.socket >/dev/null || true
+
+	if deb-systemd-helper --quiet was-enabled lvm2-lvmetad.socket; then
+		# Create new symlinks, if any.
+		deb-systemd-helper enable lvm2-lvmetad.socket >/dev/null || true
+	fi
+fi
+
+# Update the statefile to add new symlinks (if any), which need to be cleaned
+# up on purge. Also remove old symlinks.
+deb-systemd-helper update-state lvm2-lvmetad.socket >/dev/null || true
+# End automatically added section
+# Automatically added by dh_systemd_enable
+if deb-systemd-helper debian-installed lvm2-lvmpolld.service; then
+	# This will only remove masks created by d-s-h on package removal.
+	deb-systemd-helper unmask lvm2-lvmpolld.service >/dev/null || true
+
+	if deb-systemd-helper --quiet was-enabled lvm2-lvmpolld.service; then
+		# Create new symlinks, if any.
+		deb-systemd-helper enable lvm2-lvmpolld.service >/dev/null || true
+	fi
+fi
+
+# Update the statefile to add new symlinks (if any), which need to be cleaned
+# up on purge. Also remove old symlinks.
+deb-systemd-helper update-state lvm2-lvmpolld.service >/dev/null || true
+# End automatically added section
+# Automatically added by dh_systemd_start
+if [ -d /run/systemd/system ]; then
+	systemctl --system daemon-reload >/dev/null || true
+	if [ -n "$2" ]; then
+		_dh_action=try-restart
+	else
+		_dh_action=start
+	fi
+	deb-systemd-invoke $_dh_action lvm2-lvmetad.service lvm2-lvmpolld.service >/dev/null || true
+fi
+# End automatically added section
+# Automatically added by dh_systemd_start
+if [ -d /run/systemd/system ]; then
+	systemctl --system daemon-reload >/dev/null || true
+	deb-systemd-invoke start lvm2-lvmetad.socket lvm2-lvmpolld.socket >/dev/null || true
+fi
+# End automatically added section
+
+
+case "$1" in
+    configure)
+        # disable unless lvm config says otherwise
+        use_lvmetad="$(lvmconfig --type default global/use_lvmetad)"
+        if [ "$use_lvmetad" = "use_lvmetad=0" ]; then
+            echo "Stopping lvmetad, '$use_lvmetad' is set"
+            systemctl stop lvm2-lvmetad.service
+        fi
+    ;;
+esac
+
+exit 0

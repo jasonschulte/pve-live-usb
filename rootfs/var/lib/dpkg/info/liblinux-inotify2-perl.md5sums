@@ -1,0 +1,9 @@
+89ad666e9c94c72047059ede0b3e7737  usr/lib/x86_64-linux-gnu/perl5/5.24/Linux/Inotify2.pm
+69d0a80714b3749e6aa865b20b081551  usr/lib/x86_64-linux-gnu/perl5/5.24/auto/Linux/Inotify2/Inotify2.so
+e0ebc0b99e0a1bbf2b2ba226e19e992f  usr/share/doc/liblinux-inotify2-perl/changelog.Debian.gz
+3a5843f754b8fe9341ea05e2640b1930  usr/share/doc/liblinux-inotify2-perl/changelog.gz
+0a481857cc535f3345083e3a50d1fa2f  usr/share/doc/liblinux-inotify2-perl/copyright
+f7a715612785d34e903f601487a10913  usr/share/doc/liblinux-inotify2-perl/examples/event
+9f8297a19761ae19261f01518c5d809f  usr/share/doc/liblinux-inotify2-perl/examples/simple
+3ad251285dc70c76134dfd4c1f976df2  usr/share/lintian/overrides/liblinux-inotify2-perl
+50eb2230d76da9e64996b167a10ffdc7  usr/share/man/man3/Linux::Inotify2.3pm.gz

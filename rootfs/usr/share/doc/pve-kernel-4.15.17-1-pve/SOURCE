@@ -1,0 +1,2 @@
+git clone git://git.proxmox.com/git/pve-kernel.git
+git checkout 7361c770afd3218cba1525d3c99857a995b923f3

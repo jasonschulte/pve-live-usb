@@ -1,0 +1,10 @@
+/.
+/usr
+/usr/share
+/usr/share/doc
+/usr/share/doc/proxmox-widget-toolkit
+/usr/share/doc/proxmox-widget-toolkit/changelog.Debian.gz
+/usr/share/doc/proxmox-widget-toolkit/copyright
+/usr/share/javascript
+/usr/share/javascript/proxmox-widget-toolkit
+/usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js

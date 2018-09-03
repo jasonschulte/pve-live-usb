@@ -1,0 +1,13 @@
+#!/bin/sh
+set -e
+# Automatically added by dh_installdeb
+dpkg-maintscript-helper rm_conffile /etc/corosync/corosync.conf.example.udpu 2.3.5-1~ -- "$@"
+# End automatically added section
+# Automatically added by dh_installdeb
+dpkg-maintscript-helper rm_conffile /etc/corosync/corosync.conf.example 2.3.5-1~ -- "$@"
+# End automatically added section
+# Automatically added by dh_systemd_start
+if [ -d /run/systemd/system ] && [ "$1" = remove ]; then
+	deb-systemd-invoke stop corosync.service >/dev/null
+fi
+# End automatically added section

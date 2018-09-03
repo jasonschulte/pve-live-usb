@@ -1,0 +1,15 @@
+/.
+/usr
+/usr/lib
+/usr/lib/x86_64-linux-gnu
+/usr/lib/x86_64-linux-gnu/libcephfs.so.1.0.0
+/usr/share
+/usr/share/doc
+/usr/share/doc/libcephfs1
+/usr/share/doc/libcephfs1/changelog.Debian.gz
+/usr/share/doc/libcephfs1/changelog.gz
+/usr/share/doc/libcephfs1/copyright
+/usr/share/lintian
+/usr/share/lintian/overrides
+/usr/share/lintian/overrides/libcephfs1
+/usr/lib/x86_64-linux-gnu/libcephfs.so.1

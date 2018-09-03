@@ -1,0 +1,2 @@
+/etc/systemd/system/zfs-mount.service.wants/zfs-import.target
+/etc/systemd/system/zfs.target.wants/zfs-import.target

@@ -1,0 +1,7 @@
+d1cdabeb1eb416dcd551db08e059bcaf  lib/libzfs.so.2.0.0
+441c75f8b9bdf829577fe6d51f3c8531  lib/libzfs_core.so.1.0.0
+3291cb031648692d759e6fd47575b6db  usr/share/doc/libzfs2linux/COPYRIGHT
+282546bef9fc9bcd31be318924ba400d  usr/share/doc/libzfs2linux/OPENSOLARIS.LICENSE.gz
+691769d42f2ce6d741efcfaf160d2d67  usr/share/doc/libzfs2linux/changelog.Debian.gz
+fe031247f7c1c85aeeba8a71f44abdf2  usr/share/doc/libzfs2linux/copyright
+55a8419d52739a4a66fa62008b12d649  usr/share/lintian/overrides/libzfs2linux

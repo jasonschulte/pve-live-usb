@@ -1,0 +1,15 @@
+/.
+/lib
+/lib/libzpool.so.2.0.0
+/usr
+/usr/share
+/usr/share/doc
+/usr/share/doc/libzpool2linux
+/usr/share/doc/libzpool2linux/COPYRIGHT
+/usr/share/doc/libzpool2linux/OPENSOLARIS.LICENSE.gz
+/usr/share/doc/libzpool2linux/changelog.Debian.gz
+/usr/share/doc/libzpool2linux/copyright
+/usr/share/lintian
+/usr/share/lintian/overrides
+/usr/share/lintian/overrides/libzpool2linux
+/lib/libzpool.so.2

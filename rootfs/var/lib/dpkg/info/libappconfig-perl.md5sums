@@ -1,0 +1,17 @@
+b744a1fc1f45531d3a9642e77ee9660f  usr/share/doc/libappconfig-perl/changelog.Debian.gz
+ec82dcdebc1598115fda02434b8b790c  usr/share/doc/libappconfig-perl/changelog.gz
+d9d6b829948c63c3460b899be3be7c0a  usr/share/doc/libappconfig-perl/copyright
+926d68418232ea16b8833ca33750049c  usr/share/man/man3/AppConfig.3pm.gz
+5352f4d5e6f27237c8b5b3ea57ca20b4  usr/share/man/man3/AppConfig::Args.3pm.gz
+0be3196cc46d6cbbd493978e75422c9d  usr/share/man/man3/AppConfig::CGI.3pm.gz
+0308a8067d52ec27a995604b7b9ae637  usr/share/man/man3/AppConfig::File.3pm.gz
+ee7b0aa8bdd9862cc410defc4e324af1  usr/share/man/man3/AppConfig::Getopt.3pm.gz
+30f026e98650b38374e0d4ede55a9eb0  usr/share/man/man3/AppConfig::State.3pm.gz
+3006339ee956e2db823744084ecc2f09  usr/share/man/man3/AppConfig::Sys.3pm.gz
+88949328ea3512ab41a43b3fcf69b860  usr/share/perl5/AppConfig.pm
+d99517c78f7687c5f327864fa8ec0d5c  usr/share/perl5/AppConfig/Args.pm
+9f975afb55db6fce81e18e100c109dfb  usr/share/perl5/AppConfig/CGI.pm
+c15eb4f928fce3883141ef0b0470474b  usr/share/perl5/AppConfig/File.pm
+45cfe8958c0a5f00f7ad455df48275f8  usr/share/perl5/AppConfig/Getopt.pm
+6c770f20e9682ad9d16ea7a763f4ddc3  usr/share/perl5/AppConfig/State.pm
+c8cbdd86f02549a47c844c2182949b2a  usr/share/perl5/AppConfig/Sys.pm

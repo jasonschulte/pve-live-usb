@@ -1,0 +1,317 @@
+Package: clamav
+Description-md5: fb7be82d5591a0f3facf827f0a60c5d6
+Description-en: anti-virus utility for Unix - command-line interface
+ Clam AntiVirus is an anti-virus toolkit for Unix. The main purpose of
+ this software is the integration with mail servers (attachment
+ scanning). The package provides a flexible and scalable
+ multi-threaded daemon in the clamav-daemon package, a command-line
+ scanner in the clamav package, and a tool for automatic updating via
+ the Internet in the clamav-freshclam package. The programs are based
+ on libclamav, which can be used by other software.
+ .
+ This package contains the command line interface. Features:
+  - built-in support for various archive formats, including Zip, Tar,
+    Gzip, Bzip2, OLE2, Cabinet, CHM, BinHex, SIS and others;
+  - built-in support for almost all mail file formats;
+  - built-in support for ELF executables and Portable Executable files
+    compressed with UPX, FSG, Petite, NsPack, wwpack32, MEW, Upack and
+    obfuscated with SUE, Y0da Cryptor and others;
+  - built-in support for popular document formats including Microsoft
+    Office and Mac Office files, HTML, RTF and PDF.
+ .
+ For scanning to work, a virus database is needed. There are two options
+ for getting it:
+  - clamav-freshclam: updates the database from Internet. This is
+    recommended with Internet access.
+  - clamav-data: for users without Internet access. The package is
+    not updated once installed. The clamav-getfiles package allows
+    creating custom packages from an Internet-connected computer.
+
+Package: clamav-base
+Description-md5: 701912f0a2cc626b57570094858a5b1d
+Description-en: anti-virus utility for Unix - base package
+ Clam AntiVirus is an anti-virus toolkit for Unix. The main purpose of
+ this software is the integration with mail servers (attachment
+ scanning). The package provides a flexible and scalable
+ multi-threaded daemon in the clamav-daemon package, a command-line
+ scanner in the clamav package, and a tool for automatic updating via
+ the Internet in the clamav-freshclam package. The programs are based
+ on libclamav, which can be used by other software.
+ .
+ This package mainly manages the clamav system account. It is not really
+ useful without the clamav or clamav-daemon package.
+
+Package: clamav-daemon
+Description-md5: dc258511e9e1f62ef33172c190a0fad6
+Description-en: anti-virus utility for Unix - scanner daemon
+ Clam AntiVirus is an anti-virus toolkit for Unix. The main purpose of
+ this software is the integration with mail servers (attachment
+ scanning). The package provides a flexible and scalable
+ multi-threaded daemon in the clamav-daemon package, a command-line
+ scanner in the clamav package, and a tool for automatic updating via
+ the Internet in the clamav-freshclam package. The programs are based
+ on libclamav, which can be used by other software.
+ .
+ This package contains the daemon featuring:
+  - fast, multi-threaded daemon;
+  - easy integration with MTA's;
+  - support for on-access scanning;
+  - remote scanning;
+  - able to be run supervised by daemon.
+
+Package: clamav-docs
+Description-md5: af78818bbdf8851b6358c15693a31419
+Description-en: anti-virus utility for Unix - documentation
+ Clam AntiVirus is an anti-virus toolkit for Unix. The main purpose of
+ this software is the integration with mail servers (attachment
+ scanning). The package provides a flexible and scalable
+ multi-threaded daemon in the clamav-daemon package, a command-line
+ scanner in the clamav package, and a tool for automatic updating via
+ the Internet in the clamav-freshclam package. The programs are based
+ on libclamav, which can be used by other software.
+ .
+ This package contains the documentation for the ClamAV suite.
+
+Package: clamav-freshclam
+Description-md5: 82c68e4f7c984e3d6bdc720ae842fca8
+Description-en: anti-virus utility for Unix - virus database update utility
+ Clam AntiVirus is an anti-virus toolkit for Unix. The main purpose of
+ this software is the integration with mail servers (attachment
+ scanning). The package provides a flexible and scalable
+ multi-threaded daemon in the clamav-daemon package, a command-line
+ scanner in the clamav package, and a tool for automatic updating via
+ the Internet in the clamav-freshclam package. The programs are based
+ on libclamav, which can be used by other software.
+ .
+ This package contains the freshclam program and scripts to automate virus
+ database updating. It relies on an Internet connection, but can be
+ run in a variety of ways to compensate for intermittent connections.
+
+Package: clamav-milter
+Description-md5: e47a1194215b5fbde13fb9217c44d83f
+Description-en: anti-virus utility for Unix - sendmail integration
+ Clam AntiVirus is an anti-virus toolkit for Unix. The main purpose of
+ this software is the integration with mail servers (attachment
+ scanning). The package provides a flexible and scalable
+ multi-threaded daemon in the clamav-daemon package, a command-line
+ scanner in the clamav package, and a tool for automatic updating via
+ the Internet in the clamav-freshclam package. The programs are based
+ on libclamav, which can be used by other software.
+ .
+ This package contains the ClamAV milter for use with sendmail. It can
+ be configured to be run either standalone, or using clamav-daemon.
+
+Package: clamav-testfiles
+Description-md5: 29437a0b8c82cc8179b64405688f062e
+Description-en: anti-virus utility for Unix - test files
+ Clam AntiVirus is an anti-virus toolkit for Unix. The main purpose of
+ this software is the integration with mail servers (attachment
+ scanning). The package provides a flexible and scalable
+ multi-threaded daemon in the clamav-daemon package, a command-line
+ scanner in the clamav package, and a tool for automatic updating via
+ the Internet in the clamav-freshclam package. The programs are based
+ on libclamav, which can be used by other software.
+ .
+ This package contains files 'infected' with a test signature. The test
+ signature (ClamAV-Test-Signature) should be detectable by all
+ anti-virus programs.
+
+Package: clamdscan
+Description-md5: ad077e4c74b9870b6e7bb55aef11c547
+Description-en: anti-virus utility for Unix - scanner client
+ Clam AntiVirus is an anti-virus toolkit for Unix. The main purpose of
+ this software is the integration with mail servers (attachment
+ scanning). The package provides a flexible and scalable
+ multi-threaded daemon in the clamav-daemon package, a command-line
+ scanner in the clamav package, and a tool for automatic updating via
+ the Internet in the clamav-freshclam package. The programs are based
+ on libclamav, which can be used by other software.
+ .
+ This package contains clamdscan, the command line interface of the clamav
+ daemon.
+
+Package: libclamav-dev
+Description-md5: 3dc197b6ebfb15522a4b7913ea796763
+Description-en: anti-virus utility for Unix - development files
+ Clam AntiVirus is an anti-virus toolkit for Unix. The main purpose of
+ this software is the integration with mail servers (attachment
+ scanning). The package provides a flexible and scalable
+ multi-threaded daemon in the clamav-daemon package, a command-line
+ scanner in the clamav package, and a tool for automatic updating via
+ the Internet in the clamav-freshclam package. The programs are based
+ on libclamav, which can be used by other software.
+ .
+ The package contains the needed headers and libraries for
+ developing software using the libclamav interface.
+ .
+ This library can be used to develop virus scanner applications.
+
+Package: libclamav7
+Description-md5: bf2e797d0e7e410776d9200761e01bd6
+Description-en: anti-virus utility for Unix - library
+ Clam AntiVirus is an anti-virus toolkit for Unix. The main purpose of
+ this software is the integration with mail servers (attachment
+ scanning). The package provides a flexible and scalable
+ multi-threaded daemon in the clamav-daemon package, a command-line
+ scanner in the clamav package, and a tool for automatic updating via
+ the Internet in the clamav-freshclam package. The programs are based
+ on libclamav, which can be used by other software.
+ .
+ For programs written using the libclamav library. Libclamav may be used to add
+ virus protection into software. The library is thread-safe, and automatically
+ recognizes and scans archives. Scanning is very fast and most of the time
+ not noticeable.
+
+Package: dns-root-data
+Description-md5: bbcb2dc96efef2350f3f0122e975cf90
+Description-en: DNS root data including root zone and DNSSEC key
+ This package contains various root zone related data as published
+ by IANA to be used by various DNS software as a common source
+ of DNS root zone data, namely:
+ .
+  * Root Hints (root.hints)
+  * Root Trust Anchors (root.key, root.ds)
+
+Package: dnsviz
+Description-md5: 4f2e5db401d3a48757f46cd4365530b7
+Description-en: Tools for analyzing and visualizing DNS and DNSSEC behavior
+ DNSViz is a tool suite for analysis and visualization of Domain Name System
+ (DNS) behavior, including its security extensions (DNSSEC). This tool suite
+ powers the Web-based analysis available at <http://dnsviz.net/>.
+
+Package: libdatetime-timezone-perl
+Description-md5: 49fff32146b7c0ac14d7bcca1f92bfe6
+Description-en: framework exposing the Olson time zone database to Perl
+ DateTime::TimeZone is a Perl module framework providing an interface to the
+ Olson time zone database. It exposes the database as a set of modules, one
+ for each time zone defined, allowing for various optimizations in doing time
+ zone calculations.
+ .
+ The Olson time zone database is the best available source for worldwide time
+ zone information and is available from <URL:ftp://ftp.iana.org/tz/releases/>.
+
+Package: tor
+Description-md5: 9106e8e4b3843ebd532ba2b89615a92e
+Description-en: anonymizing overlay network for TCP
+ Tor is a connection-based low-latency anonymous communication system.
+ .
+ Clients choose a source-routed path through a set of relays, and
+ negotiate a "virtual circuit" through the network, in which each relay
+ knows its predecessor and successor, but no others. Traffic flowing
+ down the circuit is decrypted at each relay, which reveals the
+ downstream relay.
+ .
+ Basically, Tor provides a distributed network of relays. Users bounce
+ their TCP streams (web traffic, ftp, ssh, etc) around the relays, and
+ recipients, observers, and even the relays themselves have difficulty
+ learning which users connected to which destinations.
+ .
+ This package enables only a Tor client by default, but it can also be
+ configured as a relay and/or a hidden service easily.
+ .
+ Client applications can use the Tor network by connecting to the local
+ socks proxy interface provided by your Tor instance. If the application
+ itself does not come with socks support, you can use a socks client
+ such as torsocks.
+ .
+ Note that Tor does no protocol cleaning on application traffic. There
+ is a danger that application protocols and associated programs can be
+ induced to reveal information about the user. Tor depends on Torbutton
+ and similar protocol cleaners to solve this problem. For best
+ protection when web surfing, the Tor Project recommends that you use
+ the Tor Browser Bundle, a standalone tarball that includes static
+ builds of Tor, Torbutton, and a modified Firefox that is patched to fix
+ a variety of privacy bugs.
+
+Package: tor-dbg
+Description-md5: e8a546d3317d374b2fe6f8a245b9e653
+Description-en: debugging symbols for Tor
+ This package provides the debugging symbols for Tor, The Onion Router.
+ Those symbols allow your debugger to assign names to your backtraces, which
+ makes it somewhat easier to interpret core dumps.
+
+Package: tor-geoipdb
+Description-md5: d0b50c9cd91157b8c85856fd55e26d14
+Description-en: GeoIP database for Tor
+ This package provides a GeoIP database for Tor, i.e. it maps IPv4 addresses
+ to countries.
+ .
+ Bridge relays (special Tor relays that aren't listed in the main Tor
+ directory) use this information to report which countries they see
+ connections from.  These statistics enable the Tor network operators to
+ learn when certain countries start blocking access to bridges.
+ .
+ Clients can also use this to learn what country each relay is in, so
+ Tor controllers like arm or Vidalia can use it, or if they want to
+ configure path selection preferences.
+
+Package: tzdata
+Description-md5: a77a3cc9a67658dd7cfdc6547391b8f8
+Description-en: time zone and daylight-saving time data
+ This package contains data required for the implementation of
+ standard local time for many representative locations around the
+ globe. It is updated periodically to reflect changes made by
+ political bodies to time zone boundaries, UTC offsets, and
+ daylight-saving rules.
+
+Package: libunbound-dev
+Description-md5: ed3009c5a462f3287f75c961064034a6
+Description-en: static library, header files, and docs for libunbound
+ Static library, header files, and documentation for libunbound.
+ .
+ libunbound performs and validates DNS lookups; it can be used to convert
+ hostnames to IP addresses and back and obtain other information from the
+ DNS. Cryptographic validation of results is performed with DNSSEC.
+
+Package: libunbound2
+Description-md5: 2be0d2578ccb5656d253e8013682ad4a
+Description-en: library implementing DNS resolution and validation
+ libunbound performs and validates DNS lookups; it can be used to convert
+ hostnames to IP addresses and back and obtain other information from the
+ DNS. Cryptographic validation of results is performed with DNSSEC.
+
+Package: python-unbound
+Description-md5: 103cd64b79e42ad710e19fe727ffce50
+Description-en: library implementing DNS resolution and validation (Python bindings)
+ Python extension module for libunbound.
+ .
+ libunbound performs and validates DNS lookups; it can be used to convert
+ hostnames to IP addresses and back and obtain other information from the
+ DNS. Cryptographic validation of results is performed with DNSSEC.
+
+Package: python3-unbound
+Description-md5: af30f925fc4c43d06de34592670b36e8
+Description-en: library implementing DNS resolution and validation (Python3 bindings)
+ Python3 extension module for libunbound.
+ .
+ libunbound performs and validates DNS lookups; it can be used to convert
+ hostnames to IP addresses and back and obtain other information from the
+ DNS. Cryptographic validation of results is performed with DNSSEC.
+
+Package: unbound
+Description-md5: fbeecad8349f6b3042087b256bc69b68
+Description-en: validating, recursive, caching DNS resolver
+ Unbound is a recursive-only caching DNS server which can perform DNSSEC
+ validation of results. It implements only a minimal amount of authoritative
+ service to prevent leakage to the root nameservers: forward lookups for
+ localhost, reverse for 127.0.0.1 and ::1, and NXDOMAIN for zones served by
+ AS112. Stub and forward zones are supported.
+ .
+ This package contains the unbound daemon.
+
+Package: unbound-anchor
+Description-md5: f49fb3435120bde9cd4af959aeac719c
+Description-en: utility to securely fetch the root DNS trust anchor
+ unbound-anchor is a utility which securely fetches or updates the root DNS
+ zone trust anchor. A copy of the current root anchor and root update
+ certificate is embedded in unbound-anchor. RFC 5011 trust anchor tracking is
+ performed, with fallback to an SSL fetch if this fails.
+
+Package: unbound-host
+Description-md5: 287e113772f55d3575bb8577560cb3eb
+Description-en: reimplementation of the 'host' command
+ This package provides the 'unbound-host' program that is bundled with the
+ Unbound domain name server. This version differs from the one provided in the
+ package called host, which is from NIKHEF, and bind9-host, which is from ISC,
+ and has a similar but different set of features and options.
+

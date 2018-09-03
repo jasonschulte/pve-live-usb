@@ -1,0 +1,9 @@
+9617fc388ab553ee0e76388a92f3c86c  sbin/ipset
+ee0283102bed0dee18680d1bd84df9fd  usr/share/bash-completion/completions/ipset
+99ef473d9b4e770bb78451fe4c9f019a  usr/share/doc/ipset/NEWS.Debian.gz
+18d2d08bf7d325f91cdac81ba9b8d4f5  usr/share/doc/ipset/README
+78b5e6e11f18c47bca5f48f434e0e963  usr/share/doc/ipset/changelog.Debian.gz
+a4933970afbaf5a817bb257322d4a7ef  usr/share/doc/ipset/changelog.gz
+57acd31551a7675ead613b043c913c43  usr/share/doc/ipset/copyright
+3f94ffda3190f833f4ddedbcfab8bc62  usr/share/lintian/overrides/ipset
+e0474bd478e28667b6fc6c1de1a505c0  usr/share/man/man8/ipset.8.gz

@@ -1,0 +1,5 @@
+bd87ca4b700d28b7a3e5612a513d8437  usr/lib/x86_64-linux-gnu/libwbclient.so.0.13
+5786a36494b7b2e7386ff6c23fbe9a76  usr/lib/x86_64-linux-gnu/samba/libwinbind-client.so.0
+8ab5ceb5d57b2a8e6db80d56b6d96dea  usr/share/doc/libwbclient0/NEWS.Debian.gz
+8b3a39722890ae0e5499e0cfd95365c5  usr/share/doc/libwbclient0/changelog.Debian.gz
+bedf99aa0e71d2c782cac8958701a721  usr/share/doc/libwbclient0/copyright

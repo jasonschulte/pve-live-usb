@@ -1,0 +1,23 @@
+#!/bin/sh
+
+set -e
+
+case "$1" in
+    remove)
+        vgcfgbackup >/dev/null 2>&1 || :
+    ;;
+esac
+
+# Automatically added by dh_systemd_start
+if [ -d /run/systemd/system ] && [ "$1" = remove ]; then
+	deb-systemd-invoke stop lvm2-lvmetad.socket lvm2-lvmpolld.socket >/dev/null
+fi
+# End automatically added section
+# Automatically added by dh_systemd_start
+if [ -d /run/systemd/system ] && [ "$1" = remove ]; then
+	deb-systemd-invoke stop lvm2-lvmetad.service lvm2-lvmpolld.service >/dev/null
+fi
+# End automatically added section
+
+
+exit 0

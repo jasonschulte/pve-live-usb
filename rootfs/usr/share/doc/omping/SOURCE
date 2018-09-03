@@ -1,0 +1,2 @@
+git clone git://git.proxmox.com/git/pve-omping.git
+git checkout af528798e9f1ca6107348bf132a1f6b131b0030a

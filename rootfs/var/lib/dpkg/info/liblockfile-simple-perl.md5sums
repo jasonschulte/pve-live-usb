@@ -1,0 +1,8 @@
+45a46fafad699c0d2608881506d07453  usr/share/doc/liblockfile-simple-perl/changelog.Debian.gz
+f2ac1e4b520be46e60978c12a85fd7bf  usr/share/doc/liblockfile-simple-perl/changelog.gz
+b5947a0b04c060e9cf0700878e328919  usr/share/doc/liblockfile-simple-perl/copyright
+5e3e3f20ad16f17af62b5b65d0b80884  usr/share/man/man3/LockFile::Simple.3pm.gz
+817760ae2bfb6892f122d7991efef9dc  usr/share/perl5/LockFile/Lock.pm
+fce037d5eaf926742418d6f5486aff76  usr/share/perl5/LockFile/Lock/Simple.pm
+4645a581cab4772b27035e7018473b5f  usr/share/perl5/LockFile/Manager.pm
+1679f435d953bf9fa0eb6991f244fc15  usr/share/perl5/LockFile/Simple.pm

@@ -1,0 +1,2 @@
+git clone git://git.proxmox.com/git/pve-libspice-server.git
+git checkout 5f4254804b1a3e66d633bb87be5fbc8004726132

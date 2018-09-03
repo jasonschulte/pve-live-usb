@@ -1,0 +1,14 @@
+75f3442497d7ce7c0affaa5c794a672d  usr/share/doc/libconvert-asn1-perl/changelog.Debian.gz
+ee284d704ce4d64670f95b49f9e191f3  usr/share/doc/libconvert-asn1-perl/changelog.gz
+c2b40620a517cdf2c2635ef9596d7a61  usr/share/doc/libconvert-asn1-perl/copyright
+2e2faf58aed2ac76f24268c256547492  usr/share/doc/libconvert-asn1-perl/examples/ldap-search
+b50296bd16451cb02668ae6fc9e28b18  usr/share/doc/libconvert-asn1-perl/examples/ldap.gz
+6848602fadee6ac0a063719ad2efd02e  usr/share/doc/libconvert-asn1-perl/examples/x509decode.gz
+d9f68a5c58e9af39ca9ae2f86dccfacb  usr/share/man/man3/Convert::ASN1.3pm.gz
+0304ac45d6c18319ccd4a14fb1c895c2  usr/share/perl5/Convert/ASN1.pm
+005d95c1e5e35e02fe2013102ebe49c1  usr/share/perl5/Convert/ASN1.pod
+20b264d332ad0a38e35a88efdb2cba83  usr/share/perl5/Convert/ASN1/Debug.pm
+802abc2f610d8993ed282f69611af425  usr/share/perl5/Convert/ASN1/IO.pm
+76bae4ef0635d4843916d2eb07dc8260  usr/share/perl5/Convert/ASN1/_decode.pm
+0ad50f33776ee6500a0ab38246651a29  usr/share/perl5/Convert/ASN1/_encode.pm
+a282f85c4d67e2d5195582ad348cdc79  usr/share/perl5/Convert/ASN1/parser.pm

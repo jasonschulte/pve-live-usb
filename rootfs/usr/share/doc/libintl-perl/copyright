@@ -1,0 +1,17 @@
+This is the Debian package for the libintl-perl module.
+It was created by Marc Brockschmidt <marc@dch-faq.de> using dh-make-perl.
+
+The upstream sources were downloaded from CPAN:
+  http://www.cpan.org/authors/id/G/GU/GUIDO/
+
+The upstream author is: Guido Flohr <guido.flohr@cantanea.com>
+
+Copyright: (C) 2002-2015, Guido Flohr <guido.flohr@cantanea.com>
+
+This program is free software; you can redistribute it and/or modify it 
+under the terms of the GNU General Public License as published by the 
+Free Software Foundation; either version 3, or (at your option) any 
+later version.
+
+A copy of the GPL-3 can be found at /usr/share/common-licenses/GPL-3 on
+any Debian system.

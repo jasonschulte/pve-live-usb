@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: rbd
+Version: 0
+Summary: Python libraries for the Ceph librbd library
+Home-page: UNKNOWN
+Author: UNKNOWN
+Author-email: UNKNOWN
+License: UNKNOWN
+Description: This package contains Python libraries for interacting with Ceph's RBD block device library.
+Platform: UNKNOWN

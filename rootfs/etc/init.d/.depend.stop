@@ -1,0 +1,5 @@
+TARGETS = unattended-upgrades rbdmap rrdcached uuidd postfix ebtables smartmontools open-iscsi nfs-common rpcbind rsyslog iscsid hwclock.sh networking
+rsyslog: postfix smartmontools
+iscsid: open-iscsi
+hwclock.sh: rsyslog uuidd nfs-common
+networking: postfix open-iscsi iscsid rbdmap rrdcached rpcbind

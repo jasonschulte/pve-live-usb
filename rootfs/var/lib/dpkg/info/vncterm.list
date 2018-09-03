@@ -1,0 +1,15 @@
+/.
+/usr
+/usr/bin
+/usr/bin/vncterm
+/usr/share
+/usr/share/doc
+/usr/share/doc/vncterm
+/usr/share/doc/vncterm/SOURCE
+/usr/share/doc/vncterm/changelog.Debian.gz
+/usr/share/doc/vncterm/copyright
+/usr/share/man
+/usr/share/man/man1
+/usr/share/man/man1/vncterm.1.gz
+/usr/share/vncterm
+/usr/share/vncterm/font.data

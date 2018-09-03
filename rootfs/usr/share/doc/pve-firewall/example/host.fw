@@ -1,0 +1,26 @@
+# /etc/pve/local/host.fw
+
+[OPTIONS]
+
+enable: 0
+tcp_flags_log_level: info
+smurf_log_level: nolog
+log_level_in: info
+log_level_out: info
+
+# allow more connections (default is 65536)
+nf_conntrack_max: 196608
+
+# reduce conntrack established timeout (default is 432000 - 5days)
+nf_conntrack_tcp_timeout_established: 7875
+
+# disable SMURFS filter
+nosmurfs: 0
+
+# filter illegal combinations of TCP flags
+tcpflags: 1
+
+[RULES]
+
+IN  SSH(ACCEPT)
+OUT SSH(ACCEPT)

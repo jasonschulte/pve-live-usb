@@ -1,0 +1,7 @@
+349d58774907d5e5c6d282f1b03f69db  usr/bin/sqldiff
+5baae6f50c8de00242ab9537c17cb202  usr/bin/sqlite3
+ee78bebfa0eb706e7a2b5d047ff23cad  usr/share/doc/sqlite3/changelog.Debian.gz
+d8c840bf8b9ddd904eb83980c9466b90  usr/share/doc/sqlite3/changelog.gz
+916d39a5ef30c8aca33eb13d44814638  usr/share/doc/sqlite3/changelog.html.gz
+fcba8bcf4c824099d3881a5230cc9d1d  usr/share/doc/sqlite3/copyright
+daf97bc563ee9bb3a573b5e80378b2fa  usr/share/man/man1/sqlite3.1.gz

@@ -1,0 +1,9 @@
+0de15f215a8b00c2e3fe89a4d2ce0b8a  usr/share/doc/libmath-random-isaac-perl/changelog.Debian.gz
+6f3383c874a6fc34e255a9075723a813  usr/share/doc/libmath-random-isaac-perl/changelog.gz
+0cf6e6cb47b57551f5aa52ae2483cbed  usr/share/doc/libmath-random-isaac-perl/copyright
+99744cdd6b37c58c307ab3d67caec9cd  usr/share/doc/libmath-random-isaac-perl/examples/benchmark.pl.gz
+71c5616bebe169768cbc786495e954b6  usr/share/doc/libmath-random-isaac-perl/examples/distribution.pl
+28d58a478ca05791298e42447eb48e1c  usr/share/man/man3/Math::Random::ISAAC.3pm.gz
+3a0231f2fd6ded5e62d3888eb849fde6  usr/share/man/man3/Math::Random::ISAAC::PP.3pm.gz
+59fae27ab6ff4661aaa36f1d331b1c9d  usr/share/perl5/Math/Random/ISAAC.pm
+b301893ad8d7b9a4d2257750ee614881  usr/share/perl5/Math/Random/ISAAC/PP.pm

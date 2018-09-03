@@ -1,0 +1,2483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="AsciiDoc 8.6.9">
+<title>pveum(1)</title>
+<style type="text/css">
+/* Shared CSS for AsciiDoc xhtml11 and html5 backends */
+
+/* Default font. */
+body {
+  font-family: Georgia,serif;
+}
+
+/* Title font. */
+h1, h2, h3, h4, h5, h6,
+div.title, caption.title,
+thead, p.table.header,
+#toctitle,
+#author, #revnumber, #revdate, #revremark,
+#footer {
+  font-family: Arial,Helvetica,sans-serif;
+}
+
+body {
+  margin: 1em 5% 1em 5%;
+}
+
+a {
+  color: blue;
+  text-decoration: underline;
+}
+a:visited {
+  color: fuchsia;
+}
+
+em {
+  font-style: italic;
+  color: navy;
+}
+
+strong {
+  font-weight: bold;
+  color: #083194;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #527bbd;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+
+h1, h2, h3 {
+  border-bottom: 2px solid silver;
+}
+h2 {
+  padding-top: 0.5em;
+}
+h3 {
+  float: left;
+}
+h3 + * {
+  clear: left;
+}
+h5 {
+  font-size: 1.0em;
+}
+
+div.sectionbody {
+  margin-left: 0;
+}
+
+hr {
+  border: 1px solid silver;
+}
+
+p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+ul, ol, li > p {
+  margin-top: 0;
+}
+ul > li     { color: #aaa; }
+ul > li > * { color: black; }
+
+.monospaced, code, pre {
+  font-family: "Courier New", Courier, monospace;
+  font-size: inherit;
+  color: navy;
+  padding: 0;
+  margin: 0;
+}
+pre {
+  white-space: pre-wrap;
+}
+
+#author {
+  color: #527bbd;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+#email {
+}
+#revnumber, #revdate, #revremark {
+}
+
+#footer {
+  font-size: small;
+  border-top: 2px solid silver;
+  padding-top: 0.5em;
+  margin-top: 4.0em;
+}
+#footer-text {
+  float: left;
+  padding-bottom: 0.5em;
+}
+#footer-badges {
+  float: right;
+  padding-bottom: 0.5em;
+}
+
+#preamble {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+div.imageblock, div.exampleblock, div.verseblock,
+div.quoteblock, div.literalblock, div.listingblock, div.sidebarblock,
+div.admonitionblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.admonitionblock {
+  margin-top: 2.0em;
+  margin-bottom: 2.0em;
+  margin-right: 10%;
+  color: #606060;
+}
+
+div.content { /* Block element content. */
+  padding: 0;
+}
+
+/* Block element titles. */
+div.title, caption.title {
+  color: #527bbd;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 1.0em;
+  margin-bottom: 0.5em;
+}
+div.title + * {
+  margin-top: 0;
+}
+
+td div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content + div.title {
+  margin-top: 0.0em;
+}
+
+div.sidebarblock > div.content {
+  background: #ffffee;
+  border: 1px solid #dddddd;
+  border-left: 4px solid #f0f0f0;
+  padding: 0.5em;
+}
+
+div.listingblock > div.content {
+  border: 1px solid #dddddd;
+  border-left: 5px solid #f0f0f0;
+  background: #f8f8f8;
+  padding: 0.5em;
+}
+
+div.quoteblock, div.verseblock {
+  padding-left: 1.0em;
+  margin-left: 1.0em;
+  margin-right: 10%;
+  border-left: 5px solid #f0f0f0;
+  color: #888;
+}
+
+div.quoteblock > div.attribution {
+  padding-top: 0.5em;
+  text-align: right;
+}
+
+div.verseblock > pre.content {
+  font-family: inherit;
+  font-size: inherit;
+}
+div.verseblock > div.attribution {
+  padding-top: 0.75em;
+  text-align: left;
+}
+/* DEPRECATED: Pre version 8.2.7 verse style literal block. */
+div.verseblock + div.attribution {
+  text-align: left;
+}
+
+div.admonitionblock .icon {
+  vertical-align: top;
+  font-size: 1.1em;
+  font-weight: bold;
+  text-decoration: underline;
+  color: #527bbd;
+  padding-right: 0.5em;
+}
+div.admonitionblock td.content {
+  padding-left: 0.5em;
+  border-left: 3px solid #dddddd;
+}
+
+div.exampleblock > div.content {
+  border-left: 3px solid #dddddd;
+  padding-left: 0.5em;
+}
+
+div.imageblock div.content { padding-left: 0; }
+span.image img { border-style: none; vertical-align: text-bottom; }
+a.image:visited { color: white; }
+
+dl {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+dt {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  font-style: normal;
+  color: navy;
+}
+dd > *:first-child {
+  margin-top: 0.1em;
+}
+
+ul, ol {
+    list-style-position: outside;
+}
+ol.arabic {
+  list-style-type: decimal;
+}
+ol.loweralpha {
+  list-style-type: lower-alpha;
+}
+ol.upperalpha {
+  list-style-type: upper-alpha;
+}
+ol.lowerroman {
+  list-style-type: lower-roman;
+}
+ol.upperroman {
+  list-style-type: upper-roman;
+}
+
+div.compact ul, div.compact ol,
+div.compact p, div.compact p,
+div.compact div, div.compact div {
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+}
+
+tfoot {
+  font-weight: bold;
+}
+td > div.verse {
+  white-space: pre;
+}
+
+div.hdlist {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+div.hdlist tr {
+  padding-bottom: 15px;
+}
+dt.hdlist1.strong, td.hdlist1.strong {
+  font-weight: bold;
+}
+td.hdlist1 {
+  vertical-align: top;
+  font-style: normal;
+  padding-right: 0.8em;
+  color: navy;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+div.hdlist.compact tr {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.comment {
+  background: yellow;
+}
+
+.footnote, .footnoteref {
+  font-size: 0.8em;
+}
+
+span.footnote, span.footnoteref {
+  vertical-align: super;
+}
+
+#footnotes {
+  margin: 20px 0 20px 0;
+  padding: 7px 0 0 0;
+}
+
+#footnotes div.footnote {
+  margin: 0 0 5px 0;
+}
+
+#footnotes hr {
+  border: none;
+  border-top: 1px solid silver;
+  height: 1px;
+  text-align: left;
+  margin-left: 0;
+  width: 20%;
+  min-width: 100px;
+}
+
+div.colist td {
+  padding-right: 0.5em;
+  padding-bottom: 0.3em;
+  vertical-align: top;
+}
+div.colist td img {
+  margin-top: 0.3em;
+}
+
+@media print {
+  #footer-badges { display: none; }
+}
+
+#toc {
+  margin-bottom: 2.5em;
+}
+
+#toctitle {
+  color: #527bbd;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-top: 1.0em;
+  margin-bottom: 0.1em;
+}
+
+div.toclevel0, div.toclevel1, div.toclevel2, div.toclevel3, div.toclevel4 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+div.toclevel2 {
+  margin-left: 2em;
+  font-size: 0.9em;
+}
+div.toclevel3 {
+  margin-left: 4em;
+  font-size: 0.9em;
+}
+div.toclevel4 {
+  margin-left: 6em;
+  font-size: 0.9em;
+}
+
+span.aqua { color: aqua; }
+span.black { color: black; }
+span.blue { color: blue; }
+span.fuchsia { color: fuchsia; }
+span.gray { color: gray; }
+span.green { color: green; }
+span.lime { color: lime; }
+span.maroon { color: maroon; }
+span.navy { color: navy; }
+span.olive { color: olive; }
+span.purple { color: purple; }
+span.red { color: red; }
+span.silver { color: silver; }
+span.teal { color: teal; }
+span.white { color: white; }
+span.yellow { color: yellow; }
+
+span.aqua-background { background: aqua; }
+span.black-background { background: black; }
+span.blue-background { background: blue; }
+span.fuchsia-background { background: fuchsia; }
+span.gray-background { background: gray; }
+span.green-background { background: green; }
+span.lime-background { background: lime; }
+span.maroon-background { background: maroon; }
+span.navy-background { background: navy; }
+span.olive-background { background: olive; }
+span.purple-background { background: purple; }
+span.red-background { background: red; }
+span.silver-background { background: silver; }
+span.teal-background { background: teal; }
+span.white-background { background: white; }
+span.yellow-background { background: yellow; }
+
+span.big { font-size: 2em; }
+span.small { font-size: 0.6em; }
+
+span.underline { text-decoration: underline; }
+span.overline { text-decoration: overline; }
+span.line-through { text-decoration: line-through; }
+
+div.unbreakable { page-break-inside: avoid; }
+
+
+/*
+ * xhtml11 specific
+ *
+ * */
+
+div.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.tableblock > table {
+  border: 3px solid #527bbd;
+}
+thead, p.table.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.table {
+  margin-top: 0;
+}
+/* Because the table frame attribute is overriden by CSS in most browsers. */
+div.tableblock > table[frame="void"] {
+  border-style: none;
+}
+div.tableblock > table[frame="hsides"] {
+  border-left-style: none;
+  border-right-style: none;
+}
+div.tableblock > table[frame="vsides"] {
+  border-top-style: none;
+  border-bottom-style: none;
+}
+
+
+/*
+ * html5 specific
+ *
+ * */
+
+table.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+thead, p.tableblock.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.tableblock {
+  margin-top: 0;
+}
+table.tableblock {
+  border-width: 3px;
+  border-spacing: 0px;
+  border-style: solid;
+  border-color: #527bbd;
+  border-collapse: collapse;
+}
+th.tableblock, td.tableblock {
+  border-width: 1px;
+  padding: 4px;
+  border-style: solid;
+  border-color: #527bbd;
+}
+
+table.tableblock.frame-topbot {
+  border-left-style: hidden;
+  border-right-style: hidden;
+}
+table.tableblock.frame-sides {
+  border-top-style: hidden;
+  border-bottom-style: hidden;
+}
+table.tableblock.frame-none {
+  border-style: hidden;
+}
+
+th.tableblock.halign-left, td.tableblock.halign-left {
+  text-align: left;
+}
+th.tableblock.halign-center, td.tableblock.halign-center {
+  text-align: center;
+}
+th.tableblock.halign-right, td.tableblock.halign-right {
+  text-align: right;
+}
+
+th.tableblock.valign-top, td.tableblock.valign-top {
+  vertical-align: top;
+}
+th.tableblock.valign-middle, td.tableblock.valign-middle {
+  vertical-align: middle;
+}
+th.tableblock.valign-bottom, td.tableblock.valign-bottom {
+  vertical-align: bottom;
+}
+
+
+/*
+ * manpage specific
+ *
+ * */
+
+body.manpage h1 {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  border-top: 2px solid silver;
+  border-bottom: 2px solid silver;
+}
+body.manpage h2 {
+  border-style: none;
+}
+body.manpage div.sectionbody {
+  margin-left: 3em;
+}
+
+@media print {
+  body.manpage div#toc { display: none; }
+}
+
+
+</style>
+<script type="text/javascript">
+/*<![CDATA[*/
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([1-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  if (!toc) {
+    return;
+  }
+
+  // Delete existing TOC entries in case we're reloading the TOC.
+  var tocEntriesToRemove = [];
+  var i;
+  for (i = 0; i < toc.childNodes.length; i++) {
+    var entry = toc.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div'
+     && entry.getAttribute("class")
+     && entry.getAttribute("class").match(/^toclevel/))
+      tocEntriesToRemove.push(entry);
+  }
+  for (i = 0; i < tocEntriesToRemove.length; i++) {
+    toc.removeChild(tocEntriesToRemove[i]);
+  }
+
+  // Rebuild TOC entries.
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  // Delete existing footnote entries in case we're reloading the footnodes.
+  var i;
+  var noteholder = document.getElementById("footnotes");
+  if (!noteholder) {
+    return;
+  }
+  var entriesToRemove = [];
+  for (i = 0; i < noteholder.childNodes.length; i++) {
+    var entry = noteholder.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div' && entry.getAttribute("class") == "footnote")
+      entriesToRemove.push(entry);
+  }
+  for (i = 0; i < entriesToRemove.length; i++) {
+    noteholder.removeChild(entriesToRemove[i]);
+  }
+
+  // Rebuild footnote entries.
+  var cont = document.getElementById("content");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      var note = spans[i].getAttribute("data-note");
+      if (!note) {
+        // Use [\s\S] in place of . so multi-line matches work.
+        // Because JavaScript has no s (dotall) regex flag.
+        note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+        spans[i].innerHTML =
+          "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+        spans[i].setAttribute("data-note", note);
+      }
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
+    }
+  }
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
+    }
+  }
+},
+
+install: function(toclevels) {
+  var timerId;
+
+  function reinstall() {
+    asciidoc.footnotes();
+    if (toclevels) {
+      asciidoc.toc(toclevels);
+    }
+  }
+
+  function reinstallAndRemoveTimer() {
+    clearInterval(timerId);
+    reinstall();
+  }
+
+  timerId = setInterval(reinstall, 500);
+  if (document.addEventListener)
+    document.addEventListener("DOMContentLoaded", reinstallAndRemoveTimer, false);
+  else
+    window.onload = reinstallAndRemoveTimer;
+}
+
+}
+asciidoc.install();
+/*]]>*/
+</script>
+</head>
+<body class="article" style="max-width:55em">
+<div id="header">
+<h1>pveum(1)</h1>
+<span id="author">Proxmox Server Solutions Gmbh</span><br>
+<span id="email" class="monospaced">&lt;<a href="mailto:support@proxmox.com">support@proxmox.com</a>&gt;</span><br>
+<span id="revnumber">version 5.2,</span>
+<span id="revdate">Mon May 14 12:47:00 UTC 2018</span>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="chapter_user_management">NAME</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>pveum - Proxmox VE User Manager</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_synopsis">SYNOPSIS</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>pveum</strong> <span class="monospaced">&lt;COMMAND&gt; [ARGS] [OPTIONS]</span></p></div>
+<div class="paragraph">
+<p><strong>pveum acldel</strong> <span class="monospaced">&lt;path&gt; --roles &lt;string&gt;</span> <span class="monospaced">[OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>Update Access Control List (add or remove permissions).</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;path&gt;</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+Access control path
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--groups</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+List of groups.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--propagate</span> <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">1</span>)
+</dt>
+<dd>
+<p>
+Allow to propagate (inherit) permissions.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--roles</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+List of roles.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--users</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+List of users.
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pveum aclmod</strong> <span class="monospaced">&lt;path&gt; --roles &lt;string&gt;</span> <span class="monospaced">[OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>Update Access Control List (add or remove permissions).</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;path&gt;</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+Access control path
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--groups</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+List of groups.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--propagate</span> <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">1</span>)
+</dt>
+<dd>
+<p>
+Allow to propagate (inherit) permissions.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--roles</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+List of roles.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--users</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+List of users.
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pveum groupadd</strong> <span class="monospaced">&lt;groupid&gt;</span> <span class="monospaced">[OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>Create new group.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;groupid&gt;</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+no description available
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--comment</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+no description available
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pveum groupdel</strong> <span class="monospaced">&lt;groupid&gt;</span></p></div>
+<div class="paragraph">
+<p>Delete group.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;groupid&gt;</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+no description available
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pveum groupmod</strong> <span class="monospaced">&lt;groupid&gt;</span> <span class="monospaced">[OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>Update group data.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;groupid&gt;</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+no description available
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--comment</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+no description available
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pveum help</strong> <span class="monospaced">[OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>Get help about specified command.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--extra-args</span> <span class="monospaced">&lt;array&gt;</span> 
+</dt>
+<dd>
+<p>
+Shows help for a specific command
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--verbose</span> <span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Verbose output format.
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pveum passwd</strong> <span class="monospaced">&lt;userid&gt;</span></p></div>
+<div class="paragraph">
+<p>Change user password.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;userid&gt;</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+User ID
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pveum roleadd</strong> <span class="monospaced">&lt;roleid&gt;</span> <span class="monospaced">[OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>Create new role.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;roleid&gt;</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+no description available
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--privs</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+no description available
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pveum roledel</strong> <span class="monospaced">&lt;roleid&gt;</span></p></div>
+<div class="paragraph">
+<p>Delete role.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;roleid&gt;</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+no description available
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pveum rolemod</strong> <span class="monospaced">&lt;roleid&gt; --privs &lt;string&gt;</span> <span class="monospaced">[OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>Create new role.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;roleid&gt;</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+no description available
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--append</span> <span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+no description available
+</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAJhUlEQVRoge2ZWWycVxXHf+fce7/v
+m/GaGCde4pI0aQlJC0kRtE1L00JbLIjY4QkeUB9YHhAIJFCExAsKUkE8IAFFPIDUIqhBRSDRBUqC
+CimFFBCBpCWx02IaZ3G2SdyxPZ7vHh6+mcnSZnFjKIge6Wj8zYzvPf9z/me5d8TM+F8WfbkNuFx5
+BcDLLf/fAEZGRmx4eNh6enqsp6fHhoeHbWRk5D9aFeSlVqHNmzfb6H33sHnT7ZQmD5GfOMax6Sm+
+Pl5h1Yc+xpYtW2SBbX1ReUkRGBkZsdH77mHLW95EOv4Ms3ueJh6YYPHUFF9aljJ63z3cf//9/5FI
+vKQIDA8P293L2yhVjjH7t51ocDiviFecF46n7XzBreChhx4qNhH5t0XjJUVgx44ddGUZ9b/vIpQD
+oRQIWSDJAiFL6B9axo4dO4gxAmANWVDLG+Ln82URMRGhVCqRHxonlAPqFXWKC4r6IhI6OMjMzBN4
+/4LlTUQQEZxzZ32QJAlpmrb+p16vU6vVOHXq1AWjN18AnDj0F971vrs4OnmYJVkoDA4FCPUO172I
+Cgnt7SV++4vvsGhRJx3tJbIsRVVpsUnOBBABBVFEClKYwbKr7sTM7EIUnBcA7z21k7t49x1X8JXv
+bOWra7rw5QRtcN8PLCfvvZJvb9vJycpJpg4/hp/N0I4SMQs4Jw0A5zBXHGiCaIZIKABgpGlKjPEF
+0TpT5pUDRXiVt99+Le03r+WzuytM1gO6pB/3+o0cbxvk8yOPMjW6i2iR2lxOjJDHSDMFogmGwzQ7
+rRJAUpAENAGXIZq2AFzQpvkACCEQcahP+cRH3sKHn9zHXU+MM7rtGeD33NDXzaZynZU9gcezpUw9
+X6OzIyOakkfF4QEpPG6nDRNNEA2FSgKimETSNCXPc0II57VpXhEolUqoOrxPSLOMT330Dv5SqfKD
+NR388Y2L+caQsjITNv3pMBs3rOT56ZyZGaM+J0QUxDc0INrWUgggoRGBAOIRAt77hY1AmqaoeJxP
+cN645jVDbNn8Hj73o8fZ/af9mEE9j9y2YRXt5YzZWmRmzjj1/BwhTXAKzitOHEbeWlc0AVwDnCv8
+KoZzjotV33lTSL1HNKAuEtKM1169jM98/E6mTk3x4Nbd7Bk7TEdHRvAeVY+hmDqmZwx1kIkiqrhz
+S2zL+AbNMC6l/80LgHMOEY9oQvBCks5RKpXo7JhFxbhz42pet2aQet1YtLiDJAkIDq8BHwJmwlwO
+UaD0ojsrNKuUReIZyb9gABCHcwWFgg+0lTPyvIRToVzKWLpkMfV6REQplYvmZCj1uuBUSdJwTg8A
+XBdoCZMOsBkQBeGi/J83gBgjmABC8AlJGsjzFLMyaXDM1etEA0VR50iCx6mSZhkiijpPjEpQD+SF
+4WdJrTAewdCFB1CtVlFVVATnhMQnWJqC5aTBk+c5IIgWRoTgSZJAmiZAo1s7hwsppglI+fTiljeY
+nyHkLQotKIAYI4igzpFHISQOiwEnKTEG8hhRVZw6YjRQLfJGHcF7jleqTBw8znXr12MABnv37efY
+iSnesG4tiUsRUQwD7JIAzKsPqCqiRbVwweM04XdPjhJN+dvTBxgbn6G9q59yZx9/3HWEb33vN+zc
+/RzOJ+w/eJLtO8Z5ZNtT7PvHIUQTvvv9X/Lc/mN0d3by3fseRLQwvWh0Fy+h8wbQ2VFG1KM+xfuA
+qufo8So/fejPPD/rqJys8pvf7eLAoeNMHqnw2U9+kH3jVQ5MClMzKUla5obr13HliiEMmDx6gltv
+uY7Vr1nBQF8PJopQ9AFTt/AROFfMjCW9XTy19xB33Hodb924jr1j+/nDk3/nzTdei4jw3nfeyCOP
+bufa1y5jzeoVrcHM8HR3dfHlr/2Q+x94jFtuuh44/9B2PplXDryYLF3STXd3e+t5UXcHY89OsOH6
+NS2Qed7wpM1Rm50G4MGHH2P961Zy3bqreXrPP5mrzwLt5y6/cACq1eoLCKm+TN/SAebmfn8aUG83
+PYs7+cnPH+eqKwd5as8/edc7bi02847pmVkATk1VWbF8AOcca1Yv59DkqcYK0tCL02deACqVCldc
+0YdIwLmEPM9RV6NnUZlPf3wT6oqJcePN6wHhzTeu4/CRCrfctJ4sSxBRli7pYfHEMUSU97/7Th75
+1RP8eec+Yp5zzTVXM9DfDyogBvHS6HTJACYmJnjVoq5GFw0454gCEOnoaMfiNGZFFRFxJGkbywZ6
+i1NWoy9kWYmbb1gHKCHApuGbisVFGyoYUswa5OR5ftF56JIBjI6OMtDfWwAQ35jnc8AVpRXBohVq
+UowECKqK4RBxoE0W6gvGCcEjaOEAwEQWdpgbGxujt7erOLO2mk3R8i0Wz9EiuUGz+qlKEQEUaJbI
+4lTHmTVePKgWzpDGJGpc8CDTlEsuo88++wxXDA0UIUbAOP23KGZKjI48KnkuhcbiPbPCOBoeBikO
+Lk2VxjqNRilaAEqSZGEAbN261bZt+zW33XY7IAXXm6Ou0YhIMamaaUOl5WRrzg00viuKWWxpQUOH
+NAZFQRpD48Xlkig0MTHBB95zG+VSylz1KCbWyDOh2XyK+56IqjWMKigkUnzWnPPFFFRRLZ29SQRU
+ELOGY4pZ6LKOlM07mZ07d/KOtw1TcB4sGkTDiDQ9K1IkrKeYmQC08d7pZLSiRBpE5s7aS0XAHFEK
+AGY51Wr18g80Zmb33nsvX/z8XdSmj2AWOXhwkrxe46+79jB55Dh/3T2GxUhHextdXW2sXN7PNWtW
+IQKDA71FFBoAjIgQkVg/a5+oHrU5zIznDhxk964xKpXKggAoTlWW8+OfPorlOQ//cjsDy1bS2dFO
+W+diVly1iL6+Pqanpzl5qsL4pPHwN3/G1InDlMsZ7Z1tDA30cfWqIa5dexV9fb2YnT7UTxw4xsHJ
+o4yOjfOP8QOMjx/k4OQx7r777lY0zycXvJ02M4sxMjg4SL1eR0TYsGEDw8PD9PX10d7ejogUN3a1
+GqpKCIE8z5mdnUVVqVarbN++nba2Nvbu3csDDzyAqrJ8+atb+zjn6e/vZ/Xq1axatYq1a9fS29tL
+lmUMDQ1RKpXOm9EXvV6v1+tWr9eZnp5mZmaGWq1GjLHF62aiNZ+bnPfe45xrvTZzxMyYmZk56+LX
+zKjX661DvHOOJElIkoRSqYT3/vLvRlW15eHCa4VxzdvmpjZDfubzuXeb3vuzqCEixBhbo0NTkyS5
+PAr9L8j/96+U/w3yCoCXW14B8HLLvwDd67nwZIEPdgAAAABJRU5ErkJggg==">
+</td>
+<td class="content">Requires option(s): <span class="monospaced">privs</span></td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--privs</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+no description available
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pveum ticket</strong> <span class="monospaced">&lt;username&gt;</span> <span class="monospaced">[OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>Create or verify authentication ticket.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;username&gt;</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+User name
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--otp</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+One-time password for Two-factor authentication.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--path</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+Verify ticket, and check if user have access <em>privs</em> on <em>path</em>
+</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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">
+</td>
+<td class="content">Requires option(s): <span class="monospaced">privs</span></td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--privs</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+Verify ticket, and check if user have access <em>privs</em> on <em>path</em>
+</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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">
+</td>
+<td class="content">Requires option(s): <span class="monospaced">path</span></td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--realm</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+You can optionally pass the realm using this parameter. Normally the realm is simply added to the username &lt;username&gt;@&lt;relam&gt;.
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pveum useradd</strong> <span class="monospaced">&lt;userid&gt;</span> <span class="monospaced">[OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>Create new user.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;userid&gt;</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+User ID
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--comment</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+no description available
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--email</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+no description available
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--enable</span> <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">1</span>)
+</dt>
+<dd>
+<p>
+Enable the account (default). You can set this to <em>0</em> to disable the accout
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--expire</span> <span class="monospaced">&lt;integer&gt; (0 - N)</span> 
+</dt>
+<dd>
+<p>
+Account expiration date (seconds since epoch). <em>0</em> means no expiration date.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--firstname</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+no description available
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--groups</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+no description available
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--keys</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+Keys for two factor auth (yubico).
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--lastname</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+no description available
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--password</span> 
+</dt>
+<dd>
+<p>
+Initial password.
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pveum userdel</strong> <span class="monospaced">&lt;userid&gt;</span></p></div>
+<div class="paragraph">
+<p>Delete user.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;userid&gt;</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+User ID
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pveum usermod</strong> <span class="monospaced">&lt;userid&gt;</span> <span class="monospaced">[OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>Update user configuration.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;userid&gt;</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+User ID
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--append</span> <span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+no description available
+</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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">
+</td>
+<td class="content">Requires option(s): <span class="monospaced">groups</span></td>
+</tr></table>
+</div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--comment</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+no description available
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--email</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+no description available
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--enable</span> <span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Enable/disable the account.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--expire</span> <span class="monospaced">&lt;integer&gt; (0 - N)</span> 
+</dt>
+<dd>
+<p>
+Account expiration date (seconds since epoch). <em>0</em> means no expiration date.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--firstname</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+no description available
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--groups</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+no description available
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--keys</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+Keys for two factor auth (yubico).
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--lastname</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+no description available
+</p>
+</dd>
+</dl></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_description">DESCRIPTION</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Proxmox VE supports multiple authentication sources, e.g. Linux PAM,
+an integrated Proxmox VE authentication server, LDAP, Microsoft Active
+Directory.</p></div>
+<div class="paragraph">
+<p>By using the role based user- and permission management for all
+objects (VMs, storages, nodes, etc.) granular access can be defined.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="pveum_users">Users</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Proxmox VE stores user attributes in <span class="monospaced">/etc/pve/user.cfg</span>.
+Passwords are not stored here, users are instead associated with
+<a href="pveum.1.html#pveum_authentication_realms">authentication realms</a> described below.
+Therefore a user is internally often identified by its name and
+realm in the form <span class="monospaced">&lt;userid&gt;@&lt;realm&gt;</span>.</p></div>
+<div class="paragraph">
+<p>Each user entry in this file contains the following information:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+First name
+</p>
+</li>
+<li>
+<p>
+Last name
+</p>
+</li>
+<li>
+<p>
+E-mail address
+</p>
+</li>
+<li>
+<p>
+Group memberships
+</p>
+</li>
+<li>
+<p>
+An optional Expiration date
+</p>
+</li>
+<li>
+<p>
+A comment or note about this user
+</p>
+</li>
+<li>
+<p>
+Whether this user is enabled or disabled
+</p>
+</li>
+<li>
+<p>
+Optional two factor authentication keys
+</p>
+</li>
+</ul></div>
+<div class="sect2">
+<h3 id="_system_administrator">System administrator</h3>
+<div class="paragraph">
+<p>The system&#8217;s root user can always log in via the Linux PAM realm and is an
+unconfined administrator. This user cannot be deleted, but attributes can
+still be changed and system mails will be sent to the email address
+assigned to this user.</p></div>
+</div>
+<div class="sect2">
+<h3 id="pveum_groups">Groups</h3>
+<div class="paragraph">
+<p>Each user can be member of several groups. Groups are the preferred
+way to organize access permissions. You should always grant permission
+to groups instead of using individual users. That way you will get a
+much shorter access control list which is easier to handle.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="pveum_authentication_realms">Authentication Realms</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>As Proxmox VE users are just counterparts for users existing on some external
+realm, the realms have to be configured in <span class="monospaced">/etc/pve/domains.cfg</span>.
+The following realms (authentication methods) are available:</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+Linux PAM standard authentication
+</dt>
+<dd>
+<p>
+In this case a system user has to exist (e.g. created via the <span class="monospaced">adduser</span>
+command) on all nodes the user is allowed to login, and the user
+authenticates with their usual system password.
+</p>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>useradd heinz
+passwd heinz
+groupadd watchman
+usermod -a -G watchman heinz</tt></pre></div></div>
+</dd>
+<dt class="hdlist1">
+Proxmox VE authentication server
+</dt>
+<dd>
+<p>
+This is a unix like password store (<span class="monospaced">/etc/pve/priv/shadow.cfg</span>).
+Password are encrypted using the SHA-256 hash method.
+This is the most convenient method for small (or even medium)
+installations where users do not need access to anything outside of
+Proxmox VE. In this case users are fully managed by Proxmox VE and are able to
+change their own passwords via the GUI.
+</p>
+</dd>
+<dt class="hdlist1">
+LDAP
+</dt>
+<dd>
+<p>
+It is possible to authenticate users via an LDAP server (e.g.
+openldap). The server and an optional fallback server can be
+configured and the connection can be encrypted via SSL.
+</p>
+<div class="paragraph">
+<p>Users are searched under a <em>Base Domain Name</em> (<span class="monospaced">base_dn</span>), with the
+user name found in the attribute specified in the <em>User Attribute Name</em>
+(<span class="monospaced">user_attr</span>) field.</p></div>
+<div class="paragraph">
+<p>For instance, if a user is represented via the
+following ldif dataset:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># user1 of People at ldap-test.com
+dn: uid=user1,ou=People,dc=ldap-test,dc=com
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+uid: user1
+cn: Test User 1
+sn: Testers
+description: This is the first test user.</pre>
+</div></div>
+<div class="paragraph">
+<p>The <em>Base Domain Name</em> would be <span class="monospaced">ou=People,dc=ldap-test,dc=com</span> and the user
+attribute would be <span class="monospaced">uid</span>.</p></div>
+<div class="paragraph">
+<p>If Proxmox VE needs to authenticate (bind) to the ldap server before being
+able to query and authenticate users, a bind domain name can be
+configured via the <span class="monospaced">bind_dn</span> property in <span class="monospaced">/etc/pve/domains.cfg</span>. Its
+password then has to be stored in <span class="monospaced">/etc/pve/priv/ldap/&lt;realmname&gt;.pw</span>
+(e.g. <span class="monospaced">/etc/pve/priv/ldap/my-ldap.pw</span>). This file should contain a
+single line containing the raw password.</p></div>
+</dd>
+<dt class="hdlist1">
+Microsoft Active Directory
+</dt>
+<dd>
+<p>
+A server and authentication domain need to be specified. Like with
+ldap an optional fallback server, optional port, and SSL
+encryption can be configured.
+</p>
+</dd>
+</dl></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_two_factor_authentication">Two factor authentication</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Each realm can optionally be secured additionally by two factor
+authentication. This can be done by selecting one of the available methods
+via the <em>TFA</em> dropdown box when adding or editing an Authentication Realm.
+When a realm has TFA enabled it becomes a requirement and only users with
+configured TFA will be able to login.</p></div>
+<div class="paragraph">
+<p>Currently there are two methods available:</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+Time based OATH (TOTP)
+</dt>
+<dd>
+<p>
+This uses the standard HMAC-SHA1 algorithm where the current time is hashed
+with the user&#8217;s configured key. The time step and password length
+parameters are configured.
+</p>
+<div class="paragraph">
+<p>A user can have multiple keys configured (separated by spaces), and the
+keys can be specified in Base32 (RFC3548) or hexadecimal notation.</p></div>
+<div class="paragraph">
+<p>Proxmox VE provides a key generation tool (<span class="monospaced">oathkeygen</span>) which prints out a
+random key in Base32 notation which can be used directly with various OTP
+tools, such as the <span class="monospaced">oathtool</span> command line tool, the Google authenticator
+or FreeOTP Android apps.</p></div>
+</dd>
+<dt class="hdlist1">
+YubiKey OTP
+</dt>
+<dd>
+<p>
+For authenticating via a YubiKey a Yubico API ID, API KEY and validation
+server URL must be configured, and users must have a YubiKey available. In
+order to get the key ID from a YubiKey, you can trigger the YubiKey once
+after connecting it to USB and copy the first 12 characters of the typed
+password into the user&#8217;s <em>Key IDs</em> field.
+</p>
+<div class="paragraph">
+<p>Please refer to the
+<a href="https://developers.yubico.com/OTP/">YubiKey OTP</a> documentation for how to use the
+<a href="https://www.yubico.com/products/services-software/yubicloud/">YubiCloud</a> or
+<a href="https://developers.yubico.com/Software_Projects/YubiKey_OTP/YubiCloud_Validation_Servers/">
+host your own verification server</a>.</p></div>
+</dd>
+</dl></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="pveum_permission_management">Permission Management</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In order for a user to perform an action (such as listing, modifying or
+deleting a parts of a VM configuration), the user needs to have the
+appropriate permissions.</p></div>
+<div class="paragraph">
+<p>Proxmox VE uses a role and path based permission management system. An entry in
+the permissions table allows a user or group to take on a specific role
+when accessing an <em>object</em> or <em>path</em>. This means an such an access rule can
+be represented as a triple of <em>(path, user, role)</em> or <em>(path, group,
+role)</em>, with the role containing a set of allowed actions, and the path
+representing the target of these actions.</p></div>
+<div class="sect2">
+<h3 id="pveum_roles">Roles</h3>
+<div class="paragraph">
+<p>A role is simply a list of privileges. Proxmox VE comes with a number
+of predefined roles which satisfies most needs.</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<span class="monospaced">Administrator</span>: has all privileges
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">NoAccess</span>: has no privileges (used to forbid access)
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">PVEAdmin</span>: can do most things, but miss rights to modify system settings (<span class="monospaced">Sys.PowerMgmt</span>, <span class="monospaced">Sys.Modify</span>, <span class="monospaced">Realm.Allocate</span>).
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">PVEAuditor</span>: read only access
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">PVEDatastoreAdmin</span>: create and allocate backup space and templates
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">PVEDatastoreUser</span>: allocate backup space and view storage
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">PVEPoolAdmin</span>: allocate pools
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">PVESysAdmin</span>: User ACLs, audit, system console and system logs
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">PVETemplateUser</span>: view and clone templates
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">PVEUserAdmin</span>: user administration
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">PVEVMAdmin</span>: fully administer VMs
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">PVEVMUser</span>: view, backup, config CDROM, VM console, VM power management
+</p>
+</li>
+</ul></div>
+<div class="paragraph">
+<p>You can see the whole set of predefined roles on the GUI.</p></div>
+<div class="paragraph">
+<p>Adding new roles can currently only be done from the command line, like
+this:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum roleadd PVE_Power-only -privs <span style="color: #FF0000">"VM.PowerMgmt VM.Console"</span>
+pveum roleadd Sys_Power-only -privs <span style="color: #FF0000">"Sys.PowerMgmt Sys.Console"</span></tt></pre></div></div>
+</div>
+<div class="sect2">
+<h3 id="_privileges">Privileges</h3>
+<div class="paragraph">
+<p>A privilege is the right to perform a specific action. To simplify
+management, lists of privileges are grouped into roles, which can then
+be used in the permission table. Note that privileges cannot directly be
+assigned to users and paths without being part of a role.</p></div>
+<div class="paragraph">
+<p>We currently use the following privileges:</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+Node / System related privileges
+</dt>
+<dd>
+<div class="ulist"><ul>
+<li>
+<p>
+<span class="monospaced">Permissions.Modify</span>: modify access permissions
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">Sys.PowerMgmt</span>: Node power management (start, stop, reset, shutdown, &#8230;)
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">Sys.Console</span>: console access to Node
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">Sys.Syslog</span>: view Syslog
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">Sys.Audit</span>: view node status/config, Corosync cluster config and HA config
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">Sys.Modify</span>: create/remove/modify node network parameters
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">Group.Allocate</span>: create/remove/modify groups
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">Pool.Allocate</span>: create/remove/modify a pool
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">Realm.Allocate</span>: create/remove/modify authentication realms
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">Realm.AllocateUser</span>: assign user to a realm
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">User.Modify</span>: create/remove/modify user access and details.
+</p>
+</li>
+</ul></div>
+</dd>
+<dt class="hdlist1">
+Virtual machine related privileges
+</dt>
+<dd>
+<div class="ulist"><ul>
+<li>
+<p>
+<span class="monospaced">VM.Allocate</span>: create/remove new VM to server inventory
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">VM.Migrate</span>: migrate VM to alternate server on cluster
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">VM.PowerMgmt</span>: power management (start, stop, reset, shutdown, &#8230;)
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">VM.Console</span>: console access to VM
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">VM.Monitor</span>: access to VM monitor (kvm)
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">VM.Backup</span>: backup/restore VMs
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">VM.Audit</span>: view VM config
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">VM.Clone</span>: clone/copy a VM
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">VM.Config.Disk</span>: add/modify/delete Disks
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">VM.Config.CDROM</span>: eject/change CDROM
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">VM.Config.CPU</span>: modify CPU settings
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">VM.Config.Memory</span>: modify Memory settings
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">VM.Config.Network</span>: add/modify/delete Network devices
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">VM.Config.HWType</span>: modify emulated HW type
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">VM.Config.Options</span>: modify any other VM configuration
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">VM.Snapshot</span>: create/remove VM snapshots
+</p>
+</li>
+</ul></div>
+</dd>
+<dt class="hdlist1">
+Storage related privileges
+</dt>
+<dd>
+<div class="ulist"><ul>
+<li>
+<p>
+<span class="monospaced">Datastore.Allocate</span>: create/remove/modify a data store, delete volumes
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">Datastore.AllocateSpace</span>: allocate space on a datastore
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">Datastore.AllocateTemplate</span>: allocate/upload templates and iso images
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">Datastore.Audit</span>: view/browse a datastore
+</p>
+</li>
+</ul></div>
+</dd>
+</dl></div>
+</div>
+<div class="sect2">
+<h3 id="_objects_and_paths">Objects and Paths</h3>
+<div class="paragraph">
+<p>Access permissions are assigned to objects, such as a virtual machines,
+storages or pools of resources.
+We use file system like paths to address these objects. These paths form a
+natural tree, and permissions of higher levels (shorter path) can
+optionally be propagated down within this hierarchy.</p></div>
+<div class="paragraph" id="pveum_templated_paths">
+<p>Paths can be templated. When an API call requires permissions on a
+templated path, the path may contain references to parameters of the API
+call. These references are specified in curly braces. Some parameters are
+implicitly taken from the API call&#8217;s URI. For instance the permission path
+<span class="monospaced">/nodes/{node}</span> when calling <em>/nodes/mynode/status</em> requires permissions on
+<span class="monospaced">/nodes/mynode</span>, while the path <span class="monospaced">{path}</span> in a PUT request to <span class="monospaced">/access/acl</span>
+refers to the method&#8217;s <span class="monospaced">path</span> parameter.</p></div>
+<div class="paragraph">
+<p>Some examples are:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<span class="monospaced">/nodes/{node}</span>: Access to Proxmox VE server machines
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">/vms</span>: Covers all VMs
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">/vms/{vmid}</span>: Access to specific VMs
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">/storage/{storeid}</span>: Access to a storages
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">/pool/{poolname}</span>: Access to VMs part of a <a href="pveum.1.html#pveum_pools">pool</a>
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">/access/groups</span>: Group administration
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">/access/realms/{realmid}</span>: Administrative access to realms
+</p>
+</li>
+</ul></div>
+<div class="sect3">
+<h4 id="_inheritance">Inheritance</h4>
+<div class="paragraph">
+<p>As mentioned earlier, object paths form a file system like tree, and
+permissions can be inherited down that tree (the propagate flag is set
+by default). We use the following inheritance rules:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Permissions for individual users always replace group permissions.
+</p>
+</li>
+<li>
+<p>
+Permissions for groups apply when the user is member of that group.
+</p>
+</li>
+<li>
+<p>
+Permissions replace the ones inherited from an upper level.
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="pveum_pools">Pools</h3>
+<div class="paragraph">
+<p>Pools can be used to group a set of virtual machines and data
+stores. You can then simply set permissions on pools (<span class="monospaced">/pool/{poolid}</span>),
+which are inherited to all pool members. This is a great way simplify
+access control.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_what_permission_do_i_need">What permission do I need?</h3>
+<div class="paragraph">
+<p>The required API permissions are documented for each individual
+method, and can be found at <a href="http://pve.proxmox.com/pve-docs/api-viewer/">http://pve.proxmox.com/pve-docs/api-viewer/</a></p></div>
+<div class="paragraph">
+<p>The permissions are specified as a list which can be interpreted as a
+tree of logic and access-check functions:</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">["and", &lt;subtests&gt;...]</span> and <span class="monospaced">["or", &lt;subtests&gt;...]</span>
+</dt>
+<dd>
+<p>
+Each(<span class="monospaced">and</span>) or any(<span class="monospaced">or</span>) further element in the current list has to be true.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">["perm", &lt;path&gt;, [ &lt;privileges&gt;... ], &lt;options&gt;...]</span>
+</dt>
+<dd>
+<p>
+The <span class="monospaced">path</span> is a templated parameter (see
+<a href="pveum.1.html#pveum_templated_paths">Objects and Paths</a>). All (or , if the <span class="monospaced">any</span>
+option is used, any) of the listed
+privileges must be allowed on the specified path. If a <span class="monospaced">require-param</span>
+option is specified, then its specified parameter is required even if the
+API call&#8217;s schema otherwise lists it as being optional.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">["userid-group", [ &lt;privileges&gt;... ], &lt;options&gt;...]</span>
+</dt>
+<dd>
+<p>
+The caller must have any of the listed privileges on <span class="monospaced">/access/groups</span>. In
+addition there are two possible checks depending on whether the
+<span class="monospaced">groups_param</span> option is set:
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+<span class="monospaced">groups_param</span> is set: The API call has a non-optional <span class="monospaced">groups</span> parameter
+and the caller must have any of the listed privileges on all of the listed
+groups.
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">groups_param</span> is not set: The user passed via the <span class="monospaced">userid</span> parameter
+must exist and be part of a group on which the caller has any of the listed
+privileges (via the <span class="monospaced">/access/groups/&lt;group&gt;</span> path).
+</p>
+</li>
+</ul></div>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">["userid-param", "self"]</span>
+</dt>
+<dd>
+<p>
+The value provided for the API call&#8217;s <span class="monospaced">userid</span> parameter must refer to the
+user performing the action. (Usually in conjunction with <span class="monospaced">or</span>, to allow
+users to perform an action on themselves even if they don&#8217;t have elevated
+privileges.)
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">["userid-param", "Realm.AllocateUser"]</span>
+</dt>
+<dd>
+<p>
+The user needs <span class="monospaced">Realm.AllocateUser</span> access to <span class="monospaced">/access/realm/&lt;realm&gt;</span>, with
+<span class="monospaced">&lt;realm&gt;</span> referring to the realm of the user passed via the <span class="monospaced">userid</span>
+parameter. Note that the user does not need to exist in order to be
+associated with a realm, since user IDs are passed in the form of
+<span class="monospaced">&lt;username&gt;@&lt;realm&gt;</span>.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">["perm-modify", &lt;path&gt;]</span>
+</dt>
+<dd>
+<p>
+The <span class="monospaced">path</span> is a templated parameter (see
+<a href="pveum.1.html#pveum_templated_paths">Objects and Paths</a>). The user needs either the
+<span class="monospaced">Permissions.Modify</span> privilege, or,
+depending on the path, the following privileges as a possible substitute:
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+<span class="monospaced">/storage/...</span>: additionally requires 'Datastore.Allocate`
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">/vms/...</span>: additionally requires 'VM.Allocate`
+</p>
+</li>
+<li>
+<p>
+<span class="monospaced">/pool/...</span>: additionally requires 'Pool.Allocate`
+</p>
+<div class="paragraph">
+<p>If the path is empty, <span class="monospaced">Permission.Modify</span> on <span class="monospaced">/access</span> is required.</p></div>
+</li>
+</ul></div>
+</dd>
+</dl></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_command_line_tool">Command Line Tool</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Most users will simply use the GUI to manage users. But there is also
+a full featured command line tool called <span class="monospaced">pveum</span> (short for &#8220;<strong>P</strong>roxmox
+<strong>VE</strong> <strong>U</strong>ser <strong>M</strong>anager&#8221;). Please note that all Proxmox VE command
+line tools are wrappers around the API, so you can also access those
+function through the REST API.</p></div>
+<div class="paragraph">
+<p>Here are some simple usage examples. To show help type:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum</tt></pre></div></div>
+<div class="paragraph">
+<p>or (to show detailed help about a specific command)</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum <span style="font-weight: bold"><span style="color: #0000FF">help</span></span> useradd</tt></pre></div></div>
+<div class="paragraph">
+<p>Create a new user:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum useradd testuser@pve -comment <span style="color: #FF0000">"Just a test"</span></tt></pre></div></div>
+<div class="paragraph">
+<p>Set or Change the password (not all realms support that):</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum passwd testuser@pve</tt></pre></div></div>
+<div class="paragraph">
+<p>Disable a user:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum usermod testuser@pve -enable <span style="color: #993399">0</span></tt></pre></div></div>
+<div class="paragraph">
+<p>Create a new group:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum groupadd testgroup</tt></pre></div></div>
+<div class="paragraph">
+<p>Create a new role:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum roleadd PVE_Power-only -privs <span style="color: #FF0000">"VM.PowerMgmt VM.Console"</span></tt></pre></div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_real_world_examples">Real World Examples</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_administrator_group">Administrator Group</h3>
+<div class="paragraph">
+<p>One of the most wanted features was the ability to define a group of
+users with full administrator rights (without using the root account).</p></div>
+<div class="paragraph">
+<p>Define the group:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum groupadd admin -comment <span style="color: #FF0000">"System Administrators"</span></tt></pre></div></div>
+<div class="paragraph">
+<p>Then add the permission:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum aclmod <span style="color: #990000">/</span> -group admin -role Administrator</tt></pre></div></div>
+<div class="paragraph">
+<p>You can finally add users to the new <em>admin</em> group:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum usermod testuser@pve -group admin</tt></pre></div></div>
+</div>
+<div class="sect2">
+<h3 id="_auditors">Auditors</h3>
+<div class="paragraph">
+<p>You can give read only access to users by assigning the <span class="monospaced">PVEAuditor</span>
+role to users or groups.</p></div>
+<div class="paragraph">
+<p>Example1: Allow user <span class="monospaced">joe@pve</span> to see everything</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum aclmod <span style="color: #990000">/</span> -user joe@pve -role PVEAuditor</tt></pre></div></div>
+<div class="paragraph">
+<p>Example1: Allow user <span class="monospaced">joe@pve</span> to see all virtual machines</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum aclmod /vms -user joe@pve -role PVEAuditor</tt></pre></div></div>
+</div>
+<div class="sect2">
+<h3 id="_delegate_user_management">Delegate User Management</h3>
+<div class="paragraph">
+<p>If you want to delegate user management to user <span class="monospaced">joe@pve</span> you can do
+that with:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum aclmod /access -user joe@pve -role PVEUserAdmin</tt></pre></div></div>
+<div class="paragraph">
+<p>User <span class="monospaced">joe@pve</span> can now add and remove users, change passwords and
+other user attributes. This is a very powerful role, and you most
+likely want to limit that to selected realms and groups. The following
+example allows <span class="monospaced">joe@pve</span> to modify users within realm <span class="monospaced">pve</span> if they
+are members of group <span class="monospaced">customers</span>:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum aclmod /access/realm/pve -user joe@pve -role PVEUserAdmin
+pveum aclmod /access/groups/customers -user joe@pve -role PVEUserAdmin</tt></pre></div></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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">
+</td>
+<td class="content">The user is able to add other users, but only if they are
+members of group <span class="monospaced">customers</span> and within realm <span class="monospaced">pve</span>.</td>
+</tr></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_pools">Pools</h3>
+<div class="paragraph">
+<p>An enterprise is usually structured into several smaller departments,
+and it is common that you want to assign resources to them and
+delegate management tasks. A pool is simply a set of virtual machines
+and data stores. You can create pools on the GUI. After that you can
+add resources to the pool (VMs, Storage).</p></div>
+<div class="paragraph">
+<p>You can also assign permissions to the pool. Those permissions are
+inherited to all pool members.</p></div>
+<div class="paragraph">
+<p>Lets assume you have a software development department, so we first
+create a group</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum groupadd developers -comment <span style="color: #FF0000">"Our software developers"</span></tt></pre></div></div>
+<div class="paragraph">
+<p>Now we create a new user which is a member of that group</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum useradd developer1@pve -group developers -password</tt></pre></div></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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">
+</td>
+<td class="content">The -password parameter will prompt you for a password</td>
+</tr></table>
+</div>
+<div class="paragraph">
+<p>I assume we already created a pool called &#8220;dev-pool&#8221; on the GUI. So we can now assign permission to that pool:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pveum aclmod /pool/dev-pool<span style="color: #990000">/</span> -group developers -role PVEAdmin</tt></pre></div></div>
+<div class="paragraph">
+<p>Our software developers can now administrate the resources assigned to
+that pool.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_copyright_and_disclaimer">Copyright and Disclaimer</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Copyright &#169; 2007-2017 Proxmox Server Solutions GmbH</p></div>
+<div class="paragraph">
+<p>This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.</p></div>
+<div class="paragraph">
+<p>This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+Affero General Public License for more details.</p></div>
+<div class="paragraph">
+<p>You should have received a copy of the GNU Affero General Public
+License along with this program.  If not, see
+<a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a></p></div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr></div>
+<div id="footer">
+<div id="footer-text">
+Version 5.2<br>
+Last updated
+ Mon May 14 12:47:00 UTC 2018
+</div>
+</div>
+</body>
+</html>

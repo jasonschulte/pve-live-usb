@@ -1,0 +1,43 @@
+GnuPG "classic" for Debian
+==========================
+
+gnupg1 is the "classic" version of GnuPG (branch 1.4), maintained for
+people who really need the backward compatibility it provides.
+
+Since mid-2016, Debian ships the "modern" version of GnuPG as gnupg.
+Please use the gnupg package unless you know for sure that you need
+gnupg1.
+
+The main differences between "classic" and "modern":
+
+ * "classic" has fewer dependencies than "modern"; improvements to
+   underlying libraries must be explicitly ported to "classic"
+
+ " "classic" accepts the known-broken PGPv3 key format, which "modern"
+   rejects
+
+ * "classic" has no support for S/MIME
+
+ * "classic" has no support for elliptic curves
+
+ * "classic" uses gpg-agent only as a passphrase cache, while "modern"
+   offloads all secret key access to the agent
+
+ * "classic" cannot auto-launch the agent
+
+ * "classic" does not support the TOFU trust model
+
+ * "classic" lacks some other tools useful for desktop environments
+
+ * "modern" prefers the keybox format (~/.gnupg/pubring.kbx) for
+   public keyrings; "classic" only knows how to use the traditional
+   linear keyring (~/gnupg/pubring.gpg)
+
+Note also that the "classic" and "modern" versions of gpg, while
+capable of sharing a ~/.gnupg home directory, will not necessarily
+access the same secret keys or public keys.  It is not advisable to
+mix the two.
+
+It is recommended to use gnupg instead of gnupg1.
+
+ -- Daniel Kahn Gillmor <dkg@fifthhorseman.net>, Wed, 15 Feb 2017 10:35:11 -0500

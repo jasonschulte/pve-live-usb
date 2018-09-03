@@ -1,0 +1,3301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="AsciiDoc 8.6.9">
+<title>Host System Administration</title>
+<style type="text/css">
+/* Shared CSS for AsciiDoc xhtml11 and html5 backends */
+
+/* Default font. */
+body {
+  font-family: Georgia,serif;
+}
+
+/* Title font. */
+h1, h2, h3, h4, h5, h6,
+div.title, caption.title,
+thead, p.table.header,
+#toctitle,
+#author, #revnumber, #revdate, #revremark,
+#footer {
+  font-family: Arial,Helvetica,sans-serif;
+}
+
+body {
+  margin: 1em 5% 1em 5%;
+}
+
+a {
+  color: blue;
+  text-decoration: underline;
+}
+a:visited {
+  color: fuchsia;
+}
+
+em {
+  font-style: italic;
+  color: navy;
+}
+
+strong {
+  font-weight: bold;
+  color: #083194;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #527bbd;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+
+h1, h2, h3 {
+  border-bottom: 2px solid silver;
+}
+h2 {
+  padding-top: 0.5em;
+}
+h3 {
+  float: left;
+}
+h3 + * {
+  clear: left;
+}
+h5 {
+  font-size: 1.0em;
+}
+
+div.sectionbody {
+  margin-left: 0;
+}
+
+hr {
+  border: 1px solid silver;
+}
+
+p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+ul, ol, li > p {
+  margin-top: 0;
+}
+ul > li     { color: #aaa; }
+ul > li > * { color: black; }
+
+.monospaced, code, pre {
+  font-family: "Courier New", Courier, monospace;
+  font-size: inherit;
+  color: navy;
+  padding: 0;
+  margin: 0;
+}
+pre {
+  white-space: pre-wrap;
+}
+
+#author {
+  color: #527bbd;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+#email {
+}
+#revnumber, #revdate, #revremark {
+}
+
+#footer {
+  font-size: small;
+  border-top: 2px solid silver;
+  padding-top: 0.5em;
+  margin-top: 4.0em;
+}
+#footer-text {
+  float: left;
+  padding-bottom: 0.5em;
+}
+#footer-badges {
+  float: right;
+  padding-bottom: 0.5em;
+}
+
+#preamble {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+div.imageblock, div.exampleblock, div.verseblock,
+div.quoteblock, div.literalblock, div.listingblock, div.sidebarblock,
+div.admonitionblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.admonitionblock {
+  margin-top: 2.0em;
+  margin-bottom: 2.0em;
+  margin-right: 10%;
+  color: #606060;
+}
+
+div.content { /* Block element content. */
+  padding: 0;
+}
+
+/* Block element titles. */
+div.title, caption.title {
+  color: #527bbd;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 1.0em;
+  margin-bottom: 0.5em;
+}
+div.title + * {
+  margin-top: 0;
+}
+
+td div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content + div.title {
+  margin-top: 0.0em;
+}
+
+div.sidebarblock > div.content {
+  background: #ffffee;
+  border: 1px solid #dddddd;
+  border-left: 4px solid #f0f0f0;
+  padding: 0.5em;
+}
+
+div.listingblock > div.content {
+  border: 1px solid #dddddd;
+  border-left: 5px solid #f0f0f0;
+  background: #f8f8f8;
+  padding: 0.5em;
+}
+
+div.quoteblock, div.verseblock {
+  padding-left: 1.0em;
+  margin-left: 1.0em;
+  margin-right: 10%;
+  border-left: 5px solid #f0f0f0;
+  color: #888;
+}
+
+div.quoteblock > div.attribution {
+  padding-top: 0.5em;
+  text-align: right;
+}
+
+div.verseblock > pre.content {
+  font-family: inherit;
+  font-size: inherit;
+}
+div.verseblock > div.attribution {
+  padding-top: 0.75em;
+  text-align: left;
+}
+/* DEPRECATED: Pre version 8.2.7 verse style literal block. */
+div.verseblock + div.attribution {
+  text-align: left;
+}
+
+div.admonitionblock .icon {
+  vertical-align: top;
+  font-size: 1.1em;
+  font-weight: bold;
+  text-decoration: underline;
+  color: #527bbd;
+  padding-right: 0.5em;
+}
+div.admonitionblock td.content {
+  padding-left: 0.5em;
+  border-left: 3px solid #dddddd;
+}
+
+div.exampleblock > div.content {
+  border-left: 3px solid #dddddd;
+  padding-left: 0.5em;
+}
+
+div.imageblock div.content { padding-left: 0; }
+span.image img { border-style: none; vertical-align: text-bottom; }
+a.image:visited { color: white; }
+
+dl {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+dt {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  font-style: normal;
+  color: navy;
+}
+dd > *:first-child {
+  margin-top: 0.1em;
+}
+
+ul, ol {
+    list-style-position: outside;
+}
+ol.arabic {
+  list-style-type: decimal;
+}
+ol.loweralpha {
+  list-style-type: lower-alpha;
+}
+ol.upperalpha {
+  list-style-type: upper-alpha;
+}
+ol.lowerroman {
+  list-style-type: lower-roman;
+}
+ol.upperroman {
+  list-style-type: upper-roman;
+}
+
+div.compact ul, div.compact ol,
+div.compact p, div.compact p,
+div.compact div, div.compact div {
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+}
+
+tfoot {
+  font-weight: bold;
+}
+td > div.verse {
+  white-space: pre;
+}
+
+div.hdlist {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+div.hdlist tr {
+  padding-bottom: 15px;
+}
+dt.hdlist1.strong, td.hdlist1.strong {
+  font-weight: bold;
+}
+td.hdlist1 {
+  vertical-align: top;
+  font-style: normal;
+  padding-right: 0.8em;
+  color: navy;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+div.hdlist.compact tr {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.comment {
+  background: yellow;
+}
+
+.footnote, .footnoteref {
+  font-size: 0.8em;
+}
+
+span.footnote, span.footnoteref {
+  vertical-align: super;
+}
+
+#footnotes {
+  margin: 20px 0 20px 0;
+  padding: 7px 0 0 0;
+}
+
+#footnotes div.footnote {
+  margin: 0 0 5px 0;
+}
+
+#footnotes hr {
+  border: none;
+  border-top: 1px solid silver;
+  height: 1px;
+  text-align: left;
+  margin-left: 0;
+  width: 20%;
+  min-width: 100px;
+}
+
+div.colist td {
+  padding-right: 0.5em;
+  padding-bottom: 0.3em;
+  vertical-align: top;
+}
+div.colist td img {
+  margin-top: 0.3em;
+}
+
+@media print {
+  #footer-badges { display: none; }
+}
+
+#toc {
+  margin-bottom: 2.5em;
+}
+
+#toctitle {
+  color: #527bbd;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-top: 1.0em;
+  margin-bottom: 0.1em;
+}
+
+div.toclevel0, div.toclevel1, div.toclevel2, div.toclevel3, div.toclevel4 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+div.toclevel2 {
+  margin-left: 2em;
+  font-size: 0.9em;
+}
+div.toclevel3 {
+  margin-left: 4em;
+  font-size: 0.9em;
+}
+div.toclevel4 {
+  margin-left: 6em;
+  font-size: 0.9em;
+}
+
+span.aqua { color: aqua; }
+span.black { color: black; }
+span.blue { color: blue; }
+span.fuchsia { color: fuchsia; }
+span.gray { color: gray; }
+span.green { color: green; }
+span.lime { color: lime; }
+span.maroon { color: maroon; }
+span.navy { color: navy; }
+span.olive { color: olive; }
+span.purple { color: purple; }
+span.red { color: red; }
+span.silver { color: silver; }
+span.teal { color: teal; }
+span.white { color: white; }
+span.yellow { color: yellow; }
+
+span.aqua-background { background: aqua; }
+span.black-background { background: black; }
+span.blue-background { background: blue; }
+span.fuchsia-background { background: fuchsia; }
+span.gray-background { background: gray; }
+span.green-background { background: green; }
+span.lime-background { background: lime; }
+span.maroon-background { background: maroon; }
+span.navy-background { background: navy; }
+span.olive-background { background: olive; }
+span.purple-background { background: purple; }
+span.red-background { background: red; }
+span.silver-background { background: silver; }
+span.teal-background { background: teal; }
+span.white-background { background: white; }
+span.yellow-background { background: yellow; }
+
+span.big { font-size: 2em; }
+span.small { font-size: 0.6em; }
+
+span.underline { text-decoration: underline; }
+span.overline { text-decoration: overline; }
+span.line-through { text-decoration: line-through; }
+
+div.unbreakable { page-break-inside: avoid; }
+
+
+/*
+ * xhtml11 specific
+ *
+ * */
+
+div.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.tableblock > table {
+  border: 3px solid #527bbd;
+}
+thead, p.table.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.table {
+  margin-top: 0;
+}
+/* Because the table frame attribute is overriden by CSS in most browsers. */
+div.tableblock > table[frame="void"] {
+  border-style: none;
+}
+div.tableblock > table[frame="hsides"] {
+  border-left-style: none;
+  border-right-style: none;
+}
+div.tableblock > table[frame="vsides"] {
+  border-top-style: none;
+  border-bottom-style: none;
+}
+
+
+/*
+ * html5 specific
+ *
+ * */
+
+table.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+thead, p.tableblock.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.tableblock {
+  margin-top: 0;
+}
+table.tableblock {
+  border-width: 3px;
+  border-spacing: 0px;
+  border-style: solid;
+  border-color: #527bbd;
+  border-collapse: collapse;
+}
+th.tableblock, td.tableblock {
+  border-width: 1px;
+  padding: 4px;
+  border-style: solid;
+  border-color: #527bbd;
+}
+
+table.tableblock.frame-topbot {
+  border-left-style: hidden;
+  border-right-style: hidden;
+}
+table.tableblock.frame-sides {
+  border-top-style: hidden;
+  border-bottom-style: hidden;
+}
+table.tableblock.frame-none {
+  border-style: hidden;
+}
+
+th.tableblock.halign-left, td.tableblock.halign-left {
+  text-align: left;
+}
+th.tableblock.halign-center, td.tableblock.halign-center {
+  text-align: center;
+}
+th.tableblock.halign-right, td.tableblock.halign-right {
+  text-align: right;
+}
+
+th.tableblock.valign-top, td.tableblock.valign-top {
+  vertical-align: top;
+}
+th.tableblock.valign-middle, td.tableblock.valign-middle {
+  vertical-align: middle;
+}
+th.tableblock.valign-bottom, td.tableblock.valign-bottom {
+  vertical-align: bottom;
+}
+
+
+/*
+ * manpage specific
+ *
+ * */
+
+body.manpage h1 {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  border-top: 2px solid silver;
+  border-bottom: 2px solid silver;
+}
+body.manpage h2 {
+  border-style: none;
+}
+body.manpage div.sectionbody {
+  margin-left: 3em;
+}
+
+@media print {
+  body.manpage div#toc { display: none; }
+}
+
+
+</style>
+<script type="text/javascript">
+/*<![CDATA[*/
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([1-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  if (!toc) {
+    return;
+  }
+
+  // Delete existing TOC entries in case we're reloading the TOC.
+  var tocEntriesToRemove = [];
+  var i;
+  for (i = 0; i < toc.childNodes.length; i++) {
+    var entry = toc.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div'
+     && entry.getAttribute("class")
+     && entry.getAttribute("class").match(/^toclevel/))
+      tocEntriesToRemove.push(entry);
+  }
+  for (i = 0; i < tocEntriesToRemove.length; i++) {
+    toc.removeChild(tocEntriesToRemove[i]);
+  }
+
+  // Rebuild TOC entries.
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  // Delete existing footnote entries in case we're reloading the footnodes.
+  var i;
+  var noteholder = document.getElementById("footnotes");
+  if (!noteholder) {
+    return;
+  }
+  var entriesToRemove = [];
+  for (i = 0; i < noteholder.childNodes.length; i++) {
+    var entry = noteholder.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div' && entry.getAttribute("class") == "footnote")
+      entriesToRemove.push(entry);
+  }
+  for (i = 0; i < entriesToRemove.length; i++) {
+    noteholder.removeChild(entriesToRemove[i]);
+  }
+
+  // Rebuild footnote entries.
+  var cont = document.getElementById("content");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      var note = spans[i].getAttribute("data-note");
+      if (!note) {
+        // Use [\s\S] in place of . so multi-line matches work.
+        // Because JavaScript has no s (dotall) regex flag.
+        note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+        spans[i].innerHTML =
+          "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+        spans[i].setAttribute("data-note", note);
+      }
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
+    }
+  }
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
+    }
+  }
+},
+
+install: function(toclevels) {
+  var timerId;
+
+  function reinstall() {
+    asciidoc.footnotes();
+    if (toclevels) {
+      asciidoc.toc(toclevels);
+    }
+  }
+
+  function reinstallAndRemoveTimer() {
+    clearInterval(timerId);
+    reinstall();
+  }
+
+  timerId = setInterval(reinstall, 500);
+  if (document.addEventListener)
+    document.addEventListener("DOMContentLoaded", reinstallAndRemoveTimer, false);
+  else
+    window.onload = reinstallAndRemoveTimer;
+}
+
+}
+asciidoc.install(2);
+/*]]>*/
+</script>
+</head>
+<body class="article" style="max-width:55em">
+<div id="header">
+<h1>Host System Administration</h1>
+<span id="author">Proxmox Server Solutions Gmbh</span><br>
+<span id="email" class="monospaced">&lt;<a href="mailto:support@proxmox.com">support@proxmox.com</a>&gt;</span><br>
+<span id="revnumber">version 5.2,</span>
+<span id="revdate">Mon May 14 12:47:00 UTC 2018</span>
+<div id="toc">
+  <div id="toctitle">Table of Contents</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph" id="chapter_system_administration">
+<p>Proxmox VE is based on the famous <a href="https://www.debian.org/">Debian</a> Linux
+distribution. That means that you have access to the whole world of
+Debian packages, and the base system is well documented. The
+<a href="https://debian-handbook.info/download/stable/debian-handbook.pdf">Debian
+Administrator's Handbook</a> is available online, and provides a
+comprehensive introduction to the Debian operating system (see
+<a href="/pve-docs/chapter-pve-bibliography.html#Hertzog13">&#91;Hertzog13&#93;</a>).</p></div>
+<div class="paragraph">
+<p>A standard Proxmox VE installation uses the default repositories from
+Debian, so you get bug fixes and security updates through that
+channel. In addition, we provide our own package repository to roll
+out all Proxmox VE related packages. This includes updates to some
+Debian packages when necessary.</p></div>
+<div class="paragraph">
+<p>We also deliver a specially optimized Linux kernel, where we enable all
+required virtualization and container features. That kernel includes
+drivers for <a href="http://zfsonlinux.org/">ZFS</a>, and several hardware drivers.
+For example, we ship Intel network card drivers to support their
+newest hardware.</p></div>
+<div class="paragraph">
+<p>The following sections will concentrate on virtualization related
+topics. They either explains things which are different on Proxmox VE, or
+tasks which are commonly used on Proxmox VE. For other topics, please refer
+to the standard Debian documentation.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="sysadmin_package_repositories">Package Repositories</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>All Debian based systems use
+<a href="http://en.wikipedia.org/wiki/Advanced_Packaging_Tool">APT</a> as package
+management tool. The list of repositories is defined in
+<span class="monospaced">/etc/apt/sources.list</span> and <span class="monospaced">.list</span> files found inside
+<span class="monospaced">/etc/apt/sources.d/</span>. Updates can be installed directly using
+<span class="monospaced">apt-get</span>, or via the GUI.</p></div>
+<div class="paragraph">
+<p>Apt <span class="monospaced">sources.list</span> files list one package repository per line, with
+the most preferred source listed first. Empty lines are ignored, and a
+<span class="monospaced">#</span> character anywhere on a line marks the remainder of that line as a
+comment. The information available from the configured sources is
+acquired by <span class="monospaced">apt-get update</span>.</p></div>
+<div class="listingblock">
+<div class="title">File <span class="monospaced">/etc/apt/sources.list</span></div>
+<div class="content monospaced">
+<pre>deb http://ftp.debian.org/debian stretch main contrib
+
+# security updates
+deb http://security.debian.org stretch/updates main contrib</pre>
+</div></div>
+<div class="paragraph">
+<p>In addition, Proxmox VE provides three different package repositories.</p></div>
+<div class="sect2">
+<h3 id="_proxmox_ve_enterprise_repository">Proxmox VE Enterprise Repository</h3>
+<div class="paragraph">
+<p>This is the default, stable and recommended repository, available for
+all Proxmox VE subscription users. It contains the most stable packages,
+and is suitable for production use. The <span class="monospaced">pve-enterprise</span> repository is
+enabled by default:</p></div>
+<div class="listingblock">
+<div class="title">File <span class="monospaced">/etc/apt/sources.list.d/pve-enterprise.list</span></div>
+<div class="content monospaced">
+<pre>deb https://enterprise.proxmox.com/debian/pve stretch pve-enterprise</pre>
+</div></div>
+<div class="paragraph">
+<p>As soon as updates are available, the <span class="monospaced">root@pam</span> user is notified via
+email about the available new packages. On the GUI, the change-log of
+each package can be viewed (if available), showing all details of the
+update. So you will never miss important security fixes.</p></div>
+<div class="paragraph">
+<p>Please note that and you need a valid subscription key to access this
+repository. We offer different support levels, and you can find further
+details at <a href="http://www.proxmox.com/en/proxmox-ve/pricing">http://www.proxmox.com/en/proxmox-ve/pricing</a>.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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">
+</td>
+<td class="content">You can disable this repository by commenting out the above line
+using a <span class="monospaced">#</span> (at the start of the line). This prevents error messages
+if you do not have a subscription key. Please configure the
+<span class="monospaced">pve-no-subscription</span> repository in that case.</td>
+</tr></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_proxmox_ve_no_subscription_repository">Proxmox VE No-Subscription Repository</h3>
+<div class="paragraph">
+<p>As the name suggests, you do not need a subscription key to access
+this repository. It can be used for testing and non-production
+use. Its not recommended to run on production servers, as these
+packages are not always heavily tested and validated.</p></div>
+<div class="paragraph">
+<p>We recommend to configure this repository in <span class="monospaced">/etc/apt/sources.list</span>.</p></div>
+<div class="listingblock">
+<div class="title">File <span class="monospaced">/etc/apt/sources.list</span></div>
+<div class="content monospaced">
+<pre>deb http://ftp.debian.org/debian stretch main contrib
+
+# PVE pve-no-subscription repository provided by proxmox.com,
+# NOT recommended for production use
+deb http://download.proxmox.com/debian/pve stretch pve-no-subscription
+
+# security updates
+deb http://security.debian.org stretch/updates main contrib</pre>
+</div></div>
+</div>
+<div class="sect2">
+<h3 id="_proxmox_ve_test_repository">Proxmox VE Test Repository</h3>
+<div class="paragraph">
+<p>Finally, there is a repository called <span class="monospaced">pvetest</span>. This one contains the
+latest packages and is heavily used by developers to test new
+features. As usual, you can configure this using
+<span class="monospaced">/etc/apt/sources.list</span> by adding the following line:</p></div>
+<div class="listingblock">
+<div class="title">sources.list entry for <span class="monospaced">pvetest</span></div>
+<div class="content monospaced">
+<pre>deb http://download.proxmox.com/debian/pve stretch pvetest</pre>
+</div></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Warning" src="data:image/png;base64,
+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
+/F/lgJiyQFHragAAAABJRU5ErkJggg==">
+</td>
+<td class="content">the <span class="monospaced">pvetest</span> repository should (as the name implies) only be used
+for testing new features or bug fixes.</td>
+</tr></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_secureapt">SecureApt</h3>
+<div class="paragraph">
+<p>We use GnuPG to sign the <span class="monospaced">Release</span> files inside those repositories,
+and APT uses that signatures to verify that all packages are from a
+trusted source.</p></div>
+<div class="paragraph">
+<p>The key used for verification is already installed if you install from
+our installation CD. If you install by other means, you can manually
+download the key with:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre># wget http://download.proxmox.com/debian/proxmox-ve-release-5.x.gpg -O /etc/apt/trusted.gpg.d/proxmox-ve-release-5.x.gpg</pre>
+</div></div>
+<div class="paragraph">
+<p>Please verify the checksum afterwards:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># sha512sum /etc/apt/trusted.gpg.d/proxmox-ve-release-5.x.gpg
+ffb95f0f4be68d2e753c8875ea2f8465864a58431d5361e88789568673551501ae574283a4e0492f17d79dc67edfb173a56a6304dea39e01f249ebdabc9f074a  /etc/apt/trusted.gpg.d/proxmox-ve-release-5.x.gpg</pre>
+</div></div>
+<div class="paragraph">
+<p>or</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># md5sum /etc/apt/trusted.gpg.d/proxmox-ve-release-5.x.gpg
+511d36d0f1350c01c42a3dc9f3c27939  /etc/apt/trusted.gpg.d/proxmox-ve-release-5.x.gpg</pre>
+</div></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_system_software_updates">System Software Updates</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>We provide regular package updates on all repositories. You can
+install those update using the GUI, or you can directly run the CLI
+command <span class="monospaced">apt-get</span>:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>apt-get update
+apt-get dist-upgrade</pre>
+</div></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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">
+</td>
+<td class="content">The <span class="monospaced">apt</span> package management system is extremely flexible and
+provides countless of feature - see <span class="monospaced">man apt-get</span> or <a href="/pve-docs/chapter-pve-bibliography.html#Hertzog13">&#91;Hertzog13&#93;</a> for
+additional information.</td>
+</tr></table>
+</div>
+<div class="paragraph">
+<p>You should do such updates at regular intervals, or when we release
+versions with security related fixes. Major system upgrades are
+announced at the <a href="https://forum.proxmox.com/">Proxmox VE Community Forum</a>. Those announcement also contain detailed
+upgrade instructions.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Tip" src="data:image/png;base64,
+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">
+</td>
+<td class="content">We recommend to run regular upgrades, because it is important to
+get the latest security updates.</td>
+</tr></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="sysadmin_network_configuration">Network Configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Network configuration can be done either via the GUI, or by manually
+editing the file <span class="monospaced">/etc/network/interfaces</span>, which contains the
+whole network configuration. The  <span class="monospaced">interfaces(5)</span> manual page contains the
+complete format description. All Proxmox VE tools try hard to keep direct
+ user modifications, but using the GUI is still preferable, because it
+protects you from errors.</p></div>
+<div class="paragraph">
+<p>Once the network is configured, you can use the Debian traditional tools <span class="monospaced">ifup</span>
+and <span class="monospaced">ifdown</span> commands to bring interfaces up and down.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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">
+</td>
+<td class="content">Proxmox VE does not write changes directly to
+<span class="monospaced">/etc/network/interfaces</span>. Instead, we write into a temporary file
+called <span class="monospaced">/etc/network/interfaces.new</span>, and commit those changes when
+you reboot the node.</td>
+</tr></table>
+</div>
+<div class="sect2">
+<h3 id="_naming_conventions">Naming Conventions</h3>
+<div class="paragraph">
+<p>We currently use the following naming conventions for device names:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Ethernet devices: en*, systemd network interface names. This naming scheme is
+ used for new Proxmox VE installations since version 5.0.
+</p>
+</li>
+<li>
+<p>
+Ethernet devices: eth[N], where 0 ≤ N (<span class="monospaced">eth0</span>, <span class="monospaced">eth1</span>, &#8230;) This naming
+scheme is used for Proxmox VE hosts which were installed before the 5.0
+release. When upgrading to 5.0, the names are kept as-is.
+</p>
+</li>
+<li>
+<p>
+Bridge names: vmbr[N], where 0 ≤ N ≤ 4094 (<span class="monospaced">vmbr0</span> - <span class="monospaced">vmbr4094</span>)
+</p>
+</li>
+<li>
+<p>
+Bonds: bond[N], where 0 ≤ N (<span class="monospaced">bond0</span>, <span class="monospaced">bond1</span>, &#8230;)
+</p>
+</li>
+<li>
+<p>
+VLANs: Simply add the VLAN number to the device name,
+  separated by a period (<span class="monospaced">eno1.50</span>, <span class="monospaced">bond1.30</span>)
+</p>
+</li>
+</ul></div>
+<div class="paragraph">
+<p>This makes it easier to debug networks problems, because the device
+name implies the device type.</p></div>
+<div class="sect3">
+<h4 id="_systemd_network_interface_names">Systemd Network Interface Names</h4>
+<div class="paragraph">
+<p>Systemd uses the two character prefix <em>en</em> for Ethernet network
+devices. The next characters depends on the device driver and the fact
+which schema matches first.</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+o&lt;index&gt;[n&lt;phys_port_name&gt;|d&lt;dev_port&gt;] — devices on board
+</p>
+</li>
+<li>
+<p>
+s&lt;slot&gt;[f&lt;function&gt;][n&lt;phys_port_name&gt;|d&lt;dev_port&gt;] — device by hotplug id
+</p>
+</li>
+<li>
+<p>
+[P&lt;domain&gt;]p&lt;bus&gt;s&lt;slot&gt;[f&lt;function&gt;][n&lt;phys_port_name&gt;|d&lt;dev_port&gt;] — devices by bus id
+</p>
+</li>
+<li>
+<p>
+x&lt;MAC&gt; — device by MAC address
+</p>
+</li>
+</ul></div>
+<div class="paragraph">
+<p>The most common patterns are:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+eno1 — is the first on board NIC
+</p>
+</li>
+<li>
+<p>
+enp3s0f1 — is the NIC on pcibus 3 slot 0 and use the NIC function 1.
+</p>
+</li>
+</ul></div>
+<div class="paragraph">
+<p>For more information see <a href="https://www.freedesktop.org/wiki/Software/systemd/PredictableNetworkInterfaceNames/">Predictable Network Interface Names</a>.</p></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_choosing_a_network_configuration">Choosing a network configuration</h3>
+<div class="paragraph">
+<p>Depending on your current network organization and your resources you can
+choose either a bridged, routed, or masquerading networking setup.</p></div>
+<div class="sect3">
+<h4 id="_proxmox_ve_server_in_a_private_lan_using_an_external_gateway_to_reach_the_internet">Proxmox VE server in a private LAN, using an external gateway to reach the internet</h4>
+<div class="paragraph">
+<p>The <strong>Bridged</strong> model makes the most sense in this case, and this is also
+the default mode on new Proxmox VE installations.
+Each of your Guest system will have a virtual interface attached to the
+Proxmox VE bridge. This is similar in effect to having the Guest network card
+directly connected to a new switch on your LAN, the Proxmox VE host playing the role
+of the switch.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_proxmox_ve_server_at_hosting_provider_with_public_ip_ranges_for_guests">Proxmox VE server at hosting provider, with public IP ranges for Guests</h4>
+<div class="paragraph">
+<p>For this setup, you can use either a <strong>Bridged</strong> or <strong>Routed</strong> model, depending on
+what your provider allows.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_proxmox_ve_server_at_hosting_provider_with_a_single_public_ip_address">Proxmox VE server at hosting provider, with a single public IP address</h4>
+<div class="paragraph">
+<p>In that case the only way to get outgoing network accesses for your guest
+systems is to use <strong>Masquerading</strong>. For incoming network access to your guests,
+you will need to configure <strong>Port Forwarding</strong>.</p></div>
+<div class="paragraph">
+<p>For further flexibility, you can configure
+VLANs (IEEE 802.1q) and network bonding, also known as "link
+aggregation". That way it is possible to build complex and flexible
+virtual networks.</p></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_default_configuration_using_a_bridge">Default Configuration using a Bridge</h3>
+<div class="paragraph">
+<p>Bridges are like physical network switches implemented in software.
+All VMs can share a single bridge, or you can create multiple bridges to
+separate network domains. Each host can have up to 4094 bridges.</p></div>
+<div class="paragraph">
+<p>The installation program creates a single bridge named <span class="monospaced">vmbr0</span>, which
+is connected to the first Ethernet card. The corresponding
+configuration in <span class="monospaced">/etc/network/interfaces</span> might look like this:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>auto lo
+iface lo inet loopback
+
+iface eno1 inet manual
+
+auto vmbr0
+iface vmbr0 inet static
+        address 192.168.10.2
+        netmask 255.255.255.0
+        gateway 192.168.10.1
+        bridge_ports eno1
+        bridge_stp off
+        bridge_fd 0</pre>
+</div></div>
+<div class="paragraph">
+<p>Virtual machines behave as if they were directly connected to the
+physical network. The network, in turn, sees each virtual machine as
+having its own MAC, even though there is only one network cable
+connecting all of these VMs to the network.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_routed_configuration">Routed Configuration</h3>
+<div class="paragraph">
+<p>Most hosting providers do not support the above setup. For security
+reasons, they disable networking as soon as they detect multiple MAC
+addresses on a single interface.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Tip" src="data:image/png;base64,
+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">
+</td>
+<td class="content">Some providers allows you to register additional MACs on there
+management interface. This avoids the problem, but is clumsy to
+configure because you need to register a MAC for each of your VMs.</td>
+</tr></table>
+</div>
+<div class="paragraph">
+<p>You can avoid the problem by &#8220;routing&#8221; all traffic via a single
+interface. This makes sure that all network packets use the same MAC
+address.</p></div>
+<div class="paragraph">
+<p>A common scenario is that you have a public IP (assume <span class="monospaced">198.51.100.5</span>
+for this example), and an additional IP block for your VMs
+(<span class="monospaced">203.0.113.16/29</span>). We recommend the following setup for such
+situations:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>auto lo
+iface lo inet loopback
+
+auto eno1
+iface eno1 inet static
+        address  198.51.100.5
+        netmask  255.255.255.0
+        gateway  198.51.100.1
+        post-up echo 1 &gt; /proc/sys/net/ipv4/ip_forward
+        post-up echo 1 &gt; /proc/sys/net/ipv4/conf/eno1/proxy_arp
+
+
+auto vmbr0
+iface vmbr0 inet static
+        address  203.0.113.17
+        netmask  255.255.255.248
+        bridge_ports none
+        bridge_stp off
+        bridge_fd 0</pre>
+</div></div>
+</div>
+<div class="sect2">
+<h3 id="_masquerading_nat_with_span_class_monospaced_iptables_span">Masquerading (NAT) with <span class="monospaced">iptables</span></h3>
+<div class="paragraph">
+<p>Masquerading allows guests having only a private IP address to access the
+network by using the host IP address for outgoing traffic. Each outgoing
+packet is rewritten by <span class="monospaced">iptables</span> to appear as originating from the host,
+and responses are rewritten accordingly to be routed to the original sender.</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>auto lo
+iface lo inet loopback
+
+auto eno1
+#real IP address
+iface eno1 inet static
+        address  198.51.100.5
+        netmask  255.255.255.0
+        gateway  198.51.100.1
+
+auto vmbr0
+#private sub network
+iface vmbr0 inet static
+        address  10.10.10.1
+        netmask  255.255.255.0
+        bridge_ports none
+        bridge_stp off
+        bridge_fd 0
+
+        post-up echo 1 &gt; /proc/sys/net/ipv4/ip_forward
+        post-up   iptables -t nat -A POSTROUTING -s '10.10.10.0/24' -o eno1 -j MASQUERADE
+        post-down iptables -t nat -D POSTROUTING -s '10.10.10.0/24' -o eno1 -j MASQUERADE</pre>
+</div></div>
+</div>
+<div class="sect2">
+<h3 id="_linux_bond">Linux Bond</h3>
+<div class="paragraph">
+<p>Bonding (also called NIC teaming or Link Aggregation) is a technique
+for binding multiple NIC&#8217;s to a single network device.  It is possible
+to achieve different goals, like make the network fault-tolerant,
+increase the performance or both together.</p></div>
+<div class="paragraph">
+<p>High-speed hardware like Fibre Channel and the associated switching
+hardware can be quite expensive. By doing link aggregation, two NICs
+can appear as one logical interface, resulting in double speed. This
+is a native Linux kernel feature that is supported by most
+switches. If your nodes have multiple Ethernet ports, you can
+distribute your points of failure by running network cables to
+different switches and the bonded connection will failover to one
+cable or the other in case of network trouble.</p></div>
+<div class="paragraph">
+<p>Aggregated links can improve live-migration delays and improve the
+speed of replication of data between Proxmox VE Cluster nodes.</p></div>
+<div class="paragraph">
+<p>There are 7 modes for bonding:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>Round-robin (balance-rr):</strong> Transmit network packets in sequential
+order from the first available network interface (NIC) slave through
+the last. This mode provides load balancing and fault tolerance.
+</p>
+</li>
+<li>
+<p>
+<strong>Active-backup (active-backup):</strong> Only one NIC slave in the bond is
+active. A different slave becomes active if, and only if, the active
+slave fails. The single logical bonded interface&#8217;s MAC address is
+externally visible on only one NIC (port) to avoid distortion in the
+network switch. This mode provides fault tolerance.
+</p>
+</li>
+<li>
+<p>
+<strong>XOR (balance-xor):</strong> Transmit network packets based on [(source MAC
+address XOR&#8217;d with destination MAC address) modulo NIC slave
+count]. This selects the same NIC slave for each destination MAC
+address. This mode provides load balancing and fault tolerance.
+</p>
+</li>
+<li>
+<p>
+<strong>Broadcast (broadcast):</strong> Transmit network packets on all slave
+network interfaces. This mode provides fault tolerance.
+</p>
+</li>
+<li>
+<p>
+<strong>IEEE 802.3ad Dynamic link aggregation (802.3ad)(LACP):</strong> Creates
+aggregation groups that share the same speed and duplex
+settings. Utilizes all slave network interfaces in the active
+aggregator group according to the 802.3ad specification.
+</p>
+</li>
+<li>
+<p>
+<strong>Adaptive transmit load balancing (balance-tlb):</strong> Linux bonding
+driver mode that does not require any special network-switch
+support. The outgoing network packet traffic is distributed according
+to the current load (computed relative to the speed) on each network
+interface slave. Incoming traffic is received by one currently
+designated slave network interface. If this receiving slave fails,
+another slave takes over the MAC address of the failed receiving
+slave.
+</p>
+</li>
+<li>
+<p>
+<strong>Adaptive load balancing (balance-alb):</strong> Includes balance-tlb plus receive
+load balancing (rlb) for IPV4 traffic, and does not require any
+special network switch support. The receive load balancing is achieved
+by ARP negotiation. The bonding driver intercepts the ARP Replies sent
+by the local system on their way out and overwrites the source
+hardware address with the unique hardware address of one of the NIC
+slaves in the single logical bonded interface such that different
+network-peers use different MAC addresses for their network packet
+traffic.
+</p>
+</li>
+</ul></div>
+<div class="paragraph">
+<p>If your switch support the LACP (IEEE 802.3ad) protocol then we recommend using
+the corresponding bonding mode (802.3ad). Otherwise you should generally use the
+active-backup mode.<br>
+
+If you intend to run your cluster network on the bonding interfaces, then you
+have to use active-passive mode on the bonding interfaces, other modes are
+unsupported.</p></div>
+<div class="paragraph">
+<p>The following bond configuration can be used as distributed/shared
+storage network. The benefit would be that you get more speed and the
+network will be fault-tolerant.</p></div>
+<div class="listingblock">
+<div class="title">Example: Use bond with fixed IP address</div>
+<div class="content monospaced">
+<pre>auto lo
+iface lo inet loopback
+
+iface eno1 inet manual
+
+iface eno2 inet manual
+
+auto bond0
+iface bond0 inet static
+      slaves eno1 eno2
+      address  192.168.1.2
+      netmask  255.255.255.0
+      bond_miimon 100
+      bond_mode 802.3ad
+      bond_xmit_hash_policy layer2+3
+
+auto vmbr0
+iface vmbr0 inet static
+        address  10.10.10.2
+        netmask  255.255.255.0
+        gateway  10.10.10.1
+        bridge_ports eno1
+        bridge_stp off
+        bridge_fd 0</pre>
+</div></div>
+<div class="paragraph">
+<p>Another possibility it to use the bond directly as bridge port.
+This can be used to make the guest network fault-tolerant.</p></div>
+<div class="listingblock">
+<div class="title">Example: Use a bond as bridge port</div>
+<div class="content monospaced">
+<pre>auto lo
+iface lo inet loopback
+
+iface eno1 inet manual
+
+iface eno2 inet manual
+
+auto bond0
+iface bond0 inet manual
+      slaves eno1 eno2
+      bond_miimon 100
+      bond_mode 802.3ad
+      bond_xmit_hash_policy layer2+3
+
+auto vmbr0
+iface vmbr0 inet static
+        address  10.10.10.2
+        netmask  255.255.255.0
+        gateway  10.10.10.1
+        bridge_ports bond0
+        bridge_stp off
+        bridge_fd 0</pre>
+</div></div>
+</div>
+<div class="sect2">
+<h3 id="_vlan_802_1q">VLAN 802.1Q</h3>
+<div class="paragraph">
+<p>A virtual LAN (VLAN) is a broadcast domain that is partitioned and
+isolated in the network at layer two.  So it is possible to have
+multiple networks (4096) in a physical network, each independent of
+the other ones.</p></div>
+<div class="paragraph">
+<p>Each VLAN network is identified by a number often called <em>tag</em>.
+Network packages are then <em>tagged</em> to identify which virtual network
+they belong to.</p></div>
+<div class="sect3">
+<h4 id="_vlan_for_guest_networks">VLAN for Guest Networks</h4>
+<div class="paragraph">
+<p>Proxmox VE supports this setup out of the box. You can specify the VLAN tag
+when you create a VM. The VLAN tag is part of the guest network
+confinuration. The networking layer supports differnet modes to
+implement VLANs, depending on the bridge configuration:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>VLAN awareness on the Linux bridge:</strong>
+In this case, each guest&#8217;s virtual network card is assigned to a VLAN tag,
+which is transparently supported by the Linux bridge.
+Trunk mode is also possible, but that makes the configuration
+in the guest necessary.
+</p>
+</li>
+<li>
+<p>
+<strong>"traditional" VLAN on the Linux bridge:</strong>
+In contrast to the VLAN awareness method, this method is not transparent
+and creates a VLAN device with associated bridge for each VLAN.
+That is, if e.g. in our default network, a guest VLAN 5 is used
+to create eno1.5 and vmbr0v5, which remains until rebooting.
+</p>
+</li>
+<li>
+<p>
+<strong>Open vSwitch VLAN:</strong>
+This mode uses the OVS VLAN feature.
+</p>
+</li>
+<li>
+<p>
+<strong>Guest configured VLAN:</strong>
+VLANs are assigned inside the guest. In this case, the setup is
+completely done inside the guest and can not be influenced from the
+outside. The benefit is that you can use more than one VLAN on a
+single virtual NIC.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect3">
+<h4 id="_vlan_on_the_host">VLAN on the Host</h4>
+<div class="paragraph">
+<p>To allow host communication with an isolated network. It is possible
+to apply VLAN tags to any network device (NIC, Bond, Bridge). In
+general, you should configure the VLAN on the interface with the least
+abstraction layers between itself and the physical NIC.</p></div>
+<div class="paragraph">
+<p>For example, in a default configuration where you want to place
+the host management address on a separate VLAN.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAJhUlEQVRoge2ZWWycVxXHf+fce7/v
+m/GaGCde4pI0aQlJC0kRtE1L00JbLIjY4QkeUB9YHhAIJFCExAsKUkE8IAFFPIDUIqhBRSDRBUqC
+CimFFBCBpCWx02IaZ3G2SdyxPZ7vHh6+mcnSZnFjKIge6Wj8zYzvPf9z/me5d8TM+F8WfbkNuFx5
+BcDLLf/fAEZGRmx4eNh6enqsp6fHhoeHbWRk5D9aFeSlVqHNmzfb6H33sHnT7ZQmD5GfOMax6Sm+
+Pl5h1Yc+xpYtW2SBbX1ReUkRGBkZsdH77mHLW95EOv4Ms3ueJh6YYPHUFF9aljJ63z3cf//9/5FI
+vKQIDA8P293L2yhVjjH7t51ocDiviFecF46n7XzBreChhx4qNhH5t0XjJUVgx44ddGUZ9b/vIpQD
+oRQIWSDJAiFL6B9axo4dO4gxAmANWVDLG+Ln82URMRGhVCqRHxonlAPqFXWKC4r6IhI6OMjMzBN4
+/4LlTUQQEZxzZ32QJAlpmrb+p16vU6vVOHXq1AWjN18AnDj0F971vrs4OnmYJVkoDA4FCPUO172I
+Cgnt7SV++4vvsGhRJx3tJbIsRVVpsUnOBBABBVFEClKYwbKr7sTM7EIUnBcA7z21k7t49x1X8JXv
+bOWra7rw5QRtcN8PLCfvvZJvb9vJycpJpg4/hp/N0I4SMQs4Jw0A5zBXHGiCaIZIKABgpGlKjPEF
+0TpT5pUDRXiVt99+Le03r+WzuytM1gO6pB/3+o0cbxvk8yOPMjW6i2iR2lxOjJDHSDMFogmGwzQ7
+rRJAUpAENAGXIZq2AFzQpvkACCEQcahP+cRH3sKHn9zHXU+MM7rtGeD33NDXzaZynZU9gcezpUw9
+X6OzIyOakkfF4QEpPG6nDRNNEA2FSgKimETSNCXPc0II57VpXhEolUqoOrxPSLOMT330Dv5SqfKD
+NR388Y2L+caQsjITNv3pMBs3rOT56ZyZGaM+J0QUxDc0INrWUgggoRGBAOIRAt77hY1AmqaoeJxP
+cN645jVDbNn8Hj73o8fZ/af9mEE9j9y2YRXt5YzZWmRmzjj1/BwhTXAKzitOHEbeWlc0AVwDnCv8
+KoZzjotV33lTSL1HNKAuEtKM1169jM98/E6mTk3x4Nbd7Bk7TEdHRvAeVY+hmDqmZwx1kIkiqrhz
+S2zL+AbNMC6l/80LgHMOEY9oQvBCks5RKpXo7JhFxbhz42pet2aQet1YtLiDJAkIDq8BHwJmwlwO
+UaD0ojsrNKuUReIZyb9gABCHcwWFgg+0lTPyvIRToVzKWLpkMfV6REQplYvmZCj1uuBUSdJwTg8A
+XBdoCZMOsBkQBeGi/J83gBgjmABC8AlJGsjzFLMyaXDM1etEA0VR50iCx6mSZhkiijpPjEpQD+SF
+4WdJrTAewdCFB1CtVlFVVATnhMQnWJqC5aTBk+c5IIgWRoTgSZJAmiZAo1s7hwsppglI+fTiljeY
+nyHkLQotKIAYI4igzpFHISQOiwEnKTEG8hhRVZw6YjRQLfJGHcF7jleqTBw8znXr12MABnv37efY
+iSnesG4tiUsRUQwD7JIAzKsPqCqiRbVwweM04XdPjhJN+dvTBxgbn6G9q59yZx9/3HWEb33vN+zc
+/RzOJ+w/eJLtO8Z5ZNtT7PvHIUQTvvv9X/Lc/mN0d3by3fseRLQwvWh0Fy+h8wbQ2VFG1KM+xfuA
+qufo8So/fejPPD/rqJys8pvf7eLAoeNMHqnw2U9+kH3jVQ5MClMzKUla5obr13HliiEMmDx6gltv
+uY7Vr1nBQF8PJopQ9AFTt/AROFfMjCW9XTy19xB33Hodb924jr1j+/nDk3/nzTdei4jw3nfeyCOP
+bufa1y5jzeoVrcHM8HR3dfHlr/2Q+x94jFtuuh44/9B2PplXDryYLF3STXd3e+t5UXcHY89OsOH6
+NS2Qed7wpM1Rm50G4MGHH2P961Zy3bqreXrPP5mrzwLt5y6/cACq1eoLCKm+TN/SAebmfn8aUG83
+PYs7+cnPH+eqKwd5as8/edc7bi02847pmVkATk1VWbF8AOcca1Yv59DkqcYK0tCL02deACqVCldc
+0YdIwLmEPM9RV6NnUZlPf3wT6oqJcePN6wHhzTeu4/CRCrfctJ4sSxBRli7pYfHEMUSU97/7Th75
+1RP8eec+Yp5zzTVXM9DfDyogBvHS6HTJACYmJnjVoq5GFw0454gCEOnoaMfiNGZFFRFxJGkbywZ6
+i1NWoy9kWYmbb1gHKCHApuGbisVFGyoYUswa5OR5ftF56JIBjI6OMtDfWwAQ35jnc8AVpRXBohVq
+UowECKqK4RBxoE0W6gvGCcEjaOEAwEQWdpgbGxujt7erOLO2mk3R8i0Wz9EiuUGz+qlKEQEUaJbI
+4lTHmTVePKgWzpDGJGpc8CDTlEsuo88++wxXDA0UIUbAOP23KGZKjI48KnkuhcbiPbPCOBoeBikO
+Lk2VxjqNRilaAEqSZGEAbN261bZt+zW33XY7IAXXm6Ou0YhIMamaaUOl5WRrzg00viuKWWxpQUOH
+NAZFQRpD48Xlkig0MTHBB95zG+VSylz1KCbWyDOh2XyK+56IqjWMKigkUnzWnPPFFFRRLZ29SQRU
+ELOGY4pZ6LKOlM07mZ07d/KOtw1TcB4sGkTDiDQ9K1IkrKeYmQC08d7pZLSiRBpE5s7aS0XAHFEK
+AGY51Wr18g80Zmb33nsvX/z8XdSmj2AWOXhwkrxe46+79jB55Dh/3T2GxUhHextdXW2sXN7PNWtW
+IQKDA71FFBoAjIgQkVg/a5+oHrU5zIznDhxk964xKpXKggAoTlWW8+OfPorlOQ//cjsDy1bS2dFO
+W+diVly1iL6+Pqanpzl5qsL4pPHwN3/G1InDlMsZ7Z1tDA30cfWqIa5dexV9fb2YnT7UTxw4xsHJ
+o4yOjfOP8QOMjx/k4OQx7r777lY0zycXvJ02M4sxMjg4SL1eR0TYsGEDw8PD9PX10d7ejogUN3a1
+GqpKCIE8z5mdnUVVqVarbN++nba2Nvbu3csDDzyAqrJ8+atb+zjn6e/vZ/Xq1axatYq1a9fS29tL
+lmUMDQ1RKpXOm9EXvV6v1+tWr9eZnp5mZmaGWq1GjLHF62aiNZ+bnPfe45xrvTZzxMyYmZk56+LX
+zKjX661DvHOOJElIkoRSqYT3/vLvRlW15eHCa4VxzdvmpjZDfubzuXeb3vuzqCEixBhbo0NTkyS5
+PAr9L8j/96+U/w3yCoCXW14B8HLLvwDd67nwZIEPdgAAAABJRU5ErkJggg==">
+</td>
+<td class="content">In the examples we use the VLAN at bridge level to ensure the correct
+function of VLAN 5 in the guest network, but in combination with VLAN anwareness
+bridge this it will not work for guest network VLAN 5.
+The downside of this setup is more CPU usage.</td>
+</tr></table>
+</div>
+<div class="listingblock">
+<div class="title">Example: Use VLAN 5 for the Proxmox VE management IP</div>
+<div class="content monospaced">
+<pre>auto lo
+iface lo inet loopback
+
+iface eno1 inet manual
+
+iface eno1.5 inet manual
+
+auto vmbr0v5
+iface vmbr0v5 inet static
+        address  10.10.10.2
+        netmask  255.255.255.0
+        gateway  10.10.10.1
+        bridge_ports eno1.5
+        bridge_stp off
+        bridge_fd 0
+
+auto vmbr0
+iface vmbr0 inet manual
+        bridge_ports eno1
+        bridge_stp off
+        bridge_fd 0</pre>
+</div></div>
+<div class="paragraph">
+<p>The next example is the same setup but a bond is used to
+make this network fail-safe.</p></div>
+<div class="listingblock">
+<div class="title">Example: Use VLAN 5 with bond0 for the Proxmox VE management IP</div>
+<div class="content monospaced">
+<pre>auto lo
+iface lo inet loopback
+
+iface eno1 inet manual
+
+iface eno2 inet manual
+
+auto bond0
+iface bond0 inet manual
+      slaves eno1 eno2
+      bond_miimon 100
+      bond_mode 802.3ad
+      bond_xmit_hash_policy layer2+3
+
+iface bond0.5 inet manual
+
+auto vmbr0v5
+iface vmbr0v5 inet static
+        address  10.10.10.2
+        netmask  255.255.255.0
+        gateway  10.10.10.1
+        bridge_ports bond0.5
+        bridge_stp off
+        bridge_fd 0
+
+auto vmbr0
+iface vmbr0 inet manual
+        bridge_ports bond0
+        bridge_stp off
+        bridge_fd 0</pre>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_time_synchronization">Time Synchronization</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Proxmox VE cluster stack itself relies heavily on the fact that all
+the nodes have precisely synchronized time. Some other components,
+like Ceph, also refuse to work properly if the local time on nodes is
+not in sync.</p></div>
+<div class="paragraph">
+<p>Time synchronization between nodes can be achieved with the &#8220;Network
+Time Protocol&#8221; (<span class="monospaced">NTP</span>). Proxmox VE uses <span class="monospaced">systemd-timesyncd</span> as NTP client
+by default, preconfigured to use a set of public servers. This setup
+works out of the box in most cases.</p></div>
+<div class="sect2">
+<h3 id="_using_custom_ntp_servers">Using Custom NTP Servers</h3>
+<div class="paragraph">
+<p>In some cases, it might be desired to not use the default NTP
+servers. For example, if your Proxmox VE nodes do not have access to the
+public internet (e.g., because of restrictive firewall rules), you
+need to setup local NTP servers and tell <span class="monospaced">systemd-timesyncd</span> to use
+them:</p></div>
+<div class="listingblock">
+<div class="title">File <span class="monospaced">/etc/systemd/timesyncd.conf</span></div>
+<div class="content monospaced">
+<pre>[Time]
+Servers=ntp1.example.com ntp2.example.com ntp3.example.com ntp4.example.com</pre>
+</div></div>
+<div class="paragraph">
+<p>After restarting the synchronization service (<span class="monospaced">systemctl restart
+systemd-timesyncd</span>) you should verify that your newly configured NTP
+servers are used by checking the journal (<span class="monospaced">journalctl --since -1h -u
+systemd-timesyncd</span>):</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>...
+Oct 07 14:58:36 node1 systemd[1]: Stopping Network Time Synchronization...
+Oct 07 14:58:36 node1 systemd[1]: Starting Network Time Synchronization...
+Oct 07 14:58:36 node1 systemd[1]: Started Network Time Synchronization.
+Oct 07 14:58:36 node1 systemd-timesyncd[13514]: Using NTP server 10.0.0.1:123 (ntp1.example.com).
+Oct 07 14:58:36 nora systemd-timesyncd[13514]: interval/delta/delay/jitter/drift 64s/-0.002s/0.020s/0.000s/-31ppm
+...</pre>
+</div></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_external_metric_server">External Metric Server</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Starting with Proxmox VE 4.0, you can define external metric servers,
+which will be sent various stats about your hosts, virtual machines and storages.</p></div>
+<div class="paragraph">
+<p>Currently supported are:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+graphite (see <a href="http://graphiteapp.org">http://graphiteapp.org</a> )
+</p>
+</li>
+<li>
+<p>
+influxdb (see <a href="https://www.influxdata.com/time-series-platform/influxdb/">https://www.influxdata.com/time-series-platform/influxdb/</a> )
+</p>
+</li>
+</ul></div>
+<div class="paragraph">
+<p>The server definitions are saved in
+ /etc/pve/status.cfg</p></div>
+<div class="sect2">
+<h3 id="_graphite_server_configuration">Graphite server configuration</h3>
+<div class="paragraph">
+<p>The definition of a server is:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>graphite:
+   server your-server
+   port your-port
+   path your-path</pre>
+</div></div>
+<div class="paragraph">
+<p>where your-port defaults to <strong>2003</strong>
+and your-path defaults to <strong>proxmox</strong></p></div>
+<div class="paragraph">
+<p>Proxmox VE sends the data over udp, so the graphite server
+has to be configured for this</p></div>
+</div>
+<div class="sect2">
+<h3 id="_influxdb_plugin_configuration">Influxdb plugin configuration</h3>
+<div class="paragraph">
+<p>The definition is:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>influxdb:
+   server your-server
+   port your-port</pre>
+</div></div>
+<div class="paragraph">
+<p>Proxmox VE sends the data over udp, so the influxdb server
+has to be configured for this</p></div>
+<div class="paragraph">
+<p>Here is an example configuration for influxdb (on your influxdb server):</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>[[udp]]
+  enabled = true
+  bind-address = "0.0.0.0:8089"
+  database = "proxmox"
+  batch-size = 1000
+  batch-timeout = "1s"</pre>
+</div></div>
+<div class="paragraph">
+<p>With this configuration, your server listens on all IP addresses on
+port 8089, and writes the data in the <strong>proxmox</strong> database</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_disk_health_monitoring">Disk Health Monitoring</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Although a robust and redundant storage is recommended,
+it can be very helpful to monitor the health of your local disks.</p></div>
+<div class="paragraph">
+<p>Starting with Proxmox VE 4.3, the package smartmontools <span class="footnote"><br>[smartmontools homepage <a href="https://www.smartmontools.org">https://www.smartmontools.org</a>]<br></span>
+is installed and required. This is a set of tools to monitor and control
+the S.M.A.R.T. system for local hard disks.</p></div>
+<div class="paragraph">
+<p>You can get the status of a disk by issuing the following command:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># smartctl -a /dev/sdX</pre>
+</div></div>
+<div class="paragraph">
+<p>where /dev/sdX is the path to one of your local disks.</p></div>
+<div class="paragraph">
+<p>If the output says:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>SMART support is: Disabled</pre>
+</div></div>
+<div class="paragraph">
+<p>you can enable it with the command:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># smartctl -s on /dev/sdX</pre>
+</div></div>
+<div class="paragraph">
+<p>For more information on how to use smartctl, please see <span class="monospaced">man smartctl</span>.</p></div>
+<div class="paragraph">
+<p>By default, smartmontools daemon smartd is active and enabled, and scans
+the disks under /dev/sdX and /dev/hdX every 30 minutes for errors and warnings, and sends an
+e-mail to root if it detects a problem.</p></div>
+<div class="paragraph">
+<p>For more information about how to configure smartd, please see <span class="monospaced">man smartd</span> and
+<span class="monospaced">man smartd.conf</span>.</p></div>
+<div class="paragraph">
+<p>If you use your hard disks with a hardware raid controller, there are most likely tools
+to monitor the disks in the raid array and the array itself. For more information about this,
+please refer to the vendor of your raid controller.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_logical_volume_manager_lvm">Logical Volume Manager (LVM)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Most people install Proxmox VE directly on a local disk. The Proxmox VE
+installation CD offers several options for local disk management, and
+the current default setup uses LVM. The installer let you select a
+single disk for such setup, and uses that disk as physical volume for
+the <strong>V</strong>olume <strong>G</strong>roup (VG) <span class="monospaced">pve</span>. The following output is from a
+test installation using a small 8GB disk:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># pvs
+  PV         VG   Fmt  Attr PSize PFree
+  /dev/sda3  pve  lvm2 a--  7.87g 876.00m
+
+# vgs
+  VG   #PV #LV #SN Attr   VSize VFree
+  pve    1   3   0 wz--n- 7.87g 876.00m</pre>
+</div></div>
+<div class="paragraph">
+<p>The installer allocates three <strong>L</strong>ogical <strong>V</strong>olumes (LV) inside this
+VG:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># lvs
+  LV   VG   Attr       LSize   Pool Origin Data%  Meta%
+  data pve  twi-a-tz--   4.38g             0.00   0.63
+  root pve  -wi-ao----   1.75g
+  swap pve  -wi-ao---- 896.00m</pre>
+</div></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+root
+</dt>
+<dd>
+<p>
+Formatted as <span class="monospaced">ext4</span>, and contains the operation system.
+</p>
+</dd>
+<dt class="hdlist1">
+swap
+</dt>
+<dd>
+<p>
+Swap partition
+</p>
+</dd>
+<dt class="hdlist1">
+data
+</dt>
+<dd>
+<p>
+This volume uses LVM-thin, and is used to store VM
+images. LVM-thin is preferable for this task, because it offers
+efficient support for snapshots and clones.
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p>For Proxmox VE versions up to 4.1, the installer creates a standard logical
+volume called &#8220;data&#8221;, which is mounted at <span class="monospaced">/var/lib/vz</span>.</p></div>
+<div class="paragraph">
+<p>Starting from version 4.2, the logical volume &#8220;data&#8221; is a LVM-thin pool,
+used to store block based guest images, and <span class="monospaced">/var/lib/vz</span> is simply a
+directory on the root file system.</p></div>
+<div class="sect2">
+<h3 id="_hardware">Hardware</h3>
+<div class="paragraph">
+<p>We highly recommend to use a hardware RAID controller (with BBU) for
+such setups. This increases performance, provides redundancy, and make
+disk replacements easier (hot-pluggable).</p></div>
+<div class="paragraph">
+<p>LVM itself does not need any special hardware, and memory requirements
+are very low.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_bootloader">Bootloader</h3>
+<div class="paragraph">
+<p>We install two boot loaders by default. The first partition contains
+the standard GRUB boot loader. The second partition is an <strong>E</strong>FI <strong>S</strong>ystem
+<strong>P</strong>artition (ESP), which makes it possible to boot on EFI systems.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_creating_a_volume_group">Creating a Volume Group</h3>
+<div class="paragraph">
+<p>Let&#8217;s assume we have an empty disk <span class="monospaced">/dev/sdb</span>, onto which we want to
+create a volume group named &#8220;vmdata&#8221;.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Caution" src="data:image/png;base64,
+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">
+</td>
+<td class="content">Please note that the following commands will destroy all
+existing data on <span class="monospaced">/dev/sdb</span>.</td>
+</tr></table>
+</div>
+<div class="paragraph">
+<p>First create a partition.</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre># sgdisk -N 1 /dev/sdb</pre>
+</div></div>
+<div class="paragraph">
+<p>Create a <strong>P</strong>hysical <strong>V</strong>olume (PV) without confirmation and 250K
+metadatasize.</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre># pvcreate --metadatasize 250k -y -ff /dev/sdb1</pre>
+</div></div>
+<div class="paragraph">
+<p>Create a volume group named &#8220;vmdata&#8221; on <span class="monospaced">/dev/sdb1</span></p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre># vgcreate vmdata /dev/sdb1</pre>
+</div></div>
+</div>
+<div class="sect2">
+<h3 id="_creating_an_extra_lv_for_span_class_monospaced_var_lib_vz_span">Creating an extra LV for <span class="monospaced">/var/lib/vz</span></h3>
+<div class="paragraph">
+<p>This can be easily done by creating a new thin LV.</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre># lvcreate -n &lt;Name&gt; -V &lt;Size[M,G,T]&gt; &lt;VG&gt;/&lt;LVThin_pool&gt;</pre>
+</div></div>
+<div class="paragraph">
+<p>A real world example:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre># lvcreate -n vz -V 10G pve/data</pre>
+</div></div>
+<div class="paragraph">
+<p>Now a filesystem must be created on the LV.</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre># mkfs.ext4 /dev/pve/vz</pre>
+</div></div>
+<div class="paragraph">
+<p>At last this has to be mounted.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Warning" src="data:image/png;base64,
+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
+/F/lgJiyQFHragAAAABJRU5ErkJggg==">
+</td>
+<td class="content">be sure that <span class="monospaced">/var/lib/vz</span> is empty. On a default
+installation it&#8217;s not.</td>
+</tr></table>
+</div>
+<div class="paragraph">
+<p>To make it always accessible add the following line in <span class="monospaced">/etc/fstab</span>.</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre># echo '/dev/pve/vz /var/lib/vz ext4 defaults 0 2' &gt;&gt; /etc/fstab</pre>
+</div></div>
+</div>
+<div class="sect2">
+<h3 id="_resizing_the_thin_pool">Resizing the thin pool</h3>
+<div class="paragraph">
+<p>Resize the LV and the metadata pool can be achieved with the following
+command.</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre># lvresize --size +&lt;size[\M,G,T]&gt; --poolmetadatasize +&lt;size[\M,G]&gt; &lt;VG&gt;/&lt;LVThin_pool&gt;</pre>
+</div></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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">
+</td>
+<td class="content">When extending the data pool, the metadata pool must also be
+extended.</td>
+</tr></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_create_a_lvm_thin_pool">Create a LVM-thin pool</h3>
+<div class="paragraph">
+<p>A thin pool has to be created on top of a volume group.
+How to create a volume group see Section LVM.</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre># lvcreate -L 80G -T -n vmstore vmdata</pre>
+</div></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_zfs_on_linux">ZFS on Linux</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>ZFS is a combined file system and logical volume manager designed by
+Sun Microsystems. Starting with Proxmox VE 3.4, the native Linux
+kernel port of the ZFS file system is introduced as optional
+file system and also as an additional selection for the root
+file system. There is no need for manually compile ZFS modules - all
+packages are included.</p></div>
+<div class="paragraph">
+<p>By using ZFS, its possible to achieve maximum enterprise features with
+low budget hardware, but also high performance systems by leveraging
+SSD caching or even SSD only setups. ZFS can replace cost intense
+hardware raid cards by moderate CPU and memory load combined with easy
+management.</p></div>
+<div class="ulist"><div class="title">General ZFS advantages</div><ul>
+<li>
+<p>
+Easy configuration and management with Proxmox VE GUI and CLI.
+</p>
+</li>
+<li>
+<p>
+Reliable
+</p>
+</li>
+<li>
+<p>
+Protection against data corruption
+</p>
+</li>
+<li>
+<p>
+Data compression on file system level
+</p>
+</li>
+<li>
+<p>
+Snapshots
+</p>
+</li>
+<li>
+<p>
+Copy-on-write clone
+</p>
+</li>
+<li>
+<p>
+Various raid levels: RAID0, RAID1, RAID10, RAIDZ-1, RAIDZ-2 and RAIDZ-3
+</p>
+</li>
+<li>
+<p>
+Can use SSD for cache
+</p>
+</li>
+<li>
+<p>
+Self healing
+</p>
+</li>
+<li>
+<p>
+Continuous integrity checking
+</p>
+</li>
+<li>
+<p>
+Designed for high storage capacities
+</p>
+</li>
+<li>
+<p>
+Protection against data corruption
+</p>
+</li>
+<li>
+<p>
+Asynchronous replication over network
+</p>
+</li>
+<li>
+<p>
+Open Source
+</p>
+</li>
+<li>
+<p>
+Encryption
+</p>
+</li>
+<li>
+<p>
+&#8230;
+</p>
+</li>
+</ul></div>
+<div class="sect2">
+<h3 id="_hardware_2">Hardware</h3>
+<div class="paragraph">
+<p>ZFS depends heavily on memory, so you need at least 8GB to start. In
+practice, use as much you can get for your hardware/budget. To prevent
+data corruption, we recommend the use of high quality ECC RAM.</p></div>
+<div class="paragraph">
+<p>If you use a dedicated cache and/or log disk, you should use an
+enterprise class SSD (e.g. Intel SSD DC S3700 Series). This can
+increase the overall performance significantly.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Important" src="data:image/png;base64,
+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
+EQn3XQAAAABJRU5ErkJggg==">
+</td>
+<td class="content">Do not use ZFS on top of hardware controller which has its
+own cache management. ZFS needs to directly communicate with disks. An
+HBA adapter is the way to go, or something like LSI controller flashed
+in &#8220;IT&#8221; mode.</td>
+</tr></table>
+</div>
+<div class="paragraph">
+<p>If you are experimenting with an installation of Proxmox VE inside a VM
+(Nested Virtualization), don&#8217;t use <span class="monospaced">virtio</span> for disks of that VM,
+since they are not supported by ZFS. Use IDE or SCSI instead (works
+also with <span class="monospaced">virtio</span> SCSI controller type).</p></div>
+</div>
+<div class="sect2">
+<h3 id="_installation_as_root_file_system">Installation as Root File System</h3>
+<div class="paragraph">
+<p>When you install using the Proxmox VE installer, you can choose ZFS for the
+root file system. You need to select the RAID type at installation
+time:</p></div>
+<div class="hdlist"><table>
+<tr>
+<td class="hdlist1">
+RAID0
+<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Also called &#8220;striping&#8221;. The capacity of such volume is the sum
+of the capacities of all disks. But RAID0 does not add any redundancy,
+so the failure of a single drive makes the volume unusable.
+</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+RAID1
+<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+Also called &#8220;mirroring&#8221;. Data is written identically to all
+disks. This mode requires at least 2 disks with the same size. The
+resulting capacity is that of a single disk.
+</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+RAID10
+<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+A combination of RAID0 and RAID1. Requires at least 4 disks.
+</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+RAIDZ-1
+<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+A variation on RAID-5, single parity. Requires at least 3 disks.
+</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+RAIDZ-2
+<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+A variation on RAID-5, double parity. Requires at least 4 disks.
+</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+RAIDZ-3
+<br>
+</td>
+<td class="hdlist2">
+<p style="margin-top: 0;">
+A variation on RAID-5, triple parity. Requires at least 5 disks.
+</p>
+</td>
+</tr>
+</table></div>
+<div class="paragraph">
+<p>The installer automatically partitions the disks, creates a ZFS pool
+called <span class="monospaced">rpool</span>, and installs the root file system on the ZFS subvolume
+<span class="monospaced">rpool/ROOT/pve-1</span>.</p></div>
+<div class="paragraph">
+<p>Another subvolume called <span class="monospaced">rpool/data</span> is created to store VM
+images. In order to use that with the Proxmox VE tools, the installer
+creates the following configuration entry in <span class="monospaced">/etc/pve/storage.cfg</span>:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>zfspool: local-zfs
+        pool rpool/data
+        sparse
+        content images,rootdir</pre>
+</div></div>
+<div class="paragraph">
+<p>After installation, you can view your ZFS pool status using the
+<span class="monospaced">zpool</span> command:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># zpool status
+  pool: rpool
+ state: ONLINE
+  scan: none requested
+config:
+
+        NAME        STATE     READ WRITE CKSUM
+        rpool       ONLINE       0     0     0
+          mirror-0  ONLINE       0     0     0
+            sda2    ONLINE       0     0     0
+            sdb2    ONLINE       0     0     0
+          mirror-1  ONLINE       0     0     0
+            sdc     ONLINE       0     0     0
+            sdd     ONLINE       0     0     0
+
+errors: No known data errors</pre>
+</div></div>
+<div class="paragraph">
+<p>The <span class="monospaced">zfs</span> command is used configure and manage your ZFS file
+systems. The following command lists all file systems after
+installation:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># zfs list
+NAME               USED  AVAIL  REFER  MOUNTPOINT
+rpool             4.94G  7.68T    96K  /rpool
+rpool/ROOT         702M  7.68T    96K  /rpool/ROOT
+rpool/ROOT/pve-1   702M  7.68T   702M  /
+rpool/data          96K  7.68T    96K  /rpool/data
+rpool/swap        4.25G  7.69T    64K  -</pre>
+</div></div>
+</div>
+<div class="sect2">
+<h3 id="_bootloader_2">Bootloader</h3>
+<div class="paragraph">
+<p>The default ZFS disk partitioning scheme does not use the first 2048
+sectors. This gives enough room to install a GRUB boot partition. The
+Proxmox VE installer automatically allocates that space, and installs the
+GRUB boot loader there. If you use a redundant RAID setup, it installs
+the boot loader on all disk required for booting. So you can boot
+even if some disks fail.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAJhUlEQVRoge2ZWWycVxXHf+fce7/v
+m/GaGCde4pI0aQlJC0kRtE1L00JbLIjY4QkeUB9YHhAIJFCExAsKUkE8IAFFPIDUIqhBRSDRBUqC
+CimFFBCBpCWx02IaZ3G2SdyxPZ7vHh6+mcnSZnFjKIge6Wj8zYzvPf9z/me5d8TM+F8WfbkNuFx5
+BcDLLf/fAEZGRmx4eNh6enqsp6fHhoeHbWRk5D9aFeSlVqHNmzfb6H33sHnT7ZQmD5GfOMax6Sm+
+Pl5h1Yc+xpYtW2SBbX1ReUkRGBkZsdH77mHLW95EOv4Ms3ueJh6YYPHUFF9aljJ63z3cf//9/5FI
+vKQIDA8P293L2yhVjjH7t51ocDiviFecF46n7XzBreChhx4qNhH5t0XjJUVgx44ddGUZ9b/vIpQD
+oRQIWSDJAiFL6B9axo4dO4gxAmANWVDLG+Ln82URMRGhVCqRHxonlAPqFXWKC4r6IhI6OMjMzBN4
+/4LlTUQQEZxzZ32QJAlpmrb+p16vU6vVOHXq1AWjN18AnDj0F971vrs4OnmYJVkoDA4FCPUO172I
+Cgnt7SV++4vvsGhRJx3tJbIsRVVpsUnOBBABBVFEClKYwbKr7sTM7EIUnBcA7z21k7t49x1X8JXv
+bOWra7rw5QRtcN8PLCfvvZJvb9vJycpJpg4/hp/N0I4SMQs4Jw0A5zBXHGiCaIZIKABgpGlKjPEF
+0TpT5pUDRXiVt99+Le03r+WzuytM1gO6pB/3+o0cbxvk8yOPMjW6i2iR2lxOjJDHSDMFogmGwzQ7
+rRJAUpAENAGXIZq2AFzQpvkACCEQcahP+cRH3sKHn9zHXU+MM7rtGeD33NDXzaZynZU9gcezpUw9
+X6OzIyOakkfF4QEpPG6nDRNNEA2FSgKimETSNCXPc0II57VpXhEolUqoOrxPSLOMT330Dv5SqfKD
+NR388Y2L+caQsjITNv3pMBs3rOT56ZyZGaM+J0QUxDc0INrWUgggoRGBAOIRAt77hY1AmqaoeJxP
+cN645jVDbNn8Hj73o8fZ/af9mEE9j9y2YRXt5YzZWmRmzjj1/BwhTXAKzitOHEbeWlc0AVwDnCv8
+KoZzjotV33lTSL1HNKAuEtKM1169jM98/E6mTk3x4Nbd7Bk7TEdHRvAeVY+hmDqmZwx1kIkiqrhz
+S2zL+AbNMC6l/80LgHMOEY9oQvBCks5RKpXo7JhFxbhz42pet2aQet1YtLiDJAkIDq8BHwJmwlwO
+UaD0ojsrNKuUReIZyb9gABCHcwWFgg+0lTPyvIRToVzKWLpkMfV6REQplYvmZCj1uuBUSdJwTg8A
+XBdoCZMOsBkQBeGi/J83gBgjmABC8AlJGsjzFLMyaXDM1etEA0VR50iCx6mSZhkiijpPjEpQD+SF
+4WdJrTAewdCFB1CtVlFVVATnhMQnWJqC5aTBk+c5IIgWRoTgSZJAmiZAo1s7hwsppglI+fTiljeY
+nyHkLQotKIAYI4igzpFHISQOiwEnKTEG8hhRVZw6YjRQLfJGHcF7jleqTBw8znXr12MABnv37efY
+iSnesG4tiUsRUQwD7JIAzKsPqCqiRbVwweM04XdPjhJN+dvTBxgbn6G9q59yZx9/3HWEb33vN+zc
+/RzOJ+w/eJLtO8Z5ZNtT7PvHIUQTvvv9X/Lc/mN0d3by3fseRLQwvWh0Fy+h8wbQ2VFG1KM+xfuA
+qufo8So/fejPPD/rqJys8pvf7eLAoeNMHqnw2U9+kH3jVQ5MClMzKUla5obr13HliiEMmDx6gltv
+uY7Vr1nBQF8PJopQ9AFTt/AROFfMjCW9XTy19xB33Hodb924jr1j+/nDk3/nzTdei4jw3nfeyCOP
+bufa1y5jzeoVrcHM8HR3dfHlr/2Q+x94jFtuuh44/9B2PplXDryYLF3STXd3e+t5UXcHY89OsOH6
+NS2Qed7wpM1Rm50G4MGHH2P961Zy3bqreXrPP5mrzwLt5y6/cACq1eoLCKm+TN/SAebmfn8aUG83
+PYs7+cnPH+eqKwd5as8/edc7bi02847pmVkATk1VWbF8AOcca1Yv59DkqcYK0tCL02deACqVCldc
+0YdIwLmEPM9RV6NnUZlPf3wT6oqJcePN6wHhzTeu4/CRCrfctJ4sSxBRli7pYfHEMUSU97/7Th75
+1RP8eec+Yp5zzTVXM9DfDyogBvHS6HTJACYmJnjVoq5GFw0454gCEOnoaMfiNGZFFRFxJGkbywZ6
+i1NWoy9kWYmbb1gHKCHApuGbisVFGyoYUswa5OR5ftF56JIBjI6OMtDfWwAQ35jnc8AVpRXBohVq
+UowECKqK4RBxoE0W6gvGCcEjaOEAwEQWdpgbGxujt7erOLO2mk3R8i0Wz9EiuUGz+qlKEQEUaJbI
+4lTHmTVePKgWzpDGJGpc8CDTlEsuo88++wxXDA0UIUbAOP23KGZKjI48KnkuhcbiPbPCOBoeBikO
+Lk2VxjqNRilaAEqSZGEAbN261bZt+zW33XY7IAXXm6Ou0YhIMamaaUOl5WRrzg00viuKWWxpQUOH
+NAZFQRpD48Xlkig0MTHBB95zG+VSylz1KCbWyDOh2XyK+56IqjWMKigkUnzWnPPFFFRRLZ29SQRU
+ELOGY4pZ6LKOlM07mZ07d/KOtw1TcB4sGkTDiDQ9K1IkrKeYmQC08d7pZLSiRBpE5s7aS0XAHFEK
+AGY51Wr18g80Zmb33nsvX/z8XdSmj2AWOXhwkrxe46+79jB55Dh/3T2GxUhHextdXW2sXN7PNWtW
+IQKDA71FFBoAjIgQkVg/a5+oHrU5zIznDhxk964xKpXKggAoTlWW8+OfPorlOQ//cjsDy1bS2dFO
+W+diVly1iL6+Pqanpzl5qsL4pPHwN3/G1InDlMsZ7Z1tDA30cfWqIa5dexV9fb2YnT7UTxw4xsHJ
+o4yOjfOP8QOMjx/k4OQx7r777lY0zycXvJ02M4sxMjg4SL1eR0TYsGEDw8PD9PX10d7ejogUN3a1
+GqpKCIE8z5mdnUVVqVarbN++nba2Nvbu3csDDzyAqrJ8+atb+zjn6e/vZ/Xq1axatYq1a9fS29tL
+lmUMDQ1RKpXOm9EXvV6v1+tWr9eZnp5mZmaGWq1GjLHF62aiNZ+bnPfe45xrvTZzxMyYmZk56+LX
+zKjX661DvHOOJElIkoRSqYT3/vLvRlW15eHCa4VxzdvmpjZDfubzuXeb3vuzqCEixBhbo0NTkyS5
+PAr9L8j/96+U/w3yCoCXW14B8HLLvwDd67nwZIEPdgAAAABJRU5ErkJggg==">
+</td>
+<td class="content">It is not possible to use ZFS as root file system with UEFI
+boot.</td>
+</tr></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_zfs_administration">ZFS Administration</h3>
+<div class="paragraph">
+<p>This section gives you some usage examples for common tasks. ZFS
+itself is really powerful and provides many options. The main commands
+to manage ZFS are <span class="monospaced">zfs</span> and <span class="monospaced">zpool</span>. Both commands come with great
+manual pages, which can be read with:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># man zpool
+# man zfs</pre>
+</div></div>
+<div class="paragraph">
+<div class="title">Create a new zpool</div><p>To create a new pool, at least one disk is needed. The <span class="monospaced">ashift</span> should
+have the same sector-size (2 power of <span class="monospaced">ashift</span>) or larger as the
+underlying disk.</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>zpool create -f -o ashift=12 &lt;pool&gt; &lt;device&gt;</pre>
+</div></div>
+<div class="paragraph">
+<p>To activate compression</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>zfs set compression=lz4 &lt;pool&gt;</pre>
+</div></div>
+<div class="paragraph">
+<div class="title">Create a new pool with RAID-0</div><p>Minimum 1 Disk</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>zpool create -f -o ashift=12 &lt;pool&gt; &lt;device1&gt; &lt;device2&gt;</pre>
+</div></div>
+<div class="paragraph">
+<div class="title">Create a new pool with RAID-1</div><p>Minimum 2 Disks</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>zpool create -f -o ashift=12 &lt;pool&gt; mirror &lt;device1&gt; &lt;device2&gt;</pre>
+</div></div>
+<div class="paragraph">
+<div class="title">Create a new pool with RAID-10</div><p>Minimum 4 Disks</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>zpool create -f -o ashift=12 &lt;pool&gt; mirror &lt;device1&gt; &lt;device2&gt; mirror &lt;device3&gt; &lt;device4&gt;</pre>
+</div></div>
+<div class="paragraph">
+<div class="title">Create a new pool with RAIDZ-1</div><p>Minimum 3 Disks</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>zpool create -f -o ashift=12 &lt;pool&gt; raidz1 &lt;device1&gt; &lt;device2&gt; &lt;device3&gt;</pre>
+</div></div>
+<div class="paragraph">
+<div class="title">Create a new pool with RAIDZ-2</div><p>Minimum 4 Disks</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>zpool create -f -o ashift=12 &lt;pool&gt; raidz2 &lt;device1&gt; &lt;device2&gt; &lt;device3&gt; &lt;device4&gt;</pre>
+</div></div>
+<div class="paragraph">
+<div class="title">Create a new pool with cache (L2ARC)</div><p>It is possible to use a dedicated cache drive partition to increase
+the performance (use SSD).</p></div>
+<div class="paragraph">
+<p>As <span class="monospaced">&lt;device&gt;</span> it is possible to use more devices, like it&#8217;s shown in
+"Create a new pool with RAID*".</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>zpool create -f -o ashift=12 &lt;pool&gt; &lt;device&gt; cache &lt;cache_device&gt;</pre>
+</div></div>
+<div class="paragraph">
+<div class="title">Create a new pool with log (ZIL)</div><p>It is possible to use a dedicated cache drive partition to increase
+the performance(SSD).</p></div>
+<div class="paragraph">
+<p>As <span class="monospaced">&lt;device&gt;</span> it is possible to use more devices, like it&#8217;s shown in
+"Create a new pool with RAID*".</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>zpool create -f -o ashift=12 &lt;pool&gt; &lt;device&gt; log &lt;log_device&gt;</pre>
+</div></div>
+<div class="paragraph">
+<div class="title">Add cache and log to an existing pool</div><p>If you have an pool without cache and log. First partition the SSD in
+2 partition with <span class="monospaced">parted</span> or <span class="monospaced">gdisk</span></p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Important" src="data:image/png;base64,
+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
+EQn3XQAAAABJRU5ErkJggg==">
+</td>
+<td class="content">Always use GPT partition tables.</td>
+</tr></table>
+</div>
+<div class="paragraph">
+<p>The maximum size of a log device should be about half the size of
+physical memory, so this is usually quite small. The rest of the SSD
+can be used as cache.</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>zpool add -f &lt;pool&gt; log &lt;device-part1&gt; cache &lt;device-part2&gt;</pre>
+</div></div>
+<div class="literalblock">
+<div class="title">Changing a failed device</div>
+<div class="content monospaced">
+<pre>zpool replace -f &lt;pool&gt; &lt;old device&gt; &lt;new-device&gt;</pre>
+</div></div>
+</div>
+<div class="sect2">
+<h3 id="_activate_e_mail_notification">Activate E-Mail Notification</h3>
+<div class="paragraph">
+<p>ZFS comes with an event daemon, which monitors events generated by the
+ZFS kernel module. The daemon can also send emails on ZFS events like
+pool errors. Newer ZFS packages ships the daemon in a separate package,
+and you can install it using <span class="monospaced">apt-get</span>:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre># apt-get install zfs-zed</pre>
+</div></div>
+<div class="paragraph">
+<p>To activate the daemon it is necessary to edit <span class="monospaced">/etc/zfs/zed.d/zed.rc</span> with your
+favourite editor, and uncomment the <span class="monospaced">ZED_EMAIL_ADDR</span> setting:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>ZED_EMAIL_ADDR="root"</pre>
+</div></div>
+<div class="paragraph">
+<p>Please note Proxmox VE forwards mails to <span class="monospaced">root</span> to the email address
+configured for the root user.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Important" src="data:image/png;base64,
+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
+EQn3XQAAAABJRU5ErkJggg==">
+</td>
+<td class="content">The only setting that is required is <span class="monospaced">ZED_EMAIL_ADDR</span>. All
+other settings are optional.</td>
+</tr></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_limit_zfs_memory_usage">Limit ZFS Memory Usage</h3>
+<div class="paragraph">
+<p>It is good to use at most 50 percent (which is the default) of the
+system memory for ZFS ARC to prevent performance shortage of the
+host. Use your preferred editor to change the configuration in
+<span class="monospaced">/etc/modprobe.d/zfs.conf</span> and insert:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>options zfs zfs_arc_max=8589934592</pre>
+</div></div>
+<div class="paragraph">
+<p>This example setting limits the usage to 8GB.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Important" src="data:image/png;base64,
+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
+EQn3XQAAAABJRU5ErkJggg==">
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If your root file system is ZFS you must update your initramfs every
+time this value changes:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>update-initramfs -u</pre>
+</div></div>
+</td>
+</tr></table>
+</div>
+<div class="paragraph">
+<div class="title">SWAP on ZFS</div><p>SWAP on ZFS on Linux may generate some troubles, like blocking the
+server or generating a high IO load, often seen when starting a Backup
+to an external Storage.</p></div>
+<div class="paragraph">
+<p>We strongly recommend to use enough memory, so that you normally do not
+run into low memory situations. Additionally, you can lower the
+&#8220;swappiness&#8221; value. A good value for servers is 10:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>sysctl -w vm.swappiness=10</pre>
+</div></div>
+<div class="paragraph">
+<p>To make the swappiness persistent, open <span class="monospaced">/etc/sysctl.conf</span> with
+an editor of your choice and add the following line:</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>vm.swappiness = 10</pre>
+</div></div>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<caption class="title">Table 1. Linux kernel <span class="monospaced">swappiness</span> parameter values</caption>
+<col style="width:33%;">
+<col style="width:66%;">
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top" > Value               </th>
+<th class="tableblock halign-left valign-top" > Strategy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced">vm.swappiness = 0</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">The kernel will swap only to avoid
+an <em>out of memory</em> condition</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced">vm.swappiness = 1</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Minimum amount of swapping without
+disabling it entirely.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced">vm.swappiness = 10</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">This value is sometimes recommended to
+improve performance when sufficient memory exists in a system.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced">vm.swappiness = 60</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">The default value.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced">vm.swappiness = 100</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">The kernel will swap aggressively.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="sysadmin_certificate_management">Certificate Management</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_certificates_for_communication_within_the_cluster">Certificates for communication within the cluster</h3>
+<div class="paragraph">
+<p>Each Proxmox VE cluster creates its own internal Certificate Authority (CA) and
+generates a self-signed certificate for each node. These certificates are used
+for encrypted communication with the cluster&#8217;s pveproxy service and the
+Shell/Console feature if SPICE is used.</p></div>
+<div class="paragraph">
+<p>The CA certificate and key are stored in the <span class="monospaced">pmxcfs</span> (see the <span class="monospaced">pmxcfs(8)</span>
+manpage).</p></div>
+</div>
+<div class="sect2">
+<h3 id="_certificates_for_api_and_web_gui">Certificates for API and web GUI</h3>
+<div class="paragraph">
+<p>The REST API and web GUI are provided by the <span class="monospaced">pveproxy</span> service, which runs on
+each node.</p></div>
+<div class="paragraph">
+<p>You have the following options for the certificate used by <span class="monospaced">pveproxy</span>:</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+By default the node-specific certificate in
+<span class="monospaced">/etc/pve/nodes/NODENAME/pve-ssl.pem</span> is used. This certificate is signed by
+the cluster CA and therefore not trusted by browsers and operating systems by
+default.
+</p>
+</li>
+<li>
+<p>
+use an externally provided certificate (e.g. signed by a commercial CA).
+</p>
+</li>
+<li>
+<p>
+use ACME (e.g., Let&#8217;s Encrypt) to get a trusted certificate with automatic renewal.
+</p>
+</li>
+</ol></div>
+<div class="paragraph">
+<p>For options 2 and 3 the file <span class="monospaced">/etc/pve/local/pveproxy-ssl.pem</span> (and
+<span class="monospaced">/etc/pve/local/pveproxy-ssl.key</span>, which needs to be without password) is used.</p></div>
+<div class="paragraph">
+<p>Certificates are managed with the Proxmox VE Node management command
+(see the <span class="monospaced">pvenode(1)</span> manpage).</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Warning" src="data:image/png;base64,
+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
+/F/lgJiyQFHragAAAABJRU5ErkJggg==">
+</td>
+<td class="content">Do not replace or manually modify the automatically generated node
+certificate files in <span class="monospaced">/etc/pve/local/pve-ssl.pem</span> and
+<span class="monospaced">/etc/pve/local/pve-ssl.key</span> or the cluster CA files in
+<span class="monospaced">/etc/pve/pve-root-ca.pem</span> and <span class="monospaced">/etc/pve/priv/pve-root-ca.key</span>.</td>
+</tr></table>
+</div>
+<div class="sect3">
+<h4 id="_getting_trusted_certificates_via_acme">Getting trusted certificates via ACME</h4>
+<div class="paragraph">
+<p>Proxmox VE includes an implementation of the <strong>A</strong>utomatic <strong>C</strong>ertificate
+<strong>M</strong>anagement <strong>E</strong>nvironment <strong>ACME</strong> protocol, allowing Proxmox VE admins to
+interface with Let&#8217;s Encrypt for easy setup of trusted TLS certificates which
+are accepted out of the box on most modern operating systems and browsers.</p></div>
+<div class="paragraph">
+<p>Currently the two ACME endpoints implemented are Let&#8217;s Encrypt (LE) and its
+staging environment (see <a href="https://letsencrypt.org">https://letsencrypt.org</a>), both using the standalone
+HTTP challenge.</p></div>
+<div class="paragraph">
+<p>Because of <a href="https://letsencrypt.org/docs/rate-limits/">rate-limits</a> you should use
+LE <span class="monospaced">staging</span> for experiments.</p></div>
+<div class="paragraph">
+<p>There are a few prerequisites to use Let&#8217;s Encrypt:</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+<strong>Port 80</strong> of the node needs to be reachable from the internet.
+</p>
+</li>
+<li>
+<p>
+There <strong>must</strong> be no other listener on port 80.
+</p>
+</li>
+<li>
+<p>
+The requested (sub)domain needs to resolve to a public IP of the Node.
+</p>
+</li>
+<li>
+<p>
+You have to accept the ToS of Let&#8217;s Encrypt.
+</p>
+</li>
+</ol></div>
+<div class="paragraph">
+<p>At the moment the GUI uses only the default ACME account.</p></div>
+<div class="listingblock">
+<div class="title">Example: Sample <span class="monospaced">pvenode</span> invocation for using Let&#8217;s Encrypt certificates</div>
+<div class="content monospaced">
+<pre>root@proxmox:~# pvenode acme account register default mail@example.invalid
+Directory endpoints:
+0) Let's Encrypt V2 (https://acme-v02.api.letsencrypt.org/directory)
+1) Let's Encrypt V2 Staging (https://acme-staging-v02.api.letsencrypt.org/directory)
+2) Custom
+Enter selection:
+1
+
+Attempting to fetch Terms of Service from 'https://acme-staging-v02.api.letsencrypt.org/directory'..
+Terms of Service: https://letsencrypt.org/documents/LE-SA-v1.2-November-15-2017.pdf
+Do you agree to the above terms? [y|N]y
+
+Attempting to register account with 'https://acme-staging-v02.api.letsencrypt.org/directory'..
+Generating ACME account key..
+Registering ACME account..
+Registration successful, account URL: 'https://acme-staging-v02.api.letsencrypt.org/acme/acct/xxxxxxx'
+Task OK
+root@proxmox:~# pvenode acme account list
+default
+root@proxmox:~# pvenode config set --acme domains=example.invalid
+root@proxmox:~# pvenode acme cert order
+Loading ACME account details
+Placing ACME order
+Order URL: https://acme-staging-v02.api.letsencrypt.org/acme/order/xxxxxxxxxxxxxx
+
+Getting authorization details from
+'https://acme-staging-v02.api.letsencrypt.org/acme/authz/xxxxxxxxxxxxxxxxxxxxx-xxxxxxxxxxxxx-xxxxxxx'
+... pending!
+Setting up webserver
+Triggering validation
+Sleeping for 5 seconds
+Status is 'valid'!
+
+All domains validated!
+
+Creating CSR
+Finalizing order
+Checking order status
+valid!
+
+Downloading certificate
+Setting pveproxy certificate and key
+Restarting pveproxy
+Task OK</pre>
+</div></div>
+</div>
+<div class="sect3">
+<h4 id="_automatic_renewal_of_acme_certificates">Automatic renewal of ACME certificates</h4>
+<div class="paragraph">
+<p>If a node has been successfully configured with an ACME-provided certificate
+(either via pvenode or via the GUI), the certificate will be automatically
+renewed by the pve-daily-update.service. Currently, renewal will be attempted
+if the certificate has expired or will expire in the next 30 days.</p></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr></div>
+<div id="footer">
+<div id="footer-text">
+Version 5.2<br>
+Last updated
+ Mon May 14 12:47:00 UTC 2018
+</div>
+</div>
+</body>
+</html>

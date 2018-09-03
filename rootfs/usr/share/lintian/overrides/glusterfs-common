@@ -1,0 +1,18 @@
+glusterfs-common: spelling-error-in-binary usr/lib/*/glusterfs/*/xlator/mgmt/glusterd.so nam name
+glusterfs-common: spelling-error-in-binary usr/lib/*/glusterfs/*/xlator/mgmt/glusterd.so Unkown Unknown
+glusterfs-common: package-name-doesnt-match-sonames libgfapi0 libgfchangelog0 libgfdb0 libgfrpc0 libgfxdr0 libglusterfs0
+glusterfs-common: no-symbols-control-file usr/lib/*/libglusterfs.so.0.0.1
+glusterfs-common: no-symbols-control-file usr/lib/*/libgfxdr.so.0.0.1
+glusterfs-common: no-symbols-control-file usr/lib/*/libgfrpc.so.0.0.1
+glusterfs-common: no-symbols-control-file usr/lib/*/libgfchangelog.so.0.0.1
+glusterfs-common: no-symbols-control-file usr/lib/*/libgfapi.so.0.0.0
+glusterfs-common: no-symbols-control-file usr/lib/*/libgfdb.so.0.0.1
+glusterfs-common: hardening-no-fortify-functions usr/lib/*/libgfapi.so.0.0.0
+glusterfs-common: hardening-no-fortify-functions usr/lib/*/glusterfs/*/xlator/encryption/crypt.so
+glusterfs-common: hardening-no-fortify-functions usr/lib/*/glusterfs/*/xlator/performance/md-cache.so
+glusterfs-common: non-dev-pkg-with-shlib-symlink usr/lib/*/libgfxdr.so.0.0.1 usr/lib/*/libgfxdr.so
+glusterfs-common: non-dev-pkg-with-shlib-symlink usr/lib/*/libglusterfs.so.0.0.1 usr/lib/*/libglusterfs.so
+glusterfs-common: non-dev-pkg-with-shlib-symlink usr/lib/*/libgfrpc.so.0.0.1 usr/lib/*/libgfrpc.so
+glusterfs-common: non-dev-pkg-with-shlib-symlink usr/lib/*/libgfchangelog.so.0.0.1 usr/lib/*/libgfchangelog.so
+glusterfs-common: non-dev-pkg-with-shlib-symlink usr/lib/*/libgfapi.so.0.0.0 usr/lib/*/libgfapi.so
+glusterfs-common: non-dev-pkg-with-shlib-symlink usr/lib/*/libgfdb.so.0.0.1 usr/lib/*/libgfdb.so

@@ -1,0 +1,15 @@
+/.
+/usr
+/usr/bin
+/usr/bin/faketime
+/usr/share
+/usr/share/doc
+/usr/share/doc/faketime
+/usr/share/doc/faketime/changelog.Debian.amd64.gz
+/usr/share/doc/faketime/changelog.Debian.gz
+/usr/share/doc/faketime/changelog.gz
+/usr/share/doc/faketime/copyright
+/usr/share/man
+/usr/share/man/man1
+/usr/share/man/man1/faketime.1.gz
+/usr/share/doc/faketime/README.gz

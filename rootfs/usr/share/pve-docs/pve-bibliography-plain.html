@@ -1,0 +1,258 @@
+<!-- asciidoc HEADER -->
+<script type="text/javascript">
+//////////////////////////////////////////////////////////////////////////
+// asciidoc JS helper for Proxmox VE mediawiki pages
+//
+// code based on original asciidoc.js, but re-written using jQuery
+//
+//////////////////////////////////////////////////////////////////////////
+
+var asciidoc = {
+
+    // toc generator
+    toc: function ($content) {
+	var tocholder = $content.find('#toc');
+
+	if (!tocholder) {
+	    return;
+	}
+
+	tocholder.html('');
+	tocholder.hide();
+
+	var html = "<div id=\"toctitle\"><h2>Contents</h2></div><ul>";
+
+	var n = 0;
+	$content.find("div.sect1").each(function(){
+	    var h = jQuery(this).find("h2").first();
+	    var id = h.attr("id");
+	    if (id != null) {
+		n++;
+		html += "<li class=\"toclevel-1\">" +
+		    "<a href=\"#" + id + "\">" +
+		    "<span class=\"toctext\">" + h.html() +
+		    "</span></a></li>";
+	    }
+	});
+
+	html += "</ul>";
+
+	if (n > 3) {
+	    tocholder.html(html);
+	    tocholder.show();
+	}
+    },
+
+    // footnote generator
+    footnotes: function ($content) {
+	var noteholder = $content.find('#footnotes');
+	if (!noteholder) {
+	    return;
+	}
+
+	noteholder.html('');
+
+	// Rebuild footnote entries.
+	var refs = {};
+	var n = 0;
+	var inner_html = '';
+
+	$content.find("span.footnote").each(function(){
+	    n++;
+	    var span = jQuery(this);
+	    var note = span.attr("data-note");
+	    var id = span.attr("id");
+	    if (!note) {
+		// Use [\s\S] in place of . so multi-line matches work.
+		// Because JavaScript has no s (dotall) regex flag.
+		note = span.html().match(/\s*\[([\s\S]*)]\s*/)[1];
+		span.html("[<a id='_footnoteref_" + n + "' href='#_footnote_" +
+			  n + "' title='View footnote' class='footnote'>" + n +
+			  "</a>]");
+		span.attr("data-note", note);
+	    }
+	    inner_html +=
+            "<div class='footnote' id='_footnote_" + n + "'>" +
+		"<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+		n + "</a>. " + note + "</div>";
+
+	    if (id != null) { refs["#"+id] = n; }
+	});
+
+	if (inner_html) { noteholder.html("<hr>" + inner_html); }
+
+	if (n != 0) {
+	    // process footnoterefs.
+	    $content.find("span.footnoteref").each(function(){
+		var span = jQuery(this);
+		var href = span.find("a").first().attr("href");
+		href = href.match(/#.*/)[0];  // in case it return full URL.
+		n = refs[href];
+		span.html("[<a href='#_footnote_" + n +
+			  "' title='View footnote' class='footnote'>" + n + "</a>]");
+	    });
+	}
+    }
+};
+
+// add init to mediawiki resource loader queue
+(window.RLQ=window.RLQ||[]).push(function(){
+    mw.hook('wikipage.content').add(function($content) {
+	asciidoc.toc($content);
+	asciidoc.footnotes($content);
+    });
+});
+</script>
+<div id="toc" class="toc">
+</div>
+<div id="asciidoccontent">
+<style type="text/css" scoped>
+td.hdlist1 {
+   vertical-align: top;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+</style>
+<div id="preamble">
+<div class="sectionbody">
+<div class="ulist bibliography"><div class="title">Books about Proxmox VE</div><ul>
+<li>
+<p>
+<a id="Ahmed16"></a>[Ahmed16] Wasim Ahmed.
+  <em>Mastering Proxmox - Third Edition</em>.
+  Packt Publishing, 2017.
+  ISBN 978-1788397605
+</p>
+</li>
+<li>
+<p>
+<a id="Ahmed15"></a>[Ahmed15] Wasim Ahmed.
+  <em>Proxmox Cookbook</em>.
+  Packt Publishing, 2015.
+  ISBN 978-1783980901
+</p>
+</li>
+<li>
+<p>
+<a id="Cheng14"></a>[Cheng14] Simon M.C. Cheng.
+  <em>Proxmox High Availability</em>.
+  Packt Publishing, 2014.
+  ISBN 978-1783980888
+</p>
+</li>
+<li>
+<p>
+<a id="Goldman16"></a>[Goldman16] Rik Goldman.
+  <em>Learning Proxmox VE</em>.
+  Packt Publishing, 2016.
+  ISBN 978-1783981786
+</p>
+</li>
+<li>
+<p>
+<a id="Surber16"></a>[Surber16]] Lee R. Surber.
+  <em>Virtualization Complete: Business Basic Edition</em>.
+  Linux Solutions (LRS-TEK), 2016.
+  ASIN B01BBVQZT6
+</p>
+</li>
+</ul></div>
+<div class="ulist bibliography"><div class="title">Books about related technology</div><ul>
+<li>
+<p>
+<a id="Hertzog13"></a>[Hertzog13] Raphaël Hertzog &amp; Roland Mas.
+  <a href="https://debian-handbook.info/download/stable/debian-handbook.pdf">The Debian Administrator's Handbook: Debian Jessie from Discovery to Mastery</a>,
+  Freexian, 2013.
+  ISBN 979-1091414050
+</p>
+</li>
+<li>
+<p>
+<a id="Bir96"></a>[Bir96] Kenneth P. Birman.
+  <em>Building Secure and Reliable Network Applications</em>.
+  Manning Publications Co, 1996.
+  ISBN 978-1884777295
+</p>
+</li>
+<li>
+<p>
+<a id="Walsh10"></a>[Walsh10] Norman Walsh.
+  <em>DocBook 5: The Definitive Guide</em>.
+  O&#8217;Reilly &amp; Associates, 2010.
+  ISBN 978-0596805029
+</p>
+</li>
+<li>
+<p>
+<a id="Richardson07"></a>[Richardson07] Leonard Richardson &amp; Sam Ruby.
+  <em>RESTful Web Services</em>.
+  O&#8217;Reilly Media, 2007.
+  ISBN 978-0596529260
+</p>
+</li>
+<li>
+<p>
+<a id="Singh15"></a>[Singh15] Karan Singh.
+  <em>Learning Ceph</em>.
+  Packt Publishing, 2015.
+  ISBN 978-1783985623
+</p>
+</li>
+<li>
+<p>
+<a id="Singh16"></a>[Singh16] Karan Signh.
+  <em>Ceph Cookbook</em>
+  Packt Publishing, 2016.
+  ISBN 978-1784393502
+</p>
+</li>
+<li>
+<p>
+<a id="Mauerer08"></a>[Mauerer08] Wolfgang Mauerer.
+  <em>Professional Linux Kernel Architecture</em>.
+  John Wiley &amp; Sons, 2008.
+  ISBN 978-0470343432
+</p>
+</li>
+<li>
+<p>
+<a id="Loshin03"></a>[Loshin03] Pete Loshin,
+  <em>IPv6: Theory, Protocol, and Practice, 2nd Edition</em>.
+  Morgan Kaufmann, 2003.
+  ISBN 978-1558608108
+</p>
+</li>
+<li>
+<p>
+<a id="Loeliger12"></a>[Loeliger12] Jon Loeliger &amp; Matthew McCullough.
+  <em>Version Control with Git: Powerful tools and techniques for
+   collaborative software development</em>.
+  O&#8217;Reilly and Associates, 2012.
+  ISBN 978-1449316389
+</p>
+</li>
+<li>
+<p>
+<a id="Kreibich10"></a>[Kreibich10] Jay A. Kreibich.
+  <em>Using SQLite</em>,
+  O&#8217;Reilly and Associates, 2010.
+  ISBN 978-0596521189
+</p>
+</li>
+</ul></div>
+<div class="ulist bibliography"><div class="title">Books about related topics</div><ul>
+<li>
+<p>
+<a id="Bessen09"></a>[Bessen09] James Bessen &amp; Michael J. Meurer,
+  <em>Patent Failure: How Judges, Bureaucrats, and Lawyers Put Innovators at Risk</em>.
+  Princeton Univ Press, 2009.
+  ISBN 978-0691143217
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<!-- FOOTER -->
+</div>
+<div id="footnotes"></div>

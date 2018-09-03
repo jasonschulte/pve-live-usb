@@ -1,0 +1,9 @@
+4739c7c167f6d5b3375c05dcd9a8e724  sbin/mount.glusterfs
+f1667775c2b57dc385f9079f211565e4  usr/bin/fusermount-glusterfs
+4b0604daeff75489400c58942341883e  usr/bin/glusterfind
+186e71d4ed5ca31833d79806ce3fbef5  usr/share/doc/glusterfs-client/changelog.Debian.gz
+4201ef8f3ace1cc24e4901d767766253  usr/share/doc/glusterfs-client/changelog.gz
+793d45e6ef2b5913b3d1965f100923c4  usr/share/doc/glusterfs-client/copyright
+49b1af5f6e37b85108fdc856cb53c7ec  usr/share/lintian/overrides/glusterfs-client
+12e93ca8e1b4598a55b421406a957888  usr/share/man/man8/glusterfs.8.gz
+08c0284e1a866706fa0de182c721a1da  usr/share/man/man8/mount.glusterfs.8.gz

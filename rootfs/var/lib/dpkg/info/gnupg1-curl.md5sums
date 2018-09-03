@@ -1,0 +1,5 @@
+90b6827b15e896ece0876e9247ea94ff  usr/lib/gnupg1/gpgkeys_curl
+5b1796f6e730dc843dcf2dd3e90a8688  usr/lib/gnupg1/gpgkeys_hkp
+4a29b2f96c925de37218489868fd92ee  usr/share/doc/gnupg1-curl/changelog.Debian.gz
+7d186fa0409f04382d03465452893083  usr/share/doc/gnupg1-curl/changelog.gz
+bfc6764bf2f0baf3ff56c2b4b3959892  usr/share/doc/gnupg1-curl/copyright

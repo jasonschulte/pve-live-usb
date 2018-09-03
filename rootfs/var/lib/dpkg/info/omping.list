@@ -1,0 +1,13 @@
+/.
+/usr
+/usr/bin
+/usr/bin/omping
+/usr/share
+/usr/share/doc
+/usr/share/doc/omping
+/usr/share/doc/omping/SOURCE
+/usr/share/doc/omping/changelog.Debian.gz
+/usr/share/doc/omping/copyright
+/usr/share/man
+/usr/share/man/man8
+/usr/share/man/man8/omping.8.gz

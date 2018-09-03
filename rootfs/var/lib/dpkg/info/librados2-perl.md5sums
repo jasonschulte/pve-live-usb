@@ -1,0 +1,5 @@
+b5fabc653aa44a8be01e07fc8102cbcd  usr/lib/x86_64-linux-gnu/perl5/5.24/auto/PVE/RADOS/RADOS.so
+0fa2d5ab0562890cbec4faddfeaabac9  usr/share/doc/librados2-perl/SOURCE
+c188beb36202f0ad0f1a0889d75069ef  usr/share/doc/librados2-perl/changelog.Debian.gz
+c28be88c112deee31feacc976230aa28  usr/share/doc/librados2-perl/copyright
+299f4a290b920ccf83a219304faf6cc5  usr/share/perl5/PVE/RADOS.pm

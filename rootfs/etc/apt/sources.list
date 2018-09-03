@@ -1,0 +1,8 @@
+deb http://ftp.us.debian.org/debian stretch main contrib
+
+deb http://ftp.us.debian.org/debian stretch-updates main contrib
+
+# security updates
+deb http://security.debian.org stretch/updates main contrib
+deb http://us.archive.ubuntu.com/ubuntu/ bionic main restricted
+# deb-src http://us.archive.ubuntu.com/ubuntu/ bionic main restricted
