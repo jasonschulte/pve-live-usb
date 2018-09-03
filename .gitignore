@@ -6,6 +6,7 @@ rootfs/var/lib/rrdcached
 rootfs/var/lib/systemd/random-seed
 rootfs/var/lib/apt/lists
 rootfs/var/lib/postfix/master.lock
+rootfs/var/lib/postfix/pid
 rootfs/var/log/pve/tasks
 rootfs/etc/lvm/archive
 rootfs/etc/lvm/backup

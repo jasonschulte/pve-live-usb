@@ -17,7 +17,7 @@ rsync -av --one-file-system --delete --exclude=/proc/* --exclude=/dev/* \
 --exclude=/var/lib/libvirt/images \
 --exclude=${DIR} / ${ROOTFS}
 
-systemctl stop pve-cluster.service
+systemctl start pve-cluster.service
 
 find ${ROOTFS}/var/log -type f | while read file
 do
