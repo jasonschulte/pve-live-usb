@@ -30,6 +30,8 @@ sub commit_cloudinit_disk {
     my $storecfg = PVE::Storage::config();
     my $iso_path = PVE::Storage::path($storecfg, $drive->{file});
     my $scfg = PVE::Storage::storage_config($storecfg, $storeid);
+    my $plugin = PVE::Storage::Plugin->lookup($scfg->{type});
+    $plugin->activate_volume($storeid, $scfg, $volname);
     my $format = PVE::QemuServer::qemu_img_format($scfg, $volname);
 
     my $size = PVE::Storage::file_size_info($iso_path);
@@ -135,6 +137,13 @@ sub cloudinit_userdata {
     return $content;
 }
 
+sub split_ip4 {
+    my ($ip) = @_;
+    my ($addr, $mask) = split('/', $ip);
+    die "not a CIDR: $ip\n" if !defined $mask;
+    return ($addr, $PVE::Network::ipv4_reverse_mask->[$mask]);
+}
+
 sub configdrive2_network {
     my ($conf) = @_;
 
@@ -163,10 +172,10 @@ sub configdrive2_network {
 	    if ($net->{ip} eq 'dhcp') {
 		$content .= "iface $id inet dhcp\n";
 	    } else {
-		my ($addr, $mask) = split('/', $net->{ip});
+		my ($addr, $mask) = split_ip4($net->{ip});
 		$content .= "iface $id inet static\n";
 		$content .= "        address $addr\n";
-		$content .= "        netmask $PVE::Network::ipv4_reverse_mask->[$mask]\n";
+		$content .= "        netmask $mask\n";
 		$content .= "        gateway $net->{gw}\n" if $net->{gw};
 	    }
 	}
@@ -307,7 +316,7 @@ sub nocloud_network {
 	my $net = PVE::QemuServer::parse_net($conf->{$iface});
 	my $ipconfig = PVE::QemuServer::parse_ipconfig($conf->{"ipconfig$id"});
 
-	my $mac = $net->{macaddr}
+	my $mac = lc($net->{macaddr})
 	    or die "network interface '$iface' has no mac address\n";
 
 	$content .= "${i}- type: physical\n"
@@ -319,8 +328,10 @@ sub nocloud_network {
 	    if ($ip eq 'dhcp') {
 		$content .= "${i}- type: dhcp4\n";
 	    } else {
+		my ($addr, $mask) = split_ip4($ip);
 		$content .= "${i}- type: static\n"
-		       . "${i}  address: $ip\n";
+		          . "${i}  address: $addr\n"
+		          . "${i}  netmask: $mask\n";
 		if (defined(my $gw = $ipconfig->{gw})) {
 		    $content .= "${i}  gateway: $gw\n";
 		}

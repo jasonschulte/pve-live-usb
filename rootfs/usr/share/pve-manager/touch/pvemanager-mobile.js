@@ -207,6 +207,27 @@ Ext.define('PVE.Utils', { utilities: {
 	return state;
     },
 
+    render_zfs_health: function(value) {
+	var iconCls = 'question-circle';
+	switch (value) {
+	    case 'ONLINE':
+		iconCls = 'check-circle good';
+		break;
+	    case 'REMOVED':
+	    case 'DEGRADED':
+		iconCls = 'exclamation-circle warning';
+		break;
+	    case 'UNAVAIL':
+	    case 'FAULTED':
+	    case 'OFFLINE':
+		iconCls = 'times-circle critical';
+		break;
+	    default: //unknown
+	}
+
+	return '<i class="fa fa-' + iconCls + '"></i> ' + value;
+    },
+
     get_kvm_osinfo: function(value) {
 	var info = { base: 'Other' }; // default
 	if (value) {
@@ -258,6 +279,32 @@ Ext.define('PVE.Utils', { utilities: {
 	});
 
 	return fa.join(', ');
+    },
+
+    render_qga_features: function(value) {
+	if (!value) {
+	    return Proxmox.Utils.defaultText + ' (' + Proxmox.Utils.disabledText  + ')';
+	}
+	var props = PVE.Parser.parsePropertyString(value, 'enabled');
+	if (!PVE.Parser.parseBoolean(props.enabled)) {
+	    return Proxmox.Utils.disabledText;
+	}
+
+	delete props.enabled;
+	var agentstring = Proxmox.Utils.enabledText;
+
+	Ext.Object.each(props, function(key, value) {
+	    var keystring = '' ;
+	    agentstring += ', ' + key + ': ';
+
+	    if (PVE.Parser.parseBoolean(value)) {
+		agentstring += Proxmox.Utils.enabledText;
+	    } else {
+		agentstring += Proxmox.Utils.disabledText;
+	    }
+	});
+
+	return agentstring;
     },
 
     render_qemu_bios: function(value) {
@@ -515,17 +562,12 @@ Ext.define('PVE.Utils', { utilities: {
 	rbd: {
 	    name: 'RBD',
 	    ipanel: 'RBDInputPanel',
-	    hideAdd: true,
-	    faIcon: 'building'
-	},
-	rbd_ext: {
-	    name: 'RBD (external)',
-	    ipanel: 'RBDInputPanel',
 	    faIcon: 'building'
 	},
 	pveceph: {
 	    name: 'RBD (PVE)',
-	    ipanel: 'PVERBDInputPanel',
+	    ipanel: 'RBDInputPanel',
+	    hideAdd: true,
 	    faIcon: 'building'
 	},
 	zfs: {
@@ -546,7 +588,7 @@ Ext.define('PVE.Utils', { utilities: {
 
     format_storage_type: function(value, md, record) {
 	if (value === 'rbd' && record) {
-	    value = (record.get('monhost')?'rbd_ext':'pveceph');
+	    value = (record.get('monhost') ? 'rbd' : 'pveceph');
 	}
 
 	var schema = PVE.Utils.storageSchema[value];
@@ -900,7 +942,8 @@ Ext.define('PVE.Utils', { utilities: {
 	    novnc: 1,
 	    vmid: vmid,
 	    vmname: vmname,
-	    node: nodename
+	    node: nodename,
+	    resize: 'off'
 	});
 	var nw = window.open("?" + url, '_blank', "innerWidth=745,innerheight=427");
 	nw.focus();
@@ -964,7 +1007,7 @@ Ext.define('PVE.Utils', { utilities: {
 		    Ext.Msg.alert('Error', response.htmlStatus);
 		},
 		success: function(response, opts) {
-		    var allowSpice = response.result.data.spice;
+		    var allowSpice = !!response.result.data.spice;
 		    PVE.Utils.openDefaultConsoleWindow(allowSpice, 'kvm', vmid, nodename, vmname);
 		}
 	    });
@@ -1161,6 +1204,48 @@ Ext.define('PVE.Parser', { statics: {
 	       value === 'on' ||
 	       value === 'yes' ||
 	       value === 'true';
+    },
+
+    parsePropertyString: function(value, defaultKey) {
+	var res = {},
+	    error;
+
+	Ext.Array.each(value.split(','), function(p) {
+	    var kv = p.split('=', 2);
+	    if (Ext.isDefined(kv[1])) {
+		res[kv[0]] = kv[1];
+	    } else if (Ext.isDefined(defaultKey)) {
+		if (Ext.isDefined(res[defaultKey])) {
+		    error = 'defaultKey may be only defined once in propertyString';
+		    return false; // break
+		}
+		res[defaultKey] = kv[0];
+	    } else {
+		error = 'invalid propertyString, not a key=value pair and no defaultKey defined';
+		return false; // break
+	    }
+	});
+
+	if (error !== undefined) {
+	    console.error(error);
+	    return;
+	}
+
+	return res;
+    },
+
+    printPropertyString: function(data, defaultKey) {
+	var stringparts = [];
+
+	Ext.Object.each(data, function(key, value) {
+	    if (defaultKey !== undefined && key === defaultKey) {
+		stringparts.unshift(value);
+	    } else {
+		stringparts.push(key + '=' + value);
+	    }
+	});
+
+	return stringparts.join(',');
     },
 
     parseQemuNetwork: function(key, value) {

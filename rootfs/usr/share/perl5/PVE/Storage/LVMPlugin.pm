@@ -2,8 +2,9 @@ package PVE::Storage::LVMPlugin;
 
 use strict;
 use warnings;
-use Data::Dumper;
+
 use IO::File;
+
 use PVE::Tools qw(run_command trim);
 use PVE::Storage::Plugin;
 use PVE::JSONSchema qw(get_standard_option);
@@ -88,10 +89,18 @@ sub lvm_create_volume_group {
 }
 
 sub lvm_vgs {
+    my ($includepvs) = @_;
 
     my $cmd = ['/sbin/vgs', '--separator', ':', '--noheadings', '--units', 'b',
-	       '--unbuffered', '--nosuffix', '--options',
-	       'vg_name,vg_size,vg_free'];
+	       '--unbuffered', '--nosuffix', '--options'];
+
+    my $cols = [qw(vg_name vg_size vg_free lv_count)];
+
+    if ($includepvs) {
+	push @$cols, qw(pv_name pv_size pv_free);
+    }
+
+    push @$cmd, join(',', @$cols);
 
     my $vgs = {};
     eval {
@@ -100,9 +109,18 @@ sub lvm_vgs {
 
 	    $line = trim($line);
 
-	    my ($name, $size, $free) = split (':', $line);
+	    my ($name, $size, $free, $lvcount, $pvname, $pvsize, $pvfree) = split (':', $line);
 
-	    $vgs->{$name} = { size => int ($size), free => int ($free) };
+	    $vgs->{$name} = { size => int ($size), free => int ($free), lvcount => int($lvcount) }
+		if !$vgs->{$name};
+
+	    if (defined($pvname) && defined($pvsize) && defined($pvfree)) {
+		push @{$vgs->{$name}->{pvs}}, {
+		    name => $pvname,
+		    size => int($pvsize),
+		    free => int($pvfree),
+		};
+	    }
         });
     };
     my $err = $@;
@@ -119,7 +137,7 @@ sub lvm_list_volumes {
 
     my $cmd = ['/sbin/lvs', '--separator', ':', '--noheadings', '--units', 'b',
 	       '--unbuffered', '--nosuffix', '--options',
-	       'vg_name,lv_name,lv_size,lv_attr,pool_lv,data_percent,metadata_percent,snap_percent,uuid,tags'];
+	       'vg_name,lv_name,lv_size,lv_attr,pool_lv,data_percent,metadata_percent,snap_percent,uuid,tags,metadata_size'];
 
     push @$cmd, $vgname if $vgname;
 
@@ -129,7 +147,7 @@ sub lvm_list_volumes {
 
 	$line = trim($line);
 
-	my ($vg_name, $lv_name, $lv_size, $lv_attr, $pool_lv, $data_percent, $meta_percent, $snap_percent, $uuid, $tags) = split(':', $line);
+	my ($vg_name, $lv_name, $lv_size, $lv_attr, $pool_lv, $data_percent, $meta_percent, $snap_percent, $uuid, $tags, $meta_size) = split(':', $line);
 	return if !$vg_name;
 	return if !$lv_name;
 
@@ -146,6 +164,8 @@ sub lvm_list_volumes {
 	    $data_percent ||= 0;
 	    $meta_percent ||= 0;
 	    $snap_percent ||= 0;
+	    $d->{metadata_size} = int($meta_size);
+	    $d->{metadata_used} = int(($meta_percent * $meta_size)/100);
 	    $d->{used} = int(($data_percent * $lv_size)/100);
 	}
 	$lvs->{$vg_name}->{$lv_name} = $d;
@@ -208,6 +228,28 @@ sub options {
 
 # Storage implementation
 
+sub on_add_hook {
+    my ($class, $storeid, $scfg, %param) = @_;
+
+    if (my $base = $scfg->{base}) {
+	my ($baseid, $volname) = PVE::Storage::parse_volume_id($base);
+
+	my $cfg = PVE::Storage::config();
+	my $basecfg = PVE::Storage::storage_config ($cfg, $baseid, 1);
+	die "base storage ID '$baseid' does not exist\n" if !$basecfg;
+
+	# we only support iscsi for now
+	die "unsupported base type '$basecfg->{type}'"
+	    if $basecfg->{type} ne 'iscsi';
+
+	my $path = PVE::Storage::path($cfg, $base);
+
+	PVE::Storage::activate_storage($cfg, $baseid);
+
+	lvm_create_volume_group($path, $scfg->{vgname}, $scfg->{shared});
+    }
+}
+
 sub parse_volname {
     my ($class, $volname) = @_;
 
@@ -251,18 +293,21 @@ sub lvm_find_free_diskname {
 
     my $name;
 
-    for (my $i = 1; $i < 100; $i++) {
-	my $tn = "vm-$vmid-disk-$i";
-	if (!defined ($lvs->{$vg}->{$tn})) {
-	    $name = $tn;
-	    last;
+    my $disk_ids = {};
+    my @vols = keys(%{$lvs->{$vg}});
+
+    foreach my $vol (@vols) {
+	if ($vol =~ m/(vm|base)-\Q$vmid\E-disk-(\d+)/){
+	    $disk_ids->{$2} = 1;
 	}
     }
 
-    die "unable to allocate an image name for ID $vmid in storage '$storeid'\n"
-	if !$name;
+    for (my $i = 1; $i < 100; $i++) {
+	return "vm-$vmid-disk-$i" if !$disk_ids->{$i};
+    }
 
-    return $name;
+    die "unable to allocate an image name for ID $vmid in storage '$storeid'\n";
+
 }
 
 sub alloc_image {

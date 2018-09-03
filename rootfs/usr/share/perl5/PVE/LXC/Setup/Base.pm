@@ -54,7 +54,8 @@ sub lookup_dns_conf {
 sub update_etc_hosts {
     my ($self, $hostip, $oldname, $newname, $searchdomains) = @_;
 
-    my $done = 0;
+    my $hosts_fn = '/etc/hosts';
+    return if $self->ct_is_file_ignored($hosts_fn);
 
     my $namepart = ($newname =~ s/\..*$//r);
 
@@ -72,7 +73,6 @@ sub update_etc_hosts {
 
     # Prepare section:
     my $section = '';
-    my $hosts_fn = '/etc/hosts';
 
     my $lo4 = "127.0.0.1 localhost.localnet localhost\n";
     my $lo6 = "::1 localhost.localnet localhost\n";
@@ -90,6 +90,8 @@ sub update_etc_hosts {
 
     if (defined($hostip)) {
 	$section .= "$hostip $all_names\n";
+    } elsif ($namepart ne 'localhost') {
+	$section .= "127.0.1.1 $all_names\n";
     } else {
 	$section .= "127.0.1.1 $namepart\n";
     }
@@ -324,10 +326,6 @@ my $replacepw  = sub {
 
 	my $last_change = int(time()/(60*60*24));
 
-	if ($epw =~ m/^\$TEST\$/) { # for regression tests
-	    $last_change = 12345;
-	}
-	
 	while (defined (my $line = <$src>)) {
 	    if ($shadow) {
 		$line =~ s/^${user}:[^:]*:[^:]*:/${user}:${epw}:${last_change}:/;
@@ -358,9 +356,9 @@ sub set_user_password {
     my $shadow = "/etc/shadow";
     
     if (defined($opt_password)) {
-	if ($opt_password !~ m/^\$/) {
+	if ($opt_password !~ m/^\$(?:1|2[axy]?|5|6)\$[a-zA-Z0-9.\/]{1,16}\$[a-zA-Z0-9.\/]+$/) {
 	    my $time = substr (Digest::SHA::sha1_base64 (time), 0, 8);
-	    $opt_password = crypt(encode("utf8", $opt_password), "\$1\$$time\$");
+	    $opt_password = crypt(encode("utf8", $opt_password), "\$6\$$time\$");
 	};
     } else {
 	$opt_password = '*';

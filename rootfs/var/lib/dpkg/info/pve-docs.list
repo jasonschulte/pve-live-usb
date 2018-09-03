@@ -23,6 +23,7 @@
 /usr/share/pve-docs/chapter-pveceph.html
 /usr/share/pve-docs/chapter-pvecm.html
 /usr/share/pve-docs/chapter-pvenode.html
+/usr/share/pve-docs/chapter-pvesh.html
 /usr/share/pve-docs/chapter-pvesm.html
 /usr/share/pve-docs/chapter-pvesr.html
 /usr/share/pve-docs/chapter-pveum.html
@@ -118,6 +119,7 @@
 /usr/share/pve-docs/pve-installation-plain.html
 /usr/share/pve-docs/pve-network-plain.html
 /usr/share/pve-docs/pve-package-repos-plain.html
+/usr/share/pve-docs/pve-storage-cephfs-plain.html
 /usr/share/pve-docs/pve-storage-cifs-plain.html
 /usr/share/pve-docs/pve-storage-dir-plain.html
 /usr/share/pve-docs/pve-storage-glusterfs-plain.html
@@ -140,6 +142,8 @@
 /usr/share/pve-docs/pvenode.1.html
 /usr/share/pve-docs/pveperf.1.html
 /usr/share/pve-docs/pveproxy.8.html
+/usr/share/pve-docs/pvesh-plain.html
+/usr/share/pve-docs/pvesh.1.html
 /usr/share/pve-docs/pvesm-plain.html
 /usr/share/pve-docs/pvesm.1.html
 /usr/share/pve-docs/pvesr-plain.html
@@ -160,3 +164,4 @@
 /usr/share/pve-docs/system-timesync-plain.html
 /usr/share/pve-docs/vzdump-plain.html
 /usr/share/pve-docs/vzdump.1.html
+/usr/share/pve-docs/api-viewer/extjs

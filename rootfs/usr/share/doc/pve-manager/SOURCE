@@ -1,2 +1,2 @@
 git clone git://git.proxmox.com/git/pve-manager.git
-git checkout 0fcd7879288c07de84e13af03fc62f185080ba75
+git checkout fdf3991277deb69cefa6b91e4e2d10db522410e2

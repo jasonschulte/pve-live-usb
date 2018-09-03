@@ -76,6 +76,7 @@
 /usr/share/bash-completion/completions/pvedaemon
 /usr/share/bash-completion/completions/pvenode
 /usr/share/bash-completion/completions/pveproxy
+/usr/share/bash-completion/completions/pvesh
 /usr/share/bash-completion/completions/pvesr
 /usr/share/bash-completion/completions/pvestatd
 /usr/share/bash-completion/completions/pvesubscription
@@ -142,6 +143,7 @@
 /usr/share/perl5/PVE/CLI/pveam.pm
 /usr/share/perl5/PVE/CLI/pveceph.pm
 /usr/share/perl5/PVE/CLI/pvenode.pm
+/usr/share/perl5/PVE/CLI/pvesh.pm
 /usr/share/perl5/PVE/CLI/pvesr.pm
 /usr/share/perl5/PVE/CLI/pvesubscription.pm
 /usr/share/perl5/PVE/CLI/vzdump.pm

@@ -32,6 +32,7 @@ import os
 import optparse
 import re
 import locale
+import requests
 import subprocess
 import shlex
 import email
@@ -1925,6 +1926,36 @@ For more details, please see: http://www.debian.org/devel/wnpp/''')
         if not listcc and mode > MODE_STANDARD and rtype == 'debbugs' and not self.options.testmode and not self.options.template and self.options.ccmenu:
             listcc += ui.get_multiline(
                 'Enter any additional addresses this report should be sent to; press ENTER after each address.')
+
+        # If the bug is reported against a package with a version that possibly
+        # indicates a security update add the security or LTS team to CC
+        # after user confirmation
+        if pkgversion and package and not self.options.offline and mode > MODE_NOVICE and utils.is_security_update(package, pkgversion):
+            if ui.yes_no('Do you want to report a regression because of a security update? ',
+                         'Yes, please inform the LTS and security teams.',
+                         'No or I am not sure.', True):
+                distnumber = re.search('[+~]deb(\d+)u\d+', pkgversion).group(1)
+                support = 'none'
+                email_address = 'none'
+                try:
+                    r = requests.get('https://security-tracker.debian.org/tracker/distributions.json', timeout=self.options.timeout)
+                    data = r.json()
+                    for key, value in data.items():
+                        if distnumber == value['major-version']:
+                            support = value['support']
+                            email_address = value['contact']
+                            break
+
+                    if support != 'none' and utils.check_email_addr(email_address):
+                        listcc += [email_address]
+                    else:
+                        raise
+
+                except requests.exceptions.RequestException:
+                    ewrite('Unable to connect to security-tracker.debian.org.\n'
+                           'Please try again later or contact the LTS or security team via email directly.\n')
+                except:  # catch-all
+                    ewrite('No support team contact address could be identified.\n')
 
         if severity and rtype:
             severity = debbugs.convert_severity(severity, rtype)

@@ -15,7 +15,7 @@ e3c3569d2e6b16260a45c9caf3ed8a42  usr/lib/python3/dist-packages/reportbug/ui/__i
 e2f9d288b8cd0fb95c705dbb629a44d1  usr/lib/python3/dist-packages/reportbug/ui/text_ui.py
 fdbfacd02dfe32b7780fa4be6781d20d  usr/lib/python3/dist-packages/reportbug/ui/urwid_ui.py
 041a190a888f75bbed7e04786a5d4582  usr/lib/python3/dist-packages/reportbug/urlutils.py
-a9b0c162028e5fd0361eb676172f6bfe  usr/lib/python3/dist-packages/reportbug/utils.py
+3699699c6e96c54b5f0ce49d4e2a7c16  usr/lib/python3/dist-packages/reportbug/utils.py
 dadbfc6f2571813cca6a0ae3f8c7c578  usr/share/doc/python3-reportbug/NEWS.Debian.gz
-2c86be00a532848eb03595159a8526fc  usr/share/doc/python3-reportbug/changelog.gz
+343442546538b794d91c8c5b344db516  usr/share/doc/python3-reportbug/changelog.gz
 a10eca8cc63590ca70697f766f1e3abf  usr/share/doc/python3-reportbug/copyright

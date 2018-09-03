@@ -1,0 +1,8 @@
+300583758adf701448b518786c265a8a  sbin/mount.fuse.ceph
+748f932bd3fdfe2bd34a13a2f530e863  usr/bin/ceph-fuse
+0766a8564a9d0f726e892b4946860652  usr/share/doc/ceph-fuse/changelog.Debian.gz
+803413b73630d4f08d52b3aa8f3ed685  usr/share/doc/ceph-fuse/changelog.gz
+385a5fe3cfc79c16ad376eea49c11432  usr/share/doc/ceph-fuse/copyright
+75e6a87de11914b03ec3efd075dd4898  usr/share/lintian/overrides/ceph-fuse
+1517a269d1d102a3a999dddc2033b157  usr/share/man/man8/ceph-fuse.8.gz
+2f27b82abe99b1b26bb04388fcdaa470  usr/share/man/man8/mount.fuse.ceph.8.gz

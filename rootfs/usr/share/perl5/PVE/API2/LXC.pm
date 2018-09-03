@@ -5,7 +5,7 @@ use warnings;
 
 use PVE::SafeSyslog;
 use PVE::Tools qw(extract_param run_command);
-use PVE::Exception qw(raise raise_param_exc);
+use PVE::Exception qw(raise raise_param_exc raise_perm_exc);
 use PVE::INotify;
 use PVE::Cluster qw(cfs_read_file);
 use PVE::AccessControl;
@@ -74,7 +74,7 @@ __PACKAGE__->register_method({
 	type => 'array',
 	items => {
 	    type => "object",
-	    properties => {},
+	    properties => $PVE::LXC::vmstatus_return_properties,
 	},
 	links => [ { rel => 'child', href => "{vmid}" } ],
     },
@@ -91,7 +91,6 @@ __PACKAGE__->register_method({
 	    next if !$rpcenv->check($authuser, "/vms/$vmid", [ 'VM.Audit' ], 1);
 
 	    my $data = $vmstatus->{$vmid};
-	    $data->{vmid} = $vmid;
 	    push @$res, $data;
 	}
 
@@ -167,6 +166,12 @@ __PACKAGE__->register_method({
 		type => 'number',
 		minimum => '0',
 	    },
+	    start => {
+		optional => 1,
+		type => 'boolean',
+		default => 0,
+		description => "Start the CT after its creation finished successfully.",
+	    },
 	}),
     },
     returns => {
@@ -186,6 +191,8 @@ __PACKAGE__->register_method({
 	my $ignore_unpack_errors = extract_param($param, 'ignore-unpack-errors');
 
 	my $bwlimit = extract_param($param, 'bwlimit');
+
+	my $start_after_create = extract_param($param, 'start');
 
 	my $basecfg_fn = PVE::LXC::Config->config_file($vmid);
 
@@ -428,6 +435,9 @@ __PACKAGE__->register_method({
 		die $err;
 	    }
 	    PVE::AccessControl::add_vm_to_pool($vmid, $pool) if $pool;
+
+	    PVE::API2::LXC::Status->vm_start({ vmid => $vmid, node => $node })
+		if $start_after_create;
 	};
 
 	my $realcmd = sub { PVE::LXC::Config->lock_config($vmid, $code); };
@@ -1166,15 +1176,24 @@ __PACKAGE__->register_method({
 	    die "you can't convert a CT to template if the CT is running\n"
 		if PVE::LXC::check_running($vmid);
 
+	    my $scfg = PVE::Storage::config();
+	    PVE::LXC::Config->foreach_mountpoint($conf, sub {
+		my ($ms, $mp) = @_;
+
+		my ($sid) =PVE::Storage::parse_volume_id($mp->{volume}, 0);
+		die "Directory storage '$sid' does not support container templates!\n"
+		    if $scfg->{ids}->{$sid}->{path};
+	    });
+
 	    my $realcmd = sub {
 		PVE::LXC::template_create($vmid, $conf);
+
+		$conf->{template} = 1;
+
+		PVE::LXC::Config->write_config($vmid, $conf);
+		# and remove lxc config
+		PVE::LXC::update_lxc_config($vmid, $conf);
 	    };
-
-	    $conf->{template} = 1;
-
-	    PVE::LXC::Config->write_config($vmid, $conf);
-	    # and remove lxc config
-	    PVE::LXC::update_lxc_config($vmid, $conf);
 
 	    return $rpcenv->fork_worker('vztemplate', $vmid, $authuser, $realcmd);
 	};
@@ -1326,6 +1345,7 @@ __PACKAGE__->register_method({
 		die "unable to create CT $newid: config file already exists\n"
 		    if -f $conffile;
 
+		my $sharedvm = 1;
 		foreach my $opt (keys %$src_conf) {
 		    next if $opt =~ m/^unused\d+$/;
 
@@ -1342,6 +1362,10 @@ __PACKAGE__->register_method({
 			    my ($sid, $volname) = PVE::Storage::parse_volume_id($volid);
 			    $sid = $storage if defined($storage);
 			    my $scfg = PVE::Storage::storage_config($storecfg, $sid);
+			    if (!$scfg->{shared}) {
+				$sharedvm = 0;
+				warn "found non-shared volume: $volid\n" if $target;
+			    }
 
 			    $rpcenv->check($authuser, "/storage/$sid", ['Datastore.AllocateSpace']);
 
@@ -1373,6 +1397,8 @@ __PACKAGE__->register_method({
 			$newconf->{$opt} = $value;
 		    }
 		}
+		die "can't clone CT to node '$target' (CT uses local storage)\n"
+		    if $target && !$sharedvm;
 
 		# Replace the 'disk' lock with a 'create' lock.
 		$newconf->{lock} = 'create';

@@ -1,4 +1,4 @@
-// 1.0-18
+// 1.0-19
 Ext.ns('Proxmox');
 Ext.ns('Proxmox.Setup');
 
@@ -58,7 +58,8 @@ Ext.define('Proxmox.Utils', { utilities: {
     groupText: gettext('Group'),
 
     language_map: {
-	zh_CN: 'Chinese',
+	zh_CN: 'Chinese (Simplified)',
+	zh_TW: 'Chinese (Traditional)',
 	ca: 'Catalan',
 	da: 'Danish',
 	en: 'English',

@@ -736,7 +736,7 @@ asciidoc.install();
 <span id="author">Proxmox Server Solutions Gmbh</span><br>
 <span id="email" class="monospaced">&lt;<a href="mailto:support@proxmox.com">support@proxmox.com</a>&gt;</span><br>
 <span id="revnumber">version 5.2,</span>
-<span id="revdate">Mon May 14 12:47:00 UTC 2018</span>
+<span id="revdate">Wed Aug  8 08:51:56 CEST 2018</span>
 </div>
 <div id="content">
 <div class="sect1">
@@ -1240,18 +1240,69 @@ Ceph service name.
 <img src="images/screenshot/gui-ceph-status.png" alt="gui-ceph-status.png" width=250
  style="padding: 0 0 0 10px;float:right;"
 ></a>
-<p>Proxmox VE unifies your compute and storage systems, i.e. you can use the
-same physical nodes within a cluster for both computing (processing
-VMs and containers) and replicated storage. The traditional silos of
-compute and storage resources can be wrapped up into a single
-hyper-converged appliance. Separate storage networks (SANs) and
-connections via network (NAS) disappear. With the integration of Ceph,
-an open source software-defined storage platform, Proxmox VE has the
-ability to run and manage Ceph storage directly on the hypervisor
-nodes.</p></div>
+<p>Proxmox VE unifies your compute and storage systems, i.e. you can use the same
+physical nodes within a cluster for both computing (processing VMs and
+containers) and replicated storage. The traditional silos of compute and
+storage resources can be wrapped up into a single hyper-converged appliance.
+Separate storage networks (SANs) and connections via network attached storages
+(NAS) disappear. With the integration of Ceph, an open source software-defined
+storage platform, Proxmox VE has the ability to run and manage Ceph storage directly
+on the hypervisor nodes.</p></div>
 <div class="paragraph">
 <p>Ceph is a distributed object store and file system designed to provide
 excellent performance, reliability and scalability.</p></div>
+<div class="ulist"><div class="title">Some advantages of Ceph on Proxmox VE are:</div><ul>
+<li>
+<p>
+Easy setup and management with CLI and GUI support
+</p>
+</li>
+<li>
+<p>
+Thin provisioning
+</p>
+</li>
+<li>
+<p>
+Snapshots support
+</p>
+</li>
+<li>
+<p>
+Self healing
+</p>
+</li>
+<li>
+<p>
+Scalable to the exabyte level
+</p>
+</li>
+<li>
+<p>
+Setup pools with different performance and redundancy characteristics
+</p>
+</li>
+<li>
+<p>
+Data is replicated, making it fault tolerant
+</p>
+</li>
+<li>
+<p>
+Runs on economical commodity hardware
+</p>
+</li>
+<li>
+<p>
+No need for hardware RAID controllers
+</p>
+</li>
+<li>
+<p>
+Open source
+</p>
+</li>
+</ul></div>
 <div class="paragraph">
 <p>For small to mid sized deployments, it is possible to install a Ceph server for
 RADOS Block Devices (RBD) directly on your Proxmox VE cluster nodes, see
@@ -1261,11 +1312,7 @@ and VMs on the same node is possible.</p></div>
 <div class="paragraph">
 <p>To simplify management, we provide <em>pveceph</em> - a tool to install and
 manage <a href="http://ceph.com">Ceph</a> services on Proxmox VE nodes.</p></div>
-<div class="paragraph">
-<p>Ceph consists of a couple of Daemons
-<span class="footnote"><br>[Ceph intro <a href="http://docs.ceph.com/docs/master/start/intro/">http://docs.ceph.com/docs/master/start/intro/</a>]<br></span>, for use as
-a RBD storage:</p></div>
-<div class="ulist"><ul>
+<div class="ulist"><div class="title">Ceph consists of a couple of Daemons <span class="footnote"><br>[Ceph intro <a href="http://docs.ceph.com/docs/master/start/intro/">http://docs.ceph.com/docs/master/start/intro/</a>]<br></span>, for use as a RBD storage:</div><ul>
 <li>
 <p>
 Ceph Monitor (ceph-mon)
@@ -1348,12 +1395,85 @@ qTCT16/0nPgLA/i6xjf+Xw3+B2ll/uiqTaJTAAAAAElFTkSuQmCC">
 <p>To build a Proxmox Ceph Cluster there should be at least three (preferably)
 identical servers for the setup.</p></div>
 <div class="paragraph">
-<p>A 10Gb network, exclusively used for Ceph, is recommended. A meshed
-network setup is also an option if there are no 10Gb switches
-available, see <a href="https://pve.proxmox.com/wiki/Full_Mesh_Network_for_Ceph_Server">wiki</a> .</p></div>
+<p>A 10Gb network, exclusively used for Ceph, is recommended. A meshed network
+setup is also an option if there are no 10Gb switches available, see our wiki
+article <span class="footnote"><br>[Full Mesh Network for Ceph <a href="https://pve.proxmox.com/wiki/Full_Mesh_Network_for_Ceph_Server">https://pve.proxmox.com/wiki/Full_Mesh_Network_for_Ceph_Server</a>]<br></span> .</p></div>
 <div class="paragraph">
 <p>Check also the recommendations from
 <a href="http://docs.ceph.com/docs/luminous/start/hardware-recommendations/">Ceph&#8217;s website</a>.</p></div>
+<div class="paragraph">
+<div class="title">Avoid RAID</div><p>As Ceph handles data object redundancy and multiple parallel writes to disks
+(OSDs) on its own, using a RAID controller normally doesn’t improve
+performance or availability. On the contrary, Ceph is designed to handle whole
+disks on it&#8217;s own, without any abstraction in between. RAID controller are not
+designed for the Ceph use case and may complicate things and sometimes even
+reduce performance, as their write and caching algorithms may interfere with
+the ones from Ceph.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Warning" src="data:image/png;base64,
+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
+/F/lgJiyQFHragAAAABJRU5ErkJggg==">
+</td>
+<td class="content">Avoid RAID controller, use host bus adapter (HBA) instead.</td>
+</tr></table>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -1390,7 +1510,7 @@ http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
 <pre><tt>pveceph init --network <span style="color: #993399">10.10</span><span style="color: #990000">.</span><span style="color: #993399">10.0</span><span style="color: #990000">/</span><span style="color: #993399">24</span></tt></pre></div></div>
 <div class="paragraph">
-<p>This creates an initial config at <span class="monospaced">/etc/pve/ceph.conf</span>. That file is
+<p>This creates an initial configuration at <span class="monospaced">/etc/pve/ceph.conf</span>. That file is
 automatically distributed to all Proxmox VE nodes by using
 <a href="pmxcfs.8.html#chapter_pmxcfs">pmxcfs</a>. The command also creates a symbolic link
 from <span class="monospaced">/etc/ceph/ceph.conf</span> pointing to that file. So you can simply run
@@ -1407,8 +1527,8 @@ Ceph commands without the need to specify a configuration file.</p></div>
 ></a>
 <p>The Ceph Monitor (MON)
 <span class="footnote"><br>[Ceph Monitor <a href="http://docs.ceph.com/docs/luminous/start/intro/">http://docs.ceph.com/docs/luminous/start/intro/</a>]<br></span>
-maintains a master copy of the cluster map. For HA you need to have at least 3
-monitors.</p></div>
+maintains a master copy of the cluster map. For high availability you need to
+have at least 3 monitors.</p></div>
 <div class="paragraph">
 <p>On each node where you want to place a monitor (three monitors are recommended),
 create it by using the <em>Ceph &#8594; Monitor</em> tab in the GUI or run.</p></div>
@@ -1427,7 +1547,7 @@ do not want to install a manager, specify the <em>-exclude-manager</em> option.<
 <h2 id="pve_ceph_manager">Creating Ceph Manager</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The Manager daemon runs alongside the monitors. It provides interfaces for
+<p>The Manager daemon runs alongside the monitors, providing an interface for
 monitoring the cluster. Since the Ceph luminous release the
 ceph-mgr <span class="footnote"><br>[Ceph Manager <a href="http://docs.ceph.com/docs/luminous/mgr/">http://docs.ceph.com/docs/luminous/mgr/</a>]<br></span> daemon
 is required. During monitor installation the ceph manager will be installed as
@@ -1565,13 +1685,88 @@ qTCT16/0nPgLA/i6xjf+Xw3+B2ll/uiqTaJTAAAAAElFTkSuQmCC">
 among your, at least three nodes (4 OSDs on each node).</td>
 </tr></table>
 </div>
+<div class="paragraph">
+<p>If the disk was used before (eg. ZFS/RAID/OSD), to remove partition table, boot
+sector and any OSD leftover the following commands should be sufficient.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>dd <span style="font-weight: bold"><span style="color: #0000FF">if</span></span><span style="color: #990000">=</span>/dev/zero <span style="color: #009900">of</span><span style="color: #990000">=</span>/dev/sd<span style="color: #990000">[</span>X<span style="color: #990000">]</span> <span style="color: #009900">bs</span><span style="color: #990000">=</span>1M <span style="color: #009900">count</span><span style="color: #990000">=</span><span style="color: #993399">200</span>
+ceph-disk zap /dev/sd<span style="color: #990000">[</span>X<span style="color: #990000">]</span></tt></pre></div></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Warning" src="data:image/png;base64,
+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
+/F/lgJiyQFHragAAAABJRU5ErkJggg==">
+</td>
+<td class="content">The above commands will destroy data on the disk!</td>
+</tr></table>
+</div>
 <div class="sect2">
 <h3 id="_ceph_bluestore">Ceph Bluestore</h3>
 <div class="paragraph">
 <p>Starting with the Ceph Kraken release, a new Ceph OSD storage type was
 introduced, the so called Bluestore
-<span class="footnote"><br>[Ceph Bluestore <a href="http://ceph.com/community/new-luminous-bluestore/">http://ceph.com/community/new-luminous-bluestore/</a>]<br></span>. In
-Ceph luminous this store is the default when creating OSDs.</p></div>
+<span class="footnote"><br>[Ceph Bluestore <a href="http://ceph.com/community/new-luminous-bluestore/">http://ceph.com/community/new-luminous-bluestore/</a>]<br></span>.
+This is the default when creating OSDs in Ceph luminous.</p></div>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
@@ -1628,21 +1823,21 @@ zKjX661DvHOOJElIkoRSqYT3/vLvRlW15eHCa4VxzdvmpjZDfubzuXeb3vuzqCEixBhbo0NTkyS5
 PAr9L8j/96+U/w3yCoCXW14B8HLLvwDd67nwZIEPdgAAAABJRU5ErkJggg==">
 </td>
 <td class="content">In order to select a disk in the GUI, to be more failsafe, the disk needs
-to have a
-GPT <span class="footnote" id="_footnote_GPT"><br>[GPT partition table <a href="https://en.wikipedia.org/wiki/GUID_Partition_Table">https://en.wikipedia.org/wiki/GUID_Partition_Table</a>]<br></span>
-partition table. You can create this with <span class="monospaced">gdisk /dev/sd(x)</span>. If there is no
-GPT, you cannot select the disk as DB/WAL.</td>
+to have a GPT <span class="footnote" id="_footnote_GPT"><br>[GPT partition table <a href="https://en.wikipedia.org/wiki/GUID_Partition_Table">https://en.wikipedia.org/wiki/GUID_Partition_Table</a>]<br></span> partition table. You can
+create this with <span class="monospaced">gdisk /dev/sd(x)</span>. If there is no GPT, you cannot select the
+disk as DB/WAL.</td>
 </tr></table>
 </div>
 <div class="paragraph">
 <p>If you want to use a separate DB/WAL device for your OSDs, you can specify it
-through the <em>-wal_dev</em> option.</p></div>
+through the <em>-journal_dev</em> option. The WAL is placed with the DB, if not
+specified separately.</p></div>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
-<pre><tt>pveceph createosd /dev/sd<span style="color: #990000">[</span>X<span style="color: #990000">]</span> -wal_dev /dev/sd<span style="color: #990000">[</span>Y<span style="color: #990000">]</span></tt></pre></div></div>
+<pre><tt>pveceph createosd /dev/sd<span style="color: #990000">[</span>X<span style="color: #990000">]</span> -journal_dev /dev/sd<span style="color: #990000">[</span>Y<span style="color: #990000">]</span></tt></pre></div></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -1916,9 +2111,9 @@ PAr9L8j/96+U/w3yCoCXW14B8HLLvwDd67nwZIEPdgAAAABJRU5ErkJggg==">
 </div>
 <div class="paragraph">
 <p>It is advised to calculate the PG number depending on your setup, you can find
-the formula and the PG
-calculator <span class="footnote"><br>[PG calculator <a href="http://ceph.com/pgcalc/">http://ceph.com/pgcalc/</a>]<br></span> online. While PGs
-can be increased later on, they can never be decreased.</p></div>
+the formula and the PG calculator <span class="footnote"><br>[PG calculator
+<a href="http://ceph.com/pgcalc/">http://ceph.com/pgcalc/</a>]<br></span> online. While PGs can be increased later on, they can
+never be decreased.</p></div>
 <div class="paragraph">
 <p>You can create pools through command line or on the GUI on each PVE host under
 <strong>Ceph &#8594; Pools</strong>.</p></div>
@@ -2251,7 +2446,7 @@ License along with this program.  If not, see
 <div id="footer-text">
 Version 5.2<br>
 Last updated
- Mon May 14 12:47:00 UTC 2018
+ Wed Aug  8 08:51:56 CEST 2018
 </div>
 </div>
 </body>

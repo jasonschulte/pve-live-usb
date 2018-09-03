@@ -105,6 +105,14 @@ register_standard_option('fingerprint-sha256', {
     pattern => '([A-Fa-f0-9]{2}:){31}[A-Fa-f0-9]{2}',
 });
 
+register_standard_option('pve-output-format', {
+    type => 'string',
+    description => 'Output format.',
+    enum => [ 'text', 'json', 'json-pretty', 'yaml' ],
+    optional => 1,
+    default => 'text',
+});
+
 my $format_list = {};
 
 sub register_format {
@@ -119,6 +127,22 @@ sub register_format {
 sub get_format {
     my ($format) = @_;
     return $format_list->{$format};
+}
+
+my $renderer_hash = {};
+
+sub register_renderer {
+    my ($name, $code) = @_;
+
+    die "renderer '$name' already registered\n"
+	if $renderer_hash->{$name};
+
+    $renderer_hash->{$name} = $code;
+}
+
+sub get_renderer {
+    my ($name) = @_;
+    return $renderer_hash->{$name};
 }
 
 # register some common type for pve
@@ -1065,6 +1089,11 @@ my $default_schema_noref = {
 	    optional => 1,
 	    description => "This provides the title of the property",
 	},
+	renderer => {
+	    type => "string",
+	    optional => 1,
+	    description => "This is used to provide rendering hints to format cli command output.",
+	},
 	requires => {
 	    type => [ "string", "object" ],
 	    optional => 1,
@@ -1138,6 +1167,11 @@ my $default_schema_noref = {
 		    },
 		},
 	    },
+	},
+	print_width => {
+	    type => "integer",
+	    description => "For CLI context, this defines the maximal width to print before truncating",
+	    optional => 1,
 	},
     }	
 };
@@ -1333,7 +1367,7 @@ sub method_get_child_link {
 # a way to parse command line parameters, using a 
 # schema to configure Getopt::Long
 sub get_options {
-    my ($schema, $args, $arg_param, $fixed_param, $pwcallback, $param_mapping_hash) = @_;
+    my ($schema, $args, $arg_param, $fixed_param, $param_mapping_hash) = @_;
 
     if (!$schema || !$schema->{properties}) {
 	raise("too many arguments\n", code => HTTP_BAD_REQUEST)
@@ -1362,11 +1396,6 @@ sub get_options {
 	    # optional and call the mapping function afterwards.
 	    push @getopt, "$prop:s";
 	    push @interactive, [$prop, $mapping->{func}];
-	} elsif ($prop eq 'password' && $pwcallback) {
-	    # we do not accept plain password on input line, instead
-	    # we turn this into a boolean option and ask for password below
-	    # using $pwcallback() (for security reasons).
-	    push @getopt, "$prop";
 	} elsif ($pd->{type} eq 'boolean') {
 	    push @getopt, "$prop:s";
 	} else {
@@ -1406,12 +1435,14 @@ sub get_options {
 	    raise("too many arguments\n", code => HTTP_BAD_REQUEST)
 		if scalar(@$args) != 0;
 	}
-    }
-
-    if (my $pd = $schema->{properties}->{password}) {
-	if ($pd->{type} ne 'boolean' && $pwcallback) {
-	    if ($opts->{password} || !$pd->{optional}) {
-		$opts->{password} = &$pwcallback(); 
+    } else {
+	if (ref($arg_param)) {
+	    foreach my $arg_name (@$arg_param) {
+		if ($arg_name eq 'extra-args') {
+		    $opts->{'extra-args'} = [];
+		} else {
+		    raise("not enough arguments\n", code => HTTP_BAD_REQUEST);
+		}
 	    }
 	}
     }

@@ -35,11 +35,8 @@
 /sbin/zdb
 /sbin/zfs
 /sbin/zhack
-/sbin/zinject
-/sbin/zpios
 /sbin/zpool
 /sbin/zstreamdump
-/sbin/ztest
 /usr
 /usr/bin
 /usr/bin/zgenhostid
@@ -115,11 +112,7 @@
 /usr/share/initramfs-tools/hooks/zdev
 /usr/share/man
 /usr/share/man/man1
-/usr/share/man/man1/raidz_test.1.gz
-/usr/share/man/man1/test-runner.1.gz
 /usr/share/man/man1/zhack.1.gz
-/usr/share/man/man1/zpios.1.gz
-/usr/share/man/man1/ztest.1.gz
 /usr/share/man/man5
 /usr/share/man/man5/vdev_id.conf.5.gz
 /usr/share/man/man5/zfs-events.5.gz
@@ -132,7 +125,6 @@
 /usr/share/man/man8/zdb.8.gz
 /usr/share/man/man8/zfs.8.gz
 /usr/share/man/man8/zgenhostid.8.gz
-/usr/share/man/man8/zinject.8.gz
 /usr/share/man/man8/zpool.8.gz
 /usr/share/man/man8/zstreamdump.8.gz
 /etc/zfs/zpool.d/ata_err

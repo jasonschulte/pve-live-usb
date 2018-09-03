@@ -103,6 +103,7 @@
 /usr/share/man/man8/tc-bpf.8.gz
 /usr/share/man/man8/tc-cbq-details.8.gz
 /usr/share/man/man8/tc-cbq.8.gz
+/usr/share/man/man8/tc-cbs.8.gz
 /usr/share/man/man8/tc-cgroup.8.gz
 /usr/share/man/man8/tc-choke.8.gz
 /usr/share/man/man8/tc-codel.8.gz

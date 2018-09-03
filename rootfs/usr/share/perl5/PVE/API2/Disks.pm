@@ -8,11 +8,34 @@ use PVE::Diskmanage;
 use HTTP::Status qw(:constants);
 use PVE::JSONSchema qw(get_standard_option);
 
+use PVE::API2::Disks::LVM;
+use PVE::API2::Disks::LVMThin;
+use PVE::API2::Disks::Directory;
+use PVE::API2::Disks::ZFS;
+
 use PVE::RESTHandler;
 
 use base qw(PVE::RESTHandler);
 
-use Data::Dumper;
+__PACKAGE__->register_method ({
+   subclass => "PVE::API2::Disks::LVM",
+   path => 'lvm',
+});
+
+__PACKAGE__->register_method ({
+   subclass => "PVE::API2::Disks::LVMThin",
+   path => 'lvmthin',
+});
+
+__PACKAGE__->register_method ({
+   subclass => "PVE::API2::Disks::Directory",
+   path => 'directory',
+});
+
+__PACKAGE__->register_method ({
+   subclass => "PVE::API2::Disks::ZFS",
+   path => 'zfs',
+});
 
 __PACKAGE__->register_method ({
     name => 'index',
@@ -42,6 +65,10 @@ __PACKAGE__->register_method ({
 	    { name => 'list' },
 	    { name => 'initgpt' },
 	    { name => 'smart' },
+	    { name => 'lvm' },
+	    { name => 'lvmthin' },
+	    { name => 'directory' },
+	    { name => 'zfs' },
 	    ];
 
 	return $result;
@@ -61,6 +88,18 @@ __PACKAGE__->register_method ({
 	additionalProperties => 0,
 	properties => {
 	    node => get_standard_option('pve-node'),
+	    skipsmart => {
+		description => "Skip smart checks.",
+		type => 'boolean',
+		optional => 1,
+		default => 0,
+	    },
+	    type => {
+		description => "Only list specific types of disks.",
+		type => 'string',
+		enum => ['unused', 'journal_disks'],
+		optional => 1,
+	    },
 	},
     },
     returns => {
@@ -87,12 +126,23 @@ __PACKAGE__->register_method ({
     code => sub {
 	my ($param) = @_;
 
-	my $disks = PVE::Diskmanage::get_disks();
+	my $skipsmart = $param->{skipsmart} // 0;
 
+	my $disks = PVE::Diskmanage::get_disks(undef, $skipsmart);
+
+	my $type = $param->{type} // '';
 	my $result = [];
 
 	foreach my $disk (sort keys %$disks) {
 	    my $entry = $disks->{$disk};
+	    if ($type eq 'journal_disks') {
+		next if $entry->{osdid} >= 0;
+		next if !$entry->{gpt};
+	    } elsif ($type eq 'unused') {
+		next if $entry->{used};
+	    } elsif ($type ne '') {
+		die "internal error"; # should not happen
+	    }
 	    push @$result, $entry;
 	}
 	return $result;

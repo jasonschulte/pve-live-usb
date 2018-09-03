@@ -8,6 +8,7 @@
 |pvecm(1) 3+|Cluster Manager|link:pvecm.1.html[pvecm.1]
 |pvenode(1) 3+|Proxmox Node Management|link:pvenode.1.html[pvenode.1]
 |pveperf(1) 3+|Proxmox VE Benchmark Script|link:pveperf.1.html[pveperf.1]
+|pvesh(1) 3+|Shell interface for the Proxmox VE API|link:pvesh.1.html[pvesh.1]
 |pvesm(1) 3+|Proxmox VE Storage|link:pvesm.1.html[pvesm.1]
 |pvesr(1) 3+|Storage Replication|link:pvesr.1.html[pvesr.1]
 |pvesubscription(1) 3+|Subscription Management|link:pvesubscription.1.html[pvesubscription.1]

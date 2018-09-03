@@ -2,8 +2,10 @@
 // native support in the browsers, so that our error handler
 // can catch script-loading errors.
 
+// No ES6 can be used in this file since it's used for the translation
+/* eslint-disable prefer-arrow-callback */
 
-(function(){
+(function() {
     "use strict";
 
     // Fallback for all uncought errors
@@ -16,7 +18,7 @@
                 return false;
             }
 
-            var div = document.createElement("div");
+            let div = document.createElement("div");
             div.classList.add('noVNC_message');
             div.appendChild(document.createTextNode(event.message));
             msg.appendChild(div);
@@ -24,7 +26,7 @@
             if (event.filename) {
                 div = document.createElement("div");
                 div.className = 'noVNC_location';
-                var text = event.filename;
+                let text = event.filename;
                 if (event.lineno !== undefined) {
                     text += ":" + event.lineno;
                     if (event.colno !== undefined) {
@@ -35,7 +37,7 @@
                 msg.appendChild(div);
             }
 
-            if (err && (err.stack !== undefined)) {
+            if (err && err.stack) {
                 div = document.createElement("div");
                 div.className = 'noVNC_stack';
                 div.appendChild(document.createTextNode(err.stack));

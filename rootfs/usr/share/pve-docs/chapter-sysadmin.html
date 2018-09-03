@@ -736,7 +736,7 @@ asciidoc.install(2);
 <span id="author">Proxmox Server Solutions Gmbh</span><br>
 <span id="email" class="monospaced">&lt;<a href="mailto:support@proxmox.com">support@proxmox.com</a>&gt;</span><br>
 <span id="revnumber">version 5.2,</span>
-<span id="revdate">Mon May 14 12:47:00 UTC 2018</span>
+<span id="revdate">Wed Aug  8 08:51:56 CEST 2018</span>
 <div id="toc">
   <div id="toctitle">Table of Contents</div>
   <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
@@ -1850,7 +1850,7 @@ them:</p></div>
 <div class="title">File <span class="monospaced">/etc/systemd/timesyncd.conf</span></div>
 <div class="content monospaced">
 <pre>[Time]
-Servers=ntp1.example.com ntp2.example.com ntp3.example.com ntp4.example.com</pre>
+NTP=ntp1.example.com ntp2.example.com ntp3.example.com ntp4.example.com</pre>
 </div></div>
 <div class="paragraph">
 <p>After restarting the synchronization service (<span class="monospaced">systemctl restart
@@ -1987,7 +1987,7 @@ please refer to the vendor of your raid controller.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_logical_volume_manager_lvm">Logical Volume Manager (LVM)</h2>
+<h2 id="chapter_lvm">Logical Volume Manager (LVM)</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Most people install Proxmox VE directly on a local disk. The Proxmox VE
@@ -2322,7 +2322,7 @@ How to create a volume group see Section LVM.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_zfs_on_linux">ZFS on Linux</h2>
+<h2 id="chapter_zfs">ZFS on Linux</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>ZFS is a combined file system and logical volume manager designed by
@@ -3084,8 +3084,7 @@ generates a self-signed certificate for each node. These certificates are used
 for encrypted communication with the cluster&#8217;s pveproxy service and the
 Shell/Console feature if SPICE is used.</p></div>
 <div class="paragraph">
-<p>The CA certificate and key are stored in the <span class="monospaced">pmxcfs</span> (see the <span class="monospaced">pmxcfs(8)</span>
-manpage).</p></div>
+<p>The CA certificate and key are stored in the <a href="/pve-docs/chapter-pmxcfs.html#chapter_pmxcfs">Proxmox Cluster File System (pmxcfs)</a>.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_certificates_for_api_and_web_gui">Certificates for API and web GUI</h3>
@@ -3278,6 +3277,53 @@ Task OK</pre>
 </div></div>
 </div>
 <div class="sect3">
+<h4 id="_switching_from_the_span_class_monospaced_staging_span_to_the_regular_acme_directory">Switching from the <span class="monospaced">staging</span> to the regular ACME directory</h4>
+<div class="paragraph">
+<p>Changing the ACME directory for an account is unsupported. If you want to switch
+an account from the <span class="monospaced">staging</span> ACME directory to the regular, trusted, one you
+need to deactivate it and recreate it.</p></div>
+<div class="paragraph">
+<p>This procedure is also needed to change the default ACME account used in the GUI.</p></div>
+<div class="listingblock">
+<div class="title">Example: Changing the <span class="monospaced">default</span> ACME account from the <span class="monospaced">staging</span> to the regular directory</div>
+<div class="content monospaced">
+<pre>root@proxmox:~# pvenode acme account info default
+Directory URL: https://acme-staging-v02.api.letsencrypt.org/directory
+Account URL: https://acme-staging-v02.api.letsencrypt.org/acme/acct/6332194
+Terms Of Service: https://letsencrypt.org/documents/LE-SA-v1.2-November-15-2017.pdf
+
+Account information:
+ID: xxxxxxx
+Contact:
+        - mailto:example@proxmox.com
+Creation date: 2018-07-31T08:41:44.54196435Z
+Initial IP: 192.0.2.1
+Status: valid
+
+root@proxmox:~# pvenode acme account deactivate default
+Renaming account file from '/etc/pve/priv/acme/default' to '/etc/pve/priv/acme/_deactivated_default_4'
+Task OK
+
+root@proxmox:~# pvenode acme account register default example@proxmox.com
+Directory endpoints:
+0) Let's Encrypt V2 (https://acme-v02.api.letsencrypt.org/directory)
+1) Let's Encrypt V2 Staging (https://acme-staging-v02.api.letsencrypt.org/directory)
+2) Custom
+Enter selection:
+0
+
+Attempting to fetch Terms of Service from 'https://acme-v02.api.letsencrypt.org/directory'..
+Terms of Service: https://letsencrypt.org/documents/LE-SA-v1.2-November-15-2017.pdf
+Do you agree to the above terms? [y|N]y
+
+Attempting to register account with 'https://acme-v02.api.letsencrypt.org/directory'..
+Generating ACME account key..
+Registering ACME account..
+Registration successful, account URL: 'https://acme-v02.api.letsencrypt.org/acme/acct/39335247'
+Task OK</pre>
+</div></div>
+</div>
+<div class="sect3">
 <h4 id="_automatic_renewal_of_acme_certificates">Automatic renewal of ACME certificates</h4>
 <div class="paragraph">
 <p>If a node has been successfully configured with an ACME-provided certificate
@@ -3294,7 +3340,7 @@ if the certificate has expired or will expire in the next 30 days.</p></div>
 <div id="footer-text">
 Version 5.2<br>
 Last updated
- Mon May 14 12:47:00 UTC 2018
+ Wed Aug  8 08:51:56 CEST 2018
 </div>
 </div>
 </body>

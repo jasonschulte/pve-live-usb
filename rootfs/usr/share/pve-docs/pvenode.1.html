@@ -736,7 +736,7 @@ asciidoc.install();
 <span id="author">Proxmox Server Solutions Gmbh</span><br>
 <span id="email" class="monospaced">&lt;<a href="mailto:support@proxmox.com">support@proxmox.com</a>&gt;</span><br>
 <span id="revnumber">version 5.2,</span>
-<span id="revdate">Mon May 14 12:47:00 UTC 2018</span>
+<span id="revdate">Wed Aug  8 08:51:56 CEST 2018</span>
 </div>
 <div id="content">
 <div class="sect1">
@@ -766,7 +766,7 @@ ACME account config file name.
 </dd>
 </dl></div>
 <div class="paragraph">
-<p><strong>pvenode acme account info</strong> <span class="monospaced">[&lt;name&gt;]</span></p></div>
+<p><strong>pvenode acme account info</strong> <span class="monospaced">[&lt;name&gt;]</span> <span class="monospaced">[FORMAT_OPTIONS]</span></p></div>
 <div class="paragraph">
 <p>Return existing ACME account information.</p></div>
 <div class="dlist"><dl>
@@ -883,11 +883,11 @@ Restart pveproxy.
 </dd>
 </dl></div>
 <div class="paragraph">
-<p><strong>pvenode cert info</strong></p></div>
+<p><strong>pvenode cert info</strong> <span class="monospaced">[FORMAT_OPTIONS]</span></p></div>
 <div class="paragraph">
 <p>Get information about node&#8217;s certificates.</p></div>
 <div class="paragraph">
-<p><strong>pvenode cert set</strong> <span class="monospaced">&lt;certificates&gt; [&lt;key&gt;]</span> <span class="monospaced">[OPTIONS]</span></p></div>
+<p><strong>pvenode cert set</strong> <span class="monospaced">&lt;certificates&gt; [&lt;key&gt;]</span> <span class="monospaced">[OPTIONS]</span> <span class="monospaced">[FORMAT_OPTIONS]</span></p></div>
 <div class="paragraph">
 <p>Upload or update custom certificate chain and key.</p></div>
 <div class="dlist"><dl>
@@ -988,6 +988,154 @@ Verbose output format.
 </p>
 </dd>
 </dl></div>
+<div class="paragraph">
+<p><strong>pvenode migrateall</strong> <span class="monospaced">&lt;target&gt;</span> <span class="monospaced">[OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>Migrate all VMs and Containers.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;target&gt;</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+Target node.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--maxworkers</span> <span class="monospaced">&lt;integer&gt; (1 - N)</span> 
+</dt>
+<dd>
+<p>
+Maximal number of parallel migration job. If not set use <em>max_workers</em> from datacenter.cfg, one of both must be set!
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--vms</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+Only consider Guests with these IDs.
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvenode startall</strong> <span class="monospaced">[OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>Start all VMs and containers (when onboot=1).</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--force</span> <span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+force if onboot=0.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--vms</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+Only consider Guests with these IDs.
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvenode stopall</strong> <span class="monospaced">[OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>Stop all VMs and Containers.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--vms</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+Only consider Guests with these IDs.
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvenode task list</strong> <span class="monospaced">[OPTIONS]</span> <span class="monospaced">[FORMAT_OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>Read task list for one node (finished tasks).</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--errors</span> <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+no description available
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--limit</span> <span class="monospaced">&lt;integer&gt; (0 - N)</span> (<em>default =</em> <span class="monospaced">50</span>)
+</dt>
+<dd>
+<p>
+Only list this amount of tasks.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--start</span> <span class="monospaced">&lt;integer&gt; (0 - N)</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+List tasks beginning from this offset.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--userfilter</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+Only list tasks from this user.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--vmid</span> <span class="monospaced">&lt;integer&gt; (1 - N)</span> 
+</dt>
+<dd>
+<p>
+Only list tasks for this VM.
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvenode task log</strong> <span class="monospaced">&lt;upid&gt;</span> <span class="monospaced">[OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>Read task log.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;upid&gt;</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+no description available
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--start</span> <span class="monospaced">&lt;integer&gt; (0 - N)</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+no description available
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvenode task status</strong> <span class="monospaced">&lt;upid&gt;</span> <span class="monospaced">[FORMAT_OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>Read task status.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;upid&gt;</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+no description available
+</p>
+</dd>
+</dl></div>
 </div>
 </div>
 <div class="sect1">
@@ -999,6 +1147,82 @@ settings and resources.</p></div>
 <div class="paragraph">
 <p>Currently <span class="monospaced">pvenode</span> allows to set a node&#8217;s description and to manage
 the node&#8217;s SSL certificates used for the API and the web GUI through <span class="monospaced">pveproxy</span>.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_format_options">FORMAT_OPTIONS</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>It is possible to specify the output format using the
+<span class="monospaced">--outout-format</span> parameter. The default format <em>text</em> uses ASCII-art
+to draw nice borders around tables. It additionally transforms some
+values into human-readable text, for example:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Unix epoch is displayed as ISO 8601 date string.
+</p>
+</li>
+<li>
+<p>
+Durations are displayed as week/day/hour/miniute/secound count, i.e <span class="monospaced">1d 5h</span>.
+</p>
+</li>
+<li>
+<p>
+Byte sizes value include units (<span class="monospaced">B</span>, <span class="monospaced">KiB</span>, <span class="monospaced">MiB</span>, <span class="monospaced">GiB</span>, <span class="monospaced">TiB</span>, <span class="monospaced">PiB</span>).
+</p>
+</li>
+<li>
+<p>
+Fractions are display as percentage, i.e. 1.0 is displayed as 100%.
+</p>
+</li>
+</ul></div>
+<div class="paragraph">
+<p>You can also completely suppress output using option <span class="monospaced">--quiet</span>.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--human-readable</span> <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">1</span>)
+</dt>
+<dd>
+<p>
+Call output rendering functions to produce human readable text.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--noborder</span> <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">1</span>)
+</dt>
+<dd>
+<p>
+Do not draw borders (for <em>text</em> format).
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--noheader</span> <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">1</span>)
+</dt>
+<dd>
+<p>
+Do not show column headers (for <em>text</em> format).
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--output-format</span> <span class="monospaced">&lt;json | json-pretty | text | yaml&gt;</span> (<em>default =</em> <span class="monospaced">text</span>)
+</dt>
+<dd>
+<p>
+Output format.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--quiet</span> <span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Suppress printing results.
+</p>
+</dd>
+</dl></div>
 </div>
 </div>
 <div class="sect1">
@@ -1048,7 +1272,7 @@ License along with this program.  If not, see
 <div id="footer-text">
 Version 5.2<br>
 Last updated
- Mon May 14 12:47:00 UTC 2018
+ Wed Aug  8 08:51:56 CEST 2018
 </div>
 </div>
 </body>

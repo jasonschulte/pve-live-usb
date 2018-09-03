@@ -39,6 +39,8 @@ import email
 import socket
 import subprocess
 import pipes
+import apt
+import gzip
 
 from .urlutils import open_url
 from string import ascii_letters, digits
@@ -1304,3 +1306,79 @@ def get_init_system():
         init = 'sysvinit (via /sbin/init)'
 
     return init
+
+def is_security_update(pkgname, pkgversion):
+    """Determine whether a given package is a security update.
+
+    Detection of security update versions works most reliably if the
+    package version under investigation is the currently installed
+    version.  If this is not the case, the probability of false
+    negatives increases.
+
+    Parameters
+    ----------
+    pkgname : str
+        package name
+    pkgversion : str
+        package version
+
+    Returns
+    -------
+    bool
+        True if there is evidence that this version is a security
+        update, otherwise False
+    """
+
+    # Check 1:
+    # If it does not follow the debXuY version number pattern, it is
+    # definitely no security update.
+    #
+    # This check is not sufficient to detect security updates reliably,
+    # since other stable updates also use the same version pattern.
+    regex = re.compile('(\+|~)deb(\d+)u(\d+)')
+    secversion = regex.search(pkgversion)
+    if not secversion:
+        return False
+
+    # Check 2:
+    # If the package comes from the Debian-Security package source, it
+    # is definitely a security update.
+    #
+    # This check does not identify all security updates, since some of
+    # them are distributed through the normal channels as part of a
+    # stable release update.
+    try:
+        p = apt.Cache()[pkgname]
+        if 'Debian-Security' in [o.label for o in
+                        p.versions[pkgversion].origins]:
+            return True
+    except:
+        pass
+
+    # Check 3:
+    # Inspect the package changelog if it mentions any vulnerability,
+    # identified by a CVE number, in the section of the latest version.
+    cl = None
+    for cl in ['/usr/share/doc/{}/changelog.Debian.gz'.format(pkgname),
+               '/usr/share/doc/{}/changelog.gz'.format(pkgname)]:
+        if os.path.exists(cl):
+            break
+
+    try:
+        with gzip.open(cl, 'rt') as f:
+            ln = f.readline()
+            if pkgversion not in ln:
+                raise KeyError
+
+            for ln in f.readlines():
+                # stop reading at the end of the first section
+                if ln.rstrip() != '' and (ln.startswith(' -- ') or not ln.startswith(' ')):
+                    break
+
+                if 'CVE-20' in ln.upper():
+                    return True
+    except:
+        pass
+
+    # guess 'no security update, but normal stable update' by default
+    return False

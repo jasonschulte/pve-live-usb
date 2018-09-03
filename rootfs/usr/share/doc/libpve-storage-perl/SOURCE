@@ -1,2 +1,2 @@
 git clone git://git.proxmox.com/git/pve-storage.git
-git checkout d0d314a965bf0975c3601f0baf7fad8a9319dd8c
+git checkout ba842a3f723a600b552c56a14bb4d94826c874f8

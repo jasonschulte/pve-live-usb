@@ -1,4 +1,4 @@
-9f6021c95b755a848ed5820a0e9cec78  usr/share/doc/pve-edk2-firmware/changelog.Debian.gz
+b20441859cfc810c81691cfb91acae71  usr/share/doc/pve-edk2-firmware/changelog.Debian.gz
 f8c92253a5e773f7d4369037c828976f  usr/share/doc/pve-edk2-firmware/copyright
-f791badf4e262ecdefb2e0bf096df946  usr/share/pve-edk2-firmware/OVMF_CODE.fd
+e2ed2df5c1ba52ac48d259e5cc095a3f  usr/share/pve-edk2-firmware/OVMF_CODE.fd
 aa9703e68b787f1a391bcbf201c84e02  usr/share/pve-edk2-firmware/OVMF_VARS.fd

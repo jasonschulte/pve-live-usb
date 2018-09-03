@@ -1115,11 +1115,13 @@ __PACKAGE__->register_method({
 		description => "Seconds since 1970-01-01 00:00:00 UTC.",
 		type => 'integer',
 		minimum => 1297163644,
+		renderer => 'timestamp',
 	    },
 	    localtime => {
 		description => "Seconds since 1970-01-01 00:00:00 (local time)",
 		type => 'integer',
 		minimum => 1297163644,
+		renderer => 'timestamp_gmt',
 	    },
         },
     },
@@ -1130,7 +1132,7 @@ __PACKAGE__->register_method({
 	my $ltime = timegm_nocheck(localtime($ctime));
 	my $res = {
 	    timezone => PVE::INotify::read_file('timezone'),
-	    time => time(),
+	    time => $ctime,
 	    localtime => $ltime,
 	};
 
@@ -1533,12 +1535,15 @@ __PACKAGE__->register_method ({
 		    eval {
 			my $default_delay = 0;
 			my $upid;
+			my $typeText = '';
 
 			if ($d->{type} eq 'lxc') {
+			    $typeText = 'CT';
 			    return if PVE::LXC::check_running($vmid);
 			    print STDERR "Starting CT $vmid\n";
 			    $upid = PVE::API2::LXC::Status->vm_start({node => $nodename, vmid => $vmid });
 			} elsif ($d->{type} eq 'qemu') {
+			    $typeText = 'VM';
 			    $default_delay = 3; # to reduce load
 			    return if PVE::QemuServer::check_running($vmid, 1);
 			    print STDERR "Starting VM $vmid\n";
@@ -1563,11 +1568,7 @@ __PACKAGE__->register_method ({
 				}
 			    }
 			} else {
-			    if ($d->{type} eq 'lxc') {
-				print STDERR "Starting CT $vmid failed: $status\n";
-			    } elsif ($d->{type} eq 'qemu') {
-				print STDERR "Starting VM $vmid failed: status\n";
-			    }
+			    print STDERR "Starting $typeText $vmid failed: $status\n";
 			}
 		    };
 		    warn $@ if $@;
@@ -1764,7 +1765,12 @@ __PACKAGE__->register_method ({
 	my $nodename = $param->{node};
 	$nodename = PVE::INotify::nodename() if $nodename eq 'localhost';
 
-        my $target = $param->{target};
+	my $target = $param->{target};
+	raise_param_exc({ target => "target is local node."}) if $target eq $nodename;
+
+	PVE::Cluster::check_cfs_quorum();
+
+	PVE::Cluster::check_node_exists($target);
 
 	my $datacenterconfig = cfs_read_file('datacenter.cfg');
 	# prefer parameter over datacenter cfg settings
@@ -1834,6 +1840,7 @@ use PVE::Cluster;
 use PVE::RESTHandler;
 use PVE::RPCEnvironment;
 use PVE::API2Tools;
+use PVE::JSONSchema qw(get_standard_option);
 
 use base qw(PVE::RESTHandler);
 
@@ -1856,7 +1863,53 @@ __PACKAGE__->register_method ({
 	type => 'array',
 	items => {
 	    type => "object",
-	    properties => {},
+	    properties => {
+		node => get_standard_option('pve-node'),
+		status => {
+		    description => "Node status.",
+		    type => 'string',
+		    enum => ['unknown', 'online', 'offline'],
+		},
+		cpu => {
+		    description => "CPU utilization.",
+		    type => 'number',
+		    optional => 1,
+		    renderer => 'fraction_as_percentage',
+		},
+		maxcpu => {
+		    description => "Number of available CPUs.",
+		    type => 'integer',
+		    optional => 1,
+		},
+		mem => {
+		    description => "Used memory in bytes.",
+		    type => 'string',
+		    optional => 1,
+		    renderer => 'bytes',
+		},
+		maxmem => {
+		    description => "Number of available memory in bytes.",
+		    type => 'integer',
+		    optional => 1,
+		    renderer => 'bytes',
+		},
+		level => {
+		    description => "Support level.",
+		    type => 'string',
+		    optional => 1,
+		},
+		uptime => {
+		    description => "Node uptime in seconds.",
+		    type => 'integer',
+		    optional => 1,
+		    renderer => 'duration',
+		},
+		ssl_fingerprint => {
+		    description => "The SSL fingerprint for the node certificate.",
+		    type => 'string',
+		    optional => 1,
+		},
+	    },
 	},
 	links => [ { rel => 'child', href => "{node}" } ],
     },

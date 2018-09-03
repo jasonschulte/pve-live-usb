@@ -1,0 +1,4 @@
+libprofiler 0 libgoogle-perftools4
+libtcmalloc 4 libgoogle-perftools4
+libtcmalloc_and_profiler 4 libgoogle-perftools4
+libtcmalloc_debug 4 libgoogle-perftools4

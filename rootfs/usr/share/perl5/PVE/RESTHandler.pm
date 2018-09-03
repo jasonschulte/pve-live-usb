@@ -17,6 +17,33 @@ my $method_path_lookup = {};
 
 our $AUTOLOAD;  # it's a package global
 
+our $standard_output_options = {
+    'output-format' => PVE::JSONSchema::get_standard_option('pve-output-format'),
+    noheader => {
+	description => "Do not show column headers (for 'text' format).",
+	type => 'boolean',
+	optional => 1,
+	default => 1,
+    },
+    noborder => {
+	description => "Do not draw borders (for 'text' format).",
+	type => 'boolean',
+	optional => 1,
+	default => 1,
+    },
+    quiet => {
+        description => "Suppress printing results.",
+        type => 'boolean',
+        optional => 1,
+    },
+    'human-readable' => {
+        description => "Call output rendering functions to produce human readable text.",
+        type => 'boolean',
+        optional => 1,
+	default => 1,
+    }
+};
+
 sub api_clone_schema {
     my ($schema) = @_;
 
@@ -37,7 +64,7 @@ sub api_clone_schema {
 		my ($name, $idx) = ($1, $2);
 		if ($idx == 0 && defined($d->{"${name}1"})) {
 		    $p = "${name}[n]";
-		} elsif (defined($d->{"${name}0"})) {
+		} elsif ($idx > 0 && defined($d->{"${name}0"})) {
 		    next; # only handle once for -xx0, but only if -xx0 exists
 		}
 	    }
@@ -58,7 +85,7 @@ sub api_clone_schema {
 }
 
 sub api_dump_full {
-    my ($tree, $index, $class, $prefix) = @_;
+    my ($tree, $index, $class, $prefix, $raw_dump) = @_;
 
     $prefix = '' if !$prefix;
 
@@ -70,7 +97,7 @@ sub api_dump_full {
 	$path =~ s/\/+$//;
 
 	if ($info->{subclass}) {
-	    api_dump_full($tree, $index, $info->{subclass}, $path);
+	    api_dump_full($tree, $index, $info->{subclass}, $path, $raw_dump);
 	} else {
 	    next if !$path;
 
@@ -110,12 +137,15 @@ sub api_dump_full {
 			$k eq "path";
 
 		    my $d = $info->{$k};
-		    
-		    if ($k eq 'parameters') {
-			$data->{$k} = api_clone_schema($d);
-		    } else {
 
-			$data->{$k} = ref($d) ? clone($d) : $d;
+		    if ($raw_dump) {
+			$data->{$k} = $d;
+		    } else {
+			if ($k eq 'parameters') {
+			    $data->{$k} = api_clone_schema($d);
+			} else {
+			    $data->{$k} = ref($d) ? clone($d) : $d;
+			}
 		    }
 		} 
 		$res->{info}->{$info->{method}} = $data;
@@ -139,13 +169,46 @@ sub api_dump_cleanup_tree {
 
 }
 
+# api_dump_remove_refs: prepare API tree for use with to_json($tree)
+sub api_dump_remove_refs {
+    my ($tree) = @_;
+
+    my $class = ref($tree);
+    return $tree if !$class;
+
+    if ($class eq 'ARRAY') {
+	my $res = [];
+	foreach my $el (@$tree) {
+	    push @$res, api_dump_remove_refs($el);
+	}
+	return $res;
+    } elsif ($class eq 'HASH') {
+	my $res = {};
+	foreach my $k (keys %$tree) {
+	    if (my $itemclass = ref($tree->{$k})) {
+		if ($itemclass eq 'CODE') {
+		    next if $k eq 'completion';
+		}
+		$res->{$k} = api_dump_remove_refs($tree->{$k});
+	    } else {
+		$res->{$k} = $tree->{$k};
+	    }
+	}
+	return $res;
+    } elsif ($class eq 'Regexp') {
+	return "$tree"; # return string representation
+    } else {
+	die "unknown class '$class'\n";
+    }
+}
+
 sub api_dump {
-    my ($class, $prefix) = @_;
+    my ($class, $prefix, $raw_dump) = @_;
 
     my $tree = [];
 
     my $index = {};
-    api_dump_full($tree, $index, $class);
+    api_dump_full($tree, $index, $class, $prefix, $raw_dump);
     api_dump_cleanup_tree($tree);
     return $tree;
 };
@@ -378,7 +441,7 @@ sub handle {
 	$param->{'extra-args'} = [map { /^(.*)$/ } @$extra] if $extra;
     }
 
-    my $result = &$func($param); 
+    my $result = &$func($param);
 
     # todo: this is only to be safe - disable?
     if (my $schema = $info->{returns}) {
@@ -396,7 +459,7 @@ sub handle {
 # $style: 'config', 'config-sub', 'arg' or 'fixed'
 # $mapdef: parameter mapping ({ desc => XXX, func => sub {...} })
 my $get_property_description = sub {
-    my ($name, $style, $phash, $format, $hidepw, $mapdef) = @_;
+    my ($name, $style, $phash, $format, $mapdef) = @_;
 
     my $res = '';
 
@@ -412,10 +475,6 @@ my $get_property_description = sub {
     chomp $descr;
 
     my $type_text = PVE::JSONSchema::schema_get_type_text($phash, $style);
-
-    if ($hidepw && $name eq 'password') {
-	$type_text = '';
-    }
 
     if ($mapdef && $phash->{type} eq 'string') {
 	$type_text = $mapdef->{desc};
@@ -517,6 +576,10 @@ my $compute_param_mapping_hash = sub {
 	my ($name, $func, $desc, $interactive);
 	if (ref($item) eq 'ARRAY') {
 	    ($name, $func, $desc, $interactive) = @$item;
+	} elsif (ref($item) eq 'HASH') {
+	    # just use the hash
+	    $res->{$item->{name}} = $item;
+	    next;
 	} else {
 	    $name = $item;
 	    $func = sub { return PVE::Tools::file_get_contents($_[0]) };
@@ -530,7 +593,7 @@ my $compute_param_mapping_hash = sub {
 
 # generate usage information for command line tools
 #
-# $name        ... the name of the method
+# $info        ... method info
 # $prefix      ... usually something like "$exename $cmd" ('pvesm add')
 # $arg_param   ... list of parameters we want to get as ordered arguments 
 #                  on the command line (or single parameter name for lists)
@@ -540,16 +603,36 @@ my $compute_param_mapping_hash = sub {
 #   'short'    ... command line only (text, one line)
 #   'full'     ... text, include description
 #   'asciidoc' ... generate asciidoc for man pages (like 'full')
-# $hidepw      ... hide password option (use this if you provide a read passwork callback)
-# $param_mapping_func ... mapping for string parameters to file path parameters
-sub usage_str {
-    my ($self, $name, $prefix, $arg_param, $fixed_param, $format, $hidepw, $param_mapping_func) = @_;
+# $param_cb    ... mapping for string parameters to file path parameters
+# $formatter_properties  ... additional property definitions (passed to output formatter)
+sub getopt_usage {
+    my ($info, $prefix, $arg_param, $fixed_param, $format, $param_cb, $formatter_properties) = @_;
 
     $format = 'long' if !$format;
 
-    my $info = $self->map_method_by_name($name);
     my $schema = $info->{parameters};
-    my $prop = $schema->{properties};
+    my $name = $info->{name};
+    my $prop = { %{$schema->{properties}} }; # copy
+
+    my $has_output_format_option = $formatter_properties->{'output-format'} ? 1 : 0;
+
+    if ($formatter_properties) {
+	foreach my $key (keys %$formatter_properties) {
+	    if (!$standard_output_options->{$key}) {
+		$prop->{$key} = $formatter_properties->{$key};
+	    }
+	}
+    }
+
+    # also remove $standard_output_options from $prop (pvesh, pveclient)
+    if ($prop->{'output-format'}) {
+	$has_output_format_option = 1;
+	foreach my $key (keys %$prop) {
+	    if ($standard_output_options->{$key}) {
+		delete $prop->{$key};
+	    }
+	}
+    }
 
     my $out = '';
 
@@ -576,7 +659,7 @@ sub usage_str {
     foreach my $k (@$arg_param) {
 	next if defined($fixed_param->{$k}); # just to be sure
 	next if !$prop->{$k}; # just to be sure
-	$argdescr .= &$get_property_description($k, 'fixed', $prop->{$k}, $format, 0);
+	$argdescr .= $get_property_description->($k, 'fixed', $prop->{$k}, $format);
     }
 
     my $idx_param = {}; # -vlan\d+ -scsi\d+
@@ -588,7 +671,13 @@ sub usage_str {
 
 	my $type_text = $prop->{$k}->{type} || 'string';
 
-	next if $hidepw && ($k eq 'password') && !$prop->{$k}->{optional};
+	my $param_map = {};
+
+	if (defined($param_cb)) {
+	    my $mapping = $param_cb->($name);
+	    $param_map = $compute_param_mapping_hash->($mapping);
+	    next if $k eq 'password' && $param_map->{$k} && !$prop->{$k}->{optional};
+	}
 
 	my $base = $k;
 	if ($k =~ m/^([a-z]+)(\d+)$/) {
@@ -600,11 +689,8 @@ sub usage_str {
 	    }
 	}
 
-	my $param_mapping_hash = $compute_param_mapping_hash->(&$param_mapping_func($name))
-	    if $param_mapping_func;
 
-	$opts .= &$get_property_description($base, 'arg', $prop->{$k}, $format,
-					    $hidepw, $param_mapping_hash->{$k});
+	$opts .= $get_property_description->($base, 'arg', $prop->{$k}, $format, $param_map->{$k});
 
 	if (!$prop->{$k}->{optional}) {
 	    $args .= " " if $args;
@@ -615,11 +701,15 @@ sub usage_str {
     if ($format eq 'asciidoc') {
 	$out .= "*${prefix}*";
 	$out .= " `$args`" if $args;
-	$out .= $opts ? " `[OPTIONS]`\n" : "\n";
+	$out .= " `[OPTIONS]`" if $opts;
+	$out .= " `[FORMAT_OPTIONS]`" if $has_output_format_option;
+	$out .= "\n";
     } else {
 	$out .= "USAGE: " if $format ne 'short';
 	$out .= "$prefix $args";
-	$out .= $opts ? " [OPTIONS]\n" : "\n";
+	$out .= " [OPTIONS]" if $opts;
+	$out .= " [FORMAT_OPTIONS]" if $has_output_format_option;
+	$out .= "\n";
     }
 
     return $out if $format eq 'short';
@@ -639,6 +729,14 @@ sub usage_str {
     $out .= $opts if $opts;
 
     return $out;
+}
+
+sub usage_str {
+    my ($self, $name, $prefix, $arg_param, $fixed_param, $format, $param_cb, $formatter_properties) = @_;
+
+    my $info = $self->map_method_by_name($name);
+
+    return getopt_usage($info, $prefix, $arg_param, $fixed_param, $format, $param_cb, $formatter_properties);
 }
 
 # generate docs from JSON schema properties
@@ -667,7 +765,7 @@ sub dump_properties {
 	    }
 	}
 
-	$raw .= &$get_property_description($base, $style, $phash, $format, 0);
+	$raw .= $get_property_description->($base, $style, $phash, $format);
 
 	next if $style ne 'config';
 
@@ -688,9 +786,9 @@ sub dump_properties {
 }
 
 my $replace_file_names_with_contents = sub {
-    my ($param, $param_mapping_hash) = @_;
+    my ($param, $param_map) = @_;
 
-    while (my ($k, $d) = each %$param_mapping_hash) {
+    while (my ($k, $d) = each %$param_map) {
 	next if $d->{interactive}; # handled by the JSONSchema's get_options code
 	$param->{$k} = $d->{func}->($param->{$k})
 	    if defined($param->{$k});
@@ -699,18 +797,57 @@ my $replace_file_names_with_contents = sub {
     return $param;
 };
 
+sub add_standard_output_properties {
+    my ($propdef, $list) = @_;
+
+    $propdef //= {};
+
+    $list //= [ keys %$standard_output_options ];
+
+    my $res = { %$propdef }; # copy
+
+    foreach my $opt (@$list) {
+	die "no such standard output option '$opt'\n" if !defined($standard_output_options->{$opt});
+	die "detected overwriten standard CLI parameter '$opt'\n" if defined($res->{$opt});
+	$res->{$opt} = $standard_output_options->{$opt};
+    }
+
+    return $res;
+}
+
+sub extract_standard_output_properties {
+    my ($data) = @_;
+
+    my $options = {};
+    foreach my $opt (keys %$standard_output_options) {
+	$options->{$opt} = delete $data->{$opt} if defined($data->{$opt});
+    }
+
+    return $options;
+}
+
 sub cli_handler {
-    my ($self, $prefix, $name, $args, $arg_param, $fixed_param, $read_password_func, $param_mapping_func) = @_;
+    my ($self, $prefix, $name, $args, $arg_param, $fixed_param, $param_cb, $formatter_properties) = @_;
 
     my $info = $self->map_method_by_name($name);
-
     my $res;
-    eval {
-	my $param_mapping_hash = $compute_param_mapping_hash->($param_mapping_func->($name)) if $param_mapping_func;
-	my $param = PVE::JSONSchema::get_options($info->{parameters}, $args, $arg_param, $fixed_param, $read_password_func, $param_mapping_hash);
+    my $fmt_param = {};
 
-	if (defined($param_mapping_hash)) {
-	    &$replace_file_names_with_contents($param, $param_mapping_hash);
+    eval {
+	my $param_map = {};
+	$param_map = $compute_param_mapping_hash->($param_cb->($name)) if $param_cb;
+	my $schema = { %{$info->{parameters}} }; # copy
+	$schema->{properties} = { %{$schema->{properties}}, %$formatter_properties } if $formatter_properties;
+	my $param = PVE::JSONSchema::get_options($schema, $args, $arg_param, $fixed_param, $param_map);
+
+	if ($formatter_properties) {
+	    foreach my $opt (keys %$formatter_properties) {
+		$fmt_param->{$opt} = delete $param->{$opt} if defined($param->{$opt});
+	    }
+	}
+
+	if (defined($param_map)) {
+	    $replace_file_names_with_contents->($param, $param_map);
 	}
 
 	$res = $self->handle($info, $param);
@@ -720,12 +857,12 @@ sub cli_handler {
 
 	die $err if !$ec || $ec ne "PVE::Exception" || !$err->is_param_exc();
 	
-	$err->{usage} = $self->usage_str($name, $prefix, $arg_param, $fixed_param, 'short', $read_password_func, $param_mapping_func);
+	$err->{usage} = $self->usage_str($name, $prefix, $arg_param, $fixed_param, 'short', $param_cb, $formatter_properties);
 
 	die $err;
     }
 
-    return $res;
+    return wantarray ? ($res, $fmt_param) : $res;
 }
 
 # utility methods

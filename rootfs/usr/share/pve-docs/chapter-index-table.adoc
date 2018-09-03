@@ -12,6 +12,7 @@
 |Manage Ceph Services on Proxmox VE Nodes|link:chapter-pveceph.html[]
 |Cluster Manager|link:chapter-pvecm.html[]
 |Proxmox Node Management|link:chapter-pvenode.html[]
+|Shell interface for the Proxmox VE API|link:chapter-pvesh.html[]
 |Proxmox VE Storage|link:chapter-pvesm.html[]
 |Storage Replication|link:chapter-pvesr.html[]
 |User Management|link:chapter-pveum.html[]

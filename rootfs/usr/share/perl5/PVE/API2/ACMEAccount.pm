@@ -157,7 +157,7 @@ __PACKAGE__->register_method ({
 my $update_account = sub {
     my ($param, $msg, %info) = @_;
 
-    my $account_name = extract_param($param, 'name');
+    my $account_name = extract_param($param, 'name') // 'default';
     my $account_file = "${acme_account_dir}/${account_name}";
 
     raise_param_exc({'name' => "ACME account config file '${account_name}' does not exist."})
@@ -248,6 +248,7 @@ __PACKAGE__->register_method ({
 	    account => {
 		type => 'object',
 		optional => 1,
+		renderer => 'yaml',
 	    },
 	    directory => get_standard_option('pve-acme-directory-url', {
 		optional => 1,
@@ -265,7 +266,7 @@ __PACKAGE__->register_method ({
     code => sub {
 	my ($param) = @_;
 
-	my $account_name = extract_param($param, 'name');
+	my $account_name = extract_param($param, 'name') // 'default';
 	my $account_file = "${acme_account_dir}/${account_name}";
 
 	raise_param_exc({'name' => "ACME account config file '${account_name}' does not exist."})
@@ -309,6 +310,7 @@ __PACKAGE__->register_method ({
     path => 'tos',
     method => 'GET',
     description => "Retrieve ACME TermsOfService URL from CA.",
+    permissions => { user => 'all' },
     parameters => {
 	additionalProperties => 0,
 	properties => {
@@ -338,6 +340,7 @@ __PACKAGE__->register_method ({
     path => 'directories',
     method => 'GET',
     description => "Get named known ACME directory endpoints.",
+    permissions => { user => 'all' },
     parameters => {
 	additionalProperties => 0,
 	properties => {},

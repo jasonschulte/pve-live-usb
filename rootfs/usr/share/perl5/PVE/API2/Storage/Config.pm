@@ -103,7 +103,7 @@ __PACKAGE__->register_method ({
 	    storage => get_standard_option('pve-storage-id'),
 	},
     },
-    returns => {},
+    returns => { type => 'object' },
     code => sub {
 	my ($param) = @_;
 
@@ -133,8 +133,15 @@ __PACKAGE__->register_method ({
 	# fix me in section config create never need an empty entity.
 	delete $param->{nodes} if !$param->{nodes};
 
-	my $password = extract_param($param, 'password')
-	    if $type eq 'cifs' && $param->{username};
+	my $password;
+	# always extract pw, else it gets written to the www-data readable scfg
+	if (my $tmp_pw = extract_param($param, 'password')) {
+	    if ($type eq 'cifs' && $param->{username}) {
+		$password = $tmp_pw;
+	    } else {
+		warn "ignore password parameter\n";
+	    }
+	}
 
 	if ($param->{portal}) {
 	    $param->{portal} = PVE::Storage::resolv_portal($param->{portal});
@@ -154,43 +161,7 @@ __PACKAGE__->register_method ({
 
 		$cfg->{ids}->{$storeid} = $opts;
 
-		if ($type eq 'lvm' && $opts->{base}) {
-
-		    my ($baseid, $volname) = PVE::Storage::parse_volume_id($opts->{base});
-
-		    my $basecfg = PVE::Storage::storage_config ($cfg, $baseid, 1);
-		    die "base storage ID '$baseid' does not exist\n" if !$basecfg;
-       
-		    # we only support iscsi for now
-		    if (!($basecfg->{type} eq 'iscsi')) {
-			die "unsupported base type '$basecfg->{type}'";
-		    }
-
-		    my $path = PVE::Storage::path($cfg, $opts->{base});
-
-		    PVE::Storage::activate_storage($cfg, $baseid);
-
-		    PVE::Storage::LVMPlugin::lvm_create_volume_group($path, $opts->{vgname}, $opts->{shared});
-		} elsif ($type eq 'rbd' && !defined($opts->{monhost})) {
-		    my $ceph_admin_keyring = '/etc/pve/priv/ceph.client.admin.keyring';
-		    my $ceph_storage_keyring = "/etc/pve/priv/ceph/${storeid}.keyring";
-
-		    die "ceph authx keyring file for storage '$storeid' already exists!\n"
-			if -e $ceph_storage_keyring;
-
-		    eval {
-			mkdir '/etc/pve/priv/ceph';
-			PVE::Tools::file_copy($ceph_admin_keyring, $ceph_storage_keyring);
-		    };
-		    if (my $err = $@) {
-			unlink $ceph_storage_keyring;
-			die "failed to copy ceph authx keyring for storage '$storeid': $err\n";
-		    }
-		}
-		# create a password file in /etc/pve/priv,
-		# this file is used as a cert_file at mount time.
-		my $cred_file = PVE::Storage::CIFSPlugin::cifs_set_credentials($password, $storeid)
-		    if $type eq 'cifs' && defined($password);
+		$plugin->on_add_hook($storeid, $opts, password => $password);
 
 		eval {
 		    # try to activate if enabled on local node,
@@ -200,7 +171,8 @@ __PACKAGE__->register_method ({
 		    }
 		};
 		if(my $err = $@) {
-		    unlink $cred_file if defined($cred_file);
+		    eval { $plugin->on_delete_hook($storeid, $opts) };
+		    warn "$@\n" if $@;
 		    die $err;
 		}
 
@@ -284,17 +256,9 @@ __PACKAGE__->register_method ({
 		die "can't remove storage - storage is used as base of another storage\n"
 		    if PVE::Storage::storage_is_used($cfg, $storeid);
 
-		if ($scfg->{type} eq 'cifs')  {
-		    my $cred_file = PVE::Storage::CIFSPlugin::cifs_cred_file_name($storeid);
-		    if (-f $cred_file) {
-			unlink($cred_file) or warn "removing cifs credientials '$cred_file' failed: $!\n";
-		    }
-		} elsif ($scfg->{type} eq 'rbd' && !defined($scfg->{monhost})) {
-		    my $ceph_storage_keyring = "/etc/pve/priv/ceph/${storeid}.keyring";
-		    if (-f $ceph_storage_keyring) {
-			unlink($ceph_storage_keyring) or warn "removing keyring of storage failed: $!\n";
-		    }
-		}
+		my $plugin = PVE::Storage::Plugin->lookup($scfg->{type});
+
+		$plugin->on_delete_hook($storeid, $scfg);
 
 		delete $cfg->{ids}->{$storeid};
 

@@ -104,8 +104,9 @@ sub properties {
 	    maxLength => 256,
 	},
 	smbversion => {
-	    description => "",
+	    description => "SMB protocol version",
 	    type => 'string',
+	    enum => ['2.0', '2.1', '3.0'],
 	    optional => 1,
 	},
     };
@@ -125,6 +126,7 @@ sub options {
 	password => { optional => 1},
 	domain => { optional => 1},
 	smbversion => { optional => 1},
+	mkdir => { optional => 1 },
     };
 }
 
@@ -138,6 +140,23 @@ sub check_config {
 }
 
 # Storage implementation
+
+sub on_add_hook {
+    my ($class, $storeid, $scfg, %param) = @_;
+
+    if (my $password = $param{password}) {
+	cifs_set_credentials($password, $storeid);
+    }
+}
+
+sub on_delete_hook {
+    my ($class, $storeid, $scfg) = @_;
+
+    my $cred_file = cifs_cred_file_name($storeid);
+    if (-f $cred_file) {
+	unlink($cred_file) or warn "removing cifs credientials '$cred_file' failed: $!\n";
+    }
+}
 
 sub status {
     my ($class, $storeid, $scfg, $cache) = @_;
@@ -167,7 +186,7 @@ sub activate_storage {
 
     if (!cifs_is_mounted($server, $share, $path, $cache->{mountdata})) {
 
-	mkpath $path;
+	mkpath $path if !(defined($scfg->{mkdir}) && !$scfg->{mkdir});
 
 	die "unable to activate storage '$storeid' - " .
 	    "directory '$path' does not exist\n" if ! -d $path;
@@ -198,9 +217,9 @@ sub deactivate_storage {
 sub check_connection {
     my ($class, $storeid, $scfg) = @_;
 
-    my $server = $scfg->{server};
+    my $servicename = '//'.$scfg->{server}.'/'.$scfg->{share};
 
-    my $cmd = ['/usr/bin/smbclient', '-L', $server, '-d', '0', '-m'];
+    my $cmd = ['/usr/bin/smbclient', $servicename, '-d', '0', '-m'];
 
     push @$cmd, $scfg->{smbversion} ? "smb".int($scfg->{smbversion}) : 'smb3';
 
@@ -210,6 +229,8 @@ sub check_connection {
     } else {
 	push @$cmd, '-U', 'Guest','-N';
     }
+
+    push @$cmd, '-c', 'echo 1 0';
 
     my $out_str;
     eval {

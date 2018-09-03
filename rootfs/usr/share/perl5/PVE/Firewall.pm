@@ -1180,6 +1180,12 @@ our $cluster_option_properties = {
 	minimum => 0,
 	optional => 1,
     },
+    ebtables => {
+	description => "Enable ebtables rules cluster wide.",
+	type => 'boolean',
+	default => 1,
+	optional => 1,
+    },
     policy_in => {
 	description => "Input policy.",
 	type => 'string',
@@ -1831,7 +1837,6 @@ sub ebtables_get_chains {
 
     my $res = {};
     my $chains = {};
-
     my $parser = sub {
 	my $line = shift;
 	return if $line =~ m/^#/;
@@ -1839,15 +1844,7 @@ sub ebtables_get_chains {
 	if ($line =~ m/^:(\S+)\s\S+$/) {
 	    # Make sure we know chains exist even if they're empty.
 	    $chains->{$1} //= [];
-	} elsif ($line =~ m/^(?:\S+)\s(PVEFW-\S+)\s(?:\S+).*/) {
-	    my $chain = $1;
-	    $line =~ s/\s+$//;
-	    push @{$chains->{$chain}}, $line;
-	} elsif ($line =~ m/^(?:\S+)\s(tap\d+i\d+-(:?IN|OUT))\s(?:\S+).*/) {
-	    my $chain = $1;
-	    $line =~ s/\s+$//;
-	    push @{$chains->{$chain}}, $line;
-	} elsif ($line =~ m/^(?:\S+)\s(veth\d+i\d+-(:?IN|OUT))\s(?:\S+).*/) {
+	} elsif ($line =~ m/^(?:\S+)\s(\S+)\s(?:\S+).*/) {
 	    my $chain = $1;
 	    $line =~ s/\s+$//;
 	    push @{$chains->{$chain}}, $line;
@@ -1858,10 +1855,10 @@ sub ebtables_get_chains {
     };
 
     run_command("/sbin/ebtables-save", outfunc => $parser);
-
-    # compute digest for each chain
+    # compute digest for each chain and store rules as well
     foreach my $chain (keys %$chains) {
-	$res->{$chain} = iptables_chain_digest($chains->{$chain});
+	$res->{$chain}->{rules} = $chains->{$chain};
+	$res->{$chain}->{sig} = iptables_chain_digest($chains->{$chain});
     }
     return $res;
 }
@@ -2321,7 +2318,7 @@ sub generate_tap_rules_direction {
 	if ($direction eq 'OUT') {
 	    $policy = $options->{policy_out} || 'ACCEPT'; # allow everything by default
 	} else {
-	$policy = $options->{policy_in} || 'DROP'; # allow nothing by default
+	    $policy = $options->{policy_in} || 'DROP'; # allow nothing by default
 	}
 
 	my $accept = generate_nfqueue($options);
@@ -2667,6 +2664,9 @@ sub parse_clusterfw_option {
 	if (($value > 1) && ((time() - $value) > 60)) {
 	    $value = 0
 	}
+    } elsif ($line =~ m/^(ebtables):\s*(0|1)\s*$/i) {
+	$opt = lc($1);
+	$value = int($2);
     } elsif ($line =~ m/^(policy_(in|out)):\s*(ACCEPT|DROP|REJECT)\s*$/i) {
 	$opt = lc($1);
 	$value = uc($3);
@@ -3422,7 +3422,7 @@ sub compile {
 	$vmfw_configs = read_vm_firewall_configs($cluster_conf, $vmdata, undef, $verbose);
     }
 
-    return ({},{},{}) if !$cluster_conf->{options}->{enable};
+    return ({},{},{},{}) if !$cluster_conf->{options}->{enable};
 
     my $localnet;
     if ($cluster_conf->{aliases}->{local_network}) {
@@ -3431,7 +3431,7 @@ sub compile {
 	my $localnet_ver;
 	($localnet, $localnet_ver) = parse_ip_or_cidr(local_network() || '127.0.0.0/8');
 
-	$cluster_conf->{aliases}->{local_network} = { 
+	$cluster_conf->{aliases}->{local_network} = {
 	    name => 'local_network', cidr => $localnet, ipversion => $localnet_ver };
     }
 
@@ -3657,12 +3657,13 @@ sub compile_ipsets {
 sub compile_ebtables_filter {
     my ($cluster_conf, $hostfw_conf, $vmfw_configs, $vmdata, $verbose) = @_;
 
-    return ({}, {}) if !$cluster_conf->{options}->{enable};
+    if (!($cluster_conf->{options}->{ebtables} // 1)) {
+	return {};
+    }
 
     my $ruleset = {};
 
     ruleset_create_chain($ruleset, "PVEFW-FORWARD");
-
 
     ruleset_create_chain($ruleset, "PVEFW-FWBR-OUT");
     #for ipv4 and ipv6, check macaddress in iptables, so we use conntrack 'ESTABLISHED', to speedup rules
@@ -3671,13 +3672,13 @@ sub compile_ebtables_filter {
     ruleset_addrule($ruleset, 'PVEFW-FORWARD', '-o fwln+', '-j PVEFW-FWBR-OUT');
 
     # generate firewall rules for QEMU VMs
-    foreach my $vmid (keys %{$vmdata->{qemu}}) {
+    foreach my $vmid (sort keys %{$vmdata->{qemu}}) {
 	eval {
 	    my $conf = $vmdata->{qemu}->{$vmid};
 	    my $vmfw_conf = $vmfw_configs->{$vmid};
 	    return if !$vmfw_conf;
 
-	    foreach my $netid (keys %$conf) {
+	    foreach my $netid (sort keys %$conf) {
 		next if $netid !~ m/^net(\d+)$/;
 		my $net = PVE::QemuServer::parse_net($conf->{$netid});
 		next if !$net->{firewall};
@@ -3692,14 +3693,14 @@ sub compile_ebtables_filter {
     }
 
     # generate firewall rules for LXC containers
-    foreach my $vmid (keys %{$vmdata->{lxc}}) {
+    foreach my $vmid (sort keys %{$vmdata->{lxc}}) {
 	eval {
 	    my $conf = $vmdata->{lxc}->{$vmid};
 
 	    my $vmfw_conf = $vmfw_configs->{$vmid};
 	    return if !$vmfw_conf || !$vmfw_conf->{options}->{enable};
 
-	    foreach my $netid (keys %$conf) {
+	    foreach my $netid (sort keys %$conf) {
 		next if $netid !~ m/^net(\d+)$/;
 		my $net = PVE::LXC::Config->parse_lxc_network($conf->{$netid});
 		next if !$net->{firewall};
@@ -3742,17 +3743,27 @@ sub generate_tap_layer2filter {
     ruleset_addrule($ruleset, 'PVEFW-FWBR-OUT', "-i $iface", "-j $tapchain");
 }
 
+# the parameter $change_only_regex changes two things if defined:
+# * all chains not matching it will be left intact
+# * both the $active_chains hash and the returned status_hash have different
+#   structure (they contain a key named 'rules').
 sub get_ruleset_status {
-    my ($ruleset, $active_chains, $digest_fn, $verbose) = @_;
+    my ($ruleset, $active_chains, $digest_fn, $verbose, $change_only_regex) = @_;
 
     my $statushash = {};
 
     foreach my $chain (sort keys %$ruleset) {
-	my $sig = &$digest_fn($ruleset->{$chain});
+	my $rules = $ruleset->{$chain};
+	my $sig = &$digest_fn($rules);
+	my $oldsig;
 
 	$statushash->{$chain}->{sig} = $sig;
-
-	my $oldsig = $active_chains->{$chain};
+	if (defined($change_only_regex)) {
+	    $oldsig = $active_chains->{$chain}->{sig};
+	    $statushash->{$chain}->{rules} = $rules;
+	} else {
+	    $oldsig = $active_chains->{$chain};
+	}
 	if (!defined($oldsig)) {
 	    $statushash->{$chain}->{action} = 'create';
 	} else {
@@ -3762,19 +3773,26 @@ sub get_ruleset_status {
 		$statushash->{$chain}->{action} = 'update';
 	    }
 	}
-	print "$statushash->{$chain}->{action} $chain ($sig)\n" if $verbose;
-	foreach my $cmd (@{$ruleset->{$chain}}) {
-	    print "\t$cmd\n" if $verbose;
+	if ($verbose) {
+	    print "$statushash->{$chain}->{action} $chain ($sig)\n";
+	    foreach my $cmd (@{$rules}) {
+		print "\t$cmd\n";
+	    }
 	}
     }
 
     foreach my $chain (sort keys %$active_chains) {
-	if (!defined($ruleset->{$chain})) {
-	    my $sig = $active_chains->{$chain};
-	    $statushash->{$chain}->{action} = 'delete';
-	    $statushash->{$chain}->{sig} = $sig;
-	    print "delete $chain ($sig)\n" if $verbose;
+	next if defined($ruleset->{$chain});
+	my $action = 'delete';
+	my $sig = $active_chains->{$chain};
+	if (defined($change_only_regex)) {
+	    $action = 'ignore' if ($chain !~ m/$change_only_regex/);
+	    $statushash->{$chain}->{rules} = $active_chains->{$chain}->{rules};
+	    $sig = $sig->{sig};
 	}
+	$statushash->{$chain}->{action} = $action;
+	$statushash->{$chain}->{sig} = $sig;
+	print "$action $chain ($sig)\n" if $verbose;
     }
 
     return $statushash;
@@ -3849,35 +3867,42 @@ sub get_ruleset_cmdlist {
     return wantarray ? ($cmdlist, $changes) : $cmdlist;
 }
 
+my $pve_ebtables_chainname_regex = qr/PVEFW-\S+|(?:tap|veth)\d+i\d+-(?:IN|OUT)/;
+
 sub get_ebtables_cmdlist {
     my ($ruleset, $verbose) = @_;
 
     my $changes = 0;
     my $cmdlist = "*filter\n";
 
-    my ($active_chains, $hooks) = ebtables_get_chains();
-    my $statushash = get_ruleset_status($ruleset, $active_chains, \&iptables_chain_digest, $verbose);
+    my $active_chains = ebtables_get_chains();
+    my $statushash = get_ruleset_status($ruleset, $active_chains,
+					\&iptables_chain_digest, $verbose,
+					$pve_ebtables_chainname_regex);
 
-    # create chains first
-    foreach my $chain (sort keys %$ruleset) {
-	my $stat = $statushash->{$chain};
-	die "internal error" if !$stat;
+    # create chains first and make sure PVE rules are evaluated if active
+    my $append_pve_to_forward = '-A FORWARD -j PVEFW-FORWARD';
+    my $pve_include = 0;
+    foreach my $chain (sort keys %$statushash) {
+	next if ($statushash->{$chain}->{action} eq 'delete');
 	$cmdlist .= ":$chain ACCEPT\n";
+	$pve_include = 1 if ($chain eq 'PVEFW-FORWARD');
     }
 
-    if ($ruleset->{FORWARD}) {
-	$cmdlist .= "-A FORWARD -j PVEFW-FORWARD\n";
-    }
-
-    foreach my $chain (sort keys %$ruleset) {
+    foreach my $chain (sort keys %$statushash) {
 	my $stat = $statushash->{$chain};
-	die "internal error" if !$stat;
-	$changes = 1 if ($stat->{action} ne 'exists');
+	next if ($stat->{action} eq 'delete');
+	$changes = 1 if ($stat->{action} !~ 'ignore|exists');
 
-	foreach my $cmd (@{$ruleset->{$chain}}) {
+	foreach my $cmd (@{$statushash->{$chain}->{'rules'}}) {
+	    if ($chain eq 'FORWARD' && $cmd eq $append_pve_to_forward) {
+		next if ! $pve_include;
+		$pve_include = 0;
+	    }
 	    $cmdlist .= "$cmd\n";
 	}
     }
+    $cmdlist .= "$append_pve_to_forward\n" if $pve_include;
 
     return wantarray ? ($cmdlist, $changes) : $cmdlist;
 }
@@ -4025,7 +4050,9 @@ sub apply_ruleset {
     }
 
     my $active_ebtables_chains = ebtables_get_chains();
-    my $ebtables_statushash = get_ruleset_status($ebtables_ruleset, $active_ebtables_chains, \&iptables_chain_digest, 0);
+    my $ebtables_statushash = get_ruleset_status($ebtables_ruleset,
+				$active_ebtables_chains, \&iptables_chain_digest,
+				0, $pve_ebtables_chainname_regex);
 
     foreach my $chain (sort keys %$ebtables_ruleset) {
 	my $stat = $ebtables_statushash->{$chain};

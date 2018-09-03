@@ -13,24 +13,24 @@ sub version {
 }
 
 sub release {
-	return '1';
+	return '8';
 }
 
 sub repoid {
-	return '0fcd7879';
+	return 'fdf39912';
 }
 
 # this is diplayed on the GUI
 sub version_text {
-    return '5.2-1/0fcd7879';
+    return '5.2-8/fdf39912';
 }
 
 # this is returned by the API
 sub version_info {
     return {
 	'version' => '5.2',
-	'release' => '1',
-	'repoid' => '0fcd7879',
+	'release' => '8',
+	'repoid' => 'fdf39912',
     }
 }
 

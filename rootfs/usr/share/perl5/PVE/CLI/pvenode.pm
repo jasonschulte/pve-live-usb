@@ -7,6 +7,8 @@ use PVE::API2::ACME;
 use PVE::API2::ACMEAccount;
 use PVE::API2::Certificates;
 use PVE::API2::NodeConfig;
+use PVE::API2::Nodes;
+use PVE::API2::Tasks;
 
 use PVE::CertHelpers;
 use PVE::Certificate;
@@ -14,6 +16,9 @@ use PVE::Exception qw(raise_param_exc raise);
 use PVE::JSONSchema qw(get_standard_option);
 use PVE::NodeConfig;
 use PVE::RPCEnvironment;
+use PVE::CLIFormatter;
+use PVE::RESTHandler;
+use PVE::CLIHandler;
 
 use Term::ReadLine;
 
@@ -116,44 +121,11 @@ __PACKAGE__->register_method({
     }});
 
 my $print_cert_info = sub {
-    my ($cert) = @_;
+    my ($schema, $cert, $options) = @_;
 
-    print "Certificate '$cert->{filename}'\n";
-    print "\tFP: '$cert->{fingerprint}'\n" if $cert->{fingerprint};
-    print "\tSubject: '$cert->{subject}'\n" if $cert->{subject};
-    print "\tIssuer: '$cert->{issuer}'\n" if $cert->{issuer};
-    print "\tnotBefore: " . localtime($cert->{notbefore}) . "\n" if $cert->{notbefore};
-    print "\tnotAfter: " . localtime($cert->{notafter}) . "\n" if $cert->{notafter};
-    if (scalar(@{$cert->{san}})) {
-	print "\tSubjectAlternativeNames:\n";
-	for my $name (@{$cert->{san}}) {
-	    print "\t\t-$name\n";
-	}
-    }
-    print "\n";
-};
-
-my $print_acme_account = sub {
-    my ($account) = @_;
-
-    print "Directory URL: $account->{directory}\n" if $account->{directory};
-    print "Account URL: $account->{location}\n" if $account->{location};
-    print "Terms Of Service: $account->{tos}\n" if $account->{tos};
-
-    my $data = $account->{account};
-    if ($data) {
-	print "\nAccount information:\n";
-	print "ID: $data->{id}\n" if $data->{id};
-	if ($data->{contact}) {
-	    print "Contact:\n";
-	    for my $contact (@{$data->{contact}}) {
-		print "\t- $contact\n";
-	    }
-	}
-	print "Creation date: $data->{createdAt}\n" if $data->{createdAt};
-	print "Initial IP: $data->{initialIp}\n" if $data->{initialIp};
-	print "Status: $data->{status}\n" if $data->{status};
-    }
+    my $order = [qw(filename fingerprint subject issuer notbefore notafter san)];
+    PVE::CLIFormatter::print_api_result(
+	$cert, $schema, $order, { %$options, noheader => 1, sort_key => 0 });
 };
 
 our $cmddef = {
@@ -165,13 +137,51 @@ our $cmddef = {
         set => [ 'PVE::API2::NodeConfig', 'set_options', [], { node => $nodename } ],
     },
 
+    startall => [ 'PVE::API2::Nodes::Nodeinfo', 'startall', [], { node => $nodename } ],
+    stopall => [ 'PVE::API2::Nodes::Nodeinfo', 'stopall', [], { node => $nodename } ],
+    migrateall => [ 'PVE::API2::Nodes::Nodeinfo', 'migrateall', [ 'target' ], { node => $nodename } ],
+
     cert => {
 	info => [ 'PVE::API2::Certificates', 'info', [], { node => $nodename }, sub {
-	    my ($res) = @_;
-	    for my $cert (@$res) { $print_cert_info->($cert); }
-	}],
-	set => [ 'PVE::API2::Certificates', 'upload_custom_cert', ['certificates', 'key'], { node => $nodename }, $print_cert_info ],
+	    my ($res, $schema, $options) = @_;
+
+	    if (!$options->{'output-format'} || $options->{'output-format'} eq 'text') {
+		for my $cert (sort { $a->{filename} cmp $b->{filename} } @$res) {
+		    $print_cert_info->($schema->{items}, $cert, $options);
+		}
+	    } else {
+		PVE::CLIFormatter::print_api_result($res, $schema, undef, $options);
+	    }
+
+	}, $PVE::RESTHandler::standard_output_options],
+	set => [ 'PVE::API2::Certificates', 'upload_custom_cert', ['certificates', 'key'], { node => $nodename }, sub {
+	    my ($res, $schema, $options) = @_;
+	    $print_cert_info->($schema, $res, $options);
+	}, $PVE::RESTHandler::standard_output_options],
 	delete => [ 'PVE::API2::Certificates', 'remove_custom_cert', ['restart'], { node => $nodename } ],
+    },
+
+    task => {
+	list => [ 'PVE::API2::Tasks', 'node_tasks', [], { node => $nodename }, sub {
+	    my ($data, $schema, $options) = @_;
+	    foreach my $task (@$data) {
+		if ($task->{status} ne 'OK') {
+		    $task->{status} = 'ERROR';
+		}
+	    }
+	    PVE::CLIFormatter::print_api_result($data, $schema, ['upid', 'type', 'id', 'user', 'starttime', 'endtime', 'status' ], $options);
+	}, $PVE::RESTHandler::standard_output_options],
+	status => [ 'PVE::API2::Tasks', 'read_task_status', [ 'upid' ], { node => $nodename }, sub {
+	    my ($data, $schema, $options) = @_;
+	    PVE::CLIFormatter::print_api_result($data, $schema, undef, $options);
+	}, $PVE::RESTHandler::standard_output_options],
+	# set limit to 1000000, so we see the whole log, not only the first 50 lines by default
+	log => [ 'PVE::API2::Tasks', 'read_task_log', [ 'upid' ], { node => $nodename, limit => 1000000 }, sub {
+	    my ($data, $resultprops) = @_;
+	    foreach my $line (@$data) {
+		print $line->{t} . "\n";
+	    }
+	}],
     },
 
     acme => {
@@ -184,7 +194,10 @@ our $cmddef = {
 	    }],
 	    register => [ __PACKAGE__, 'acme_register', ['name', 'contact'], {}, $upid_exit ],
 	    deactivate => [ 'PVE::API2::ACMEAccount', 'deactivate_account', ['name'], {}, $upid_exit ],
-	    info => [ 'PVE::API2::ACMEAccount', 'get_account', ['name'], {}, $print_acme_account],
+	    info => [ 'PVE::API2::ACMEAccount', 'get_account', ['name'], {}, sub {
+		my ($data, $schema, $options) = @_;
+		PVE::CLIFormatter::print_api_result($data, $schema, undef, $options);
+	    }, $PVE::RESTHandler::standard_output_options],
 	    update => [ 'PVE::API2::ACMEAccount', 'update_account', ['name'], {}, $upid_exit ],
 	},
 	cert => {

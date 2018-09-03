@@ -123,8 +123,7 @@ generates a self-signed certificate for each node. These certificates are used
 for encrypted communication with the cluster&#8217;s pveproxy service and the
 Shell/Console feature if SPICE is used.</p></div>
 <div class="paragraph">
-<p>The CA certificate and key are stored in the <tt><span class="monospaced">pmxcfs</span></tt> (see the <tt><span class="monospaced">pmxcfs(8)</span></tt>
-manpage).</p></div>
+<p>The CA certificate and key are stored in the <a href="/wiki/Proxmox_Cluster_File_System_(pmxcfs)#chapter_pmxcfs">Proxmox Cluster File System (pmxcfs)</a>.</p></div>
 </div>
 </div>
 <div class="sect1">
@@ -315,6 +314,53 @@ valid!
 Downloading certificate
 Setting pveproxy certificate and key
 Restarting pveproxy
+Task OK</tt></pre>
+</div></div>
+</div>
+<div class="sect2">
+<h3 id="_switching_from_the_tt_span_class_monospaced_staging_span_tt_to_the_regular_acme_directory">Switching from the <tt><span class="monospaced">staging</span></tt> to the regular ACME directory</h3>
+<div class="paragraph">
+<p>Changing the ACME directory for an account is unsupported. If you want to switch
+an account from the <tt><span class="monospaced">staging</span></tt> ACME directory to the regular, trusted, one you
+need to deactivate it and recreate it.</p></div>
+<div class="paragraph">
+<p>This procedure is also needed to change the default ACME account used in the GUI.</p></div>
+<div class="listingblock">
+<div class="title">Example: Changing the <tt><span class="monospaced">default</span></tt> ACME account from the <tt><span class="monospaced">staging</span></tt> to the regular directory</div>
+<div class="content monospaced">
+<pre><tt>root@proxmox:~# pvenode acme account info default
+Directory URL: https://acme-staging-v02.api.letsencrypt.org/directory
+Account URL: https://acme-staging-v02.api.letsencrypt.org/acme/acct/6332194
+Terms Of Service: https://letsencrypt.org/documents/LE-SA-v1.2-November-15-2017.pdf
+
+Account information:
+ID: xxxxxxx
+Contact:
+        - mailto:example@proxmox.com
+Creation date: 2018-07-31T08:41:44.54196435Z
+Initial IP: 192.0.2.1
+Status: valid
+
+root@proxmox:~# pvenode acme account deactivate default
+Renaming account file from '/etc/pve/priv/acme/default' to '/etc/pve/priv/acme/_deactivated_default_4'
+Task OK
+
+root@proxmox:~# pvenode acme account register default example@proxmox.com
+Directory endpoints:
+0) Let's Encrypt V2 (https://acme-v02.api.letsencrypt.org/directory)
+1) Let's Encrypt V2 Staging (https://acme-staging-v02.api.letsencrypt.org/directory)
+2) Custom
+Enter selection:
+0
+
+Attempting to fetch Terms of Service from 'https://acme-v02.api.letsencrypt.org/directory'..
+Terms of Service: https://letsencrypt.org/documents/LE-SA-v1.2-November-15-2017.pdf
+Do you agree to the above terms? [y|N]y
+
+Attempting to register account with 'https://acme-v02.api.letsencrypt.org/directory'..
+Generating ACME account key..
+Registering ACME account..
+Registration successful, account URL: 'https://acme-v02.api.letsencrypt.org/acme/acct/39335247'
 Task OK</tt></pre>
 </div></div>
 </div>

@@ -2,11 +2,14 @@ package PVE::CLIHandler;
 
 use strict;
 use warnings;
+use JSON;
 
 use PVE::SafeSyslog;
 use PVE::Exception qw(raise raise_param_exc);
 use PVE::RESTHandler;
+use PVE::PTY;
 use PVE::INotify;
+use PVE::CLIFormatter;
 
 use base qw(PVE::RESTHandler);
 
@@ -14,7 +17,9 @@ use base qw(PVE::RESTHandler);
 # A real command is always an array consisting of its class, name, array of
 # position fixed (required) parameters and hash of predefined parameters when
 # mapping a CLI command t o an API call. Optionally an output method can be
-# passed at the end, e.g., for formatting or transformation purpose.
+# passed at the end, e.g., for formatting or transformation purpose, and
+# a schema of additional properties/arguments which are added to
+# the method schema and gets passed to the formatter.
 #
 # [class, name, fixed_params, API_pre-set params, output_sub ]
 #
@@ -37,6 +42,59 @@ my $cmddef;
 my $exename;
 my $cli_handler_class;
 
+my $standard_mappings = {
+    'pve-password' => {
+	name => 'password',
+	desc => '<password>',
+	interactive => 1,
+	func => sub {
+	    my ($value) = @_;
+	    return $value if $value;
+	    return PVE::PTY::get_confirmed_password();
+	},
+    },
+};
+sub get_standard_mapping {
+    my ($name, $base) = @_;
+
+    my $std = $standard_mappings->{$name};
+    die "no such standard mapping '$name'\n" if !$std;
+
+    my $res = $base || {};
+
+    foreach my $opt (keys %$std) {
+	next if defined($res->{$opt});
+	$res->{$opt} = $std->{$opt};
+    }
+
+    return $res;
+}
+
+my $gen_param_mapping_func = sub {
+    my ($cli_handler_class) = @_;
+
+    my $param_mapping = $cli_handler_class->can('param_mapping');
+
+    if (!$param_mapping) {
+	my $read_password = $cli_handler_class->can('read_password');
+	my $string_param_mapping = $cli_handler_class->can('string_param_file_mapping');
+
+	return $string_param_mapping if !$read_password;
+
+	$param_mapping = sub {
+	    my ($name) = @_;
+
+	    my $password_map = get_standard_mapping('pve-password', {
+		func => $read_password
+	    });
+	    my $map = $string_param_mapping ? $string_param_mapping->($name) : [];
+	    return [@$map, $password_map];
+	};
+    }
+
+    return $param_mapping;
+};
+
 my $assert_initialized = sub {
     my @caller = caller;
     die "$caller[0]:$caller[2] - not initialized\n"
@@ -52,11 +110,14 @@ my $abort = sub {
 my $expand_command_name = sub {
     my ($def, $cmd) = @_;
 
-    if (!$def->{$cmd}) {
-	my @expanded = grep { /^\Q$cmd\E/ } keys %$def;
-	return $expanded[0] if scalar(@expanded) == 1; # enforce exact match
-    }
-    return $cmd;
+    return $cmd if exists $def->{$cmd}; # command is already complete
+
+    my $is_alias = sub { ref($_[0]) eq 'HASH' && exists($_[0]->{alias}) };
+    my @expanded = grep { /^\Q$cmd\E/ && !$is_alias->($def->{$_}) } keys %$def;
+
+    return $expanded[0] if scalar(@expanded) == 1; # enforce exact match
+
+    return undef;
 };
 
 my $get_commands = sub {
@@ -78,20 +139,27 @@ sub resolve_cmd {
     my $cmdstr = $exename;
 
     if (ref($argv) eq 'ARRAY') {
-	my $expanded = {};
+	my $expanded_last_arg;
 	my $last_arg_id = scalar(@$argv) - 1;
 
 	for my $i (0..$last_arg_id) {
 	    $cmd = $expand_command_name->($def, $argv->[$i]);
+	    if (defined($cmd)) {
+		# If the argument was expanded (or was already complete) and it
+		# is the final argument, tell our caller about it:
+		$expanded_last_arg = $cmd if $i == $last_arg_id;
+	    } else {
+		# Otherwise continue with the unexpanded version of it.
+		$cmd = $argv->[$i]; 
+	    }
 	    $cmdstr .= " $cmd";
-	    $expanded->{$argv->[$i]} = $cmd if $cmd ne $argv->[$i];
-	    last if !defined($def->{$cmd});
 	    $def = $def->{$cmd};
+	    last if !defined($def);
 
 	    if (ref($def) eq 'ARRAY') {
 		# could expand to a real command, rest of $argv are its arguments
 		my $cmd_args = [ @$argv[$i+1..$last_arg_id] ];
-		return ($cmd, $def, $cmd_args, $expanded, $cmdstr);
+		return ($cmd, $def, $cmd_args, $expanded_last_arg, $cmdstr);
 	    }
 
 	    if (defined($def->{alias})) {
@@ -104,7 +172,7 @@ sub resolve_cmd {
 	# got either a special command (bashcomplete, verifyapi) or an unknown
 	# cmd, just return first entry as cmd and the rest of $argv as cmd_arg
 	my $cmd_args = [ @$argv[1..$last_arg_id] ];
-	return ($argv->[0], $def, $cmd_args, $expanded, $cmdstr);
+	return ($argv->[0], $def, $cmd_args, $expanded_last_arg, $cmdstr);
     }
     return ($cmd, $def, undef, undef, $cmdstr);
 }
@@ -119,11 +187,10 @@ sub generate_usage_str {
     $separator //= '';
     $indent //= '';
 
-    my $read_password_func = $cli_handler_class->can('read_password');
-    my $param_mapping_func = $cli_handler_class->can('param_mapping') ||
-	$cli_handler_class->can('string_param_file_mapping');
+    my $param_cb = $gen_param_mapping_func->($cli_handler_class);
 
     my ($subcmd, $def, undef, undef, $cmdstr) = resolve_cmd($cmd);
+    $abort->("unknown command '$cmdstr'") if !defined($def) && ref($cmd) eq 'ARRAY';
 
     my $generate;
     $generate = sub {
@@ -135,13 +202,12 @@ sub generate_usage_str {
 	    foreach my $cmd (&$sortfunc($def)) {
 
 		if (ref($def->{$cmd}) eq 'ARRAY') {
-		    my ($class, $name, $arg_param, $fixed_param) = @{$def->{$cmd}};
+		    my ($class, $name, $arg_param, $fixed_param, undef, $formatter_properties) = @{$def->{$cmd}};
 
 		    $str .= $separator if $oldclass && $oldclass ne $class;
 		    $str .= $indent;
 		    $str .= $class->usage_str($name, "$prefix $cmd", $arg_param,
-		                              $fixed_param, $format,
-		                              $read_password_func, $param_mapping_func);
+		                              $fixed_param, $format, $param_cb, $formatter_properties);
 		    $oldclass = $class;
 
 		} elsif (defined($def->{$cmd}->{alias}) && ($format eq 'asciidoc')) {
@@ -160,12 +226,11 @@ sub generate_usage_str {
 
 	    }
 	} else {
-	    my ($class, $name, $arg_param, $fixed_param) = @$def;
+	    my ($class, $name, $arg_param, $fixed_param, undef, $formatter_properties) = @$def;
 	    $abort->("unknown command '$cmd'") if !$class;
 
 	    $str .= $indent;
-	    $str .= $class->usage_str($name, $prefix, $arg_param, $fixed_param, $format,
-	                              $read_password_func, $param_mapping_func);
+	    $str .= $class->usage_str($name, $prefix, $arg_param, $fixed_param, $format, $param_cb, $formatter_properties);
 	}
 	return $str;
     };
@@ -305,20 +370,21 @@ my $print_bash_completion = sub {
     shift @$args; # no need for program name
     my $print_result = sub {
 	foreach my $p (@_) {
-	    print "$p\n" if $p =~ m/^$cur/;
+	    print "$p\n" if $p =~ m/^\Q$cur\E/;
 	}
     };
 
     my ($cmd, $def) = ($simple_cmd, $cmddef);
     if (!$simple_cmd) {
-	($cmd, $def, $args, my $expaned) = resolve_cmd($args);
+	($cmd, $def, $args, my $expanded) = resolve_cmd($args);
+
+	if (defined($expanded) && $prev ne $expanded) {
+	    print "$expanded\n";
+	    return;
+	}
 
 	if (ref($def) eq 'HASH') {
 	    &$print_result(@{$get_commands->($def)});
-	    return;
-	}
-	if (my $expanded_cmd = $expaned->{$cur}) {
-	    print "$expanded_cmd\n";
 	    return;
 	}
     }
@@ -331,7 +397,7 @@ my $print_bash_completion = sub {
 
     my $skip_param = {};
 
-    my ($class, $name, $arg_param, $uri_param) = @$def;
+    my ($class, $name, $arg_param, $uri_param, undef, $formatter_properties) = @$def;
     $arg_param //= [];
     $uri_param //= {};
 
@@ -342,7 +408,8 @@ my $print_bash_completion = sub {
 
     my $info = $class->map_method_by_name($name);
 
-    my $prop = $info->{parameters}->{properties};
+    my $prop = { %{$info->{parameters}->{properties}} }; # copy
+    $prop = { %$prop, %$formatter_properties } if $formatter_properties;
 
     my $print_parameter_completion = sub {
 	my ($pname) = @_;
@@ -361,7 +428,6 @@ my $print_bash_completion = sub {
     };
 
     # positional arguments
-    $pos++ if $simple_cmd;
     if ($pos < scalar(@$arg_param)) {
 	my $pname = $arg_param->[$pos];
 	&$print_parameter_completion($pname);
@@ -457,7 +523,7 @@ sub setup_environment {
 }
 
 my $handle_cmd  = sub {
-    my ($args, $read_password_func, $preparefunc, $param_mapping_func) = @_;
+    my ($args, $preparefunc, $param_cb) = @_;
 
     $cmddef->{help} = [ __PACKAGE__, 'help', ['extra-args'] ];
 
@@ -480,22 +546,26 @@ my $handle_cmd  = sub {
     }
 
     # checked special commands, if def is still a hash we got an incomplete sub command
-    $abort->("incomplete command '$cmd_str'") if ref($def) eq 'HASH';
+    $abort->("incomplete command '$cmd_str'", $args) if ref($def) eq 'HASH';
 
     &$preparefunc() if $preparefunc;
 
-    my ($class, $name, $arg_param, $uri_param, $outsub) = @{$def || []};
+    my ($class, $name, $arg_param, $uri_param, $outsub, $formatter_properties) = @{$def || []};
     $abort->("unknown command '$cmd_str'") if !$class;
 
-    my $res = $class->cli_handler($cmd_str, $name, $cmd_args, $arg_param, $uri_param, $read_password_func, $param_mapping_func);
+    my ($res, $formatter_params) = $class->cli_handler(
+	$cmd_str, $name, $cmd_args, $arg_param, $uri_param, $param_cb, $formatter_properties);
 
-    &$outsub($res) if $outsub;
+    if (defined $outsub) {
+	my $result_schema = $class->map_method_by_name($name)->{returns};
+	$outsub->($res, $result_schema, $formatter_params);
+    }
 };
 
 my $handle_simple_cmd = sub {
-    my ($args, $read_password_func, $preparefunc, $param_mapping_func) = @_;
+    my ($args, $preparefunc, $param_cb) = @_;
 
-    my ($class, $name, $arg_param, $uri_param, $outsub) = @{$cmddef};
+    my ($class, $name, $arg_param, $uri_param, $outsub, $formatter_properties) = @{$cmddef};
     die "no class specified" if !$class;
 
     if (scalar(@$args) >= 1) {
@@ -522,9 +592,13 @@ my $handle_simple_cmd = sub {
 
     &$preparefunc() if $preparefunc;
 
-    my $res = $class->cli_handler($name, $name, \@ARGV, $arg_param, $uri_param, $read_password_func, $param_mapping_func);
+    my ($res, $formatter_params) = $class->cli_handler(
+	$name, $name, \@ARGV, $arg_param, $uri_param, $param_cb, $formatter_properties);
 
-    &$outsub($res) if $outsub;
+    if (defined $outsub) {
+	my $result_schema = $class->map_method_by_name($name)->{returns};
+	$outsub->($res, $result_schema, $formatter_params);
+    }
 };
 
 sub run_cli_handler {
@@ -543,21 +617,20 @@ sub run_cli_handler {
 
     my $preparefunc = $params{prepare};
 
-    my $read_password_func = $class->can('read_password');
-    my $param_mapping_func = $cli_handler_class->can('param_mapping') ||
-	$class->can('string_param_file_mapping');
+    my $param_cb = $gen_param_mapping_func->($cli_handler_class);
 
     $exename = &$get_exe_name($class);
 
-    initlog($exename);
+    my $logid = $ENV{PVE_LOG_ID} || $exename;
+    initlog($logid);
 
     no strict 'refs';
     $cmddef = ${"${class}::cmddef"};
 
     if (ref($cmddef) eq 'ARRAY') {
-	&$handle_simple_cmd(\@ARGV, $read_password_func, $preparefunc, $param_mapping_func);
+	$handle_simple_cmd->(\@ARGV, $preparefunc, $param_cb);
     } else {
-	&$handle_cmd(\@ARGV, $read_password_func, $preparefunc, $param_mapping_func);
+	$handle_cmd->(\@ARGV, $preparefunc, $param_cb);
     }
 
     exit 0;

@@ -1,6 +1,5 @@
-c599901cf57baab74d9911f219b19eaf  usr/sbin/splat
-d6333b56f0c37d07899e4904043d6ff1  usr/share/doc/spl/changelog.Debian.gz
+fa6a955d61335b6d73916abfd0aa7892  usr/sbin/splat
+2d8ffe649d6e95a920998be3e1bd477f  usr/share/doc/spl/changelog.Debian.gz
 890766781b7ce4cafa1970ab73834e07  usr/share/doc/spl/copyright
 f418724bb38d7d69eda7869e06403214  usr/share/lintian/overrides/spl
 40b0f88d968e6ba49322271b6eae945f  usr/share/man/man1/splat.1.gz
-3c613ece9b5bf1f2b83f8f152fff1fd7  usr/share/man/man5/spl-module-parameters.5.gz

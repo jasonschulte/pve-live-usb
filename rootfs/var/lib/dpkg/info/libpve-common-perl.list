@@ -13,6 +13,7 @@
 /usr/share/perl5/PVE/ACME/StandAlone.pm
 /usr/share/perl5/PVE/ACME.pm
 /usr/share/perl5/PVE/AtomicFile.pm
+/usr/share/perl5/PVE/CLIFormatter.pm
 /usr/share/perl5/PVE/CLIHandler.pm
 /usr/share/perl5/PVE/CalendarEvent.pm
 /usr/share/perl5/PVE/Certificate.pm
@@ -31,5 +32,6 @@
 /usr/share/perl5/PVE/SectionConfig.pm
 /usr/share/perl5/PVE/Subscription.pm
 /usr/share/perl5/PVE/Syscall.pm
+/usr/share/perl5/PVE/Systemd.pm
 /usr/share/perl5/PVE/Ticket.pm
 /usr/share/perl5/PVE/Tools.pm

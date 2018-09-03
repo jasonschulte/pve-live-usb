@@ -6,8 +6,8 @@ set -e
 case "$1" in
     purge|remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
         # remove kernel symlinks
-        rm -f /boot/pve/vmlinuz-4.15.17-1-pve
-        rm -f /boot/pve/initrd.img-4.15.17-1-pve
+        rm -f /boot/pve/vmlinuz-4.15.18-3-pve
+        rm -f /boot/pve/initrd.img-4.15.18-3-pve
     ;;
 
     *)

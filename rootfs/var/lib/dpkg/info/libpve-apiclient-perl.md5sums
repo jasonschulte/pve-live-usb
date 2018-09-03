@@ -1,7 +1,7 @@
-ddcb257958da5db894d1d8c3c924157b  usr/share/doc/libpve-apiclient-perl/changelog.Debian.gz
+d3f8a0442822087a9e10f5cf92ab7e15  usr/share/doc/libpve-apiclient-perl/changelog.Debian.gz
 5d55dc6374889cbe88eedc59ffcb20b6  usr/share/doc/libpve-apiclient-perl/copyright
 970530708db979c8245ba1c06bf6a210  usr/share/doc/libpve-apiclient-perl/examples/example1.pl
 842e765a9d29e0e6b66153760666392a  usr/share/doc/libpve-apiclient-perl/examples/example2.pl
 8b21a91f8ea08b8e77fed5bc71b3d02d  usr/share/doc/libpve-apiclient-perl/examples/perftest1.pl
-3c6c9889f446ada10c0245627635f393  usr/share/perl5/PVE/APIClient/Exception.pm
+530dbf6bac62c99e6292061340ffbd92  usr/share/perl5/PVE/APIClient/Exception.pm
 d9f2f8b979f6c234fd81ec93c7423fc9  usr/share/perl5/PVE/APIClient/LWP.pm

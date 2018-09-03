@@ -1,5 +1,5 @@
 bc1f7a7310129f199ff33430929ce9ab  usr/bin/querybts
-6df53cbbbe768c4c903ebb8f88d6a00d  usr/bin/reportbug
+4c0364e5ee7cff1060187251484ff779  usr/bin/reportbug
 04662ba168398c6aebdf86d079ec6a56  usr/share/applications/reportbug.desktop
 54c1b1a4726a98803418a393c5050d31  usr/share/bug/reportbug/control
 47cc384155c0052d9725adb00bb60e6e  usr/share/bug/reportbug/presubj
@@ -9,7 +9,7 @@ dadbfc6f2571813cca6a0ae3f8c7c578  usr/share/doc/reportbug/NEWS.Debian.gz
 c672589760bccd9f9c6516bab1d63033  usr/share/doc/reportbug/README.Users.gz
 7b4db03b893b4dd5fc154265eb20b133  usr/share/doc/reportbug/README.developers.gz
 416c8dcb07c016934212e83b109887c7  usr/share/doc/reportbug/README.source
-2c86be00a532848eb03595159a8526fc  usr/share/doc/reportbug/changelog.gz
+343442546538b794d91c8c5b344db516  usr/share/doc/reportbug/changelog.gz
 a10eca8cc63590ca70697f766f1e3abf  usr/share/doc/reportbug/copyright
 068f57746f9d338d6e75a7355db69d84  usr/share/icons/hicolor/scalable/places/debian-swirl.svg
 929f4b209b8803805f252b39a56578fe  usr/share/man/man1/querybts.1.gz

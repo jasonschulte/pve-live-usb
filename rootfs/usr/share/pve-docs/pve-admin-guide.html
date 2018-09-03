@@ -1066,7 +1066,7 @@ ICAgPC9nPgogICAgPC9nPgogIDwvZz4KPC9zdmc+Cg==">
 <span id="author">Proxmox Server Solutions Gmbh</span><br>
 <span id="email" class="monospaced">&lt;<a href="mailto:support@proxmox.com">support@proxmox.com</a>&gt;</span><br>
 <span id="revnumber">version 5.2,</span>
-<span id="revdate">Mon May 14 12:47:00 UTC 2018</span>
+<span id="revdate">Wed Aug  8 08:51:56 CEST 2018</span>
 <div id="toc">
   <div id="toctitle">Table of Contents</div>
   <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
@@ -4395,7 +4395,7 @@ them:</p></div>
 <div class="title">File <span class="monospaced">/etc/systemd/timesyncd.conf</span></div>
 <div class="content monospaced">
 <pre>[Time]
-Servers=ntp1.example.com ntp2.example.com ntp3.example.com ntp4.example.com</pre>
+NTP=ntp1.example.com ntp2.example.com ntp3.example.com ntp4.example.com</pre>
 </div></div>
 <div class="paragraph">
 <p>After restarting the synchronization service (<span class="monospaced">systemctl restart
@@ -4527,7 +4527,7 @@ to monitor the disks in the raid array and the array itself. For more informatio
 please refer to the vendor of your raid controller.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_logical_volume_manager_lvm">3.7. Logical Volume Manager (LVM)</h3>
+<h3 id="chapter_lvm">3.7. Logical Volume Manager (LVM)</h3>
 <div class="paragraph">
 <p>Most people install Proxmox VE directly on a local disk. The Proxmox VE
 installation CD offers several options for local disk management, and
@@ -4860,7 +4860,7 @@ How to create a volume group see Section LVM.</p></div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_zfs_on_linux">3.8. ZFS on Linux</h3>
+<h3 id="chapter_zfs">3.8. ZFS on Linux</h3>
 <div class="paragraph">
 <p>ZFS is a combined file system and logical volume manager designed by
 Sun Microsystems. Starting with Proxmox VE 3.4, the native Linux
@@ -5619,8 +5619,7 @@ generates a self-signed certificate for each node. These certificates are used
 for encrypted communication with the cluster&#8217;s pveproxy service and the
 Shell/Console feature if SPICE is used.</p></div>
 <div class="paragraph">
-<p>The CA certificate and key are stored in the <span class="monospaced">pmxcfs</span> (see the <span class="monospaced">pmxcfs(8)</span>
-manpage).</p></div>
+<p>The CA certificate and key are stored in the <a href="#chapter_pmxcfs">Proxmox Cluster File System (pmxcfs)</a>.</p></div>
 </div>
 <div class="sect3">
 <h4 id="_certificates_for_api_and_web_gui">3.9.2. Certificates for API and web GUI</h4>
@@ -5813,6 +5812,53 @@ Task OK</pre>
 </div></div>
 </div>
 <div class="sect4">
+<h5 id="_switching_from_the_span_class_monospaced_staging_span_to_the_regular_acme_directory">Switching from the <span class="monospaced">staging</span> to the regular ACME directory</h5>
+<div class="paragraph">
+<p>Changing the ACME directory for an account is unsupported. If you want to switch
+an account from the <span class="monospaced">staging</span> ACME directory to the regular, trusted, one you
+need to deactivate it and recreate it.</p></div>
+<div class="paragraph">
+<p>This procedure is also needed to change the default ACME account used in the GUI.</p></div>
+<div class="listingblock">
+<div class="title">Example: Changing the <span class="monospaced">default</span> ACME account from the <span class="monospaced">staging</span> to the regular directory</div>
+<div class="content monospaced">
+<pre>root@proxmox:~# pvenode acme account info default
+Directory URL: https://acme-staging-v02.api.letsencrypt.org/directory
+Account URL: https://acme-staging-v02.api.letsencrypt.org/acme/acct/6332194
+Terms Of Service: https://letsencrypt.org/documents/LE-SA-v1.2-November-15-2017.pdf
+
+Account information:
+ID: xxxxxxx
+Contact:
+        - mailto:example@proxmox.com
+Creation date: 2018-07-31T08:41:44.54196435Z
+Initial IP: 192.0.2.1
+Status: valid
+
+root@proxmox:~# pvenode acme account deactivate default
+Renaming account file from '/etc/pve/priv/acme/default' to '/etc/pve/priv/acme/_deactivated_default_4'
+Task OK
+
+root@proxmox:~# pvenode acme account register default example@proxmox.com
+Directory endpoints:
+0) Let's Encrypt V2 (https://acme-v02.api.letsencrypt.org/directory)
+1) Let's Encrypt V2 Staging (https://acme-staging-v02.api.letsencrypt.org/directory)
+2) Custom
+Enter selection:
+0
+
+Attempting to fetch Terms of Service from 'https://acme-v02.api.letsencrypt.org/directory'..
+Terms of Service: https://letsencrypt.org/documents/LE-SA-v1.2-November-15-2017.pdf
+Do you agree to the above terms? [y|N]y
+
+Attempting to register account with 'https://acme-v02.api.letsencrypt.org/directory'..
+Generating ACME account key..
+Registering ACME account..
+Registration successful, account URL: 'https://acme-v02.api.letsencrypt.org/acme/acct/39335247'
+Task OK</pre>
+</div></div>
+</div>
+<div class="sect4">
 <h5 id="_automatic_renewal_of_acme_certificates">Automatic renewal of ACME certificates</h5>
 <div class="paragraph">
 <p>If a node has been successfully configured with an ACME-provided certificate
@@ -5886,18 +5932,69 @@ Open Source: No vendor lock-in.
 <img src="images/screenshot/gui-ceph-status.png" alt="gui-ceph-status.png" width=250
  style="padding: 0 0 0 10px;float:right;"
 ></a>
-<p>Proxmox VE unifies your compute and storage systems, i.e. you can use the
-same physical nodes within a cluster for both computing (processing
-VMs and containers) and replicated storage. The traditional silos of
-compute and storage resources can be wrapped up into a single
-hyper-converged appliance. Separate storage networks (SANs) and
-connections via network (NAS) disappear. With the integration of Ceph,
-an open source software-defined storage platform, Proxmox VE has the
-ability to run and manage Ceph storage directly on the hypervisor
-nodes.</p></div>
+<p>Proxmox VE unifies your compute and storage systems, i.e. you can use the same
+physical nodes within a cluster for both computing (processing VMs and
+containers) and replicated storage. The traditional silos of compute and
+storage resources can be wrapped up into a single hyper-converged appliance.
+Separate storage networks (SANs) and connections via network attached storages
+(NAS) disappear. With the integration of Ceph, an open source software-defined
+storage platform, Proxmox VE has the ability to run and manage Ceph storage directly
+on the hypervisor nodes.</p></div>
 <div class="paragraph">
 <p>Ceph is a distributed object store and file system designed to provide
 excellent performance, reliability and scalability.</p></div>
+<div class="ulist"><div class="title">Some advantages of Ceph on Proxmox VE are:</div><ul>
+<li>
+<p>
+Easy setup and management with CLI and GUI support
+</p>
+</li>
+<li>
+<p>
+Thin provisioning
+</p>
+</li>
+<li>
+<p>
+Snapshots support
+</p>
+</li>
+<li>
+<p>
+Self healing
+</p>
+</li>
+<li>
+<p>
+Scalable to the exabyte level
+</p>
+</li>
+<li>
+<p>
+Setup pools with different performance and redundancy characteristics
+</p>
+</li>
+<li>
+<p>
+Data is replicated, making it fault tolerant
+</p>
+</li>
+<li>
+<p>
+Runs on economical commodity hardware
+</p>
+</li>
+<li>
+<p>
+No need for hardware RAID controllers
+</p>
+</li>
+<li>
+<p>
+Open source
+</p>
+</li>
+</ul></div>
 <div class="paragraph">
 <p>For small to mid sized deployments, it is possible to install a Ceph server for
 RADOS Block Devices (RBD) directly on your Proxmox VE cluster nodes, see
@@ -5907,11 +6004,7 @@ and VMs on the same node is possible.</p></div>
 <div class="paragraph">
 <p>To simplify management, we provide <em>pveceph</em> - a tool to install and
 manage <a href="http://ceph.com">Ceph</a> services on Proxmox VE nodes.</p></div>
-<div class="paragraph">
-<p>Ceph consists of a couple of Daemons
-<span class="footnote"><br>[Ceph intro <a href="http://docs.ceph.com/docs/master/start/intro/">http://docs.ceph.com/docs/master/start/intro/</a>]<br></span>, for use as
-a RBD storage:</p></div>
-<div class="ulist"><ul>
+<div class="ulist"><div class="title">Ceph consists of a couple of Daemons <span class="footnote"><br>[Ceph intro <a href="http://docs.ceph.com/docs/master/start/intro/">http://docs.ceph.com/docs/master/start/intro/</a>]<br></span>, for use as a RBD storage:</div><ul>
 <li>
 <p>
 Ceph Monitor (ceph-mon)
@@ -5991,12 +6084,85 @@ qTCT16/0nPgLA/i6xjf+Xw3+B2ll/uiqTaJTAAAAAElFTkSuQmCC">
 <p>To build a Proxmox Ceph Cluster there should be at least three (preferably)
 identical servers for the setup.</p></div>
 <div class="paragraph">
-<p>A 10Gb network, exclusively used for Ceph, is recommended. A meshed
-network setup is also an option if there are no 10Gb switches
-available, see <a href="https://pve.proxmox.com/wiki/Full_Mesh_Network_for_Ceph_Server">wiki</a> .</p></div>
+<p>A 10Gb network, exclusively used for Ceph, is recommended. A meshed network
+setup is also an option if there are no 10Gb switches available, see our wiki
+article <span class="footnote"><br>[Full Mesh Network for Ceph <a href="https://pve.proxmox.com/wiki/Full_Mesh_Network_for_Ceph_Server">https://pve.proxmox.com/wiki/Full_Mesh_Network_for_Ceph_Server</a>]<br></span> .</p></div>
 <div class="paragraph">
 <p>Check also the recommendations from
 <a href="http://docs.ceph.com/docs/luminous/start/hardware-recommendations/">Ceph&#8217;s website</a>.</p></div>
+<div class="paragraph">
+<div class="title">Avoid RAID</div><p>As Ceph handles data object redundancy and multiple parallel writes to disks
+(OSDs) on its own, using a RAID controller normally doesn’t improve
+performance or availability. On the contrary, Ceph is designed to handle whole
+disks on it&#8217;s own, without any abstraction in between. RAID controller are not
+designed for the Ceph use case and may complicate things and sometimes even
+reduce performance, as their write and caching algorithms may interfere with
+the ones from Ceph.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Warning" src="data:image/png;base64,
+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
+/F/lgJiyQFHragAAAABJRU5ErkJggg==">
+</td>
+<td class="content">Avoid RAID controller, use host bus adapter (HBA) instead.</td>
+</tr></table>
+</div>
 </div>
 <div class="sect3">
 <h4 id="_installation_of_ceph_packages">4.2.2. Installation of Ceph Packages</h4>
@@ -6029,7 +6195,7 @@ http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
 <pre><tt>pveceph init --network <span style="color: #993399">10.10</span><span style="color: #990000">.</span><span style="color: #993399">10.0</span><span style="color: #990000">/</span><span style="color: #993399">24</span></tt></pre></div></div>
 <div class="paragraph">
-<p>This creates an initial config at <span class="monospaced">/etc/pve/ceph.conf</span>. That file is
+<p>This creates an initial configuration at <span class="monospaced">/etc/pve/ceph.conf</span>. That file is
 automatically distributed to all Proxmox VE nodes by using
 <a href="#chapter_pmxcfs">pmxcfs</a>. The command also creates a symbolic link
 from <span class="monospaced">/etc/ceph/ceph.conf</span> pointing to that file. So you can simply run
@@ -6044,8 +6210,8 @@ Ceph commands without the need to specify a configuration file.</p></div>
 ></a>
 <p>The Ceph Monitor (MON)
 <span class="footnote"><br>[Ceph Monitor <a href="http://docs.ceph.com/docs/luminous/start/intro/">http://docs.ceph.com/docs/luminous/start/intro/</a>]<br></span>
-maintains a master copy of the cluster map. For HA you need to have at least 3
-monitors.</p></div>
+maintains a master copy of the cluster map. For high availability you need to
+have at least 3 monitors.</p></div>
 <div class="paragraph">
 <p>On each node where you want to place a monitor (three monitors are recommended),
 create it by using the <em>Ceph &#8594; Monitor</em> tab in the GUI or run.</p></div>
@@ -6062,7 +6228,7 @@ do not want to install a manager, specify the <em>-exclude-manager</em> option.<
 <div class="sect3">
 <h4 id="pve_ceph_manager">4.2.5. Creating Ceph Manager</h4>
 <div class="paragraph">
-<p>The Manager daemon runs alongside the monitors. It provides interfaces for
+<p>The Manager daemon runs alongside the monitors, providing an interface for
 monitoring the cluster. Since the Ceph luminous release the
 ceph-mgr <span class="footnote"><br>[Ceph Manager <a href="http://docs.ceph.com/docs/luminous/mgr/">http://docs.ceph.com/docs/luminous/mgr/</a>]<br></span> daemon
 is required. During monitor installation the ceph manager will be installed as
@@ -6198,13 +6364,88 @@ qTCT16/0nPgLA/i6xjf+Xw3+B2ll/uiqTaJTAAAAAElFTkSuQmCC">
 among your, at least three nodes (4 OSDs on each node).</td>
 </tr></table>
 </div>
+<div class="paragraph">
+<p>If the disk was used before (eg. ZFS/RAID/OSD), to remove partition table, boot
+sector and any OSD leftover the following commands should be sufficient.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>dd <span style="font-weight: bold"><span style="color: #0000FF">if</span></span><span style="color: #990000">=</span>/dev/zero <span style="color: #009900">of</span><span style="color: #990000">=</span>/dev/sd<span style="color: #990000">[</span>X<span style="color: #990000">]</span> <span style="color: #009900">bs</span><span style="color: #990000">=</span>1M <span style="color: #009900">count</span><span style="color: #990000">=</span><span style="color: #993399">200</span>
+ceph-disk zap /dev/sd<span style="color: #990000">[</span>X<span style="color: #990000">]</span></tt></pre></div></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Warning" src="data:image/png;base64,
+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
+/F/lgJiyQFHragAAAABJRU5ErkJggg==">
+</td>
+<td class="content">The above commands will destroy data on the disk!</td>
+</tr></table>
+</div>
 <div class="sect4">
 <h5 id="_ceph_bluestore">Ceph Bluestore</h5>
 <div class="paragraph">
 <p>Starting with the Ceph Kraken release, a new Ceph OSD storage type was
 introduced, the so called Bluestore
-<span class="footnote"><br>[Ceph Bluestore <a href="http://ceph.com/community/new-luminous-bluestore/">http://ceph.com/community/new-luminous-bluestore/</a>]<br></span>. In
-Ceph luminous this store is the default when creating OSDs.</p></div>
+<span class="footnote"><br>[Ceph Bluestore <a href="http://ceph.com/community/new-luminous-bluestore/">http://ceph.com/community/new-luminous-bluestore/</a>]<br></span>.
+This is the default when creating OSDs in Ceph luminous.</p></div>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
@@ -6261,21 +6502,21 @@ zKjX661DvHOOJElIkoRSqYT3/vLvRlW15eHCa4VxzdvmpjZDfubzuXeb3vuzqCEixBhbo0NTkyS5
 PAr9L8j/96+U/w3yCoCXW14B8HLLvwDd67nwZIEPdgAAAABJRU5ErkJggg==">
 </td>
 <td class="content">In order to select a disk in the GUI, to be more failsafe, the disk needs
-to have a
-GPT <span class="footnote" id="_footnote_GPT"><br>[GPT partition table <a href="https://en.wikipedia.org/wiki/GUID_Partition_Table">https://en.wikipedia.org/wiki/GUID_Partition_Table</a>]<br></span>
-partition table. You can create this with <span class="monospaced">gdisk /dev/sd(x)</span>. If there is no
-GPT, you cannot select the disk as DB/WAL.</td>
+to have a GPT <span class="footnote" id="_footnote_GPT"><br>[GPT partition table <a href="https://en.wikipedia.org/wiki/GUID_Partition_Table">https://en.wikipedia.org/wiki/GUID_Partition_Table</a>]<br></span> partition table. You can
+create this with <span class="monospaced">gdisk /dev/sd(x)</span>. If there is no GPT, you cannot select the
+disk as DB/WAL.</td>
 </tr></table>
 </div>
 <div class="paragraph">
 <p>If you want to use a separate DB/WAL device for your OSDs, you can specify it
-through the <em>-wal_dev</em> option.</p></div>
+through the <em>-journal_dev</em> option. The WAL is placed with the DB, if not
+specified separately.</p></div>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight 3.1.8
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
-<pre><tt>pveceph createosd /dev/sd<span style="color: #990000">[</span>X<span style="color: #990000">]</span> -wal_dev /dev/sd<span style="color: #990000">[</span>Y<span style="color: #990000">]</span></tt></pre></div></div>
+<pre><tt>pveceph createosd /dev/sd<span style="color: #990000">[</span>X<span style="color: #990000">]</span> -journal_dev /dev/sd<span style="color: #990000">[</span>Y<span style="color: #990000">]</span></tt></pre></div></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -6547,9 +6788,9 @@ PAr9L8j/96+U/w3yCoCXW14B8HLLvwDd67nwZIEPdgAAAABJRU5ErkJggg==">
 </div>
 <div class="paragraph">
 <p>It is advised to calculate the PG number depending on your setup, you can find
-the formula and the PG
-calculator <span class="footnote"><br>[PG calculator <a href="http://ceph.com/pgcalc/">http://ceph.com/pgcalc/</a>]<br></span> online. While PGs
-can be increased later on, they can never be decreased.</p></div>
+the formula and the PG calculator <span class="footnote"><br>[PG calculator
+<a href="http://ceph.com/pgcalc/">http://ceph.com/pgcalc/</a>]<br></span> online. While PGs can be increased later on, they can
+never be decreased.</p></div>
 <div class="paragraph">
 <p>You can create pools through command line or on the GUI on each PVE host under
 <strong>Ceph &#8594; Pools</strong>.</p></div>
@@ -10139,6 +10380,14 @@ width:100%;
 <td class="tableblock halign-left valign-top" ><p class="tableblock">yes</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">Ceph/CephFS</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced">cephfs</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">file</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">yes</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">yes</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">yes</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top" ><p class="tableblock">Sheepdog</p></td>
 <td class="tableblock halign-left valign-top" ><p class="tableblock monospaced">sheepdog</p></td>
 <td class="tableblock halign-left valign-top" ><p class="tableblock">block</p></td>
@@ -10685,7 +10934,7 @@ vr6+wTfK/4tEfzeeMmUKkydPzhg8jJAAREgEg0H6+vrQNC2pFL8ZUVWVrKws8vPzycnJQVXVjH/s
 </div>
 </div>
 <div class="sect2">
-<h3 id="_directory_backend">8.5. Directory Backend</h3>
+<h3 id="storage_directory">8.5. Directory Backend</h3>
 <div class="paragraph">
 <p>Storage pool type: <span class="monospaced">dir</span></p></div>
 <div class="paragraph">
@@ -11082,7 +11331,7 @@ PAr9L8j/96+U/w3yCoCXW14B8HLLvwDd67nwZIEPdgAAAABJRU5ErkJggg==">
 </div>
 </div>
 <div class="sect2">
-<h3 id="_nfs_backend">8.6. NFS Backend</h3>
+<h3 id="storage_nfs">8.6. NFS Backend</h3>
 <div class="paragraph">
 <p>Storage pool type: <span class="monospaced">nfs</span></p></div>
 <div class="paragraph">
@@ -11459,7 +11708,7 @@ with:</p></div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_glusterfs_backend">8.8. GlusterFS Backend</h3>
+<h3 id="storage_glusterfs">8.8. GlusterFS Backend</h3>
 <div class="paragraph">
 <p>Storage pool type: <span class="monospaced">glusterfs</span></p></div>
 <div class="paragraph">
@@ -11613,7 +11862,7 @@ width:100%;
 </div>
 </div>
 <div class="sect2">
-<h3 id="_local_zfs_pool_backend">8.9. Local ZFS Pool Backend</h3>
+<h3 id="storage_zfspool">8.9. Local ZFS Pool Backend</h3>
 <div class="paragraph">
 <p>Storage pool type: <span class="monospaced">zfspool</span></p></div>
 <div class="paragraph">
@@ -11753,7 +12002,7 @@ width:100%;
 </div>
 </div>
 <div class="sect2">
-<h3 id="_lvm_backend">8.10. LVM Backend</h3>
+<h3 id="storage_lvm">8.10. LVM Backend</h3>
 <div class="paragraph">
 <p>Storage pool type: <span class="monospaced">lvm</span></p></div>
 <div class="paragraph">
@@ -11935,7 +12184,7 @@ width:100%;
 </div>
 </div>
 <div class="sect2">
-<h3 id="_lvm_thin_backend">8.11. LVM thin Backend</h3>
+<h3 id="storage_lvmthin">8.11. LVM thin Backend</h3>
 <div class="paragraph">
 <p>Storage pool type: <span class="monospaced">lvmthin</span></p></div>
 <div class="paragraph">
@@ -12044,7 +12293,7 @@ width:100%;
 </div>
 </div>
 <div class="sect2">
-<h3 id="_a_href_http_www_open_iscsi_org_open_iscsi_a_initiator">8.12. <a href="http://www.open-iscsi.org/">Open-iSCSI</a> initiator</h3>
+<h3 id="storage_open_iscsi">8.12. Open-iSCSI initiator</h3>
 <div class="paragraph">
 <p>Storage pool type: <span class="monospaced">iscsi</span></p></div>
 <div class="paragraph">
@@ -12054,9 +12303,10 @@ source iSCSI target solutions available,
 e.g. <a href="http://www.openmediavault.org/">OpenMediaVault</a>, which is based on
 Debian.</p></div>
 <div class="paragraph">
-<p>To use this backend, you need to install the <span class="monospaced">open-iscsi</span>
-package. This is a standard Debian package, but it is not installed by
-default to save resources.</p></div>
+<p>To use this backend, you need to install the
+<a href="http://www.open-iscsi.org/">Open-iSCSI</a> (<span class="monospaced">open-iscsi</span>) package. This is a
+standard Debian package, but it is not installed by default to save
+resources.</p></div>
 <div class="literalblock">
 <div class="content monospaced">
 <pre># apt-get install open-iscsi</pre>
@@ -12210,7 +12460,7 @@ width:100%;
 </div>
 </div>
 <div class="sect2">
-<h3 id="_user_mode_iscsi_backend">8.13. User Mode iSCSI Backend</h3>
+<h3 id="storage_iscsidirect">8.13. User Mode iSCSI Backend</h3>
 <div class="paragraph">
 <p>Storage pool type: <span class="monospaced">iscsidirect</span></p></div>
 <div class="paragraph">
@@ -12594,6 +12844,251 @@ width:100%;
 </table>
 </div>
 </div>
+<div class="sect2">
+<h3 id="storage_cephfs">8.15. Ceph Filesystem (CephFS)</h3>
+<div class="paragraph">
+<p>Storage pool type: <span class="monospaced">cephfs</span></p></div>
+<div class="paragraph">
+<p>CephFS implements a POSIX-compliant filesystem using a <a href="http://ceph.com">Ceph</a>
+storage cluster to store its data. As CephFS builds on Ceph it shares most of
+its properties, this includes redundancy, scalability, self healing and high
+availability.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Tip" src="data:image/png;base64,
+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">
+</td>
+<td class="content">Proxmox VE can <a href="#chapter_pveceph">manage ceph setups</a>, which makes
+configuring a CephFS storage easier. As recent hardware has plenty of CPU power
+and RAM, running storage services and VMs on same node is possible without a
+big performance impact.</td>
+</tr></table>
+</div>
+<div class="sect3">
+<h4 id="storage_cephfs_config">8.15.1. Configuration</h4>
+<div class="paragraph">
+<p>This backend supports the common storage properties <span class="monospaced">nodes</span>,
+<span class="monospaced">disable</span>, <span class="monospaced">content</span>, and the following <span class="monospaced">cephfs</span> specific properties:</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+monhost
+</dt>
+<dd>
+<p>
+List of monitor daemon addresses. Optional, only needed if Ceph is not running
+on the PVE cluster.
+</p>
+</dd>
+<dt class="hdlist1">
+path
+</dt>
+<dd>
+<p>
+The local mount point. Optional, defaults to <span class="monospaced">/mnt/pve/&lt;STORAGE_ID&gt;/</span>.
+</p>
+</dd>
+<dt class="hdlist1">
+username
+</dt>
+<dd>
+<p>
+Ceph user id. Optional, only needed if Ceph is not running on the PVE cluster
+where it defaults to <span class="monospaced">admin</span>.
+</p>
+</dd>
+<dt class="hdlist1">
+subdir
+</dt>
+<dd>
+<p>
+CephFS subdirectory to mount. Optional, defaults to <span class="monospaced">/</span>.
+</p>
+</dd>
+<dt class="hdlist1">
+fuse
+</dt>
+<dd>
+<p>
+Access CephFS through FUSE, instead of the kernel client. Optional, defaults
+to <span class="monospaced">0</span>.
+</p>
+</dd>
+</dl></div>
+<div class="listingblock">
+<div class="title">Configuration Example for a external Ceph cluster (<span class="monospaced">/etc/pve/storage.cfg</span>)</div>
+<div class="content monospaced">
+<pre>cephfs: cephfs-external
+        monhost 10.1.1.20 10.1.1.21 10.1.1.22
+        path /mnt/pve/cephfs-external
+        content backup
+        username admin</pre>
+</div></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAJhUlEQVRoge2ZWWycVxXHf+fce7/v
+m/GaGCde4pI0aQlJC0kRtE1L00JbLIjY4QkeUB9YHhAIJFCExAsKUkE8IAFFPIDUIqhBRSDRBUqC
+CimFFBCBpCWx02IaZ3G2SdyxPZ7vHh6+mcnSZnFjKIge6Wj8zYzvPf9z/me5d8TM+F8WfbkNuFx5
+BcDLLf/fAEZGRmx4eNh6enqsp6fHhoeHbWRk5D9aFeSlVqHNmzfb6H33sHnT7ZQmD5GfOMax6Sm+
+Pl5h1Yc+xpYtW2SBbX1ReUkRGBkZsdH77mHLW95EOv4Ms3ueJh6YYPHUFF9aljJ63z3cf//9/5FI
+vKQIDA8P293L2yhVjjH7t51ocDiviFecF46n7XzBreChhx4qNhH5t0XjJUVgx44ddGUZ9b/vIpQD
+oRQIWSDJAiFL6B9axo4dO4gxAmANWVDLG+Ln82URMRGhVCqRHxonlAPqFXWKC4r6IhI6OMjMzBN4
+/4LlTUQQEZxzZ32QJAlpmrb+p16vU6vVOHXq1AWjN18AnDj0F971vrs4OnmYJVkoDA4FCPUO172I
+Cgnt7SV++4vvsGhRJx3tJbIsRVVpsUnOBBABBVFEClKYwbKr7sTM7EIUnBcA7z21k7t49x1X8JXv
+bOWra7rw5QRtcN8PLCfvvZJvb9vJycpJpg4/hp/N0I4SMQs4Jw0A5zBXHGiCaIZIKABgpGlKjPEF
+0TpT5pUDRXiVt99+Le03r+WzuytM1gO6pB/3+o0cbxvk8yOPMjW6i2iR2lxOjJDHSDMFogmGwzQ7
+rRJAUpAENAGXIZq2AFzQpvkACCEQcahP+cRH3sKHn9zHXU+MM7rtGeD33NDXzaZynZU9gcezpUw9
+X6OzIyOakkfF4QEpPG6nDRNNEA2FSgKimETSNCXPc0II57VpXhEolUqoOrxPSLOMT330Dv5SqfKD
+NR388Y2L+caQsjITNv3pMBs3rOT56ZyZGaM+J0QUxDc0INrWUgggoRGBAOIRAt77hY1AmqaoeJxP
+cN645jVDbNn8Hj73o8fZ/af9mEE9j9y2YRXt5YzZWmRmzjj1/BwhTXAKzitOHEbeWlc0AVwDnCv8
+KoZzjotV33lTSL1HNKAuEtKM1169jM98/E6mTk3x4Nbd7Bk7TEdHRvAeVY+hmDqmZwx1kIkiqrhz
+S2zL+AbNMC6l/80LgHMOEY9oQvBCks5RKpXo7JhFxbhz42pet2aQet1YtLiDJAkIDq8BHwJmwlwO
+UaD0ojsrNKuUReIZyb9gABCHcwWFgg+0lTPyvIRToVzKWLpkMfV6REQplYvmZCj1uuBUSdJwTg8A
+XBdoCZMOsBkQBeGi/J83gBgjmABC8AlJGsjzFLMyaXDM1etEA0VR50iCx6mSZhkiijpPjEpQD+SF
+4WdJrTAewdCFB1CtVlFVVATnhMQnWJqC5aTBk+c5IIgWRoTgSZJAmiZAo1s7hwsppglI+fTiljeY
+nyHkLQotKIAYI4igzpFHISQOiwEnKTEG8hhRVZw6YjRQLfJGHcF7jleqTBw8znXr12MABnv37efY
+iSnesG4tiUsRUQwD7JIAzKsPqCqiRbVwweM04XdPjhJN+dvTBxgbn6G9q59yZx9/3HWEb33vN+zc
+/RzOJ+w/eJLtO8Z5ZNtT7PvHIUQTvvv9X/Lc/mN0d3by3fseRLQwvWh0Fy+h8wbQ2VFG1KM+xfuA
+qufo8So/fejPPD/rqJys8pvf7eLAoeNMHqnw2U9+kH3jVQ5MClMzKUla5obr13HliiEMmDx6gltv
+uY7Vr1nBQF8PJopQ9AFTt/AROFfMjCW9XTy19xB33Hodb924jr1j+/nDk3/nzTdei4jw3nfeyCOP
+bufa1y5jzeoVrcHM8HR3dfHlr/2Q+x94jFtuuh44/9B2PplXDryYLF3STXd3e+t5UXcHY89OsOH6
+NS2Qed7wpM1Rm50G4MGHH2P961Zy3bqreXrPP5mrzwLt5y6/cACq1eoLCKm+TN/SAebmfn8aUG83
+PYs7+cnPH+eqKwd5as8/edc7bi02847pmVkATk1VWbF8AOcca1Yv59DkqcYK0tCL02deACqVCldc
+0YdIwLmEPM9RV6NnUZlPf3wT6oqJcePN6wHhzTeu4/CRCrfctJ4sSxBRli7pYfHEMUSU97/7Th75
+1RP8eec+Yp5zzTVXM9DfDyogBvHS6HTJACYmJnjVoq5GFw0454gCEOnoaMfiNGZFFRFxJGkbywZ6
+i1NWoy9kWYmbb1gHKCHApuGbisVFGyoYUswa5OR5ftF56JIBjI6OMtDfWwAQ35jnc8AVpRXBohVq
+UowECKqK4RBxoE0W6gvGCcEjaOEAwEQWdpgbGxujt7erOLO2mk3R8i0Wz9EiuUGz+qlKEQEUaJbI
+4lTHmTVePKgWzpDGJGpc8CDTlEsuo88++wxXDA0UIUbAOP23KGZKjI48KnkuhcbiPbPCOBoeBikO
+Lk2VxjqNRilaAEqSZGEAbN261bZt+zW33XY7IAXXm6Ou0YhIMamaaUOl5WRrzg00viuKWWxpQUOH
+NAZFQRpD48Xlkig0MTHBB95zG+VSylz1KCbWyDOh2XyK+56IqjWMKigkUnzWnPPFFFRRLZ29SQRU
+ELOGY4pZ6LKOlM07mZ07d/KOtw1TcB4sGkTDiDQ9K1IkrKeYmQC08d7pZLSiRBpE5s7aS0XAHFEK
+AGY51Wr18g80Zmb33nsvX/z8XdSmj2AWOXhwkrxe46+79jB55Dh/3T2GxUhHextdXW2sXN7PNWtW
+IQKDA71FFBoAjIgQkVg/a5+oHrU5zIznDhxk964xKpXKggAoTlWW8+OfPorlOQ//cjsDy1bS2dFO
+W+diVly1iL6+Pqanpzl5qsL4pPHwN3/G1InDlMsZ7Z1tDA30cfWqIa5dexV9fb2YnT7UTxw4xsHJ
+o4yOjfOP8QOMjx/k4OQx7r777lY0zycXvJ02M4sxMjg4SL1eR0TYsGEDw8PD9PX10d7ejogUN3a1
+GqpKCIE8z5mdnUVVqVarbN++nba2Nvbu3csDDzyAqrJ8+atb+zjn6e/vZ/Xq1axatYq1a9fS29tL
+lmUMDQ1RKpXOm9EXvV6v1+tWr9eZnp5mZmaGWq1GjLHF62aiNZ+bnPfe45xrvTZzxMyYmZk56+LX
+zKjX661DvHOOJElIkoRSqYT3/vLvRlW15eHCa4VxzdvmpjZDfubzuXeb3vuzqCEixBhbo0NTkyS5
+PAr9L8j/96+U/w3yCoCXW14B8HLLvwDd67nwZIEPdgAAAABJRU5ErkJggg==">
+</td>
+<td class="content">Don&#8217;t forget to setup the client secret key file if cephx was not turned
+off.</td>
+</tr></table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_authentication_2">8.15.2. Authentication</h4>
+<div class="paragraph">
+<p>If you use the, by-default enabled, <span class="monospaced">cephx</span> authentication, you need to copy
+the secret from your external Ceph cluster to a Proxmox VE host.</p></div>
+<div class="paragraph">
+<p>Create the directory <span class="monospaced">/etc/pve/priv/ceph</span> with</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>mkdir /etc/pve/priv/ceph</pre>
+</div></div>
+<div class="paragraph">
+<p>Then copy the secret</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>scp &lt;cephserver&gt;:/etc/ceph/cephfs.secret /etc/pve/priv/ceph/&lt;STORAGE_ID&gt;.secret</pre>
+</div></div>
+<div class="paragraph">
+<p>The secret must be named to match your <span class="monospaced">&lt;STORAGE_ID&gt;</span>. Copying the
+secret generally requires root privileges. The file must only contain the
+secret key itself, opposed to the <span class="monospaced">rbd</span> backend which also contains a
+<span class="monospaced">[client.userid]</span> section.</p></div>
+<div class="paragraph">
+<p>If Ceph is installed locally on the PVE cluster, i.e., setup with <span class="monospaced">pveceph</span>,
+this is done automatically.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_storage_features_11">8.15.3. Storage Features</h4>
+<div class="paragraph">
+<p>The <span class="monospaced">cephfs</span> backend is a POSIX-compliant filesystem on top of a Ceph cluster.</p></div>
+<table class="tableblock frame-all grid-all"
+style="
+width:100%;
+">
+<caption class="title">Table 14. Storage features for backend <span class="monospaced">cephfs</span></caption>
+<col style="width:20%;">
+<col style="width:20%;">
+<col style="width:20%;">
+<col style="width:20%;">
+<col style="width:20%;">
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top" >Content types     </th>
+<th class="tableblock halign-left valign-top" >Image formats  </th>
+<th class="tableblock halign-left valign-top" >Shared </th>
+<th class="tableblock halign-left valign-top" >Snapshots </th>
+<th class="tableblock halign-left valign-top" >Clones</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced">vztmpl iso backup</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock monospaced">none</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">yes</p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">yes<sup>[1]</sup></p></td>
+<td class="tableblock halign-left valign-top" ><p class="tableblock">no</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><sup>[1]</sup> Snapshots, while no known bugs, cannot be guaranteed to be stable yet, as
+they lack testing.</p></div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -12721,7 +13216,7 @@ recovery works, but there may be some data loss between the last synced
 style="
 width:100%;
 ">
-<caption class="title">Table 14. Storage Types</caption>
+<caption class="title">Table 15. Storage Types</caption>
 <col style="width:25%;">
 <col style="width:25%;">
 <col style="width:25%;">
@@ -12866,7 +13361,7 @@ The valid range for values is <span class="monospaced">0-23</span> for hours and
 style="
 width:100%;
 ">
-<caption class="title">Table 15. Schedule Examples</caption>
+<caption class="title">Table 16. Schedule Examples</caption>
 <col style="width:33%;">
 <col style="width:33%;">
 <col style="width:33%;">
@@ -16203,7 +16698,7 @@ IPv6 address in CIDR format.
 </dt>
 <dd>
 <p>
-Keybord layout for vnc server. Default is read from the <em>/etc/pve/datacenter.conf</em> configuration file.It should not be necessary to set it.
+Keybord layout for vnc server. Default is read from the <em>/etc/pve/datacenter.cfg</em> configuration file.It should not be necessary to set it.
 </p>
 </dd>
 <dt class="hdlist1">
@@ -17724,7 +18219,7 @@ GNQfHLG+TyMTkAVEr88xQfVnkBg7GAKixSIykDYQsL21/wFkW/B5QqT9lwAAAABJRU5ErkJggg==">
 </dt>
 <dd>
 <p>
-Amount of memory shares for auto-ballooning. The larger the number is, the more memory this VM gets. Number is relative to weights of all other running VMs. Using zero disables auto-ballooning
+Amount of memory shares for auto-ballooning. The larger the number is, the more memory this VM gets. Number is relative to weights of all other running VMs. Using zero disables auto-ballooning. Auto-ballooning is done by pvestatd.
 </p>
 </dd>
 <dt class="hdlist1">
@@ -21528,6 +22023,14 @@ This is used to set cluster wide firewall options.
 </p>
 </dd>
 <dt class="hdlist1">
+<span class="monospaced">ebtables</span>: <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">1</span>)
+</dt>
+<dd>
+<p>
+Enable ebtables rules cluster wide.
+</p>
+</dd>
+<dt class="hdlist1">
 <span class="monospaced">enable</span>: <span class="monospaced">&lt;integer&gt; (0 - N)</span> 
 </dt>
 <dd>
@@ -23368,7 +23871,7 @@ percentage of uptime in a given year.</p></div>
 style="
 width:60%;
 ">
-<caption class="title">Table 16. Availability - Downtime per Year</caption>
+<caption class="title">Table 17. Availability - Downtime per Year</caption>
 <col style="width:50%;">
 <col style="width:50%;">
 <thead>
@@ -26083,6 +26586,112 @@ average time to resolve a local DNS name
 </dd>
 </dl></div>
 </div>
+<div class="sect2">
+<h3 id="_shell_interface_for_the_proxmox_ve_api">17.3. Shell interface for the Proxmox VE API</h3>
+<div class="paragraph">
+<p>The Proxmox VE management tool (<span class="monospaced">pvesh</span>) allows to directly invoke API
+function, without using the REST/HTTPS server.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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">
+</td>
+<td class="content">Only <em>root</em> is allowed to do that.</td>
+</tr></table>
+</div>
+<div class="sect3">
+<h4 id="_examples_10">17.3.1. EXAMPLES</h4>
+<div class="paragraph">
+<p>Get the list of nodes in my cluster</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre># pvesh get /nodes</pre>
+</div></div>
+<div class="paragraph">
+<p>Get a list of available options for the data center</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre># pvesh usage cluster/options -v</pre>
+</div></div>
+<div class="paragraph">
+<p>Set the HTMl5 NoVNC console as the default console for the data center</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre># pvesh set cluster/options -console html5</pre>
+</div></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_proxmox_node_management">17.4. Proxmox Node Management</h3>
+<div class="paragraph">
+<p>The Proxmox VE node management tool (<span class="monospaced">pvenode</span>) allows to control node specific
+settings and resources.</p></div>
+<div class="paragraph">
+<p>Currently <span class="monospaced">pvenode</span> allows to set a node&#8217;s description and to manage
+the node&#8217;s SSL certificates used for the API and the web GUI through <span class="monospaced">pveproxy</span>.</p></div>
+<div class="sect3">
+<h4 id="_examples_11">17.4.1. EXAMPLES</h4>
+<div class="paragraph">
+<p><span class="monospaced">pvenode cert set certificate.crt certificate.key -force</span></p></div>
+<div class="paragraph">
+<p>Install an externally provided certificate. Both files need to be PEM encoded.
+<span class="monospaced">certificate.key</span> contains the private key and <span class="monospaced">certificate.crt</span> contains the
+whole certificate chain.</p></div>
+<div class="listingblock">
+<div class="content monospaced">
+<pre>pvenode acme account register default mail@example.invalid
+pvenode config set --acme domains=example.invalid
+pvenode acme cert order
+systemctl restart pveproxy</pre>
+</div></div>
+<div class="paragraph">
+<p>Setup ACME account and order a certificate for local node.</p></div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -26297,7 +26906,7 @@ Debian Version is
 rolling release model and using the latest stable version is always
 recommended.
 </p>
-<table class="tableblock frame-all grid-all"
+<table class="tableblock frame-all grid-all" id="faq-support-table"
 style="
 width:100%;
 ">
@@ -26353,6 +26962,94 @@ width:100%;
 </tr>
 </tbody>
 </table>
+</li>
+<li>
+<p><em>
+How can I upgrade Proxmox VE to the next release?
+</em></p>
+<p>
+Minor version upgrades, for example upgrading from Proxmox VE in version 5.1
+to 5.2, can be done just like any normal update, either through the Web
+GUI <em>Node &#8594; Updates</em> panel or through the CLI with:
+</p>
+<div class="listingblock" id="faq-upgrade">
+<div class="content monospaced">
+<pre>apt update
+apt full-upgrade</pre>
+</div></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Note" src="data:image/png;base64,
+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">
+</td>
+<td class="content">Always ensure you correctly setup the
+<a href="#sysadmin_package_repositories">package repositories</a> and only
+continue with the actual upgrade if <span class="monospaced">apt update</span> did not hit any error.</td>
+</tr></table>
+</div>
+<div class="paragraph">
+<p>Major version upgrades, for example going from Proxmox VE 4.4 to 5.0, are
+also supported. They must be carefully planned and tested and should
+<strong>never</strong> be started without having a current backup ready.
+Although the specific upgrade steps depend on your respective setup, we
+provide general instructions and advice of how a upgrade should be
+performed:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<a href="https://pve.proxmox.com/wiki/Upgrade_from_4.x_to_5.0">Upgrade from Proxmox VE 4.x to 5.0</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://pve.proxmox.com/wiki/Upgrade_from_3.x_to_4.0">Upgrade from Proxmox VE 3.x to 4.0</a>
+</p>
+</li>
+</ul></div>
 </li>
 <li>
 <p><em>
@@ -26588,7 +27285,81 @@ strong isolation that VMs provide.</td>
 <h2 id="_command_line_interface">20. Appendix A: Command Line Interface</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_strong_pvesm_strong_proxmox_ve_storage_manager">20.1. <strong>pvesm</strong> - Proxmox VE Storage Manager</h3>
+<h3 id="_output_format_options_span_class_monospaced_format_options_span">20.1. Output format options <span class="monospaced">[FORMAT_OPTIONS]</span></h3>
+<div class="paragraph">
+<p>It is possible to specify the output format using the
+<span class="monospaced">--outout-format</span> parameter. The default format <em>text</em> uses ASCII-art
+to draw nice borders around tables. It additionally transforms some
+values into human-readable text, for example:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Unix epoch is displayed as ISO 8601 date string.
+</p>
+</li>
+<li>
+<p>
+Durations are displayed as week/day/hour/miniute/secound count, i.e <span class="monospaced">1d 5h</span>.
+</p>
+</li>
+<li>
+<p>
+Byte sizes value include units (<span class="monospaced">B</span>, <span class="monospaced">KiB</span>, <span class="monospaced">MiB</span>, <span class="monospaced">GiB</span>, <span class="monospaced">TiB</span>, <span class="monospaced">PiB</span>).
+</p>
+</li>
+<li>
+<p>
+Fractions are display as percentage, i.e. 1.0 is displayed as 100%.
+</p>
+</li>
+</ul></div>
+<div class="paragraph">
+<p>You can also completely suppress output using option <span class="monospaced">--quiet</span>.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--human-readable</span> <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">1</span>)
+</dt>
+<dd>
+<p>
+Call output rendering functions to produce human readable text.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--noborder</span> <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">1</span>)
+</dt>
+<dd>
+<p>
+Do not draw borders (for <em>text</em> format).
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--noheader</span> <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">1</span>)
+</dt>
+<dd>
+<p>
+Do not show column headers (for <em>text</em> format).
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--output-format</span> <span class="monospaced">&lt;json | json-pretty | text | yaml&gt;</span> (<em>default =</em> <span class="monospaced">text</span>)
+</dt>
+<dd>
+<p>
+Output format.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--quiet</span> <span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Suppress printing results.
+</p>
+</dd>
+</dl></div>
+</div>
+<div class="sect2">
+<h3 id="_strong_pvesm_strong_proxmox_ve_storage_manager">20.2. <strong>pvesm</strong> - Proxmox VE Storage Manager</h3>
 <div class="paragraph">
 <p><strong>pvesm</strong> <span class="monospaced">&lt;COMMAND&gt; [ARGS] [OPTIONS]</span></p></div>
 <div class="paragraph">
@@ -26597,7 +27368,7 @@ strong isolation that VMs provide.</td>
 <p>Create a new storage.</p></div>
 <div class="dlist"><dl>
 <dt class="hdlist1">
-<span class="monospaced">&lt;type&gt;</span>: <span class="monospaced">&lt;cifs | dir | drbd | glusterfs | iscsi | iscsidirect | lvm | lvmthin | nfs | rbd | sheepdog | zfs | zfspool&gt;</span> 
+<span class="monospaced">&lt;type&gt;</span>: <span class="monospaced">&lt;cephfs | cifs | dir | drbd | glusterfs | iscsi | iscsidirect | lvm | lvmthin | nfs | rbd | sheepdog | zfs | zfspool&gt;</span> 
 </dt>
 <dd>
 <p>
@@ -26753,6 +27524,14 @@ Default image format.
 </p>
 </dd>
 <dt class="hdlist1">
+<span class="monospaced">--fuse</span> <span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Mount CephFS through FUSE.
+</p>
+</dd>
+<dt class="hdlist1">
 <span class="monospaced">--is_mountpoint</span> <span class="monospaced">&lt;string&gt;</span> (<em>default =</em> <span class="monospaced">no</span>)
 </dt>
 <dd>
@@ -26825,7 +27604,7 @@ NFS mount options (see <em>man nfs</em>)
 </p>
 </dd>
 <dt class="hdlist1">
-<span class="monospaced">--password</span> 
+<span class="monospaced">--password</span> <span class="monospaced">&lt;password&gt;</span> 
 </dt>
 <dd>
 <p>
@@ -26965,11 +27744,11 @@ Mark storage as shared.
 </p>
 </dd>
 <dt class="hdlist1">
-<span class="monospaced">--smbversion</span> <span class="monospaced">&lt;string&gt;</span> 
+<span class="monospaced">--smbversion</span> <span class="monospaced">&lt;2.0 | 2.1 | 3.0&gt;</span> 
 </dt>
 <dd>
 <p>
-no description available
+SMB protocol version
 </p>
 </dd>
 <dt class="hdlist1">
@@ -26978,6 +27757,14 @@ no description available
 <dd>
 <p>
 use sparse volumes
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--subdir</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+Subdir to mount.
 </p>
 </dd>
 <dt class="hdlist1">
@@ -27157,7 +27944,7 @@ no description available
 </p>
 </dd>
 <dt class="hdlist1">
-<span class="monospaced">--password</span> 
+<span class="monospaced">--password</span> <span class="monospaced">&lt;password&gt;</span> 
 </dt>
 <dd>
 <p>
@@ -27603,6 +28390,14 @@ Default image format.
 </p>
 </dd>
 <dt class="hdlist1">
+<span class="monospaced">--fuse</span> <span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Mount CephFS through FUSE.
+</p>
+</dd>
+<dt class="hdlist1">
 <span class="monospaced">--is_mountpoint</span> <span class="monospaced">&lt;string&gt;</span> (<em>default =</em> <span class="monospaced">no</span>)
 </dt>
 <dd>
@@ -27667,7 +28462,7 @@ NFS mount options (see <em>man nfs</em>)
 </p>
 </dd>
 <dt class="hdlist1">
-<span class="monospaced">--password</span> 
+<span class="monospaced">--password</span> <span class="monospaced">&lt;string&gt;</span> 
 </dt>
 <dd>
 <p>
@@ -27783,11 +28578,11 @@ Mark storage as shared.
 </p>
 </dd>
 <dt class="hdlist1">
-<span class="monospaced">--smbversion</span> <span class="monospaced">&lt;string&gt;</span> 
+<span class="monospaced">--smbversion</span> <span class="monospaced">&lt;2.0 | 2.1 | 3.0&gt;</span> 
 </dt>
 <dd>
 <p>
-no description available
+SMB protocol version
 </p>
 </dd>
 <dt class="hdlist1">
@@ -27796,6 +28591,14 @@ no description available
 <dd>
 <p>
 use sparse volumes
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--subdir</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+Subdir to mount.
 </p>
 </dd>
 <dt class="hdlist1">
@@ -27875,7 +28678,7 @@ If target is different to <em>node</em>, we only lists shared storages which con
 <p>Scan zfs pool list on local node.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_strong_pvesubscription_strong_proxmox_ve_subscription_manager">20.2. <strong>pvesubscription</strong> - Proxmox VE Subscription Manager</h3>
+<h3 id="_strong_pvesubscription_strong_proxmox_ve_subscription_manager">20.3. <strong>pvesubscription</strong> - Proxmox VE Subscription Manager</h3>
 <div class="paragraph">
 <p><strong>pvesubscription</strong> <span class="monospaced">&lt;COMMAND&gt; [ARGS] [OPTIONS]</span></p></div>
 <div class="paragraph">
@@ -27934,12 +28737,12 @@ Always connect to server, even if we have up to date info inside local cache.
 </dl></div>
 </div>
 <div class="sect2">
-<h3 id="_strong_pveperf_strong_proxmox_ve_benchmark_script">20.3. <strong>pveperf</strong> - Proxmox VE Benchmark Script</h3>
+<h3 id="_strong_pveperf_strong_proxmox_ve_benchmark_script">20.4. <strong>pveperf</strong> - Proxmox VE Benchmark Script</h3>
 <div class="paragraph">
 <p><strong>pveperf</strong> <span class="monospaced">[PATH]</span></p></div>
 </div>
 <div class="sect2">
-<h3 id="_strong_pveceph_strong_manage_ceph_services_on_proxmox_ve_nodes">20.4. <strong>pveceph</strong> - Manage CEPH Services on Proxmox VE Nodes</h3>
+<h3 id="_strong_pveceph_strong_manage_ceph_services_on_proxmox_ve_nodes">20.5. <strong>pveceph</strong> - Manage CEPH Services on Proxmox VE Nodes</h3>
 <div class="paragraph">
 <p><strong>pveceph</strong> <span class="monospaced">&lt;COMMAND&gt; [ARGS] [OPTIONS]</span></p></div>
 <div class="paragraph">
@@ -28423,7 +29226,7 @@ Ceph service name.
 </dl></div>
 </div>
 <div class="sect2">
-<h3 id="_strong_pvenode_strong_proxmox_ve_node_management">20.5. <strong>pvenode</strong> - Proxmox VE Node Management</h3>
+<h3 id="_strong_pvenode_strong_proxmox_ve_node_management">20.6. <strong>pvenode</strong> - Proxmox VE Node Management</h3>
 <div class="paragraph">
 <p><strong>pvenode</strong> <span class="monospaced">&lt;COMMAND&gt; [ARGS] [OPTIONS]</span></p></div>
 <div class="paragraph">
@@ -28441,7 +29244,7 @@ ACME account config file name.
 </dd>
 </dl></div>
 <div class="paragraph">
-<p><strong>pvenode acme account info</strong> <span class="monospaced">[&lt;name&gt;]</span></p></div>
+<p><strong>pvenode acme account info</strong> <span class="monospaced">[&lt;name&gt;]</span> <span class="monospaced">[FORMAT_OPTIONS]</span></p></div>
 <div class="paragraph">
 <p>Return existing ACME account information.</p></div>
 <div class="dlist"><dl>
@@ -28558,11 +29361,11 @@ Restart pveproxy.
 </dd>
 </dl></div>
 <div class="paragraph">
-<p><strong>pvenode cert info</strong></p></div>
+<p><strong>pvenode cert info</strong> <span class="monospaced">[FORMAT_OPTIONS]</span></p></div>
 <div class="paragraph">
 <p>Get information about node&#8217;s certificates.</p></div>
 <div class="paragraph">
-<p><strong>pvenode cert set</strong> <span class="monospaced">&lt;certificates&gt; [&lt;key&gt;]</span> <span class="monospaced">[OPTIONS]</span></p></div>
+<p><strong>pvenode cert set</strong> <span class="monospaced">&lt;certificates&gt; [&lt;key&gt;]</span> <span class="monospaced">[OPTIONS]</span> <span class="monospaced">[FORMAT_OPTIONS]</span></p></div>
 <div class="paragraph">
 <p>Upload or update custom certificate chain and key.</p></div>
 <div class="dlist"><dl>
@@ -28663,9 +29466,332 @@ Verbose output format.
 </p>
 </dd>
 </dl></div>
+<div class="paragraph">
+<p><strong>pvenode migrateall</strong> <span class="monospaced">&lt;target&gt;</span> <span class="monospaced">[OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>Migrate all VMs and Containers.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;target&gt;</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+Target node.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--maxworkers</span> <span class="monospaced">&lt;integer&gt; (1 - N)</span> 
+</dt>
+<dd>
+<p>
+Maximal number of parallel migration job. If not set use <em>max_workers</em> from datacenter.cfg, one of both must be set!
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--vms</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+Only consider Guests with these IDs.
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvenode startall</strong> <span class="monospaced">[OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>Start all VMs and containers (when onboot=1).</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--force</span> <span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+force if onboot=0.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--vms</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+Only consider Guests with these IDs.
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvenode stopall</strong> <span class="monospaced">[OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>Stop all VMs and Containers.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--vms</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+Only consider Guests with these IDs.
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvenode task list</strong> <span class="monospaced">[OPTIONS]</span> <span class="monospaced">[FORMAT_OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>Read task list for one node (finished tasks).</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--errors</span> <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+no description available
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--limit</span> <span class="monospaced">&lt;integer&gt; (0 - N)</span> (<em>default =</em> <span class="monospaced">50</span>)
+</dt>
+<dd>
+<p>
+Only list this amount of tasks.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--start</span> <span class="monospaced">&lt;integer&gt; (0 - N)</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+List tasks beginning from this offset.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--userfilter</span> <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+Only list tasks from this user.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--vmid</span> <span class="monospaced">&lt;integer&gt; (1 - N)</span> 
+</dt>
+<dd>
+<p>
+Only list tasks for this VM.
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvenode task log</strong> <span class="monospaced">&lt;upid&gt;</span> <span class="monospaced">[OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>Read task log.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;upid&gt;</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+no description available
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--start</span> <span class="monospaced">&lt;integer&gt; (0 - N)</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+no description available
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvenode task status</strong> <span class="monospaced">&lt;upid&gt;</span> <span class="monospaced">[FORMAT_OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>Read task status.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;upid&gt;</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+no description available
+</p>
+</dd>
+</dl></div>
 </div>
 <div class="sect2">
-<h3 id="_strong_qm_strong_qemu_kvm_virtual_machine_manager">20.6. <strong>qm</strong> - Qemu/KVM Virtual Machine Manager</h3>
+<h3 id="_strong_pvesh_strong_shell_interface_for_the_proxmox_ve_api">20.7. <strong>pvesh</strong> - Shell interface for the Proxmox VE API</h3>
+<div class="paragraph">
+<p><strong>pvesh</strong> <span class="monospaced">&lt;COMMAND&gt; [ARGS] [OPTIONS]</span></p></div>
+<div class="paragraph">
+<p><strong>pvesh create</strong> <span class="monospaced">&lt;api_path&gt;</span> <span class="monospaced">[OPTIONS]</span> <span class="monospaced">[FORMAT_OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>Call API POST on &lt;api_path&gt;.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;api_path&gt;</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+API path.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--noproxy</span> <span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Disable automatic proxying.
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvesh delete</strong> <span class="monospaced">&lt;api_path&gt;</span> <span class="monospaced">[OPTIONS]</span> <span class="monospaced">[FORMAT_OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>Call API DELETE on &lt;api_path&gt;.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;api_path&gt;</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+API path.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--noproxy</span> <span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Disable automatic proxying.
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvesh get</strong> <span class="monospaced">&lt;api_path&gt;</span> <span class="monospaced">[OPTIONS]</span> <span class="monospaced">[FORMAT_OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>Call API GET on &lt;api_path&gt;.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;api_path&gt;</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+API path.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--noproxy</span> <span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Disable automatic proxying.
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvesh help</strong> <span class="monospaced">[OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>Get help about specified command.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">--extra-args</span> <span class="monospaced">&lt;array&gt;</span> 
+</dt>
+<dd>
+<p>
+Shows help for a specific command
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--verbose</span> <span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Verbose output format.
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvesh ls</strong> <span class="monospaced">&lt;api_path&gt;</span> <span class="monospaced">[OPTIONS]</span> <span class="monospaced">[FORMAT_OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>List child objects on &lt;api_path&gt;.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;api_path&gt;</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+API path.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--noproxy</span> <span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Disable automatic proxying.
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvesh set</strong> <span class="monospaced">&lt;api_path&gt;</span> <span class="monospaced">[OPTIONS]</span> <span class="monospaced">[FORMAT_OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>Call API PUT on &lt;api_path&gt;.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;api_path&gt;</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+API path.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--noproxy</span> <span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Disable automatic proxying.
+</p>
+</dd>
+</dl></div>
+<div class="paragraph">
+<p><strong>pvesh usage</strong> <span class="monospaced">&lt;api_path&gt;</span> <span class="monospaced">[OPTIONS]</span></p></div>
+<div class="paragraph">
+<p>print API usage information for &lt;api_path&gt;.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<span class="monospaced">&lt;api_path&gt;</span>: <span class="monospaced">&lt;string&gt;</span> 
+</dt>
+<dd>
+<p>
+API path.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--command</span> <span class="monospaced">&lt;create | delete | get | set&gt;</span> 
+</dt>
+<dd>
+<p>
+API command.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--returns</span> <span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Including schema for returned data.
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--verbose</span> <span class="monospaced">&lt;boolean&gt;</span> 
+</dt>
+<dd>
+<p>
+Verbose output format.
+</p>
+</dd>
+</dl></div>
+</div>
+<div class="sect2">
+<h3 id="_strong_qm_strong_qemu_kvm_virtual_machine_manager">20.8. <strong>qm</strong> - Qemu/KVM Virtual Machine Manager</h3>
 <div class="paragraph">
 <p><strong>qm</strong> <span class="monospaced">&lt;COMMAND&gt; [ARGS] [OPTIONS]</span></p></div>
 <div class="paragraph">
@@ -29092,7 +30218,7 @@ For IPv6 the special string <em>auto</em> can be used to use stateless autoconfi
 </dt>
 <dd>
 <p>
-Keybord layout for vnc server. Default is read from the <em>/etc/pve/datacenter.conf</em> configuration file.It should not be necessary to set it.
+Keybord layout for vnc server. Default is read from the <em>/etc/pve/datacenter.cfg</em> configuration file.It should not be necessary to set it.
 </p>
 </dd>
 <dt class="hdlist1">
@@ -29284,7 +30410,7 @@ Create a serial device inside the VM (n is 0 to 3)
 </dt>
 <dd>
 <p>
-Amount of memory shares for auto-ballooning. The larger the number is, the more memory this VM gets. Number is relative to weights of all other running VMs. Using zero disables auto-ballooning
+Amount of memory shares for auto-ballooning. The larger the number is, the more memory this VM gets. Number is relative to weights of all other running VMs. Using zero disables auto-ballooning. Auto-ballooning is done by pvestatd.
 </p>
 </dd>
 <dt class="hdlist1">
@@ -29317,6 +30443,14 @@ The number of CPU sockets.
 <dd>
 <p>
 cloud-init: Setup public SSH keys (one key per line, OpenSSH format).
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--start</span> <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Start VM after it was created successfully.
 </p>
 </dd>
 <dt class="hdlist1">
@@ -30300,7 +31434,7 @@ For IPv6 the special string <em>auto</em> can be used to use stateless autoconfi
 </dt>
 <dd>
 <p>
-Keybord layout for vnc server. Default is read from the <em>/etc/pve/datacenter.conf</em> configuration file.It should not be necessary to set it.
+Keybord layout for vnc server. Default is read from the <em>/etc/pve/datacenter.cfg</em> configuration file.It should not be necessary to set it.
 </p>
 </dd>
 <dt class="hdlist1">
@@ -30492,7 +31626,7 @@ Create a serial device inside the VM (n is 0 to 3)
 </dt>
 <dd>
 <p>
-Amount of memory shares for auto-ballooning. The larger the number is, the more memory this VM gets. Number is relative to weights of all other running VMs. Using zero disables auto-ballooning
+Amount of memory shares for auto-ballooning. The larger the number is, the more memory this VM gets. Number is relative to weights of all other running VMs. Using zero disables auto-ballooning. Auto-ballooning is done by pvestatd.
 </p>
 </dd>
 <dt class="hdlist1">
@@ -31036,7 +32170,7 @@ Timeout in seconds. Default is to wait forever.
 </dl></div>
 </div>
 <div class="sect2">
-<h3 id="_strong_qmrestore_strong_restore_qemuserver_span_class_monospaced_vzdump_span_backups">20.7. <strong>qmrestore</strong> - Restore QemuServer <span class="monospaced">vzdump</span> Backups</h3>
+<h3 id="_strong_qmrestore_strong_restore_qemuserver_span_class_monospaced_vzdump_span_backups">20.9. <strong>qmrestore</strong> - Restore QemuServer <span class="monospaced">vzdump</span> Backups</h3>
 <div class="paragraph">
 <p><strong>qmrestore</strong> <span class="monospaced">help</span></p></div>
 <div class="paragraph">
@@ -31103,7 +32237,7 @@ Assign a unique random ethernet address.
 </dl></div>
 </div>
 <div class="sect2">
-<h3 id="_strong_pct_strong_proxmox_container_toolkit">20.8. <strong>pct</strong> - Proxmox Container Toolkit</h3>
+<h3 id="_strong_pct_strong_proxmox_container_toolkit">20.10. <strong>pct</strong> - Proxmox Container Toolkit</h3>
 <div class="paragraph">
 <p><strong>pct</strong> <span class="monospaced">&lt;COMMAND&gt; [ARGS] [OPTIONS]</span></p></div>
 <div class="paragraph">
@@ -31486,7 +32620,7 @@ OS type. This is used to setup configuration inside the container, and correspon
 </p>
 </dd>
 <dt class="hdlist1">
-<span class="monospaced">--password</span> 
+<span class="monospaced">--password</span> <span class="monospaced">&lt;password&gt;</span> 
 </dt>
 <dd>
 <p>
@@ -31539,6 +32673,14 @@ Sets DNS search domains for a container. Create will automatically use the setti
 <dd>
 <p>
 Setup public SSH keys (one key per line, OpenSSH format).
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--start</span> <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Start the CT after its creation finished successfully.
 </p>
 </dd>
 <dt class="hdlist1">
@@ -32294,7 +33436,7 @@ OS type. This is used to setup configuration inside the container, and correspon
 </p>
 </dd>
 <dt class="hdlist1">
-<span class="monospaced">--password</span> 
+<span class="monospaced">--password</span> <span class="monospaced">&lt;password&gt;</span> 
 </dt>
 <dd>
 <p>
@@ -32339,6 +33481,14 @@ Sets DNS search domains for a container. Create will automatically use the setti
 <dd>
 <p>
 Setup public SSH keys (one key per line, OpenSSH format).
+</p>
+</dd>
+<dt class="hdlist1">
+<span class="monospaced">--start</span> <span class="monospaced">&lt;boolean&gt;</span> (<em>default =</em> <span class="monospaced">0</span>)
+</dt>
+<dd>
+<p>
+Start the CT after its creation finished successfully.
 </p>
 </dd>
 <dt class="hdlist1">
@@ -32946,7 +34096,7 @@ The (unique) ID of the VM.
 </dl></div>
 </div>
 <div class="sect2">
-<h3 id="_strong_pveam_strong_proxmox_ve_appliance_manager">20.9. <strong>pveam</strong> -  Proxmox VE Appliance Manager</h3>
+<h3 id="_strong_pveam_strong_proxmox_ve_appliance_manager">20.11. <strong>pveam</strong> -  Proxmox VE Appliance Manager</h3>
 <div class="paragraph">
 <p><strong>pveam</strong> <span class="monospaced">&lt;COMMAND&gt; [ARGS] [OPTIONS]</span></p></div>
 <div class="paragraph">
@@ -33041,7 +34191,7 @@ The template to remove.
 <p>Update Container Template Database.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_strong_pvecm_strong_proxmox_ve_cluster_manager">20.10. <strong>pvecm</strong> - Proxmox VE Cluster Manager</h3>
+<h3 id="_strong_pvecm_strong_proxmox_ve_cluster_manager">20.12. <strong>pvecm</strong> - Proxmox VE Cluster Manager</h3>
 <div class="paragraph">
 <p><strong>pvecm</strong> <span class="monospaced">&lt;COMMAND&gt; [ARGS] [OPTIONS]</span></p></div>
 <div class="paragraph">
@@ -33364,7 +34514,7 @@ Ignore errors (i.e. when cluster has no quorum).
 </dl></div>
 </div>
 <div class="sect2">
-<h3 id="_strong_pvesr_strong_proxmox_ve_storage_replication">20.11. <strong>pvesr</strong> - Proxmox VE Storage Replication</h3>
+<h3 id="_strong_pvesr_strong_proxmox_ve_storage_replication">20.13. <strong>pvesr</strong> - Proxmox VE Storage Replication</h3>
 <div class="paragraph">
 <p><strong>pvesr</strong> <span class="monospaced">&lt;COMMAND&gt; [ARGS] [OPTIONS]</span></p></div>
 <div class="paragraph">
@@ -33789,7 +34939,7 @@ Source of the replication.
 </dl></div>
 </div>
 <div class="sect2">
-<h3 id="_strong_pveum_strong_proxmox_ve_user_manager">20.12. <strong>pveum</strong> - Proxmox VE User Manager</h3>
+<h3 id="_strong_pveum_strong_proxmox_ve_user_manager">20.14. <strong>pveum</strong> - Proxmox VE User Manager</h3>
 <div class="paragraph">
 <p><strong>pveum</strong> <span class="monospaced">&lt;COMMAND&gt; [ARGS] [OPTIONS]</span></p></div>
 <div class="paragraph">
@@ -34324,7 +35474,7 @@ no description available
 </p>
 </dd>
 <dt class="hdlist1">
-<span class="monospaced">--password</span> 
+<span class="monospaced">--password</span> <span class="monospaced">&lt;password&gt;</span> 
 </dt>
 <dd>
 <p>
@@ -34486,7 +35636,7 @@ no description available
 </dl></div>
 </div>
 <div class="sect2">
-<h3 id="_strong_vzdump_strong_backup_utility_for_vms_and_containers">20.13. <strong>vzdump</strong> - Backup Utility for VMs and Containers</h3>
+<h3 id="_strong_vzdump_strong_backup_utility_for_vms_and_containers">20.15. <strong>vzdump</strong> - Backup Utility for VMs and Containers</h3>
 <div class="paragraph">
 <p><strong>vzdump</strong> <span class="monospaced">help</span></p></div>
 <div class="paragraph">
@@ -34697,7 +35847,7 @@ Store temporary files to specified directory.
 </dl></div>
 </div>
 <div class="sect2">
-<h3 id="_strong_ha_manager_strong_proxmox_ve_ha_manager">20.14. <strong>ha-manager</strong> - Proxmox VE HA Manager</h3>
+<h3 id="_strong_ha_manager_strong_proxmox_ve_ha_manager">20.16. <strong>ha-manager</strong> - Proxmox VE HA Manager</h3>
 <div class="paragraph">
 <p><strong>ha-manager</strong> <span class="monospaced">&lt;COMMAND&gt; [ARGS] [OPTIONS]</span></p></div>
 <div class="paragraph">
@@ -39677,7 +40827,7 @@ provided the MMC is eligible for relicensing.</p></div>
 <div id="footer-text">
 Version 5.2<br>
 Last updated
- Mon May 14 12:47:00 UTC 2018
+ Wed Aug  8 08:51:56 CEST 2018
 </div>
 </div>
 </body>

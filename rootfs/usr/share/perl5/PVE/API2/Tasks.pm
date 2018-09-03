@@ -11,17 +11,18 @@ use PVE::RESTHandler;
 use PVE::ProcFSTools;
 use PVE::RPCEnvironment;
 use PVE::JSONSchema qw(get_standard_option);
+use PVE::Exception qw(raise_param_exc);
 use PVE::AccessControl;
 
 use base qw(PVE::RESTHandler);
 
 __PACKAGE__->register_method({
-    name => 'node_tasks', 
-    path => '', 
+    name => 'node_tasks',
+    path => '',
     method => 'GET',
-    permissions => { 
+    permissions => {
 	description => "List task associated with the current user, or all task the user has 'Sys.Audit' permissions on /nodes/<node> (the <node> the task runs on).",
-	user => 'all' 
+	user => 'all'
     },
     description => "Read task list for one node (finished tasks).",
     proxyto => 'node',
@@ -32,23 +33,29 @@ __PACKAGE__->register_method({
 	    start => {
 		type => 'integer',
 		minimum => 0,
+		default => 0,
 		optional => 1,
+		description => "List tasks beginning from this offset.",
 	    },
 	    limit => {
 		type => 'integer',
 		minimum => 0,
+		default => 50,
 		optional => 1,
+		description => "Only list this amount of tasks.",
 	    },
 	    userfilter => {
 		type => 'string',
 		optional => 1,
+		description => "Only list tasks from this user.",
 	    },
 	    vmid => get_standard_option('pve-vmid', {
 		description => "Only list tasks for this VM.",
-		optional => 1 
+		optional => 1,
 	    }),
 	    errors => {
 		type => 'boolean',
+		default => 0,
 		optional => 1,
 	    },
 	},
@@ -58,7 +65,16 @@ __PACKAGE__->register_method({
 	items => {
 	    type => "object",
 	    properties => {
-		upid => { type => 'string' },
+		upid =>  { type => 'string', title => 'UPID', },
+		id => { type => 'string', optional => 1, title => 'ID', },
+		pid => { type => 'integer', optional => 1, title => 'PID', },
+		pstart => { type => 'integer', optional => 1, },
+		status =>  { type => 'string', optional => 1, title => 'Status', },
+		type =>  { type => 'string', optional => 1, title => 'Type', },
+		node =>  { type => 'string', optional => 1, title => 'Node', },
+		user =>  { type => 'string', optional => 1, title => 'User', },
+		starttime =>  { type => 'integer', optional => 1, title => 'Starttime', },
+		endtime =>  { type => 'integer', optional => 1, title => 'Endtime', },
 	    },
 	},
 	links => [ { rel => 'child', href => "{upid}" } ],
@@ -74,10 +90,10 @@ __PACKAGE__->register_method({
 	my $filename = "/var/log/pve/tasks/index";
 
 	my $node = $param->{node};
-	my $start = $param->{start} || 0;
-	my $limit = $param->{limit} || 50;
+	my $start = $param->{start} // 0;
+	my $limit = $param->{limit} // 50;
 	my $userfilter = $param->{userfilter};
-	my $errors = $param->{errors};
+	my $errors = $param->{errors} // 0;
 
 	my $count = 0;
 	my $line;
@@ -95,7 +111,7 @@ __PACKAGE__->register_method({
 
 		    return if $errors && $status && $status eq 'OK';
 
-		    return if $param->{vmid} && (!$task->{id} || $task->{id} ne $param->{vmid}); 
+		    return if $param->{vmid} && (!$task->{id} || $task->{id} ne $param->{vmid});
 
 		    return if $count++ < $start;
 		    return if $limit <= 0;
@@ -109,13 +125,13 @@ __PACKAGE__->register_method({
 	    }
 	};
 
-	if (my $bw = File::ReadBackwards->new($filename)) {	
+	if (my $bw = File::ReadBackwards->new($filename)) {
 	    while (defined ($line = $bw->readline)) {
 		&$parse_line();
 	    }
 	    $bw->close();
 	}
-	if (my $bw = File::ReadBackwards->new("$filename.1")) {	
+	if (my $bw = File::ReadBackwards->new("$filename.1")) {
 	    while (defined ($line = $bw->readline)) {
 		&$parse_line();
 	    }
@@ -128,8 +144,8 @@ __PACKAGE__->register_method({
     }});
 
 __PACKAGE__->register_method({
-    name => 'upid_index', 
-    path => '{upid}', 
+    name => 'upid_index',
+    path => '{upid}',
     method => 'GET',
     description => '', # index helper
     permissions => { user => 'all' },
@@ -158,13 +174,13 @@ __PACKAGE__->register_method({
     }});
 
 __PACKAGE__->register_method({
-    name => 'stop_task', 
-    path => '{upid}', 
+    name => 'stop_task',
+    path => '{upid}',
     method => 'DELETE',
     description => 'Stop a task.',
-    permissions => { 
+    permissions => {
 	description => "The user needs 'Sys.Modify' permissions on '/nodes/<node>' if the task does not belong to him.",
-	user => 'all', 
+	user => 'all',
     },
     protected => 1,
     proxyto => 'node',
@@ -197,10 +213,10 @@ __PACKAGE__->register_method({
     }});
 
 __PACKAGE__->register_method({
-    name => 'read_task_log', 
-    path => '{upid}/log', 
+    name => 'read_task_log',
+    path => '{upid}/log',
     method => 'GET',
-    permissions => { 
+    permissions => {
 	description => "The user needs 'Sys.Audit' permissions on '/nodes/<node>' if the task does not belong to him.",
 	user => 'all',
     },
@@ -215,18 +231,20 @@ __PACKAGE__->register_method({
 	    start => {
 		type => 'integer',
 		minimum => 0,
+		default => 0,
 		optional => 1,
 	    },
 	    limit => {
 		type => 'integer',
 		minimum => 0,
+		default => 50,
 		optional => 1,
 	    },
 	},
     },
     returns => {
 	type => 'array',
-	items => { 
+	items => {
 	    type => "object",
 	    properties => {
 		n => {
@@ -249,15 +267,17 @@ __PACKAGE__->register_method({
 	my $rpcenv = PVE::RPCEnvironment::get();
 	my $user = $rpcenv->get_user();
 	my $node = $param->{node};
+	my $start = $param->{start} // 0;
+	my $limit = $param->{limit} // 50;
 
 	if ($user ne $task->{user})  {
 	    $rpcenv->check($user, "/nodes/$node", [ 'Sys.Audit' ]);
 	}
 
-	my ($count, $lines) = PVE::Tools::dump_logfile($filename, $param->{start}, $param->{limit});
+	my ($count, $lines) = PVE::Tools::dump_logfile($filename, $start, $limit);
 
 	$rpcenv->set_result_attrib('total', $count);
-	    
+
 	return $lines;
     }});
 
@@ -265,10 +285,10 @@ __PACKAGE__->register_method({
 my $exit_status_cache = {};
 
 __PACKAGE__->register_method({
-    name => 'read_task_status', 
-    path => '{upid}/status', 
+    name => 'read_task_status',
+    path => '{upid}/status',
     method => 'GET',
-    permissions => { 
+    permissions => {
 	description => "The user needs 'Sys.Audit' permissions on '/nodes/<node>' if the task does not belong to him.",
 	user => 'all',
     },
@@ -285,11 +305,11 @@ __PACKAGE__->register_method({
     returns => {
 	type => "object",
 	properties => {
-	    pid => { 
+	    pid => {
 		type => 'integer'
 	    },
-	    status => { 
-		type => 'string', enum => ['running', 'stopped'], 
+	    status => {
+		type => 'string', enum => ['running', 'stopped'],
 	    },
 	},
     },
@@ -318,7 +338,7 @@ __PACKAGE__->register_method({
 
 	if ($task->{status} eq 'stopped') {
 	    if (!defined($exit_status_cache->{$task->{upid}})) {
-		$exit_status_cache->{$task->{upid}} = 
+		$exit_status_cache->{$task->{upid}} =
 		    PVE::Tools::upid_read_status($task->{upid});
 	    }
 	    $task->{exitstatus} = $exit_status_cache->{$task->{upid}};

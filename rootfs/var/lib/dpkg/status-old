@@ -335,14 +335,15 @@ Description: GNU C preprocessor (cpp)
  This is a dependency package providing the default GNU C preprocessor.
 
 Package: lxc-pve
-Status: install ok installed
+Status: install ok unpacked
 Priority: optional
 Section: admin
-Installed-Size: 3027
+Installed-Size: 2952
 Maintainer: Proxmox Support Team <support@proxmox.com>
 Architecture: amd64
 Source: lxc
-Version: 3.0.0-3
+Version: 3.0.2+pve1-1
+Config-Version: 3.0.0-3
 Replaces: liblxc1, lxc
 Provides: liblxc1, lxc
 Depends: apparmor, bridge-utils, criu (>= 1.5.2-1), libcap2 (>= 1:2.10), libgnutlsxx28, libseccomp2 (>= 2.1.0), lxcfs, python3, uidmap, init-system-helpers (>= 1.18~), libc6 (>= 2.17), libgnutls30 (>= 3.5.0)
@@ -414,13 +415,14 @@ Description: Dynamic library for security auditing
 Homepage: https://people.redhat.com/sgrubb/audit/
 
 Package: proxmox-widget-toolkit
-Status: install ok installed
+Status: install ok unpacked
 Priority: optional
 Section: web
 Installed-Size: 173
 Maintainer: Proxmox Support Team <support@proxmox.com>
 Architecture: all
-Version: 1.0-18
+Version: 1.0-19
+Config-Version: 1.0-18
 Description: ExtJS Helper Classes for Proxmox
  ExtJS Helper Classes to easy access to Proxmox APIs.
 Homepage: http://www.proxmox.com
@@ -484,7 +486,7 @@ Description: Perl interface to PAM library
 Homepage: https://metacpan.org/release/Authen-PAM
 
 Package: perl-modules-5.24
-Status: install ok unpacked
+Status: install ok installed
 Priority: standard
 Section: perl
 Installed-Size: 17630
@@ -493,7 +495,6 @@ Architecture: all
 Multi-Arch: foreign
 Source: perl
 Version: 5.24.1-3+deb9u4
-Config-Version: 5.24.1-3+deb9u3
 Replaces: libansicolor-perl (<< 4.04), libarchive-tar-perl (<< 2.04.01), libattribute-handlers-perl (<< 0.99), libautodie-perl (<< 2.29-2), libcpan-meta-perl (<< 2.150005), libcpan-meta-requirements-perl (<< 2.140), libcpan-meta-yaml-perl (<< 0.018), libdigest-perl (<< 1.17.01), libexperimental-perl (<< 0.016), libextutils-cbuilder-perl (<< 0.280225), libextutils-command-perl (<< 7.10.02), libextutils-install-perl (<< 2.04), libextutils-parsexs-perl (<< 3.310000), libfile-spec-perl (<< 3.6301), libhttp-tiny-perl (<< 0.056.001), libi18n-langtags-perl (<< 0.40), libio-zlib-perl (<< 1.10), libjson-pp-perl (<< 2.27300.01), liblocale-codes-perl (<< 3.37), liblocale-maketext-perl (<< 1.26.01), liblocale-maketext-simple-perl (<< 0.21.01), libmath-bigint-perl (<< 1.999715), libmath-complex-perl (<< 1.59), libmodule-corelist-perl (<< 5.20170114.24), libmodule-load-conditional-perl (<< 0.64), libmodule-load-perl (<< 0.32), libmodule-metadata-perl (<< 1.000031), libnet-perl, libnet-ping-perl (<< 2.43.01), libpackage-constants-perl, libparams-check-perl (<< 0.38), libparent-perl (<< 0.234), libparse-cpan-meta-perl (<< 1.4417.001), libperl-ostype-perl (<< 1.009), libpod-escapes-perl (<< 1.07), libpod-parser-perl (<< 1.63), libpod-simple-perl (<< 3.32), libtest-harness-perl (<< 3.36.01), libtest-simple-perl (<< 1.001014), libtest-tester-perl (<< 0.114), libtest-use-ok-perl (<< 0.16), libthread-queue-perl (<< 3.09), libtime-local-perl (<< 1.2300), libunicode-collate-perl (<< 1.14), libversion-perl (<< 1:0.9916), libversion-requirements-perl, perl-base (<< 5.22.0~), perl-modules, podlators-perl
 Provides: libansicolor-perl, libarchive-tar-perl, libattribute-handlers-perl, libautodie-perl, libcpan-meta-perl, libcpan-meta-requirements-perl, libcpan-meta-yaml-perl, libdigest-perl, libexperimental-perl, libextutils-cbuilder-perl, libextutils-command-perl, libextutils-install-perl, libextutils-parsexs-perl, libfile-spec-perl, libhttp-tiny-perl, libi18n-langtags-perl, libio-zlib-perl, libjson-pp-perl, liblocale-codes-perl, liblocale-maketext-perl, liblocale-maketext-simple-perl, libmath-bigint-perl, libmath-complex-perl, libmodule-corelist-perl, libmodule-load-conditional-perl, libmodule-load-perl, libmodule-metadata-perl, libnet-perl, libnet-ping-perl, libparams-check-perl, libparent-perl, libparse-cpan-meta-perl, libperl-ostype-perl, libpod-escapes-perl, libpod-parser-perl, libpod-simple-perl, libtest-harness-perl, libtest-simple-perl, libtest-tester-perl, libtest-use-ok-perl, libthread-queue-perl, libtime-local-perl, libunicode-collate-perl, libversion-perl, libversion-requirements-perl, perl-modules, podlators-perl
 Depends: perl-base (>= 5.24.1-1)
@@ -710,15 +711,16 @@ Description: Manual pages about using a GNU/Linux system
 Homepage: http://www.kernel.org/doc/man-pages/
 
 Package: libzpool2linux
-Status: install ok installed
+Status: install ok unpacked
 Priority: optional
 Section: contrib/libs
-Installed-Size: 2145
+Installed-Size: 2149
 Maintainer: Debian ZFS on Linux maintainers <pkg-zfsonlinux-devel@lists.alioth.debian.org>
 Architecture: amd64
 Source: zfs-linux
-Version: 0.7.8-pve1~bpo9
-Depends: libc6 (>= 2.14), libnvpair1linux (>= 0.7.8), libudev1 (>= 183), libuuid1 (>= 2.16), libuutil1linux (>= 0.7.8), zlib1g (>= 1:1.1.4)
+Version: 0.7.9-pve1~bpo9
+Config-Version: 0.7.8-pve1~bpo9
+Depends: libc6 (>= 2.14), libnvpair1linux (>= 0.7.9), libudev1 (>= 183), libuuid1 (>= 2.16), libuutil1linux (>= 0.7.9), zlib1g (>= 1:1.1.4)
 Description: OpenZFS pool library for Linux
  The Z file system is a pooled filesystem designed for maximum data
  integrity, supporting data snapshots, multiple copies, and data
@@ -761,14 +763,14 @@ Maintainer: Debian systemd Maintainers <pkg-systemd-maintainers@lists.alioth.deb
 Architecture: amd64
 Multi-Arch: same
 Source: systemd
-Version: 232-25+deb9u2
+Version: 232-25+deb9u4
 Depends: libc6 (>= 2.16)
 Description: libudev shared library
  This library provides access to udev device information.
 Homepage: https://www.freedesktop.org/wiki/Software/systemd
 
 Package: libperl5.24
-Status: install ok unpacked
+Status: install ok installed
 Priority: optional
 Section: libs
 Installed-Size: 20931
@@ -777,7 +779,6 @@ Architecture: amd64
 Multi-Arch: same
 Source: perl
 Version: 5.24.1-3+deb9u4
-Config-Version: 5.24.1-3+deb9u3
 Replaces: libarchive-tar-perl (<= 1.38-2), libcompress-raw-bzip2-perl (<< 2.069), libcompress-raw-zlib-perl (<< 2.069), libcompress-zlib-perl (<< 2.069.001), libdigest-md5-perl (<< 2.54), libdigest-sha-perl (<< 5.95.01), libencode-perl (<< 2.86), libio-compress-base-perl (<< 2.069.001), libio-compress-bzip2-perl (<< 2.069.001), libio-compress-perl (<< 2.069.001), libio-compress-zlib-perl (<< 2.069.001), libmime-base64-perl (<< 3.15), libmodule-corelist-perl (<< 2.14-2), libstorable-perl (<< 2.56.01), libsys-syslog-perl (<< 0.33.01), libthreads-perl (<< 2.07), libthreads-shared-perl (<< 1.51), libtime-hires-perl (<< 1.9733), libtime-piece-perl (<< 1.31), perl (<< 5.22.0~), perl-base (<< 5.22.0~)
 Provides: libcompress-raw-bzip2-perl, libcompress-raw-zlib-perl, libcompress-zlib-perl, libdigest-md5-perl, libdigest-sha-perl, libencode-perl, libio-compress-base-perl, libio-compress-bzip2-perl, libio-compress-perl, libio-compress-zlib-perl, libmime-base64-perl, libstorable-perl, libsys-syslog-perl, libthreads-perl, libthreads-shared-perl, libtime-hires-perl, libtime-piece-perl, perl-cross-config
 Depends: libbz2-1.0, libc6 (>= 2.23), libdb5.3, libgdbm3 (>= 1.8.3), zlib1g (>= 1:1.2.2.3), perl-modules-5.24 (>= 5.24.1-3+deb9u4)
@@ -881,7 +882,7 @@ Description: Trivial Database - shared library
 Homepage: http://tdb.samba.org/
 
 Package: libxapian30
-Status: install ok installed
+Status: install ok unpacked
 Priority: important
 Section: libs
 Installed-Size: 2563
@@ -889,7 +890,8 @@ Maintainer: Olly Betts <olly@survex.com>
 Architecture: amd64
 Multi-Arch: same
 Source: xapian-core
-Version: 1.4.3-2
+Version: 1.4.3-2+deb9u1
+Config-Version: 1.4.3-2
 Depends: libc6 (>= 2.15), libgcc1 (>= 1:3.4), libstdc++6 (>= 5.2), libuuid1 (>= 2.16), zlib1g (>= 1:1.1.4)
 Suggests: xapian-tools
 Description: Search engine library
@@ -1051,7 +1053,7 @@ Description: lib for parsing cmdline parameters
 Homepage: http://rpm5.org/
 
 Package: libwbclient0
-Status: install ok unpacked
+Status: install ok installed
 Priority: optional
 Section: libs
 Installed-Size: 190
@@ -1060,7 +1062,6 @@ Architecture: amd64
 Multi-Arch: same
 Source: samba
 Version: 2:4.5.12+dfsg-2+deb9u3
-Config-Version: 2:4.5.12+dfsg-2+deb9u2
 Depends: libbsd0 (>= 0.0), libc6 (>= 2.14)
 Pre-Depends: dpkg (>= 1.15.6~)
 Breaks: libpam-smbpass (<< 2:3.4.1), libsmbclient (<< 2:3.4.1), samba (<< 2:3.4.1), samba-common (<< 2:3.4.1), samba-tools (<< 2:3.4.1), smbclient (<< 2:3.4.1), smbfs (<< 2:3.4.1), swat (<< 2:3.4.1), winbind (<< 2:3.4.1)
@@ -1817,7 +1818,7 @@ Description: Asynchronous name service query library
 Homepage: http://0pointer.de/lennart/projects/libasyncns/
 
 Package: samba-libs
-Status: install ok unpacked
+Status: install ok installed
 Priority: optional
 Section: libs
 Installed-Size: 22150
@@ -1826,7 +1827,6 @@ Architecture: amd64
 Multi-Arch: same
 Source: samba
 Version: 2:4.5.12+dfsg-2+deb9u3
-Config-Version: 2:4.5.12+dfsg-2+deb9u2
 Replaces: libdcerpc-server0 (<< 2:4.0.9), libdcerpc0 (<< 2:4.0.9), libgensec0 (<< 2:4.0.9), libndr-standard0 (<< 2:4.0.9), libndr0 (<< 2:4.0.9), libnetapi0 (<< 2:4.0.9), libregistry0 (<< 2:4.0.9), libsamba-credentials0 (<< 2:4.0.9), libsamba-hostconfig0 (<< 2:4.0.9), libsamba-policy0 (<< 2:4.0.9), libsamba-util0 (<< 2:4.0.9), libsamdb0 (<< 2:4.0.9), libsmbclient-raw0 (<< 2:4.0.9), libsmbd0 (<< 2:4.0.9), libtorture0 (<< 2:4.0.9), samba (<< 2:4.3.3+dfsg-1)
 Depends: libacl1 (>= 2.2.51-8), libattr1 (>= 1:2.4.46-8), libbsd0 (>= 0.5.0), libc6 (>= 2.15), libcap2 (>= 1:2.10), libcups2 (>= 1.6.0), libgnutls30 (>= 3.5.6), libldap-2.4-2 (>= 2.4.7), libldb1 (>= 1:1.1.20), libpam0g (>= 0.99.7.1), libpopt0 (>= 1.14), libpython2.7 (>= 2.7), libsystemd0, libtalloc2 (>= 2.1.0), libtdb1 (>= 1.3.0), libtevent0 (>= 0.9.25), libwbclient0 (= 2:4.5.12+dfsg-2+deb9u3), python-talloc (>= 2.1.6), zlib1g (>= 1:1.1.4)
 Breaks: libdcerpc-server0 (<< 2:4.0.9), libdcerpc0 (<< 2:4.0.9), libgensec0 (<< 2:4.0.9), libndr-standard0 (<< 2:4.0.9), libndr0 (<< 2:4.0.9), libnetapi0 (<< 2:4.0.9), libregistry0 (<< 2:4.0.9), libsamba-credentials0 (<< 2:4.0.9), libsamba-hostconfig0 (<< 2:4.0.9), libsamba-policy0 (<< 2:4.0.9), libsamba-util0 (<< 2:4.0.9), libsamdb0 (<< 2:4.0.9), libsmbclient-raw0 (<< 2:4.0.9), libsmbd0 (<< 2:4.0.9), libtorture0 (<< 2:4.0.9)
@@ -1841,7 +1841,7 @@ Description: Samba core libraries
 Homepage: http://www.samba.org
 
 Package: libpam-systemd
-Status: install ok installed
+Status: install ok unpacked
 Priority: standard
 Section: admin
 Installed-Size: 369
@@ -1849,8 +1849,9 @@ Maintainer: Debian systemd Maintainers <pkg-systemd-maintainers@lists.alioth.deb
 Architecture: amd64
 Multi-Arch: same
 Source: systemd
-Version: 232-25+deb9u2
-Depends: libc6 (>= 2.17), libpam0g (>= 0.99.7.1), libselinux1 (>= 2.1.9), systemd (= 232-25+deb9u2), libpam-runtime (>= 1.0.1-6), dbus, systemd-shim (>= 10-3~) | systemd-sysv
+Version: 232-25+deb9u4
+Config-Version: 232-25+deb9u2
+Depends: libc6 (>= 2.17), libpam0g (>= 0.99.7.1), libselinux1 (>= 2.1.9), systemd (= 232-25+deb9u4), libpam-runtime (>= 1.0.1-6), dbus, systemd-shim (>= 10-3~) | systemd-sysv
 Description: system and service manager - PAM module
  This package contains the PAM module which registers user sessions in
  the systemd control group hierarchy for logind.
@@ -1907,13 +1908,14 @@ Description: Perl module for processing huge XML documents in tree mode
 Homepage: http://www.xmltwig.org/
 
 Package: libpve-http-server-perl
-Status: install ok installed
+Status: install ok unpacked
 Priority: optional
 Section: perl
-Installed-Size: 393
+Installed-Size: 394
 Maintainer: Proxmox Support Team <support@proxmox.com>
 Architecture: all
-Version: 2.0-8
+Version: 2.0-10
+Config-Version: 2.0-8
 Depends: libanyevent-http-perl, libanyevent-perl, libcrypt-ssleay-perl, libhtml-parser-perl, libhttp-date-perl, libhttp-message-perl, libio-socket-ssl-perl, libjson-perl, libnet-ip-perl, libpve-common-perl, liburi-perl, perl
 Description: Proxmox Asynchrounous HTTP Server Implementation
  This is used to implement the PVE REST API.
@@ -2160,15 +2162,31 @@ Description: mechanism-switch gssapi library
  mechanism, to do the work.
 Homepage: http://www.citi.umich.edu/projects/nfsv4/linux/
 
-Package: qemu-server
-Status: install ok installed
+Package: pve-kernel-4.15.18-3-pve
+Status: install ok unpacked
 Priority: optional
 Section: admin
-Installed-Size: 561
+Installed-Size: 253371
 Maintainer: Proxmox Support Team <support@proxmox.com>
 Architecture: amd64
-Version: 5.0-26
-Depends: dbus, genisoimage, libc6 (>= 2.7-18), libio-multiplex-perl, libjson-perl, libjson-xs-perl, libnet-ssleay-perl, libpve-access-control (>= 5.0-7), libpve-common-perl (>= 4.0-92), libpve-guest-common-perl, libpve-storage-perl (>= 5.0-18), libterm-readline-gnu-perl, libuuid-perl, libxml-libxml-perl, perl (>= 5.10.0-19), pve-cluster, pve-firewall, pve-ha-manager, pve-qemu-kvm (>= 2.11.1-4), socat, pve-edk2-firmware
+Source: pve-kernel
+Version: 4.15.18-22
+Provides: linux-image, linux-image-2.6
+Depends: busybox, grub-pc | grub-efi-amd64 | grub-efi-ia32 | grub-efi-arm64, initramfs-tools
+Suggests: pve-firmware
+Description: The Proxmox PVE Kernel Image
+ This package contains the linux kernel and initial ramdisk used for booting
+
+Package: qemu-server
+Status: install ok unpacked
+Priority: optional
+Section: admin
+Installed-Size: 582
+Maintainer: Proxmox Support Team <support@proxmox.com>
+Architecture: amd64
+Version: 5.0-33
+Config-Version: 5.0-26
+Depends: dbus, genisoimage, libc6 (>= 2.7-18), libio-multiplex-perl, libjson-perl, libjson-xs-perl, libnet-ssleay-perl, libpve-access-control (>= 5.0-7), libpve-common-perl (>= 5.0-35), libpve-guest-common-perl, libpve-storage-perl (>= 5.0-18), libterm-readline-gnu-perl, libuuid-perl, libxml-libxml-perl, perl (>= 5.10.0-19), pve-cluster, pve-firewall, pve-ha-manager, pve-qemu-kvm (>= 2.11.1-4), socat, pve-edk2-firmware
 Conffiles:
  /etc/modules-load.d/qemu-server.conf a914ffc77cd4ba2e116931458fd8d2be
 Description: Qemu Server Tools
@@ -2441,14 +2459,15 @@ Description: Debian base system master password and group files
  synchronized with these master files.
 
 Package: libpve-storage-perl
-Status: install ok installed
+Status: install ok unpacked
 Priority: extra
 Section: perl
-Installed-Size: 360
+Installed-Size: 414
 Maintainer: Proxmox Support Team <support@proxmox.com>
 Architecture: all
-Version: 5.0-23
-Depends: cstream, glusterfs-client (>= 3.4.0-2), libfile-chdir-perl, libnet-dbus-perl, libpve-common-perl (>= 5.0-28), librados2-perl, lvm2, nfs-common, perl (>= 5.6.0-16), smartmontools, thin-provisioning-tools, udev, smbclient, cifs-utils
+Version: 5.0-25
+Config-Version: 5.0-23
+Depends: cstream, glusterfs-client (>= 3.4.0-2), libfile-chdir-perl, libnet-dbus-perl, libpve-common-perl (>= 5.0-35), librados2-perl, lvm2, nfs-common, perl (>= 5.6.0-16), smartmontools, thin-provisioning-tools, udev, smbclient, ceph-common, ceph-fuse, cifs-utils, pve-cluster
 Description: Proxmox VE storage management library
  This package contains the storage management library used by Proxmox VE.
 Homepage: http://www.proxmox.com
@@ -2673,15 +2692,16 @@ Description: X11 miscellaneous extension library
  git://anongit.freedesktop.org/git/xorg/lib/libXext
 
 Package: libpve-common-perl
-Status: install ok installed
+Status: install ok unpacked
 Priority: extra
 Section: perl
-Installed-Size: 324
+Installed-Size: 349
 Maintainer: Proxmox Support Team <support@proxmox.com>
 Architecture: all
-Version: 5.0-31
+Version: 5.0-38
+Config-Version: 5.0-31
 Depends: libclone-perl, libcrypt-openssl-random-perl, libcrypt-openssl-rsa-perl, libdevel-cycle-perl, libfilesys-df-perl, libio-stringy-perl, libjson-perl, liblinux-inotify2-perl, libmime-base32-perl, libnet-dbus-perl, libnet-ip-perl, libstring-shellquote-perl, liburi-perl, libwww-perl, perl
-Breaks: pve-container (<< 1.0-93), qemu-server (<< 5.0-21)
+Breaks: pmg-api (<< 5.0-74), pve-container (<< 1.0-93), pve-manager (<< 5.2-5), qemu-server (<< 5.0-29)
 Description: Proxmox VE base library
  This package contains the base library used by other Proxmox VE components.
 
@@ -2708,7 +2728,7 @@ Description: Miscellaneous utilities specific to Debian
  tempfile which
 
 Package: mime-support
-Status: install ok installed
+Status: install ok triggers-pending
 Priority: standard
 Section: net
 Installed-Size: 110
@@ -2731,6 +2751,7 @@ Description: MIME files 'mime.types' & 'mailcap', and support programs
  will display, alter, create, and print (respectively) any file using
  a program determined from the entries in the mime.types and mailcap
  files.
+Triggers-Pending: /usr/share/applications
 
 Package: libio-socket-inet6-perl
 Status: install ok installed
@@ -3470,7 +3491,7 @@ Description: Perl module for Secure Sockets Layer (SSL)
 Homepage: https://metacpan.org/release/Net-SSLeay
 
 Package: libldap-common
-Status: install ok installed
+Status: install ok unpacked
 Priority: standard
 Section: libs
 Installed-Size: 108
@@ -3478,7 +3499,8 @@ Maintainer: Debian OpenLDAP Maintainers <pkg-openldap-devel@lists.alioth.debian.
 Architecture: all
 Multi-Arch: foreign
 Source: openldap
-Version: 2.4.44+dfsg-5+deb9u1
+Version: 2.4.44+dfsg-5+deb9u2
+Config-Version: 2.4.44+dfsg-5+deb9u1
 Replaces: libldap-2.4-2 (<< 2.4.44+dfsg-1)
 Conffiles:
  /etc/ldap/ldap.conf 0b3f4d19d88498314478273ce10b0a70
@@ -3954,14 +3976,15 @@ Description: RADOS Gateway client library
 Homepage: http://ceph.com/
 
 Package: libuutil1linux
-Status: install ok installed
+Status: install ok unpacked
 Priority: optional
 Section: contrib/libs
 Installed-Size: 147
 Maintainer: Debian ZFS on Linux maintainers <pkg-zfsonlinux-devel@lists.alioth.debian.org>
 Architecture: amd64
 Source: zfs-linux
-Version: 0.7.8-pve1~bpo9
+Version: 0.7.9-pve1~bpo9
+Config-Version: 0.7.8-pve1~bpo9
 Depends: libc6 (>= 2.14), libudev1 (>= 183), libuuid1 (>= 2.16), zlib1g (>= 1:1.1.4)
 Description: Solaris userland utility library for Linux
  This library provides a variety of glue functions for ZFS on Linux:
@@ -4016,7 +4039,7 @@ Description: Internet Storage Name Service - shared libraries
 Homepage: https://github.com/open-iscsi/open-isns
 
 Package: libcurl3-gnutls
-Status: install ok unpacked
+Status: install ok installed
 Priority: optional
 Section: libs
 Installed-Size: 616
@@ -4025,7 +4048,6 @@ Architecture: amd64
 Multi-Arch: same
 Source: curl
 Version: 7.52.1-5+deb9u6
-Config-Version: 7.52.1-5+deb9u5
 Depends: libc6 (>= 2.17), libcomerr2 (>= 1.01), libgnutls30 (>= 3.5.6), libgssapi-krb5-2 (>= 1.14+dfsg), libidn2-0 (>= 0.6), libk5crypto3 (>= 1.6.dfsg.2), libkrb5-3 (>= 1.6.dfsg.2), libldap-2.4-2 (>= 2.4.7), libnettle6, libnghttp2-14 (>= 1.12.0), libpsl5 (>= 0.13.0), librtmp1 (>= 2.4+20131018.git79459a2-3~), libssh2-1 (>= 1.7.0), zlib1g (>= 1:1.1.4)
 Recommends: ca-certificates
 Description: easy-to-use client-side URL transfer library (GnuTLS flavour)
@@ -4135,16 +4157,17 @@ Description: Library for Public Suffix List (shared libraries)
 Homepage: https://github.com/rockdaboot/libpsl
 
 Package: pve-qemu-kvm
-Status: install ok installed
+Status: install ok unpacked
 Priority: extra
 Section: admin
-Installed-Size: 26025
+Installed-Size: 26114
 Maintainer: Proxmox Support Team <support@proxmox.com>
 Architecture: amd64
-Version: 2.11.1-5
+Version: 2.11.2-1
+Config-Version: 2.11.1-5
 Replaces: pve-kvm, pve-qemu-kvm-2.6.18, qemu-system-x86, qemu-utils
 Provides: qemu-system-x86, qemu-utils
-Depends: ceph-common (>= 0.48), glusterfs-common (>= 3.5.2-1), iproute2, libaio1 (>= 0.3.93), libiscsi7 (>= 1.17.0), libjemalloc1 (>= 2.1.1), libjpeg62-turbo (>= 1.3.1), libsdl1.2debian (>= 1.2.11), libusb-1.0-0 (>= 2:1.0.19), libusbredirparser1 (>= 0.6-2), libuuid1 (>= 2.16), numactl, pve-libspice-server1 (>= 0.12.5-1), python, libacl1 (>= 2.2.51-8), libasound2 (>= 1.0.16), libc6 (>= 2.15), libcap2 (>= 1:2.10), libcurl3-gnutls (>= 7.16.3), libgcc1 (>= 1:4.7), libglib2.0-0 (>= 2.37.1), libgnutls30 (>= 3.5.6), libnettle6, libnuma1 (>= 2.0.11), libpixman-1-0 (>= 0.19.6), libpng16-16 (>= 1.6.2-1), librados2 (>= 0.72.2), librbd1 (>= 0.80.5-2~), libseccomp2 (>= 0.0.0~20120605), libsnappy1v5, libstdc++6 (>= 4.1.1), libx11-6, zlib1g (>= 1:1.2.0)
+Depends: ceph-common (>= 0.48), glusterfs-common (>= 3.5.2-1), iproute2, libaio1 (>= 0.3.93), libiscsi7 (>= 1.17.0), libjemalloc1 (>= 2.1.1), libjpeg62-turbo (>= 1.3.1), libsdl1.2debian (>= 1.2.11), libusb-1.0-0 (>= 2:1.0.19), libusbredirparser1 (>= 0.6-2), libuuid1 (>= 2.16), numactl, pve-libspice-server1 (>= 0.12.5-1), python, libacl1 (>= 2.2.51-8), libasound2 (>= 1.0.16), libc6 (>= 2.15), libcap2 (>= 1:2.10), libcurl3-gnutls (>= 7.16.3), libgcc1 (>= 1:4.7), libglib2.0-0 (>= 2.37.1), libgnutls30 (>= 3.5.6), libibverbs1 (>= 1.1.6), libnettle6, libnuma1 (>= 2.0.11), libpixman-1-0 (>= 0.19.6), libpng16-16 (>= 1.6.2-1), librados2 (>= 0.72.2), librbd1 (>= 0.80.5-2~), librdmacm1 (>= 1.0.15), libseccomp2 (>= 0.0.0~20120605), libsnappy1v5, libstdc++6 (>= 4.1.1), libx11-6, zlib1g (>= 1:1.2.0)
 Conflicts: kvm, pve-kvm, pve-qemu-kvm-2.6.18, qemu, qemu-kvm, qemu-system-common, qemu-system-x86, qemu-utils
 Conffiles:
  /etc/kvm/kvm-ifdown df0b969ca5bd465a8a8bb946b83e520d
@@ -4300,7 +4323,7 @@ Maintainer: GNU Libc Maintainers <debian-glibc@lists.debian.org>
 Architecture: amd64
 Multi-Arch: foreign
 Source: glibc
-Version: 2.24-11+deb9u1
+Version: 2.24-11+deb9u3
 Depends: libc6 (>= 2.3.6-2)
 Description: Transitional package to ensure multiarch compatibility
  This is a transitional package used to ensure multiarch support is present
@@ -4309,14 +4332,15 @@ Description: Transitional package to ensure multiarch compatibility
 Homepage: http://www.gnu.org/software/libc/libc.html
 
 Package: tzdata
-Status: install ok installed
+Status: install ok unpacked
 Priority: required
 Section: localization
-Installed-Size: 3011
+Installed-Size: 3013
 Maintainer: GNU Libc Maintainers <debian-glibc@lists.debian.org>
 Architecture: all
 Multi-Arch: foreign
-Version: 2018c-0+deb9u1
+Version: 2018e-0+deb9u1
+Config-Version: 2018c-0+deb9u1
 Replaces: libc0.1, libc0.3, libc6, libc6.1
 Provides: tzdata-stretch
 Depends: debconf (>= 0.5) | debconf-2.0
@@ -4432,7 +4456,7 @@ Description: minimal libc subset for use with initramfs
 Homepage: https://git.kernel.org/cgit/libs/klibc/klibc.git
 
 Package: systemd-sysv
-Status: install ok installed
+Status: install ok unpacked
 Priority: important
 Section: admin
 Installed-Size: 106
@@ -4440,7 +4464,8 @@ Maintainer: Debian systemd Maintainers <pkg-systemd-maintainers@lists.alioth.deb
 Architecture: amd64
 Multi-Arch: foreign
 Source: systemd
-Version: 232-25+deb9u2
+Version: 232-25+deb9u4
+Config-Version: 232-25+deb9u2
 Replaces: sysvinit (<< 2.88dsf-44~), sysvinit-core, upstart (<< 1.13.2-0ubuntu10~), upstart-sysv
 Pre-Depends: systemd
 Conflicts: file-rc, openrc (<< 0.20.4-2.1), sysvinit-core, upstart (<< 1.13.2-0ubuntu10~), upstart-sysv
@@ -4819,16 +4844,17 @@ Description: Configuration files and profiles for ALSA drivers
 Homepage: https://www.alsa-project.org/
 
 Package: pve-manager
-Status: install ok installed
+Status: install ok unpacked
 Priority: optional
 Section: admin
-Installed-Size: 9222
+Installed-Size: 9266
 Maintainer: Proxmox Support Team <support@proxmox.com>
 Architecture: amd64
-Version: 5.2-1
+Version: 5.2-8
+Config-Version: 5.2-1
 Replaces: vlan, vzdump
 Provides: vlan, vzdump
-Depends: apt-transport-https, ca-certificates, cstream, dtach, fonts-font-awesome, gdisk, hdparm, ifenslave (>= 2.6), libapt-pkg-perl, libauthen-pam-perl, libc6 (>= 2.14), libcrypt-ssleay-perl, libev-perl, libfile-readbackwards-perl, libfile-sync-perl, libfilesys-df-perl, libhttp-daemon-perl, libintl-perl, libio-socket-ssl-perl, libjs-extjs (>= 6.0.1), libjson-perl, liblinux-inotify2-perl, liblockfile-simple-perl, liblwp-protocol-https-perl, libnet-dns-perl, libnet-http-perl (>= 6.06-1), libpve-access-control (>= 5.0-7), libpve-common-perl (>= 5.0-31), libpve-guest-common-perl (>= 2.0-14), libpve-http-server-perl, libpve-storage-perl (>= 5.0-18), librados2-perl, libtemplate-perl, libterm-readline-gnu-perl, libtimedate-perl, liburi-perl, libuuid-perl, libwww-perl (>= 6.04-1), libxml-parser-perl, logrotate, lsb-base, lzop, netcat-traditional, novnc-pve, perl (>= 5.10.0-19), postfix | mail-transport-agent, proxmox-widget-toolkit (>= 1.0-17), pve-cluster (>= 5.0-27), pve-container (>= 2.0-21), pve-docs, pve-firewall, pve-ha-manager, pve-i18n (>= 1.0-3), pve-xtermjs (>= 0.1-1), qemu-server (>= 5.0-24), rsync, spiceterm, systemd, vncterm, wget, init-system-helpers (>= 1.18~)
+Depends: apt-transport-https, ca-certificates, cstream, dtach, fonts-font-awesome, gdisk, hdparm, ifenslave (>= 2.6) | ifupdown2, libapt-pkg-perl, libauthen-pam-perl, libc6 (>= 2.14), libcrypt-ssleay-perl, libev-perl, libfile-readbackwards-perl, libfile-sync-perl, libfilesys-df-perl, libhttp-daemon-perl, libintl-perl, libio-socket-ssl-perl, libjs-extjs (>= 6.0.1), libjson-perl, liblinux-inotify2-perl, liblockfile-simple-perl, liblwp-protocol-https-perl, libnet-dns-perl, libnet-http-perl (>= 6.06-1), libpve-access-control (>= 5.0-7), libpve-common-perl (>= 5.0-36), libpve-guest-common-perl (>= 2.0-14), libpve-http-server-perl, libpve-storage-perl (>= 5.0-18), librados2-perl, libtemplate-perl, libterm-readline-gnu-perl, libtimedate-perl, liburi-perl, libuuid-perl, libwww-perl (>= 6.04-1), libxml-parser-perl, logrotate, lsb-base, lzop, netcat-traditional, novnc-pve, perl (>= 5.10.0-19), postfix | mail-transport-agent, proxmox-widget-toolkit (>= 1.0-17), pve-cluster (>= 5.0-27), pve-container (>= 2.0-21), pve-docs, pve-firewall, pve-ha-manager, pve-i18n (>= 1.0-3), pve-xtermjs (>= 0.1-1), qemu-server (>= 5.0-24), rsync, spiceterm, systemd, vncterm, wget, init-system-helpers (>= 1.18~)
 Conflicts: netcat-openbsd, vlan, vzdump
 Conffiles:
  /etc/apt/apt.conf.d/75pveconf e1d4c3aa4b809b310ccd7292ea5cffcf
@@ -5140,7 +5166,7 @@ Description: POSIX-compliant shell
 Homepage: http://gondor.apana.org.au/~herbert/dash/
 
 Package: libfuse2
-Status: install ok unpacked
+Status: install ok installed
 Priority: optional
 Section: libs
 Installed-Size: 341
@@ -5149,7 +5175,6 @@ Architecture: amd64
 Multi-Arch: same
 Source: fuse
 Version: 2.9.7-1+deb9u1
-Config-Version: 2.9.7-1
 Depends: libc6 (>= 2.17)
 Suggests: fuse
 Conflicts: fuse (<< 2.9.7-1+deb9u1)
@@ -5429,7 +5454,7 @@ Homepage: https://www.gnupg.org/
 Original-Maintainer: Debian GnuPG Maintainers <pkg-gnupg-maint@lists.alioth.debian.org>
 
 Package: linux-libc-dev
-Status: install ok unpacked
+Status: install ok installed
 Priority: optional
 Section: devel
 Installed-Size: 4519
@@ -5438,7 +5463,6 @@ Architecture: amd64
 Multi-Arch: same
 Source: linux
 Version: 4.9.110-3+deb9u4
-Config-Version: 4.9.88-1+deb9u1
 Provides: linux-kernel-headers
 Description: Linux support headers for userspace development
  This package provides userspaces headers from the Linux kernel.  These
@@ -5507,15 +5531,16 @@ Description: lightweight NoSQL database library, shared library
 Homepage: http://whitedb.org/
 
 Package: libgnutls30
-Status: install ok installed
+Status: install ok unpacked
 Priority: standard
 Section: libs
-Installed-Size: 2428
+Installed-Size: 2429
 Maintainer: Debian GnuTLS Maintainers <pkg-gnutls-maint@lists.alioth.debian.org>
 Architecture: amd64
 Multi-Arch: same
 Source: gnutls28
-Version: 3.5.8-5+deb9u1
+Version: 3.5.8-5+deb9u3
+Config-Version: 3.5.8-5+deb9u1
 Depends: libc6 (>= 2.22), libgmp10 (>= 2:6), libhogweed4, libidn11 (>= 1.13), libnettle6, libp11-kit0 (>= 0.23.1), libtasn1-6 (>= 4.9), zlib1g (>= 1:1.1.4)
 Suggests: gnutls-bin
 Description: GNU TLS library - main runtime library
@@ -5537,6 +5562,30 @@ Description: GNU TLS library - main runtime library
  .
  This package contains the main runtime library.
 Homepage: http://www.gnutls.org/
+
+Package: ceph-fuse
+Status: install ok unpacked
+Priority: optional
+Section: admin
+Installed-Size: 7575
+Maintainer: Ceph Maintainers <ceph-maintainers@lists.ceph.com>
+Architecture: amd64
+Source: ceph
+Version: 10.2.5-7.2
+Depends: libboost-iostreams1.62.0, libboost-system1.62.0, libboost-thread1.62.0, libc6 (>= 2.16), libfuse2 (>= 2.9), libgcc1 (>= 1:3.0), libgoogle-perftools4, libnspr4 (>= 2:4.9-2~), libnss3 (>= 2:3.13.4-2~), libstdc++6 (>= 6)
+Recommends: fuse
+Description: FUSE-based client for the Ceph distributed file system
+ Ceph is a distributed network file system designed to provide
+ excellent performance, reliability, and scalability.  This is a
+ FUSE-based client that allows one to mount a Ceph file system without
+ root privileges.
+ .
+ Because the FUSE-based client has certain inherent performance
+ limitations, it is recommended that the native Linux kernel client
+ be used if possible.  If it is not practical to load a kernel module
+ (insufficient privileges, older kernel, etc.), then the FUSE client will
+ do.
+Homepage: http://ceph.com/
 
 Package: libx11-6
 Status: install ok installed
@@ -5648,7 +5697,7 @@ Maintainer: Debian systemd Maintainers <pkg-systemd-maintainers@lists.alioth.deb
 Architecture: amd64
 Multi-Arch: same
 Source: systemd
-Version: 232-25+deb9u2
+Version: 232-25+deb9u4
 Pre-Depends: libc6 (>= 2.17), libgcrypt20 (>= 1.7.0), liblz4-1 (>= 0.0~r113), liblzma5 (>= 5.1.1alpha+20120614), libselinux1 (>= 2.1.9)
 Description: systemd utility library
  The libsystemd0 library provides interfaces to various systemd components.
@@ -5946,7 +5995,7 @@ Description: netfilter libiptc library
 Homepage: http://www.netfilter.org/
 
 Package: samba-common
-Status: install ok unpacked
+Status: install ok installed
 Priority: optional
 Section: net
 Installed-Size: 278
@@ -5955,7 +6004,6 @@ Architecture: all
 Multi-Arch: foreign
 Source: samba
 Version: 2:4.5.12+dfsg-2+deb9u3
-Config-Version: 2:4.5.12+dfsg-2+deb9u2
 Replaces: samba (<< 3.0.20b-1), samba-doc (<< 2:4.0.5~), samba4-common (<< 4.0.0~alpha7-1)
 Depends: ucf, debconf (>= 0.5) | debconf-2.0
 Pre-Depends: dpkg (>= 1.15.6~)
@@ -6473,7 +6521,7 @@ Description: Perl extension for the DBus bindings
 Homepage: https://metacpan.org/release/Net-DBus
 
 Package: initramfs-tools
-Status: install ok installed
+Status: install ok triggers-pending
 Priority: optional
 Section: utils
 Installed-Size: 105
@@ -6494,6 +6542,7 @@ Description: generic modular initramfs generator (automation)
  This package builds a bootable initramfs for Linux kernel packages.  The
  initramfs is loaded along with the kernel and is responsible for
  mounting the root filesystem and starting the main init system.
+Triggers-Pending: update-initramfs
 
 Package: libpangocairo-1.0-0
 Status: install ok installed
@@ -7115,15 +7164,16 @@ Description: checkpoint and restore in userspace
 Homepage: http://www.criu.org/
 
 Package: file
-Status: install ok installed
+Status: install ok unpacked
 Priority: standard
 Section: utils
 Installed-Size: 96
 Maintainer: Christoph Biedl <debian.axhn@manchmal.in-ulm.de>
 Architecture: amd64
 Multi-Arch: foreign
-Version: 1:5.30-1+deb9u1
-Depends: libc6 (>= 2.4), libmagic1 (= 1:5.30-1+deb9u1), zlib1g (>= 1:1.1.4)
+Version: 1:5.30-1+deb9u2
+Config-Version: 1:5.30-1+deb9u1
+Depends: libc6 (>= 2.4), libmagic1 (= 1:5.30-1+deb9u2), zlib1g (>= 1:1.1.4)
 Description: Recognize the type of data in a file using "magic" numbers
  The file command is "a file type guesser", a command-line tool that
  tells you in words what kind of data a file contains.
@@ -7228,14 +7278,15 @@ Description: International Components for Unicode
 Homepage: http://www.icu-project.org
 
 Package: iproute2
-Status: install ok installed
+Status: install ok unpacked
 Priority: important
 Section: net
-Installed-Size: 1939
+Installed-Size: 2043
 Maintainer: Alexander Wirt <formorer@debian.org>
 Architecture: amd64
 Multi-Arch: foreign
-Version: 4.13.0-3
+Version: 4.15.0-5
+Config-Version: 4.13.0-3
 Replaces: iproute
 Provides: arpd
 Depends: libc6 (>= 2.14), libdb5.3, libelf1 (>= 0.131), libmnl0 (>= 1.0.3-4~), libselinux1 (>= 2.0.15)
@@ -7482,7 +7533,7 @@ Description: GNU privacy guard "classic" - localization files (deprecated)
 Homepage: https://www.gnupg.org
 
 Package: libprocps6
-Status: install ok unpacked
+Status: install ok installed
 Priority: important
 Section: libs
 Installed-Size: 121
@@ -7491,7 +7542,6 @@ Architecture: amd64
 Multi-Arch: same
 Source: procps
 Version: 2:3.3.12-3+deb9u1
-Config-Version: 2:3.3.12-3
 Replaces: procps (<< 1:3.3.2-1)
 Depends: libc6 (>= 2.14), libsystemd0 (>= 209)
 Description: library for accessing process information from /proc
@@ -7796,14 +7846,15 @@ Description: block device ID library
  hard-coded device names and use a logical naming system instead.
 
 Package: pve-i18n
-Status: install ok installed
+Status: install ok unpacked
 Priority: optional
 Section: perl
-Installed-Size: 253
+Installed-Size: 272
 Maintainer: Proxmox Support Team <support@proxmox.com>
 Architecture: all
 Source: proxmox-i18n
-Version: 1.0-5
+Version: 1.0-6
+Config-Version: 1.0-5
 Description: Internationalization support for Proxmox VE
  This package provides the translations into all available languages.
 Homepage: http://www.proxmox.com
@@ -8054,7 +8105,7 @@ Description: Manage ASN.1 structures (runtime)
 Homepage: http://www.gnu.org/software/libtasn1/
 
 Package: libmagic-mgc
-Status: install ok installed
+Status: install ok unpacked
 Priority: standard
 Section: libs
 Installed-Size: 4832
@@ -8062,7 +8113,8 @@ Maintainer: Christoph Biedl <debian.axhn@manchmal.in-ulm.de>
 Architecture: amd64
 Multi-Arch: foreign
 Source: file
-Version: 1:5.30-1+deb9u1
+Version: 1:5.30-1+deb9u2
+Config-Version: 1:5.30-1+deb9u1
 Replaces: libmagic1 (<< 1:5.28-4~)
 Breaks: libmagic1 (<< 1:5.28-4~)
 Description: File type determination library using "magic" numbers (compiled magic file)
@@ -8139,15 +8191,16 @@ Description: shared library for ALSA applications
 Homepage: https://www.alsa-project.org/
 
 Package: libnvpair1linux
-Status: install ok installed
+Status: install ok unpacked
 Priority: optional
 Section: contrib/libs
 Installed-Size: 158
 Maintainer: Debian ZFS on Linux maintainers <pkg-zfsonlinux-devel@lists.alioth.debian.org>
 Architecture: amd64
 Source: zfs-linux
-Version: 0.7.8-pve1~bpo9
-Depends: libc6 (>= 2.4), libudev1 (>= 183), libuuid1 (>= 2.16), libuutil1linux (>= 0.7.8), zlib1g (>= 1:1.1.4)
+Version: 0.7.9-pve1~bpo9
+Config-Version: 0.7.8-pve1~bpo9
+Depends: libc6 (>= 2.4), libudev1 (>= 183), libuuid1 (>= 2.16), libuutil1linux (>= 0.7.9), zlib1g (>= 1:1.1.4)
 Description: Solaris name-value library for Linux
  This library provides routines for packing and unpacking nv pairs for
  transporting data across process boundaries, transporting between
@@ -8199,7 +8252,7 @@ Description: command line ISO-9660 and Rock Ridge manipulation tool
 Homepage: http://libburnia-project.org
 
 Package: libsmbclient
-Status: install ok unpacked
+Status: install ok installed
 Priority: optional
 Section: libs
 Installed-Size: 282
@@ -8208,7 +8261,6 @@ Architecture: amd64
 Multi-Arch: same
 Source: samba
 Version: 2:4.5.12+dfsg-2+deb9u3
-Config-Version: 2:4.5.12+dfsg-2+deb9u2
 Replaces: samba-doc (<< 2:4.0.5~)
 Depends: libbsd0 (>= 0.0), libc6 (>= 2.14), libtalloc2 (>= 2.0.4~git20101213), libtevent0 (>= 0.9.12), samba-libs (= 2:4.5.12+dfsg-2+deb9u3)
 Pre-Depends: dpkg (>= 1.15.6~)
@@ -8323,14 +8375,15 @@ Description: runtime components for the Universally Unique ID library
  It is used by libuuid as well as the uuidgen program.
 
 Package: reportbug
-Status: install ok installed
+Status: install ok unpacked
 Priority: standard
 Section: utils
-Installed-Size: 255
+Installed-Size: 257
 Maintainer: Reportbug Maintainers <reportbug-maint@lists.alioth.debian.org>
 Architecture: all
-Version: 7.1.7+deb9u1
-Depends: python3:any, apt, python3-reportbug (= 7.1.7+deb9u1)
+Version: 7.1.7+deb9u2
+Config-Version: 7.1.7+deb9u1
+Depends: python3:any, apt, python3-reportbug (= 7.1.7+deb9u2)
 Suggests: postfix | exim4 | mail-transport-agent, gnupg | pgp, debconf-utils (>> 1.1.0), debsums (>= 2.0.47), file (>> 1.30), dlocate, python3-urwid, python3-gi, python3-gi-cairo, gir1.2-gtk-3.0, gir1.2-vte-2.91, python3-gtkspellcheck, xdg-utils, emacs24-bin-common | emacs25-bin-common, claws-mail (>= 3.8.0)
 Conffiles:
  /etc/reportbug.conf 17b8e0850fa74d18b96ce5856321de0d
@@ -8370,7 +8423,7 @@ Description: Python interface to Debian's Bug Tracking System
  types.
 
 Package: libmagic1
-Status: install ok installed
+Status: install ok unpacked
 Priority: standard
 Section: libs
 Installed-Size: 214
@@ -8378,8 +8431,9 @@ Maintainer: Christoph Biedl <debian.axhn@manchmal.in-ulm.de>
 Architecture: amd64
 Multi-Arch: same
 Source: file
-Version: 1:5.30-1+deb9u1
-Depends: libc6 (>= 2.15), zlib1g (>= 1:1.1.4), libmagic-mgc (= 1:5.30-1+deb9u1)
+Version: 1:5.30-1+deb9u2
+Config-Version: 1:5.30-1+deb9u1
+Depends: libc6 (>= 2.15), zlib1g (>= 1:1.1.4), libmagic-mgc (= 1:5.30-1+deb9u2)
 Suggests: file
 Conffiles:
  /etc/magic 272913026300e7ae9b5e2d51f138e674
@@ -8542,7 +8596,7 @@ Description: Minimal subset of the Python language (version 3.5)
  contained in this package.
 
 Package: procps
-Status: install ok unpacked
+Status: install ok installed
 Priority: important
 Section: admin
 Installed-Size: 690
@@ -8550,7 +8604,6 @@ Maintainer: Craig Small <csmall@debian.org>
 Architecture: amd64
 Multi-Arch: foreign
 Version: 2:3.3.12-3+deb9u1
-Config-Version: 2:3.3.12-3
 Provides: watch
 Depends: libc6 (>= 2.15), libncurses5 (>= 6), libncursesw5 (>= 6), libprocps6, libtinfo5 (>= 6), lsb-base (>= 3.0-10), init-system-helpers (>= 1.29~)
 Recommends: psmisc
@@ -8668,7 +8721,7 @@ Description: XSLT 1.0 processing library - runtime library
 Homepage: http://xmlsoft.org/xslt/
 
 Package: ssh
-Status: install ok unpacked
+Status: install ok installed
 Priority: extra
 Section: net
 Installed-Size: 203
@@ -8676,7 +8729,6 @@ Maintainer: Debian OpenSSH Maintainers <debian-ssh@lists.debian.org>
 Architecture: all
 Source: openssh
 Version: 1:7.4p1-10+deb9u4
-Config-Version: 1:7.4p1-10+deb9u3
 Depends: openssh-client (>= 1:7.4p1-10+deb9u4), openssh-server (>= 1:7.4p1-10+deb9u4)
 Pre-Depends: dpkg (>= 1.17.5)
 Description: secure shell client and server (metapackage)
@@ -8704,7 +8756,7 @@ Description: Perl module to detect memory cycles in Perl objects
 Homepage: http://search.cpan.org/dist/Devel-Cycle/
 
 Package: perl
-Status: install ok unpacked
+Status: install ok installed
 Priority: standard
 Section: perl
 Installed-Size: 651
@@ -8712,7 +8764,6 @@ Maintainer: Niko Tyni <ntyni@debian.org>
 Architecture: amd64
 Multi-Arch: allowed
 Version: 5.24.1-3+deb9u4
-Config-Version: 5.24.1-3+deb9u3
 Replaces: perl-modules (<< 5.22.0~)
 Depends: perl-base (= 5.24.1-3+deb9u4), perl-modules-5.24 (>= 5.24.1-3+deb9u4), libperl5.24 (= 5.24.1-3+deb9u4)
 Pre-Depends: dpkg (>= 1.17.17)
@@ -8857,13 +8908,15 @@ Description: more sensible way to change directories
  combine all the power of chdir(), File::Spec and Cwd.
 
 Package: pve-docs
-Status: install ok installed
+Status: install ok unpacked
 Priority: extra
 Section: doc
-Installed-Size: 17179
+Installed-Size: 17406
 Maintainer: Proxmox Support Team <support@proxmox.com>
 Architecture: all
-Version: 5.2-3
+Version: 5.2-8
+Config-Version: 5.2-3
+Depends: libjs-extjs
 Description: Proxmox VE Documentation
  This package contains the Proxmox VE Documentation files.
 
@@ -9118,13 +9171,13 @@ Installed-Size: 333
 Maintainer: Santiago Vila <sanvila@debian.org>
 Architecture: amd64
 Multi-Arch: foreign
-Version: 9.9+deb9u4
+Version: 9.9+deb9u5
 Replaces: base, dpkg (<= 1.15.0), miscutils
 Provides: base
 Pre-Depends: awk
 Breaks: initscripts (<< 2.88dsf-13.3), sendfile (<< 2.1b.20080616-5.2~)
 Conffiles:
- /etc/debian_version f19bbc56ac83579d2aa834e8eaf31df3
+ /etc/debian_version 6aaf9da96067c818ca7a682984fc1579
  /etc/dpkg/origins/debian 731423fa8ba067262f8ef37882d1e742
  /etc/host.conf 4eb63731c9f5e30903ac4fc07a7fe3d6
  /etc/issue 62dc6d46260360d4299e3a931afbdce5
@@ -9135,6 +9188,22 @@ Description: Debian base system miscellaneous files
  several important miscellaneous files, such as /etc/debian_version,
  /etc/host.conf, /etc/issue, /etc/motd, /etc/profile, and others,
  and the text of several common licenses in use on Debian systems.
+
+Package: libtcmalloc-minimal4
+Status: install ok unpacked
+Priority: optional
+Section: libs
+Installed-Size: 402
+Maintainer: Daigo Moriwaki <daigo@debian.org>
+Architecture: amd64
+Source: google-perftools
+Version: 2.5-2.2
+Depends: libc6 (>= 2.14), libgcc1 (>= 1:3.0), libstdc++6 (>= 5.2)
+Description: efficient thread-caching malloc
+ The gperftools, previously called google-perftools, package contains some
+ utilities to improve and analyze the performance of C++ programs. This is a
+ part of that package, and includes an optimized thread-caching malloc.
+Homepage: https://github.com/gperftools/gperftools
 
 Package: libtokyocabinet9
 Status: install ok installed
@@ -9225,15 +9294,16 @@ Description: Command Channel Library used by BIND
  and clients, particularly rndc.
 
 Package: python3-reportbug
-Status: install ok installed
+Status: install ok unpacked
 Priority: standard
 Section: python
-Installed-Size: 355
+Installed-Size: 357
 Maintainer: Reportbug Maintainers <reportbug-maint@lists.alioth.debian.org>
 Architecture: all
 Source: reportbug
-Version: 7.1.7+deb9u1
-Depends: python3:any (>= 3.3.2-2~), apt, python3-debian, python3-debianbts (>= 1.13), file, python3-requests
+Version: 7.1.7+deb9u2
+Config-Version: 7.1.7+deb9u1
+Depends: python3:any (>= 3.3.2-2~), apt, python3-debian, python3-debianbts (>= 1.13), file, python3-requests, python3-apt
 Suggests: reportbug
 Description: Python modules for interacting with bug tracking systems
  reportbug is a tool designed to make the reporting of bugs in Debian
@@ -9318,19 +9388,20 @@ Description: NUMA scheduling and memory placement tool
 Homepage: http://oss.sgi.com/projects/libnuma/
 
 Package: zfsutils-linux
-Status: install ok installed
+Status: install ok unpacked
 Priority: optional
 Section: contrib/admin
-Installed-Size: 1151
+Installed-Size: 1037
 Maintainer: Debian ZFS on Linux maintainers <pkg-zfsonlinux-devel@lists.alioth.debian.org>
 Architecture: amd64
 Source: zfs-linux
-Version: 0.7.8-pve1~bpo9
+Version: 0.7.9-pve1~bpo9
+Config-Version: 0.7.8-pve1~bpo9
 Provides: zfsutils
-Depends: python3, init-system-helpers (>= 1.18~), python3:any, libblkid1 (>= 2.16), libc6 (>= 2.14), libnvpair1linux (>= 0.7.8), libudev1 (>= 183), libuuid1 (>= 2.16), libuutil1linux (>= 0.7.8), libzfs2linux (>= 0.7.8), libzpool2linux (>= 0.7.8), zlib1g (>= 1:1.1.4)
+Depends: python3, init-system-helpers (>= 1.18~), python3:any, libblkid1 (>= 2.16), libc6 (>= 2.14), libnvpair1linux (>= 0.7.9), libudev1 (>= 183), libuuid1 (>= 2.16), libuutil1linux (>= 0.7.9), libzfs2linux (>= 0.7.9), libzpool2linux (>= 0.7.9), zlib1g (>= 1:1.1.4)
 Recommends: lsb-base, zfs-zed
 Suggests: nfs-kernel-server, samba-common-bin (>= 3.0.23), zfs-initramfs
-Conflicts: zfs, zfs-fuse, zutils
+Conflicts: zfs, zfs-fuse
 Conffiles:
  /etc/cron.d/zfsutils-linux 27db3c2e738f030ab15d717cfda8261a
  /etc/default/zfs 5483fced1e3de63c0d35f433131c4f26
@@ -9434,15 +9505,15 @@ Description: SSH2 client-side library
 Homepage: http://libssh2.org/
 
 Package: patch
-Status: install ok installed
+Status: install ok unpacked
 Priority: standard
 Section: vcs
-Installed-Size: 216
+Installed-Size: 215
 Maintainer: Laszlo Boszormenyi (GCS) <gcs@debian.org>
 Architecture: amd64
 Multi-Arch: foreign
-Source: patch (2.7.5-1)
-Version: 2.7.5-1+b2
+Version: 2.7.5-1+deb9u1
+Config-Version: 2.7.5-1+b2
 Depends: libc6 (>= 2.17)
 Suggests: ed, diffutils-doc
 Description: Apply a diff file to an original
@@ -9472,7 +9543,7 @@ Description: Common files for GLib library
 Homepage: http://www.gtk.org/
 
 Package: libgnutlsxx28
-Status: install ok installed
+Status: install ok unpacked
 Priority: extra
 Section: libs
 Installed-Size: 70
@@ -9480,8 +9551,9 @@ Maintainer: Debian GnuTLS Maintainers <pkg-gnutls-maint@lists.alioth.debian.org>
 Architecture: amd64
 Multi-Arch: same
 Source: gnutls28
-Version: 3.5.8-5+deb9u1
-Depends: libgnutls30 (= 3.5.8-5+deb9u1), libc6 (>= 2.4), libgcc1 (>= 1:3.0), libstdc++6 (>= 5)
+Version: 3.5.8-5+deb9u3
+Config-Version: 3.5.8-5+deb9u1
+Depends: libgnutls30 (= 3.5.8-5+deb9u3), libc6 (>= 2.4), libgcc1 (>= 1:3.0), libstdc++6 (>= 5)
 Description: GNU TLS library - C++ runtime library
  GnuTLS is a portable library which implements the Transport Layer
  Security (TLS 1.0, 1.1, 1.2) and Secure Sockets Layer (SSL) 3.0 and Datagram
@@ -9558,7 +9630,7 @@ Description: helper tools for all init systems
  include their helpers in this package.
 
 Package: openssh-server
-Status: install ok unpacked
+Status: install ok installed
 Priority: optional
 Section: net
 Installed-Size: 883
@@ -9567,7 +9639,6 @@ Architecture: amd64
 Multi-Arch: foreign
 Source: openssh
 Version: 1:7.4p1-10+deb9u4
-Config-Version: 1:7.4p1-10+deb9u3
 Replaces: ssh, ssh-krb5
 Provides: ssh-server
 Depends: adduser (>= 3.9), dpkg (>= 1.9.0), libpam-modules (>= 0.72-9), libpam-runtime (>= 0.76-14), lsb-base (>= 4.1+Debian3), openssh-client (= 1:7.4p1-10+deb9u4), openssh-sftp-server, procps, ucf (>= 0.28), debconf (>= 0.5) | debconf-2.0, init-system-helpers (>= 1.18~), libaudit1 (>= 1:2.2.1), libc6 (>= 2.17), libcomerr2 (>= 1.01), libgssapi-krb5-2 (>= 1.14+dfsg), libkrb5-3 (>= 1.13~alpha1+dfsg), libpam0g (>= 0.99.7.1), libselinux1 (>= 1.32), libssl1.0.2 (>= 1.0.2d), libsystemd0, libwrap0 (>= 7.6-4~), zlib1g (>= 1:1.1.4)
@@ -9604,7 +9675,7 @@ Description: secure shell (SSH) server, for secure access from remote machines
 Homepage: http://www.openssh.com/
 
 Package: smbclient
-Status: install ok unpacked
+Status: install ok installed
 Priority: optional
 Section: net
 Installed-Size: 1461
@@ -9612,7 +9683,6 @@ Maintainer: Debian Samba Maintainers <pkg-samba-maint@lists.alioth.debian.org>
 Architecture: amd64
 Source: samba
 Version: 2:4.5.12+dfsg-2+deb9u3
-Config-Version: 2:4.5.12+dfsg-2+deb9u2
 Replaces: samba (<< 2.999+3.0.alpha21-4), samba-doc (<< 2:4.0.5~), samba4-clients (<< 4.0.5), smbget
 Provides: samba-client
 Depends: samba-common (= 2:4.5.12+dfsg-2+deb9u3), libarchive13 (>= 3.0.4), libbsd0 (>= 0.0), libc6 (>= 2.14), libpopt0 (>= 1.14), libreadline7 (>= 6.0), libsmbclient (>= 2:4.0.3+dfsg1), libtalloc2 (>= 2.0.4~git20101213), libtevent0 (>= 0.9.9), libwbclient0 (= 2:4.5.12+dfsg-2+deb9u3), samba-libs (= 2:4.5.12+dfsg-2+deb9u3)
@@ -9666,6 +9736,24 @@ Description: userspace USB programming library
  library.
 Homepage: http://www.libusb.info
 
+Package: libgoogle-perftools4
+Status: install ok unpacked
+Priority: optional
+Section: libs
+Installed-Size: 1056
+Maintainer: Daigo Moriwaki <daigo@debian.org>
+Architecture: amd64
+Source: google-perftools
+Version: 2.5-2.2
+Depends: libtcmalloc-minimal4 (= 2.5-2.2), libc6 (>= 2.14), libgcc1 (>= 1:3.0), libstdc++6 (>= 5.2), libunwind8
+Conflicts: libgoogle-perftools0
+Description: libraries for CPU and heap analysis, plus an efficient thread-caching malloc
+ The gperftools, previously called google-perftools, package contains some
+ utilities to improve and analyze the performance of C++ programs. This includes
+ the full features: an optimized thread-caching malloc() and cpu and heap
+ profiling utilities.
+Homepage: https://github.com/gperftools/gperftools
+
 Package: liblwp-mediatypes-perl
 Status: install ok installed
 Priority: optional
@@ -9702,8 +9790,32 @@ Description: PolicyKit backend API
  This package contains a library for implementing authentication backends.
 Homepage: https://www.freedesktop.org/wiki/Software/polkit/
 
-Package: openssh-sftp-server
+Package: libunwind8
 Status: install ok unpacked
+Priority: optional
+Section: libs
+Installed-Size: 159
+Maintainer: Daigo Moriwaki <daigo@debian.org>
+Architecture: amd64
+Source: libunwind
+Version: 1.1-4.1
+Replaces: libgcc1 (<< 1:4.0.0-2)
+Depends: libc6 (>= 2.3), liblzma5 (>= 5.1.1alpha+20110809)
+Conflicts: libunwind1-dev
+Description: library to determine the call-chain of a program - runtime
+ The primary goal of this project is to define a portable and efficient C
+ programming interface (API) to determine the call-chain of a program.
+ The API additionally provides the means to manipulate the preserved
+ (callee-saved) state of each call-frame and to resume execution at any
+ point in the call-chain (non-local goto). The API supports both local
+ (same-process) and remote (across-process) operation. As such, the API
+ is useful in a number of applications.
+ .
+ This package includes the shared libraries
+Homepage: http://www.nongnu.org/libunwind
+
+Package: openssh-sftp-server
+Status: install ok installed
 Priority: optional
 Section: net
 Installed-Size: 106
@@ -9711,7 +9823,6 @@ Maintainer: Debian OpenSSH Maintainers <debian-ssh@lists.debian.org>
 Architecture: amd64
 Source: openssh
 Version: 1:7.4p1-10+deb9u4
-Config-Version: 1:7.4p1-10+deb9u3
 Replaces: openssh-server (<< 1:6.5p1-5)
 Depends: openssh-client (= 1:7.4p1-10+deb9u4), libc6 (>= 2.17)
 Recommends: openssh-server | ssh-server
@@ -9972,7 +10083,7 @@ Description: netfilter xtables library
 Homepage: http://www.netfilter.org/
 
 Package: udev
-Status: install ok installed
+Status: install ok unpacked
 Priority: important
 Section: admin
 Installed-Size: 7064
@@ -9980,9 +10091,10 @@ Maintainer: Debian systemd Maintainers <pkg-systemd-maintainers@lists.alioth.deb
 Architecture: amd64
 Multi-Arch: foreign
 Source: systemd
-Version: 232-25+deb9u2
+Version: 232-25+deb9u4
+Config-Version: 232-25+deb9u2
 Replaces: bash-completion (<< 1:2.1), systemd (<< 232-20)
-Depends: libacl1 (>= 2.2.51-8), libblkid1 (>= 2.19.1), libc6 (>= 2.17), libkmod2 (>= 5~), libselinux1 (>= 2.1.9), adduser, libudev1 (= 232-25+deb9u2), lsb-base (>= 3.0-6), util-linux (>= 2.27.1), procps
+Depends: libacl1 (>= 2.2.51-8), libblkid1 (>= 2.19.1), libc6 (>= 2.17), libkmod2 (>= 5~), libselinux1 (>= 2.1.9), adduser, libudev1 (= 232-25+deb9u4), lsb-base (>= 3.0-6), util-linux (>= 2.27.1), procps
 Pre-Depends: dpkg (>= 1.17.14)
 Breaks: bash-completion (<< 1:2.1), consolekit (<< 0.4.6-1), ifplugd (<< 0.28-19.1~), ifupdown (<< 0.8.5~), joystick (<< 1:1.4.9-1~), kmod (<< 14), plymouth (<< 0.9.0-7), systemd (<< 232-20), usb-modeswitch (<< 2.3.0+repack0-1~)
 Conflicts: hal
@@ -10071,7 +10183,7 @@ Description: administration tools for packet filtering and NAT
 Homepage: http://www.netfilter.org/
 
 Package: libldap-2.4-2
-Status: install ok installed
+Status: install ok unpacked
 Priority: standard
 Section: libs
 Installed-Size: 509
@@ -10079,9 +10191,10 @@ Maintainer: Debian OpenLDAP Maintainers <pkg-openldap-devel@lists.alioth.debian.
 Architecture: amd64
 Multi-Arch: same
 Source: openldap
-Version: 2.4.44+dfsg-5+deb9u1
+Version: 2.4.44+dfsg-5+deb9u2
+Config-Version: 2.4.44+dfsg-5+deb9u1
 Replaces: libldap-2.3-0, libldap2
-Depends: libc6 (>= 2.14), libgnutls30 (>= 3.5.6), libsasl2-2, libldap-common (>= 2.4.44+dfsg-5+deb9u1)
+Depends: libc6 (>= 2.14), libgnutls30 (>= 3.5.6), libsasl2-2, libldap-common (>= 2.4.44+dfsg-5+deb9u2)
 Conflicts: ldap-utils (<= 2.1.23-1)
 Description: OpenLDAP libraries
  These are the run-time libraries for the OpenLDAP (Lightweight Directory
@@ -10142,13 +10255,14 @@ Description: Checksumming Copy on Write Filesystem utilities
 Homepage: http://btrfs.wiki.kernel.org/
 
 Package: novnc-pve
-Status: install ok installed
+Status: install ok unpacked
 Priority: optional
 Section: web
-Installed-Size: 1296
+Installed-Size: 1300
 Maintainer: Proxmox Support Team <support@proxmox.com>
 Architecture: amd64
-Version: 0.6-4
+Version: 1.0.0-2
+Config-Version: 0.6-4
 Description: HTML5 VNC client
  VNC client using HTML5 (WebSockets, Canvas). This packet is use by
  Proxmox VE to provide HTML VM console.
@@ -10344,14 +10458,15 @@ Description: System-V-like utilities
 Homepage: http://savannah.nongnu.org/projects/sysvinit
 
 Package: spl
-Status: install ok installed
+Status: install ok unpacked
 Priority: optional
 Section: kernel
-Installed-Size: 57
+Installed-Size: 48
 Maintainer: Debian ZFS on Linux maintainers <pkg-zfsonlinux-devel@lists.alioth.debian.org>
 Architecture: amd64
 Source: spl-linux
-Version: 0.7.8-pve1~bpo9
+Version: 0.7.9-pve1~bpo9
+Config-Version: 0.7.8-pve1~bpo9
 Depends: libc6 (>= 2.4)
 Conflicts: spl-dev, splat
 Description: Solaris Porting Layer user-space utilities for Linux
@@ -10531,15 +10646,16 @@ Description: fast compression/decompression library
 Homepage: https://github.com/google/snappy/
 
 Package: zfs-initramfs
-Status: install ok installed
+Status: install ok unpacked
 Priority: optional
 Section: contrib/kernel
 Installed-Size: 104
 Maintainer: Debian ZFS on Linux maintainers <pkg-zfsonlinux-devel@lists.alioth.debian.org>
 Architecture: all
 Source: zfs-linux
-Version: 0.7.8-pve1~bpo9
-Depends: busybox-initramfs | busybox-static | busybox, initramfs-tools, zfsutils-linux (>= 0.7.8-pve1~bpo9)
+Version: 0.7.9-pve1~bpo9
+Config-Version: 0.7.8-pve1~bpo9
+Depends: busybox-initramfs | busybox-static | busybox, initramfs-tools, zfsutils-linux (>= 0.7.9-pve1~bpo9)
 Description: OpenZFS root filesystem capabilities for Linux - initramfs
  The Z file system is a pooled filesystem designed for maximum data
  integrity, supporting data snapshots, multiple copies, and data
@@ -10547,6 +10663,7 @@ Description: OpenZFS root filesystem capabilities for Linux - initramfs
  .
  This package adds OpenZFS to the system initramfs with a hook
  for the initramfs-tools infrastructure.
+Triggers-Awaited: initramfs-tools
 Homepage: http://www.zfsonlinux.org/
 
 Package: mtools
@@ -10589,15 +10706,16 @@ Description: User-level tools for ReiserFS filesystems
  ReiserFS filesystems.
 
 Package: libzfs2linux
-Status: install ok installed
+Status: install ok unpacked
 Priority: optional
 Section: contrib/libs
 Installed-Size: 393
 Maintainer: Debian ZFS on Linux maintainers <pkg-zfsonlinux-devel@lists.alioth.debian.org>
 Architecture: amd64
 Source: zfs-linux
-Version: 0.7.8-pve1~bpo9
-Depends: libblkid1 (>= 2.16), libc6 (>= 2.14), libnvpair1linux (>= 0.7.8), libudev1 (>= 183), libuuid1 (>= 2.16), libuutil1linux (>= 0.7.8), libzpool2linux (>= 0.7.8), zlib1g (>= 1:1.1.4)
+Version: 0.7.9-pve1~bpo9
+Config-Version: 0.7.8-pve1~bpo9
+Depends: libblkid1 (>= 2.16), libc6 (>= 2.14), libnvpair1linux (>= 0.7.9), libudev1 (>= 183), libuuid1 (>= 2.16), libuutil1linux (>= 0.7.9), libzpool2linux (>= 0.7.9), zlib1g (>= 1:1.1.4)
 Description: OpenZFS filesystem library for Linux
  The Z file system is a pooled filesystem designed for maximum data
  integrity, supporting data snapshots, multiple copies, and data
@@ -10607,7 +10725,7 @@ Description: OpenZFS filesystem library for Linux
 Homepage: http://www.zfsonlinux.org/
 
 Package: libc-l10n
-Status: install ok installed
+Status: install ok unpacked
 Priority: standard
 Section: localization
 Installed-Size: 4210
@@ -10615,7 +10733,8 @@ Maintainer: GNU Libc Maintainers <debian-glibc@lists.debian.org>
 Architecture: all
 Multi-Arch: foreign
 Source: glibc
-Version: 2.24-11+deb9u1
+Version: 2.24-11+deb9u3
+Config-Version: 2.24-11+deb9u1
 Replaces: locales (<< 2.21-1)
 Breaks: locales (<< 2.21-1)
 Description: GNU C Library: localization files
@@ -10787,16 +10906,17 @@ Description: minimal subset of the Python language (default python3 version)
 Homepage: http://www.python.org/
 
 Package: libgnutls-openssl27
-Status: install ok installed
+Status: install ok unpacked
 Priority: standard
 Section: libs
-Installed-Size: 227
+Installed-Size: 228
 Maintainer: Debian GnuTLS Maintainers <pkg-gnutls-maint@lists.alioth.debian.org>
 Architecture: amd64
 Multi-Arch: same
 Source: gnutls28
-Version: 3.5.8-5+deb9u1
-Depends: libgnutls30 (= 3.5.8-5+deb9u1), libc6 (>= 2.14)
+Version: 3.5.8-5+deb9u3
+Config-Version: 3.5.8-5+deb9u1
+Depends: libgnutls30 (= 3.5.8-5+deb9u3), libc6 (>= 2.14)
 Description: GNU TLS library - OpenSSL wrapper
  GnuTLS is a portable library which implements the Transport Layer
  Security (TLS 1.0, 1.1, 1.2) and Secure Sockets Layer (SSL) 3.0 and Datagram
@@ -10902,16 +11022,17 @@ Description: SELinux runtime shared libraries
 Homepage: http://userspace.selinuxproject.org/
 
 Package: systemd
-Status: install ok triggers-pending
+Status: install ok unpacked
 Priority: important
 Section: admin
-Installed-Size: 9332
+Installed-Size: 9292
 Maintainer: Debian systemd Maintainers <pkg-systemd-maintainers@lists.alioth.debian.org>
 Architecture: amd64
 Multi-Arch: foreign
-Version: 232-25+deb9u2
+Version: 232-25+deb9u4
+Config-Version: 232-25+deb9u2
 Replaces: udev (<< 228-5)
-Depends: libacl1 (>= 2.2.51-8), libapparmor1 (>= 2.9.0-3+exp2), libaudit1 (>= 1:2.2.1), libblkid1 (>= 2.19.1), libc6 (>= 2.17), libcap2 (>= 1:2.10), libcryptsetup4 (>= 2:1.4.3), libgcrypt20 (>= 1.7.0), libgpg-error0 (>= 1.14), libidn11 (>= 1.13), libip4tc0 (>= 1.6.0+snapshot20161117), libkmod2 (>= 5~), liblz4-1 (>= 0.0~r127), liblzma5 (>= 5.1.1alpha+20120614), libmount1 (>= 2.26.2), libpam0g (>= 0.99.7.1), libseccomp2 (>= 2.3.1), libselinux1 (>= 2.1.9), libsystemd0 (= 232-25+deb9u2), util-linux (>= 2.27.1), mount (>= 2.26), adduser, procps
+Depends: libacl1 (>= 2.2.51-8), libapparmor1 (>= 2.9.0-3+exp2), libaudit1 (>= 1:2.2.1), libblkid1 (>= 2.19.1), libc6 (>= 2.17), libcap2 (>= 1:2.10), libcryptsetup4 (>= 2:1.4.3), libgcrypt20 (>= 1.7.0), libgpg-error0 (>= 1.14), libidn11 (>= 1.13), libip4tc0 (>= 1.6.0+snapshot20161117), libkmod2 (>= 5~), liblz4-1 (>= 0.0~r127), liblzma5 (>= 5.1.1alpha+20120614), libmount1 (>= 2.26.2), libpam0g (>= 0.99.7.1), libseccomp2 (>= 2.3.1), libselinux1 (>= 2.1.9), libsystemd0 (= 232-25+deb9u4), util-linux (>= 2.27.1), mount (>= 2.26), adduser, procps
 Pre-Depends: libc6 (>= 2.8)
 Recommends: libpam-systemd, dbus
 Suggests: systemd-ui, systemd-container, policykit-1
@@ -10944,7 +11065,6 @@ Description: system and service manager
  .
  Installing the systemd package will not switch your init system unless you
  boot with init=/bin/systemd or install systemd-sysv in addition.
-Triggers-Pending: /etc/init.d
 Homepage: https://www.freedesktop.org/wiki/Software/systemd
 
 Package: libhtml-parser-perl
@@ -11001,14 +11121,15 @@ Description: Perl module for parsing XML files
 Homepage: http://www.libexpat.org/
 
 Package: pve-container
-Status: install ok installed
+Status: install ok unpacked
 Priority: optional
 Section: perl
-Installed-Size: 372
+Installed-Size: 377
 Maintainer: Proxmox Support Team <support@proxmox.com>
 Architecture: all
-Version: 2.0-23
-Depends: file, libpve-common-perl (>= 5.0-20), libpve-guest-common-perl, libpve-storage-perl (>= 5.0-18), lxc-pve, pve-cluster (>= 4.0-8), pve-ha-manager, xz-utils, perl
+Version: 2.0-26
+Config-Version: 2.0-23
+Depends: file, libpve-common-perl (>= 5.0-35), libpve-guest-common-perl, libpve-storage-perl (>= 5.0-18), lxc-pve, pve-cluster (>= 4.0-8), pve-ha-manager, xz-utils, perl
 Description: Proxmox VE Container management tool
  Tool to manage Linux Containers on Proxmox VE.
 
@@ -11058,13 +11179,13 @@ Essential: yes
 Status: install ok installed
 Priority: required
 Section: admin
-Installed-Size: 6745
+Installed-Size: 6778
 Origin: debian
 Maintainer: Dpkg Developers <debian-dpkg@lists.debian.org>
 Bugs: debbugs://bugs.debian.org
 Architecture: amd64
 Multi-Arch: foreign
-Version: 1.18.24
+Version: 1.18.25
 Replaces: manpages-it (<< 2.80-4)
 Depends: tar (>= 1.28-1)
 Pre-Depends: libbz2-1.0, libc6 (>= 2.14), liblzma5 (>= 5.2.2), libselinux1 (>= 2.3), zlib1g (>= 1:1.1.4)
@@ -11880,7 +12001,7 @@ Description: LVM2 application library
 Homepage: http://sources.redhat.com/lvm2/
 
 Package: pve-ha-manager
-Status: install ok installed
+Status: install ok triggers-pending
 Priority: optional
 Section: perl
 Installed-Size: 212
@@ -11893,6 +12014,7 @@ Conffiles:
  /etc/default/pve-ha-manager bbb08f3d11f487b5f09eee689c355d63
 Description: Proxmox VE HA Manager
  HA Manager Proxmox VE.
+Triggers-Pending: pve-api-updates
 
 Package: man-db
 Status: install ok triggers-pending
@@ -12134,14 +12256,15 @@ Description: library to create ISO 9660 images
 Homepage: http://libburnia-project.org
 
 Package: pve-cluster
-Status: install ok installed
+Status: install ok unpacked
 Priority: optional
 Section: admin
-Installed-Size: 458
+Installed-Size: 461
 Maintainer: Proxmox Support Team <support@proxmox.com>
 Architecture: amd64
-Version: 5.0-27
-Depends: corosync (>= 2.3.4-1), faketime, fuse, libcrypt-ssleay-perl, libdigest-hmac-perl, libfuse2 (>= 2.9.2-4), libglib2.0-0 (>= 2.42.1-1), libpve-apiclient-perl, libpve-common-perl (>= 5.0-28), libqb0 (>= 0.17.1-1), librrds-perl, libsqlite3-0 (>= 3.6.0), libuuid-perl, libxml-parser-perl, lsb-base, openssl, rrdcached, rsync, rsyslog, sqlite3, systemd, init-system-helpers (>= 1.18~), perl (>= 5.24.1-3+deb9u3), perlapi-5.24.1, libc6 (>= 2.17), libcmap4 (>= 1.99.9), libcpg4 (>= 2.3.4-1), libquorum5 (>= 2.3.4-1), librrd8 (>= 1.4~rc2)
+Version: 5.0-30
+Config-Version: 5.0-27
+Depends: corosync (>= 2.3.4-1), faketime, fuse, libcrypt-ssleay-perl, libdigest-hmac-perl, libfuse2 (>= 2.9.2-4), libglib2.0-0 (>= 2.42.1-1), libpve-apiclient-perl, libpve-common-perl (>= 5.0-28), libqb0 (>= 0.17.1-1), librrds-perl, libsqlite3-0 (>= 3.6.0), libuuid-perl, libxml-parser-perl, lsb-base, openssl, rrdcached, rsync, rsyslog, sqlite3, systemd, init-system-helpers (>= 1.18~), perl (>= 5.24.1-3+deb9u4), perlapi-5.24.1, libc6 (>= 2.17), libcmap4 (>= 1.99.9), libcpg4 (>= 2.3.4-1), libquorum5 (>= 2.3.4-1), librrd8 (>= 1.4~rc2)
 Breaks: pve-ha-manager (<< 2.0-4)
 Conffiles:
  /etc/sysctl.d/pve.conf ecc126b31942d021af92a88631823f2b
@@ -12555,16 +12678,17 @@ Description: Perl interface to the libxml2 library
 Homepage: https://metacpan.org/release/XML-LibXML
 
 Package: pve-firmware
-Status: install ok installed
+Status: install ok unpacked
 Priority: optional
 Section: misc
-Installed-Size: 145432
+Installed-Size: 146623
 Maintainer: Proxmox Support Team <support@proxmox.com>
 Architecture: all
-Version: 2.0-4
-Replaces: firmware-atheros, firmware-bnx2, firmware-bnx2x, firmware-brcm80211, firmware-intelwimax, firmware-ipw2x00, firmware-ivtv, firmware-iwlwifi, firmware-libertas, firmware-linux-free, firmware-linux-nonfree, firmware-myricom, firmware-netxen, firmware-qlogic, firmware-ralink, firmware-realtek
+Version: 2.0-5
+Config-Version: 2.0-4
+Replaces: firmware-amd-graphics, firmware-atheros, firmware-bnx2, firmware-bnx2x, firmware-brcm80211, firmware-cavium, firmware-intelwimax, firmware-ipw2x00, firmware-ivtv, firmware-iwlwifi, firmware-libertas, firmware-linux-free, firmware-linux-nonfree, firmware-misc-nonfree, firmware-myricom, firmware-netxen, firmware-qlogic, firmware-ralink, firmware-realtek, firmware-siano, firmware-ti-connectivity
 Suggests: linux-image
-Conflicts: firmware-atheros, firmware-bnx2, firmware-bnx2x, firmware-brcm80211, firmware-intelwimax, firmware-ipw2x00, firmware-ivtv, firmware-iwlwifi, firmware-libertas, firmware-linux-free, firmware-linux-nonfree, firmware-myricom, firmware-netxen, firmware-qlogic, firmware-ralink, firmware-realtek
+Conflicts: firmware-amd-graphics, firmware-atheros, firmware-bnx2, firmware-bnx2x, firmware-brcm80211, firmware-cavium, firmware-intelwimax, firmware-ipw2x00, firmware-ivtv, firmware-iwlwifi, firmware-libertas, firmware-linux-free, firmware-linux-nonfree, firmware-misc-nonfree, firmware-myricom, firmware-netxen, firmware-qlogic, firmware-ralink, firmware-realtek, firmware-siano, firmware-ti-connectivity
 Description: Binary firmware code for the pve-kernel
  This package contains the binary firmware for various modules used in
  the pve-kernel.
@@ -12718,7 +12842,7 @@ Description: An alternate POSIX capabilities library
 Homepage: http://people.redhat.com/sgrubb/libcap-ng
 
 Package: dbus
-Status: install ok installed
+Status: install ok triggers-pending
 Priority: standard
 Section: admin
 Installed-Size: 532
@@ -12748,6 +12872,7 @@ Description: simple interprocess messaging system (daemon and utilities)
  .
  The client-side library can be found in the libdbus-1-3 package, as it is no
  longer contained in this package.
+Triggers-Pending: /usr/share/dbus-1/system-services /etc/dbus-1/system.d
 Homepage: http://dbus.freedesktop.org/
 
 Package: libmount1
@@ -13340,13 +13465,14 @@ Description: OpenSSL support for LWP
 Homepage: https://metacpan.org/release/Crypt-SSLeay
 
 Package: libpve-apiclient-perl
-Status: install ok installed
+Status: install ok unpacked
 Priority: optional
 Section: perl
-Installed-Size: 28
+Installed-Size: 29
 Maintainer: Proxmox Support Team <support@proxmox.com>
 Architecture: all
-Version: 2.0-4
+Version: 2.0-5
+Config-Version: 2.0-4
 Depends: libcrypt-ssleay-perl, libhttp-message-perl, libio-socket-ssl-perl, libjson-perl, liburi-perl, libwww-perl
 Description: Proxmox VE API client library
  This implements an API client for Proxmox VE in perl.
@@ -13475,14 +13601,15 @@ Description: Ceph distributed file system client library
 Homepage: http://ceph.com/
 
 Package: ca-certificates
-Status: install ok installed
+Status: install ok unpacked
 Priority: optional
 Section: misc
-Installed-Size: 468
+Installed-Size: 434
 Maintainer: Michael Shuler <michael@pbandjelly.org>
 Architecture: all
 Multi-Arch: foreign
-Version: 20161130+nmu1
+Version: 20161130+nmu1+deb9u1
+Config-Version: 20161130+nmu1
 Depends: openssl (>= 1.0.0), debconf (>= 0.5) | debconf-2.0
 Breaks: ca-certificates-java (<< 20121112+nmu1)
 Enhances: openssl
@@ -13519,14 +13646,15 @@ Description: Shared library for the Lua interpreter version 5.3
 Homepage: http://www.lua.org
 
 Package: pve-kernel-4.15
-Status: install ok installed
+Status: install ok unpacked
 Priority: optional
 Section: admin
 Installed-Size: 11
 Maintainer: Proxmox Support Team <support@proxmox.com>
 Architecture: all
-Version: 5.2-1
-Depends: pve-firmware, pve-kernel-4.15.17-1-pve
+Version: 5.2-6
+Config-Version: 5.2-1
+Depends: pve-firmware, pve-kernel-4.15.18-3-pve
 Description: Latest Proxmox VE Kernel Image
  This is a virtual package which will install the latest available
  proxmox kernel from the 4.15 series.
@@ -13550,7 +13678,7 @@ Description: Access control list shared library
 Homepage: http://savannah.nongnu.org/projects/acl/
 
 Package: openssh-client
-Status: install ok unpacked
+Status: install ok installed
 Priority: standard
 Section: net
 Installed-Size: 4106
@@ -13559,7 +13687,6 @@ Architecture: amd64
 Multi-Arch: foreign
 Source: openssh
 Version: 1:7.4p1-10+deb9u4
-Config-Version: 1:7.4p1-10+deb9u3
 Replaces: ssh, ssh-krb5
 Provides: rsh-client, ssh-client
 Depends: adduser (>= 3.10), dpkg (>= 1.7.0), passwd, libc6 (>= 2.17), libedit2 (>= 2.11-20080614), libgssapi-krb5-2 (>= 1.14+dfsg), libselinux1 (>= 1.32), libssl1.0.2 (>= 1.0.2d), zlib1g (>= 1:1.1.4)
@@ -13803,13 +13930,14 @@ Description: minimalistic Netlink communication library
 Homepage: http://netfilter.org/projects/libmnl/
 
 Package: pve-firewall
-Status: install ok installed
+Status: install ok unpacked
 Priority: extra
 Section: admin
-Installed-Size: 300
+Installed-Size: 302
 Maintainer: Proxmox Support Team <support@proxmox.com>
 Architecture: amd64
-Version: 3.0-8
+Version: 3.0-14
+Config-Version: 3.0-8
 Depends: ebtables, ipset, iptables, libpve-access-control, libpve-common-perl, lsb-base, pve-cluster, init-system-helpers (>= 1.18~), perl, libc6 (>= 2.7), libglib2.0-0 (>= 2.31.18), libnetfilter-log1, libnfnetlink0
 Conflicts: ulogd
 Conffiles:
@@ -14402,14 +14530,13 @@ Description: library for decimal floating point arithmetic (runtime library)
 Homepage: http://www.bytereef.org/mpdecimal/index.html
 
 Package: fuse
-Status: install ok unpacked
+Status: install ok installed
 Priority: optional
 Section: utils
 Installed-Size: 136
 Maintainer: Laszlo Boszormenyi (GCS) <gcs@debian.org>
 Architecture: amd64
 Version: 2.9.7-1+deb9u1
-Config-Version: 2.9.7-1
 Depends: libc6 (>= 2.14), libfuse2 (= 2.9.7-1+deb9u1), adduser, mount (>= 2.19.1), sed (>= 4)
 Conffiles:
  /etc/fuse.conf 298587592c8444196833f317def414f2
@@ -14700,13 +14827,14 @@ Description: data compression library
 Homepage: http://www.oberhumer.com/opensource/lzo/
 
 Package: pve-edk2-firmware
-Status: install ok installed
+Status: install ok unpacked
 Priority: extra
 Section: misc
 Installed-Size: 2058
 Maintainer: Proxmox Support Team <support@proxmox.com>
 Architecture: all
-Version: 1.20180316-1
+Version: 1.20180612-1
+Config-Version: 1.20180316-1
 Description: edk2 based firmware modules for virtual machines
  Contains OVMF. Open Virtual Machine Firmware (OVMF) is a build of EDK II for
  virtual machines. It includes full support for UEFI, including Secure Boot,
@@ -14941,13 +15069,14 @@ Description: implementation of content negotiation
 Homepage: http://search.cpan.org/dist/HTTP-Negotiate/
 
 Package: libpve-guest-common-perl
-Status: install ok installed
+Status: install ok unpacked
 Priority: optional
 Section: perl
 Installed-Size: 74
 Maintainer: Proxmox Support Team <support@proxmox.com>
 Architecture: all
-Version: 2.0-16
+Version: 2.0-17
+Config-Version: 2.0-16
 Replaces: libpve-common-perl (<< 4.0-89), pve-manager (<< 4.4-10)
 Depends: libpve-common-perl (>= 4.0-89), libpve-storage-perl (>= 5.0-16), pve-cluster, perl
 Breaks: libpve-common-perl (<< 4.0-89), pve-manager (<< 5.1-40)
@@ -14975,7 +15104,7 @@ Description: GNU stream editor for filtering/transforming text
 Homepage: https://www.gnu.org/software/sed/
 
 Package: libcups2
-Status: install ok unpacked
+Status: install ok installed
 Priority: optional
 Section: libs
 Installed-Size: 689
@@ -14984,7 +15113,6 @@ Architecture: amd64
 Multi-Arch: same
 Source: cups
 Version: 2.2.1-8+deb9u2
-Config-Version: 2.2.1-8+deb9u1
 Depends: libavahi-client3 (>= 0.6.16), libavahi-common3 (>= 0.6.16), libc6 (>= 2.16), libgnutls30 (>= 3.5.6), libgssapi-krb5-2 (>= 1.14+dfsg), zlib1g (>= 1:1.2.0)
 Suggests: cups-common
 Breaks: cups (<< 1.5.0)

@@ -116,7 +116,7 @@ td.hdlist2 {
 </style>
 <div id="preamble">
 <div class="sectionbody">
-<div class="paragraph">
+<div class="paragraph" id="storage_open_iscsi">
 <p>Storage pool type: <tt><span class="monospaced">iscsi</span></tt></p></div>
 <div class="paragraph">
 <p>iSCSI is a widely employed technology used to connect to storage
@@ -125,9 +125,10 @@ source iSCSI target solutions available,
 e.g. <a href="http://www.openmediavault.org/">OpenMediaVault</a>, which is based on
 Debian.</p></div>
 <div class="paragraph">
-<p>To use this backend, you need to install the <tt><span class="monospaced">open-iscsi</span></tt>
-package. This is a standard Debian package, but it is not installed by
-default to save resources.</p></div>
+<p>To use this backend, you need to install the
+<a href="http://www.open-iscsi.org/">Open-iSCSI</a> (<tt><span class="monospaced">open-iscsi</span></tt>) package. This is a
+standard Debian package, but it is not installed by default to save
+resources.</p></div>
 <div class="literalblock">
 <div class="content monospaced">
 <pre><tt># apt-get install open-iscsi</tt></pre>

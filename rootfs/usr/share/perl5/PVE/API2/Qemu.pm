@@ -365,7 +365,7 @@ __PACKAGE__->register_method({
 	type => 'array',
 	items => {
 	    type => "object",
-	    properties => {},
+	    properties => $PVE::QemuServer::vmstatus_return_properties,
 	},
 	links => [ { rel => 'child', href => "{vmid}" } ],
     },
@@ -382,7 +382,6 @@ __PACKAGE__->register_method({
 	    next if !$rpcenv->check($authuser, "/vms/$vmid", [ 'VM.Audit' ], 1);
 
 	    my $data = $vmstatus->{$vmid};
-	    $data->{vmid} = int($vmid);
 	    push @$res, $data;
 	}
 
@@ -444,7 +443,13 @@ __PACKAGE__->register_method({
 		    optional => 1,
 		    type => 'integer',
 		    minimum => '0',
-		}
+		},
+		start => {
+		    optional => 1,
+		    type => 'boolean',
+		    default => 0,
+		    description => "Start VM after it was created successfully.",
+		},
 	    }),
     },
     returns => {
@@ -462,6 +467,7 @@ __PACKAGE__->register_method({
 	my $vmid = extract_param($param, 'vmid');
 
 	my $archive = extract_param($param, 'archive');
+	my $is_restore = !!$archive;
 
 	my $storage = extract_param($param, 'storage');
 
@@ -472,6 +478,8 @@ __PACKAGE__->register_method({
 	my $pool = extract_param($param, 'pool');
 
 	my $bwlimit = extract_param($param, 'bwlimit');
+
+	my $start_after_create = extract_param($param, 'start');
 
 	my $filename = PVE::QemuConfig->config_file($vmid);
 
@@ -533,28 +541,18 @@ __PACKAGE__->register_method({
 	    }
 	}
 
+	my $emsg = $is_restore ? "unable to restore VM $vmid -" : "unable to create VM $vmid -";
+
+	eval { PVE::QemuConfig->create_and_lock_config($vmid, $force) };
+	die "$emsg $@" if $@;
+
 	my $restorefn = sub {
-	    my $vmlist = PVE::Cluster::get_vmlist();
-	    if ($vmlist->{ids}->{$vmid}) {
-		my $current_node = $vmlist->{ids}->{$vmid}->{node};
-		if ($current_node eq $node) {
-		    my $conf = PVE::QemuConfig->load_config($vmid);
+	    my $conf = PVE::QemuConfig->load_config($vmid);
 
-		    PVE::QemuConfig->check_protection($conf, "unable to restore VM $vmid");
+	    PVE::QemuConfig->check_protection($conf, $emsg);
 
-		    die "unable to restore vm $vmid - config file already exists\n"
-			if !$force;
-
-		    die "unable to restore vm $vmid - vm is running\n"
-			if PVE::QemuServer::check_running($vmid);
-
-		    die "unable to restore vm $vmid - vm is a template\n"
-			if PVE::QemuConfig->is_template($conf);
-
-		} else {
-		    die "unable to restore vm $vmid - already existing on cluster node '$current_node'\n";
-		}
-	    }
+	    die "$emsg vm is running\n" if PVE::QemuServer::check_running($vmid);
+	    die "$emsg vm is a template\n" if PVE::QemuConfig->is_template($conf);
 
 	    my $realcmd = sub {
 		PVE::QemuServer::restore_archive($archive, $vmid, $authuser, {
@@ -564,19 +562,20 @@ __PACKAGE__->register_method({
 		    bwlimit => $bwlimit, });
 
 		PVE::AccessControl::add_vm_to_pool($vmid, $pool) if $pool;
+
+		if ($start_after_create) {
+		    eval { PVE::API2::Qemu->vm_start({ vmid => $vmid, node => $node }) };
+		    warn $@ if $@;
+		}
 	    };
 
 	    # ensure no old replication state are exists
 	    PVE::ReplicationState::delete_guest_states($vmid);
 
-	    return $rpcenv->fork_worker('qmrestore', $vmid, $authuser, $realcmd);
+	    return PVE::QemuConfig->lock_config_full($vmid, 1, $realcmd);
 	};
 
 	my $createfn = sub {
-
-	    # test after locking
-	    PVE::Cluster::check_vmid_unused($vmid);
-
 	    # ensure no old replication state are exists
 	    PVE::ReplicationState::delete_guest_states($vmid);
 
@@ -610,16 +609,49 @@ __PACKAGE__->register_method({
 			eval { PVE::Storage::vdisk_free($storecfg, $volid); };
 			warn $@ if $@;
 		    }
-		    die "create failed - $err";
+		    die "$emsg $err";
 		}
 
 		PVE::AccessControl::add_vm_to_pool($vmid, $pool) if $pool;
 	    };
 
-	    return $rpcenv->fork_worker('qmcreate', $vmid, $authuser, $realcmd);
+	    PVE::QemuConfig->lock_config_full($vmid, 1, $realcmd);
+
+	    if ($start_after_create) {
+		print "Execute autostart\n";
+		eval { PVE::API2::Qemu->vm_start({vmid => $vmid, node => $node}) };
+		warn $@ if $@;
+	    }
 	};
 
-	return PVE::QemuConfig->lock_config_full($vmid, 1, $archive ? $restorefn : $createfn);
+	my ($code, $worker_name);
+	if ($is_restore) {
+	    $worker_name = 'qmrestore';
+	    $code = sub {
+		eval { $restorefn->() };
+		if (my $err = $@) {
+		    eval { PVE::QemuConfig->remove_lock($vmid, 'create') };
+		    warn $@ if $@;
+		    die $err;
+		}
+	    };
+	} else {
+	    $worker_name = 'qmcreate';
+	    $code = sub {
+		eval { $createfn->() };
+		if (my $err = $@) {
+		    eval {
+			my $conffile = PVE::QemuConfig->config_file($vmid);
+			unlink($conffile)
+			    or die "failed to remove config file: $@\n";
+		    };
+		    warn $@ if $@;
+		    die $err;
+		}
+	    };
+	}
+
+	return $rpcenv->fork_worker($worker_name, $vmid, $authuser, $code);
     }});
 
 __PACKAGE__->register_method({
@@ -795,13 +827,14 @@ __PACKAGE__->register_method({
 	},
     },
     returns => {
+	description => "The current VM configuration.",
 	type => "object",
-	properties => {
+	properties => PVE::QemuServer::json_config_properties({
 	    digest => {
 		type => 'string',
 		description => 'SHA1 digest of configuration file. This can be used to prevent concurrent modifications.',
 	    }
-	},
+	}),
     },
     code => sub {
 	my ($param) = @_;
@@ -1829,7 +1862,26 @@ __PACKAGE__->register_method({
 	    vmid => get_standard_option('pve-vmid'),
 	},
     },
-    returns => { type => 'object' },
+    returns => {
+	type => 'object',
+	properties => {
+	    %$PVE::QemuServer::vmstatus_return_properties,
+	    ha => {
+		description => "HA manager service status.",
+		type => 'object',
+	    },
+	    spice => {
+		description => "Qemu VGA configuration supports spice.",
+		type => 'boolean',
+		optional => 1,
+	    },
+	    agent => {
+		description => "Qemu GuestAgent enabled in config.",
+		type => 'boolean',
+		optional => 1,
+	    },
+	},
+    },
     code => sub {
 	my ($param) = @_;
 
@@ -1842,8 +1894,7 @@ __PACKAGE__->register_method({
 	$status->{ha} = PVE::HA::Config::get_service_status("vm:$param->{vmid}");
 
 	$status->{spice} = 1 if PVE::QemuServer::vga_conf_has_spice($conf->{vga});
-
-	$status->{agent} = 1 if $conf->{agent};
+	$status->{agent} = 1 if (PVE::QemuServer::parse_guest_agent($conf)->{enabled});
 
 	return $status;
     }});
@@ -2918,6 +2969,10 @@ __PACKAGE__->register_method({
 
 		    PVE::QemuConfig->write_config($vmid, $conf);
 
+		    if ($running && PVE::QemuServer::parse_guest_agent($conf)->{fstrim_cloned_disks} && PVE::QemuServer::qga_check_running($vmid)) {
+			eval { PVE::QemuServer::vm_mon_cmd($vmid, "guest-fstrim"); };
+		    }
+
 		    eval {
 			# try to deactivate volumes - avoid lvm LVs to be active on several nodes
 			PVE::Storage::deactivate_volumes($storecfg, [ $newdrive->{file} ])
@@ -3286,7 +3341,32 @@ __PACKAGE__->register_method({
 	type => 'array',
 	items => {
 	    type => "object",
-	    properties => {},
+	    properties => {
+		name => {
+		    description => "Snapshot identifier. Value 'current' identifies the current VM.",
+		    type => 'string',
+		},
+		vmstate => {
+		    description => "Snapshot includes RAM.",
+		    type => 'boolean',
+		    optional => 1,
+		},
+		description => {
+		    description => "Snapshot description.",
+		    type => 'string',
+		},
+		snaptime => {
+		    description => "Snapshot creation time",
+		    type => 'integer',
+		    renderer => 'timestamp',
+		    optional => 1,
+		},
+		parent => {
+		    description => "Parent snapshot identifier.",
+		    type => 'string',
+		    optional => 1,
+		},
+	    },
 	},
 	links => [ { rel => 'child', href => "{name}" } ],
     },
@@ -3314,7 +3394,12 @@ __PACKAGE__->register_method({
 	}
 
 	my $running = PVE::QemuServer::check_running($vmid, 1) ? 1 : 0;
-	my $current = { name => 'current', digest => $conf->{digest}, running => $running };
+	my $current = {
+	    name => 'current',
+	    digest => $conf->{digest},
+	    running => $running,
+	    description => "You are here!",
+	};
 	$current->{parent} = $conf->{parent} if $conf->{parent};
 
 	push @$res, $current;

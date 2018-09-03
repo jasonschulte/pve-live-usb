@@ -1,0 +1,17 @@
+/.
+/usr
+/usr/lib
+/usr/lib/libtcmalloc_minimal.so.4.3.0
+/usr/lib/libtcmalloc_minimal_debug.so.4.3.0
+/usr/share
+/usr/share/doc
+/usr/share/doc/libtcmalloc-minimal4
+/usr/share/doc/libtcmalloc-minimal4/AUTHORS
+/usr/share/doc/libtcmalloc-minimal4/NEWS.gz
+/usr/share/doc/libtcmalloc-minimal4/README.gz
+/usr/share/doc/libtcmalloc-minimal4/TODO
+/usr/share/doc/libtcmalloc-minimal4/changelog.Debian.gz
+/usr/share/doc/libtcmalloc-minimal4/changelog.gz
+/usr/share/doc/libtcmalloc-minimal4/copyright
+/usr/lib/libtcmalloc_minimal.so.4
+/usr/lib/libtcmalloc_minimal_debug.so.4

@@ -28,16 +28,16 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="/novnc/app/styles/base.css" />
-    <link rel="stylesheet" href="/novnc/app/styles/pve.css" />
+    <link rel="stylesheet" href="/novnc/app/styles/base.css?ver=1.0.0-2" />
+    <link rel="stylesheet" href="/novnc/app/styles/pve.css?ver=1.0.0-2" />
 
     <!--
     <script type='text/javascript'
-        src='http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js'></script>
+        src='http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js?ver=1.0.0-2'></script>
     -->
 
     <!-- this is included as a normal file in order to catch script-loading errors as well -->
-    <script type="text/javascript" src="/novnc/app/error-handler.js"></script>
+    <script type="text/javascript" src="/novnc/app/error-handler.js?ver=1.0.0-2"></script>
     <script type="text/javascript">
 	if (typeof(PVE) === 'undefined') PVE = {};
 	PVE.UserName = '[% username %]';
@@ -46,7 +46,7 @@
     </script>
 
     <!-- begin scripts -->
-    <script src="/novnc/app.js"></script>
+    <script crossorigin=anonymous" src="/novnc/app.js?ver=1.0.0-2"></script>
     <!-- end scripts -->
 </head>
 
@@ -120,18 +120,18 @@
                 </div>
             </div>
 
-            <!-- XVP Shutdown/Reboot -->
+            <!-- Shutdown/Reboot -->
             <input type="image" alt="Shutdown/Reboot" src="/novnc/app/images/power.svg"
-                id="noVNC_xvp_button" class="noVNC_button"
+                id="noVNC_power_button" class="noVNC_button"
                 title="Shutdown/Reboot..." />
             <div class="noVNC_vcenter">
-            <div id="noVNC_xvp" class="noVNC_panel">
+            <div id="noVNC_power" class="noVNC_panel">
                 <div class="noVNC_heading">
                     <img src="/novnc/app/images/power.svg"> Power
                 </div>
-                <input type="button" id="noVNC_xvp_shutdown_button" value="Shutdown" />
-                <input type="button" id="noVNC_xvp_reboot_button" value="Reboot" />
-                <input type="button" id="noVNC_xvp_reset_button" value="Reset" />
+                <input type="button" id="noVNC_shutdown_button" value="Shutdown" />
+                <input type="button" id="noVNC_reboot_button" value="Reboot" />
+                <input type="button" id="noVNC_reset_button" value="Reset" />
             </div>
             </div>
 
@@ -156,26 +156,6 @@
                 id="noVNC_fullscreen_button" class="noVNC_button noVNC_hidden"
                 title="Fullscreen" />
 
-	    <!-- PVE Commands -->
-            <input type="image" alt="Commands" src="/novnc/app/images/power.svg"
-                id="pve_commands_button" class="noVNC_button"
-                title="Commands" />
-
-            <div class="noVNC_vcenter">
-            <div id="pve_commands" class="noVNC_panel">
-                <div class="noVNC_heading">
-                    <img src="/novnc/app/images/power.svg"> Commands
-                </div>
-		<input id="pve_command_start" type="button" value="Start" />
-		<input id="pve_command_shutdown" type="button" value="Shutdown" />
-		<input id="pve_command_stop" type="button" value="Stop" />
-		<input id="pve_command_reset" type="button" value="Reset" />
-		<input id="pve_command_suspend" type="button" value="Suspend" />
-		<input id="pve_command_resume" type="button" value="Resume" />
-		<input id="pve_command_reload" type="button" value="Reload" />
-	    </div>
-	    </div>
-
             <!-- Settings -->
             <input type="image" alt="Settings" src="/novnc/app/images/settings.svg"
                 id="noVNC_settings_button" class="noVNC_button"
@@ -186,7 +166,7 @@
                     <li class="noVNC_heading">
                         <img src="/novnc/app/images/settings.svg"> Settings
                     </li>
-                    <li>
+                    <li style="display:none;">
                         <label><input id="noVNC_setting_shared" type="checkbox" /> Shared Mode</label>
                     </li>
                     <li>
@@ -194,25 +174,25 @@
                     </li>
                     <li><hr></li>
                     <li>
-                        <label><input id="noVNC_setting_clip" type="checkbox" /> Clip to Window</label>
+                        <label><input id="noVNC_setting_view_clip" type="checkbox" /> Clip to Window</label>
+                    </li>
+                    <li>
+                        <label><input id="noVNC_setting_local_cursor" type="checkbox" /> Local Cursor</label>
+                    </li>
+                    <li>
+                        <label><input id="noVNC_setting_autoresize" type="checkbox" /> Autoresize Window</label>
                     </li>
                     <li>
                         <label for="noVNC_setting_resize">Scaling Mode:</label>
                         <select id="noVNC_setting_resize" name="vncResize">
-                            <option value="off">None</option>
+                            <option value="off">Off</option>
                             <option value="scale">Local Scaling</option>
-                            <option value="downscale">Local Downscaling</option>
-                            <option value="remote">Remote Resizing</option>
                         </select>
                     </li>
                     <li><hr></li>
-                    <li>
+                    <li style="display:none;">
                         <div class="noVNC_expander">Advanced</div>
                         <div><ul>
-                            <li>
-                                <label><input id="noVNC_setting_cursor" type="checkbox" /> Local Cursor</label>
-                            </li>
-                            <li><hr></li>
                             <li>
                                 <label for="noVNC_setting_repeaterID">Repeater ID:</label>
                                 <input id="noVNC_setting_repeaterID" type="input" value="" />
@@ -259,6 +239,27 @@
             </div>
             </div>
 
+	    <!-- PVE Commands -->
+            <input type="image" alt="Commands" src="/novnc/app/images/power.svg"
+                id="pve_commands_button" class="noVNC_button"
+                title="Commands" />
+
+            <div class="noVNC_vcenter">
+            <div id="pve_commands" class="noVNC_panel">
+                <div class="noVNC_heading">
+                    <img src="/novnc/app/images/power.svg"> Commands
+                </div>
+		<input id="pve_command_start" type="button" value="Start" />
+		<input id="pve_command_shutdown" type="button" value="Shutdown" />
+		<input id="pve_command_stop" type="button" value="Stop" />
+		<input id="pve_command_reset" type="button" value="Reset" />
+		<input id="pve_command_suspend" type="button" value="Suspend" />
+		<input id="pve_command_resume" type="button" value="Resume" />
+		<input id="pve_command_reload" type="button" value="Reload" />
+	    </div>
+	    </div>
+
+
             <!-- Connection Controls -->
             <input type="image" alt="Disconnect" src="/novnc/app/images/disconnect.svg"
                 id="noVNC_disconnect_button" class="noVNC_button"
@@ -266,6 +267,8 @@
 
             </div>
         </div>
+
+        <div id="noVNC_control_bar_hint"></div>
 
     </div> <!-- End of noVNC_control_bar -->
 
@@ -306,22 +309,15 @@
         <div class="noVNC_spinner"></div>
     </div>
 
+    <!-- This is where the RFB elements will attach -->
     <div id="noVNC_container">
-        <!-- HTML5 Canvas -->
-        <div id="noVNC_screen">
-            <!-- Note that Google Chrome on Android doesn't respect any of these,
-                 html attributes which attempt to disable text suggestions on the
-                 on-screen keyboard. Let's hope Chrome implements the ime-mode
-                 style for example -->
-            <textarea id="noVNC_keyboardinput" autocapitalize="off"
-                autocorrect="off" autocomplete="off" spellcheck="false"
-                mozactionhint="Enter"></textarea>
-
-            <canvas id="noVNC_canvas" width="0" height="0" tabindex="0">
-                        Canvas not supported.
-            </canvas>
-        </div>
-
+        <!-- Note that Google Chrome on Android doesn't respect any of these,
+             html attributes which attempt to disable text suggestions on the
+             on-screen keyboard. Let's hope Chrome implements the ime-mode
+             style for example -->
+        <textarea id="noVNC_keyboardinput" autocapitalize="off"
+            autocorrect="off" autocomplete="off" spellcheck="false"
+            mozactionhint="Enter" tabindex="-1"></textarea>
     </div>
 
     <audio id="noVNC_bell">

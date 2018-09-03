@@ -42,6 +42,8 @@
 /usr/share/perl5/PVE/API2/ClusterConfig.pm
 /usr/share/perl5/PVE/CLI
 /usr/share/perl5/PVE/CLI/pvecm.pm
+/usr/share/perl5/PVE/Cluster
+/usr/share/perl5/PVE/Cluster/IPCConst.pm
 /usr/share/perl5/PVE/Cluster.pm
 /usr/share/perl5/PVE/Corosync.pm
 /usr/share/perl5/PVE/IPCC.pm

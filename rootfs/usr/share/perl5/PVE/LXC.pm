@@ -18,6 +18,7 @@ use PVE::Exception qw(raise_perm_exc);
 use PVE::Storage;
 use PVE::SafeSyslog;
 use PVE::INotify;
+use PVE::JSONSchema qw(get_standard_option);
 use PVE::Tools qw($IPV6RE $IPV4RE dir_glob_foreach lock_file lock_file_full O_PATH);
 use PVE::CpuSet;
 use PVE::Network;
@@ -25,6 +26,7 @@ use PVE::AccessControl;
 use PVE::ProcFSTools;
 use PVE::Syscall;
 use PVE::LXC::Config;
+
 use Time::HiRes qw (gettimeofday);
 
 my $nodename = PVE::INotify::nodename();
@@ -42,7 +44,7 @@ sub config_list {
 	my $d = $ids->{$vmid};
 	next if !$d->{node} || $d->{node} ne $nodename;
 	next if !$d->{type} || $d->{type} ne 'lxc';
-	$res->{$vmid}->{type} = 'lxc';
+	$res->{$vmid} = { type => 'lxc', vmid => $vmid };
     }
     return $res;
 }
@@ -115,10 +117,53 @@ my $parse_cpuacct_stat = sub {
     return $stat;
 };
 
+our $vmstatus_return_properties = {
+    vmid => get_standard_option('pve-vmid'),
+    status => {
+	description => "LXC Container status.",
+	type => 'string',
+	enum => ['stopped', 'running'],
+    },
+    maxmem => {
+	description => "Maximum memory in bytes.",
+	type => 'integer',
+	optional => 1,
+	renderer => 'bytes',
+    },
+    maxswap => {
+	description => "Maximum SWAP memory in bytes.",
+	type => 'integer',
+	optional => 1,
+	renderer => 'bytes',
+    },
+    maxdisk => {
+	description => "Root disk size in bytes.",
+	type => 'integer',
+	optional => 1,
+	renderer => 'bytes',
+    },
+    name => {
+	description => "Container name.",
+	type => 'string',
+	optional => 1,
+    },
+    uptime => {
+	description => "Uptime.",
+	type => 'integer',
+	optional => 1,
+	renderer => 'duration',
+    },
+    cpus => {
+	description => "Maximum usable CPUs.",
+	type => 'number',
+	optional => 1,
+    },
+};
+
 sub vmstatus {
     my ($opt_vmid) = @_;
 
-    my $list = $opt_vmid ? { $opt_vmid => { type => 'lxc' }} : config_list();
+    my $list = $opt_vmid ? { $opt_vmid => { type => 'lxc', vmid => $opt_vmid }} : config_list();
 
     my $active_hash = list_active_containers();
 
@@ -195,48 +240,62 @@ sub vmstatus {
 
 	my $unpriv = $unprivileged->{$vmid};
 
-	my $memory_stat = read_cgroup_list('memory', $vmid, $unpriv, 'memory.stat');
-	my $mem_usage_in_bytes = read_cgroup_value('memory', $vmid, $unpriv, 'memory.usage_in_bytes');
+	if (-d '/sys/fs/cgroup/memory') {
+	    my $memory_stat = read_cgroup_list('memory', $vmid, $unpriv, 'memory.stat');
+	    my $mem_usage_in_bytes = read_cgroup_value('memory', $vmid, $unpriv, 'memory.usage_in_bytes');
 
-	$d->{mem} = $mem_usage_in_bytes - $memory_stat->{total_cache};
-	$d->{swap} = read_cgroup_value('memory', $vmid, $unpriv, 'memory.memsw.usage_in_bytes') - $mem_usage_in_bytes;
-
-	my $blkio_bytes = read_cgroup_value('blkio', $vmid, $unpriv, 'blkio.throttle.io_service_bytes', 1);
-	my @bytes = split(/\n/, $blkio_bytes);
-	foreach my $byte (@bytes) {
-	    if (my ($key, $value) = $byte =~ /(Read|Write)\s+(\d+)/) {
-		$d->{diskread} += $2 if $key eq 'Read';
-		$d->{diskwrite} += $2 if $key eq 'Write';
-	    }
-	}
-
-	my $pstat = $parse_cpuacct_stat->($vmid, $unpriv);
-
-	my $used = $pstat->{utime} + $pstat->{stime};
-
-	my $old = $last_proc_vmid_stat->{$vmid};
-	if (!$old) {
-	    $last_proc_vmid_stat->{$vmid} = {
-		time => $cdtime,
-		used => $used,
-		cpu => 0,
-	    };
-	    next;
-	}
-
-	my $dtime = ($cdtime -  $old->{time}) * $cpucount * $cpuinfo->{user_hz};
-
-	if ($dtime > 1000) {
-	    my $dutime = $used -  $old->{used};
-
-	    $d->{cpu} = (($dutime/$dtime)* $cpucount) / $d->{cpus};
-	    $last_proc_vmid_stat->{$vmid} = {
-		time => $cdtime,
-		used => $used,
-		cpu => $d->{cpu},
-	    };
+	    $d->{mem} = $mem_usage_in_bytes - $memory_stat->{total_cache};
+	    $d->{swap} = read_cgroup_value('memory', $vmid, $unpriv, 'memory.memsw.usage_in_bytes') - $mem_usage_in_bytes;
 	} else {
-	    $d->{cpu} = $old->{cpu};
+	    $d->{mem} = 0;
+	    $d->{swap} = 0;
+	}
+
+	if (-d '/sys/fs/cgroup/blkio') {
+	    my $blkio_bytes = read_cgroup_value('blkio', $vmid, $unpriv, 'blkio.throttle.io_service_bytes', 1);
+	    my @bytes = split(/\n/, $blkio_bytes);
+	    foreach my $byte (@bytes) {
+		if (my ($key, $value) = $byte =~ /(Read|Write)\s+(\d+)/) {
+		    $d->{diskread} += $2 if $key eq 'Read';
+		    $d->{diskwrite} += $2 if $key eq 'Write';
+		}
+	    }
+	} else {
+	    $d->{diskread} = 0;
+	    $d->{diskwrite} = 0;
+	}
+
+	if (-d '/sys/fs/cgroup/cpuacct') {
+	    my $pstat = $parse_cpuacct_stat->($vmid, $unpriv);
+
+	    my $used = $pstat->{utime} + $pstat->{stime};
+
+	    my $old = $last_proc_vmid_stat->{$vmid};
+	    if (!$old) {
+		$last_proc_vmid_stat->{$vmid} = {
+		    time => $cdtime,
+		    used => $used,
+		    cpu => 0,
+		};
+		next;
+	    }
+
+	    my $dtime = ($cdtime -  $old->{time}) * $cpucount * $cpuinfo->{user_hz};
+
+	    if ($dtime > 1000) {
+		my $dutime = $used -  $old->{used};
+
+		$d->{cpu} = (($dutime/$dtime)* $cpucount) / $d->{cpus};
+		$last_proc_vmid_stat->{$vmid} = {
+		    time => $cdtime,
+		    used => $used,
+		    cpu => $d->{cpu},
+		};
+	    } else {
+		$d->{cpu} = $old->{cpu};
+	    }
+	} else {
+	    $d->{cpu} = 0;
 	}
     }
 
@@ -339,6 +398,20 @@ sub parse_ipv4_cidr {
     die "unable to parse ipv4 address/mask\n";
 }
 
+sub get_cgroup_subsystems {
+	my $v1 = {};
+	my $v2 = 0;
+	my $data = PVE::Tools::file_get_contents('/proc/self/cgroup');
+	while ($data =~ /^\d+:([^:\n]*):.*$/gm) {
+		my $type = $1;
+		if (length($type)) {
+			$v1->{$_} = 1 foreach split(/,/, $type);
+		} else {
+			$v2 = 1;
+		}
+	}
+	return wantarray ? ($v1, $v2) : $v1;
+}
 
 sub update_lxc_config {
     my ($vmid, $conf) = @_;
@@ -380,6 +453,8 @@ sub update_lxc_config {
     # files while the container is running!
     $raw .= "lxc.monitor.unshare = 1\n";
 
+    my $cgv1 = get_cgroup_subsystems();
+
     # Should we read them from /etc/subuid?
     if ($unprivileged && !$custom_idmap) {
 	$raw .= "lxc.idmap = u 0 100000 65536\n";
@@ -388,7 +463,7 @@ sub update_lxc_config {
 
     if (!PVE::LXC::Config->has_dev_console($conf)) {
 	$raw .= "lxc.console.path = none\n";
-	$raw .= "lxc.cgroup.devices.deny = c 5:1 rwm\n";
+	$raw .= "lxc.cgroup.devices.deny = c 5:1 rwm\n" if $cgv1->{devices};
     }
 
     my $ttycount = PVE::LXC::Config->get_tty_count($conf);
@@ -400,23 +475,27 @@ sub update_lxc_config {
     my $utsname = $conf->{hostname} || "CT$vmid";
     $raw .= "lxc.uts.name = $utsname\n";
 
-    my $memory = $conf->{memory} || 512;
-    my $swap = $conf->{swap} // 0;
+    if ($cgv1->{memory}) {
+	my $memory = $conf->{memory} || 512;
+	my $swap = $conf->{swap} // 0;
 
-    my $lxcmem = int($memory*1024*1024);
-    $raw .= "lxc.cgroup.memory.limit_in_bytes = $lxcmem\n";
+	my $lxcmem = int($memory*1024*1024);
+	$raw .= "lxc.cgroup.memory.limit_in_bytes = $lxcmem\n";
 
-    my $lxcswap = int(($memory + $swap)*1024*1024);
-    $raw .= "lxc.cgroup.memory.memsw.limit_in_bytes = $lxcswap\n";
-
-    if (my $cpulimit = $conf->{cpulimit}) {
-	$raw .= "lxc.cgroup.cpu.cfs_period_us = 100000\n";
-	my $value = int(100000*$cpulimit);
-	$raw .= "lxc.cgroup.cpu.cfs_quota_us = $value\n";
+	my $lxcswap = int(($memory + $swap)*1024*1024);
+	$raw .= "lxc.cgroup.memory.memsw.limit_in_bytes = $lxcswap\n";
     }
 
-    my $shares = $conf->{cpuunits} || 1024;
-    $raw .= "lxc.cgroup.cpu.shares = $shares\n";
+    if ($cgv1->{cpu}) {
+	if (my $cpulimit = $conf->{cpulimit}) {
+	    $raw .= "lxc.cgroup.cpu.cfs_period_us = 100000\n";
+	    my $value = int(100000*$cpulimit);
+	    $raw .= "lxc.cgroup.cpu.cfs_quota_us = $value\n";
+	}
+
+	my $shares = $conf->{cpuunits} || 1024;
+	$raw .= "lxc.cgroup.cpu.shares = $shares\n";
+    }
 
     die "missing 'rootfs' configuration\n"
 	if !defined($conf->{rootfs});
@@ -436,28 +515,30 @@ sub update_lxc_config {
 	$raw .= "lxc.net.$ind.mtu = $d->{mtu}\n" if defined($d->{mtu});
     }
 
-    my $had_cpuset = 0;
-    if (my $lxcconf = $conf->{lxc}) {
-	foreach my $entry (@$lxcconf) {
-	    my ($k, $v) = @$entry;
-	    $had_cpuset = 1 if $k eq 'lxc.cgroup.cpuset.cpus';
-	    $raw .= "$k = $v\n";
+    if ($cgv1->{cpuset}) {
+	my $had_cpuset = 0;
+	if (my $lxcconf = $conf->{lxc}) {
+	    foreach my $entry (@$lxcconf) {
+		my ($k, $v) = @$entry;
+		$had_cpuset = 1 if $k eq 'lxc.cgroup.cpuset.cpus';
+		$raw .= "$k = $v\n";
+	    }
+	}
+
+	my $cores = $conf->{cores};
+	if (!$had_cpuset && $cores) {
+	    my $cpuset = eval { PVE::CpuSet->new_from_cgroup('lxc', 'effective_cpus') };
+	    $cpuset = PVE::CpuSet->new_from_cgroup('', 'effective_cpus') if !$cpuset;
+	    my @members = $cpuset->members();
+	    while (scalar(@members) > $cores) {
+		my $randidx = int(rand(scalar(@members)));
+		$cpuset->delete($members[$randidx]);
+		splice(@members, $randidx, 1); # keep track of the changes
+	    }
+	    $raw .= "lxc.cgroup.cpuset.cpus = ".$cpuset->short_string()."\n";
 	}
     }
 
-    my $cores = $conf->{cores};
-    if (!$had_cpuset && $cores) {
-	my $cpuset = eval { PVE::CpuSet->new_from_cgroup('lxc', 'effective_cpus') };
-	$cpuset = PVE::CpuSet->new_from_cgroup('', 'effective_cpus') if !$cpuset;
-	my @members = $cpuset->members();
-	while (scalar(@members) > $cores) {
-	    my $randidx = int(rand(scalar(@members)));
-	    $cpuset->delete($members[$randidx]);
-	    splice(@members, $randidx, 1); # keep track of the changes
-	}
-	$raw .= "lxc.cgroup.cpuset.cpus = ".$cpuset->short_string()."\n";
-    }
-    
     File::Path::mkpath("$dir/rootfs");
 
     PVE::Tools::file_set_contents("$dir/config", $raw);
@@ -869,17 +950,26 @@ sub template_create {
 
     my $storecfg = PVE::Storage::config();
 
-    my $rootinfo = PVE::LXC::Config->parse_ct_rootfs($conf->{rootfs});
-    my $volid = $rootinfo->{volume};
+    PVE::LXC::Config->foreach_mountpoint($conf, sub {
+	my ($ms, $mountpoint) = @_;
 
-    die "Template feature is not available for '$volid'\n"
-	if !PVE::Storage::volume_has_feature($storecfg, 'template', $volid);
+	my $volid = $mountpoint->{volume};
 
-    PVE::Storage::activate_volumes($storecfg, [$volid]);
+	die "Template feature is not available for '$volid'\n"
+	    if !PVE::Storage::volume_has_feature($storecfg, 'template', $volid);
+    });
 
-    my $template_volid = PVE::Storage::vdisk_create_base($storecfg, $volid);
-    $rootinfo->{volume} = $template_volid;
-    $conf->{rootfs} = PVE::LXC::Config->print_ct_mountpoint($rootinfo, 1);
+    PVE::LXC::Config->foreach_mountpoint($conf, sub {
+	my ($ms, $mountpoint) = @_;
+
+	my $volid = $mountpoint->{volume};
+
+	PVE::Storage::activate_volumes($storecfg, [$volid]);
+
+	my $template_volid = PVE::Storage::vdisk_create_base($storecfg, $volid);
+	$mountpoint->{volume} = $template_volid;
+	$conf->{$ms} = PVE::LXC::Config->print_ct_mountpoint($mountpoint, $ms eq "rootfs");
+    });
 
     PVE::LXC::Config->write_config($vmid, $conf);
 }
@@ -1199,7 +1289,8 @@ sub mountpoint_mount {
     }
     my $readonly = $mountpoint->{ro};
 
-    my @extra_opts = ('-o', $optstring) if $optstring;
+    my @extra_opts;
+    @extra_opts = ('-o', $optstring) if $optstring;
 
     if ($storage) {
 

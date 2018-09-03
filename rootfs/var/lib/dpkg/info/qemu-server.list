@@ -38,6 +38,7 @@
 /usr/share/perl5/PVE/QemuConfig.pm
 /usr/share/perl5/PVE/QemuMigrate.pm
 /usr/share/perl5/PVE/QemuServer
+/usr/share/perl5/PVE/QemuServer/Agent.pm
 /usr/share/perl5/PVE/QemuServer/Cloudinit.pm
 /usr/share/perl5/PVE/QemuServer/ImportDisk.pm
 /usr/share/perl5/PVE/QemuServer/Memory.pm

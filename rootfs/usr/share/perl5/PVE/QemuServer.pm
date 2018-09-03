@@ -34,6 +34,7 @@ use PVE::QemuServer::PCI qw(print_pci_addr print_pcie_addr);
 use PVE::QemuServer::Memory;
 use PVE::QemuServer::USB qw(parse_usb_device);
 use PVE::QemuServer::Cloudinit;
+use PVE::Systemd;
 use Time::HiRes qw(gettimeofday);
 use File::Copy qw(copy);
 use URI::Escape;
@@ -199,6 +200,21 @@ my $watchdog_fmt = {
 };
 PVE::JSONSchema::register_format('pve-qm-watchdog', $watchdog_fmt);
 
+my $agent_fmt = {
+    enabled => {
+	description => "Enable/disable Qemu GuestAgent.",
+	type => 'boolean',
+	default => 0,
+	default_key => 1,
+    },
+    fstrim_cloned_disks => {
+	description => "Run fstrim after cloning/moving a disk.",
+	type => 'boolean',
+	optional => 1,
+	default => 0
+    },
+};
+
 my $confdesc = {
     onboot => {
 	optional => 1,
@@ -264,7 +280,7 @@ my $confdesc = {
     shares => {
         optional => 1,
         type => 'integer',
-        description => "Amount of memory shares for auto-ballooning. The larger the number is, the more memory this VM gets. Number is relative to weights of all other running VMs. Using zero disables auto-ballooning",
+        description => "Amount of memory shares for auto-ballooning. The larger the number is, the more memory this VM gets. Number is relative to weights of all other running VMs. Using zero disables auto-ballooning. Auto-ballooning is done by pvestatd.",
 	minimum => 0,
 	maximum => 50000,
 	default => 1000,
@@ -272,7 +288,7 @@ my $confdesc = {
     keyboard => {
 	optional => 1,
 	type => 'string',
-	description => "Keybord layout for vnc server. Default is read from the '/etc/pve/datacenter.conf' configuration file.".
+	description => "Keybord layout for vnc server. Default is read from the '/etc/pve/datacenter.cfg' configuration file.".
 		       "It should not be necessary to set it.",
 	enum => PVE::Tools::kvmkeymaplist(),
 	default => undef,
@@ -379,9 +395,9 @@ EODESC
     },
     agent => {
 	optional => 1,
-	type => 'boolean',
-	description => "Enable/disable Qemu GuestAgent.",
-	default => 0,
+	description => "Enable/disable Qemu GuestAgent and its properties.",
+	type => 'string',
+	format => $agent_fmt,
     },
     kvm => {
 	optional => 1,
@@ -2210,6 +2226,19 @@ sub parse_watchdog {
     return $res;
 }
 
+sub parse_guest_agent {
+    my ($value) = @_;
+
+    return {} if !defined($value->{agent});
+
+    my $res = eval { PVE::JSONSchema::parse_property_string($agent_fmt, $value->{agent}) };
+    warn $@ if $@;
+
+    # if the agent is disabled ignore the other potentially set properties
+    return {} if !$res->{enabled};
+    return $res;
+}
+
 PVE::JSONSchema::register_format('pve-qm-usb-device', \&verify_usb_device);
 sub verify_usb_device {
     my ($value, $noerr) = @_;
@@ -2763,6 +2792,53 @@ sub disksize {
     return $drive->{size};
 }
 
+our $vmstatus_return_properties = {
+    vmid => get_standard_option('pve-vmid'),
+    status => {
+	description => "Qemu process status.",
+	type => 'string',
+	enum => ['stopped', 'running'],
+    },
+    maxmem => {
+	description => "Maximum memory in bytes.",
+	type => 'integer',
+	optional => 1,
+	renderer => 'bytes',
+    },
+    maxdisk => {
+	description => "Root disk size in bytes.",
+	type => 'integer',
+	optional => 1,
+	renderer => 'bytes',
+    },
+    name => {
+	description => "VM name.",
+	type => 'string',
+	optional => 1,
+    },
+    qmpstatus => {
+	description => "Qemu QMP agent status.",
+	type => 'string',
+	optional => 1,
+    },
+    pid => {
+	description => "PID of running qemu process.",
+	type => 'integer',
+	optional => 1,
+    },
+    uptime => {
+	description => "Uptime.",
+	type => 'integer',
+	optional => 1,
+	renderer => 'duration',
+    },
+    cpus => {
+	description => "Maximum usable CPUs.",
+	type => 'number',
+	optional => 1,
+    },
+};
+
 my $last_proc_pid_stat;
 
 # get VM status information
@@ -2788,7 +2864,7 @@ sub vmstatus {
 	my $cfspath = PVE::QemuConfig->cfs_config_path($vmid);
 	my $conf = PVE::Cluster::cfs_read_file($cfspath) || {};
 
-	my $d = {};
+	my $d = { vmid => $vmid };
 	$d->{pid} = $list->{$vmid}->{pid};
 
 	# fixme: better status?
@@ -3394,7 +3470,7 @@ sub config_to_command {
     #push @$cmd, '-soundhw', 'es1370';
     #push @$cmd, '-soundhw', $soundhw if $soundhw;
 
-    if($conf->{agent}) {
+    if (parse_guest_agent($conf)->{enabled}) {
 	my $qgasocket = qmp_socket($vmid, 1);
 	my $pciaddr = print_pci_addr("qga0", $bridges);
 	push @$devices, '-chardev', "socket,path=$qgasocket,server,nowait,id=qga0";
@@ -3409,7 +3485,7 @@ sub config_to_command {
 	    if ($winversion){
 		for(my $i = 1; $i < $qxlnum; $i++){
 		    my $pciaddr = print_pci_addr("vga$i", $bridges);
-		    push @$cmd, '-device', "qxl,id=vga$i,ram_size=67108864,vram_size=33554432$pciaddr";
+		    push @$devices, '-device', "qxl,id=vga$i,ram_size=67108864,vram_size=33554432$pciaddr";
 		}
 	    } else {
 		# assume other OS works like Linux
@@ -4196,6 +4272,16 @@ sub qemu_volume_snapshot_delete {
 
     my $running = check_running($vmid);
 
+    if($running) {
+
+	$running = undef;
+	my $conf = PVE::QemuConfig->load_config($vmid);
+	foreach_drive($conf, sub {
+	    my ($ds, $drive) = @_;
+	    $running = 1 if $drive->{file} eq $volid;
+	});
+    }
+
     if ($running && do_snapshots_with_qemu($storecfg, $volid)){
 	vm_mon_cmd($vmid, "delete-drive-snapshot", device => $deviceid, name => $snap);
     } else {
@@ -4297,7 +4383,10 @@ sub vmconfig_hotplug_pending {
 		qemu_cpu_hotplug($vmid, $conf, undef);
             } elsif ($opt eq 'balloon') {
 		# enable balloon device is not hotpluggable
-		die "skip\n" if !defined($conf->{balloon}) || $conf->{balloon};
+		die "skip\n" if defined($conf->{balloon}) && $conf->{balloon} == 0;
+		# here we reset the ballooning value to memory
+		my $balloon = $conf->{memory} || $defaults->{memory};
+		vm_mon_cmd($vmid, "balloon", value => $balloon*1024*1024);
 	    } elsif ($fast_plug_option->{$opt}) {
 		# do nothing
 	    } elsif ($opt =~ m/^net(\d+)$/) {
@@ -4843,7 +4932,7 @@ sub vm_start {
 
 	my $run_qemu = sub {
 	    PVE::Tools::run_fork sub {
-		PVE::Tools::enter_systemd_scope($vmid, "Proxmox VE VM $vmid", %properties);
+		PVE::Systemd::enter_systemd_scope($vmid, "Proxmox VE VM $vmid", %properties);
 		run_command($cmd, %run_params);
 	    };
 	};
@@ -4919,10 +5008,8 @@ sub vm_start {
 	    }
 
 	} else {
-	    if (!$statefile && (!defined($conf->{balloon}) || $conf->{balloon})) {
-		vm_mon_cmd_nocheck($vmid, "balloon", value => $conf->{balloon}*1024*1024)
-		    if $conf->{balloon};
-	    }
+	    vm_mon_cmd_nocheck($vmid, "balloon", value => $conf->{balloon}*1024*1024)
+		if !$statefile && $conf->{balloon};
 
 	    foreach my $opt (keys %$conf) {
 		next if $opt !~  m/^net\d+$/;
@@ -5093,7 +5180,7 @@ sub vm_stop {
 
 	eval {
 	    if ($shutdown) {
-		if (defined($conf) && $conf->{agent}) {
+		if (defined($conf) && parse_guest_agent($conf)->{enabled}) {
 		    vm_qmp_command($vmid, { execute => "guest-shutdown" }, $nocheck);
 		} else {
 		    vm_qmp_command($vmid, { execute => "system_powerdown" }, $nocheck);
@@ -5169,6 +5256,13 @@ sub vm_resume {
 
     PVE::QemuConfig->lock_config($vmid, sub {
 
+	my $res = vm_mon_cmd($vmid, 'query-status');
+	my $resume_cmd = 'cont';
+
+	if ($res->{status} && $res->{status} eq 'suspended') {
+	    $resume_cmd = 'system_wakeup';
+	}
+
 	if (!$nocheck) {
 
 	    my $conf = PVE::QemuConfig->load_config($vmid);
@@ -5176,10 +5270,10 @@ sub vm_resume {
 	    PVE::QemuConfig->check_lock($conf)
 		if !($skiplock || PVE::QemuConfig->has_lock($conf, 'backup'));
 
-	    vm_mon_cmd($vmid, "cont");
+	    vm_mon_cmd($vmid, $resume_cmd);
 
 	} else {
-	    vm_mon_cmd_nocheck($vmid, "cont");
+	    vm_mon_cmd_nocheck($vmid, $resume_cmd);
 	}
     });
 }
@@ -5529,6 +5623,7 @@ sub update_disksize {
     my ($vmid, $conf, $volid_hash) = @_;
 
     my $changes;
+    my $prefix = "VM $vmid:";
 
     # used and unused disks
     my $referenced = {};
@@ -5560,6 +5655,7 @@ sub update_disksize {
 	    if ($new ne $conf->{$opt}) {
 		$changes = 1;
 		$conf->{$opt} = $new;
+		print "$prefix update disk '$opt' information.\n";
 	    }
 	}
     }
@@ -5570,6 +5666,7 @@ sub update_disksize {
 	my $volid = $conf->{$opt};
 	my $path = $volid_hash->{$volid}->{path} if $volid_hash->{$volid};
 	if ($referenced->{$volid} || ($path && $referencedpath->{$path})) {
+	    print "$prefix remove entry '$opt', its volume '$volid' is in use.\n";
 	    $changes = 1;
 	    delete $conf->{$opt};
 	}
@@ -5585,7 +5682,8 @@ sub update_disksize {
 	next if !$path; # just to be sure
 	next if $referencedpath->{$path};
 	$changes = 1;
-	PVE::QemuConfig->add_unused_volume($conf, $volid);
+	my $key = PVE::QemuConfig->add_unused_volume($conf, $volid);
+	print "$prefix add unreferenced volume '$volid' as '$key' to config.\n";
 	$referencedpath->{$path} = 1; # avoid to add more than once (aliases)
     }
 
@@ -5593,10 +5691,17 @@ sub update_disksize {
 }
 
 sub rescan {
-    my ($vmid, $nolock) = @_;
+    my ($vmid, $nolock, $dryrun) = @_;
 
     my $cfg = PVE::Storage::config();
 
+    # FIXME: Remove once our RBD plugin can handle CT and VM on a single storage
+    # see: https://pve.proxmox.com/pipermail/pve-devel/2018-July/032900.html
+    foreach my $stor (keys %{$cfg->{ids}}) {
+	delete($cfg->{ids}->{$stor}) if ! $cfg->{ids}->{$stor}->{content}->{images};
+    }
+
+    print "rescan volumes...\n";
     my $volid_hash = scan_volids($cfg, $vmid);
 
     my $updatefn =  sub {
@@ -5614,7 +5719,7 @@ sub rescan {
 
 	my $changes = update_disksize($vmid, $conf, $vm_volids);
 
-	PVE::QemuConfig->write_config($vmid, $conf) if $changes;
+	PVE::QemuConfig->write_config($vmid, $conf) if $changes && !$dryrun;
     };
 
     if (defined($vmid)) {
@@ -6094,11 +6199,11 @@ sub do_snapshots_with_qemu {
 }
 
 sub qga_check_running {
-    my ($vmid) = @_;
+    my ($vmid, $nowarn) = @_;
 
     eval { vm_mon_cmd($vmid, "guest-ping", timeout => 3); };
     if ($@) {
-	warn "Qemu Guest Agent is not running - $@";
+	warn "Qemu Guest Agent is not running - $@" if !$nowarn;
 	return 0;
     }
     return 1;

@@ -1,2 +1,2 @@
 git clone git://git.proxmox.com/git/novnc-pve.git
-git checkout dd4387ee7744b059deb3a99f7c254227041082c4
+git checkout abe37c0a610e8fb0f6dc151bd449a8e3dd3b81e9

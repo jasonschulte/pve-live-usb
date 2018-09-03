@@ -391,3 +391,108 @@ cat /etc/network/interfaces
 cd ..
 ls -al
 umount bootdisk
+cd pve-live-usb/
+ls -al
+mkdir bootdisk
+ls -al
+git status
+git clean -fd
+git status
+git reset --hard HEAD
+git clean -fd
+git clean -fxd
+git clean -d
+git clean -f
+git status
+rm rootfs/root/pve-live-usb/
+rmdir rootfs/root/pve-live-usb/
+rm -rf rootfs/root/pve-live-usb/
+ls -al
+git status
+nano ./build.sh
+chmod 750 build.sh 
+./build.sh 
+nano build.sh 
+./build.sh 
+ls -al
+nano build.sh 
+./build.sh 
+df -h
+nano build.sh 
+./build.sh 
+git status
+du -hs rootfs/
+nano build.sh 
+./build.sh 
+ls /etc/pve/
+ls bootdisk/
+rm -rf bootdisk/*
+git status
+git add -A .
+cat build.sh 
+git commit -m "updates" 
+git push origin HEAD
+git fetch
+git push origin HEAD
+git pull
+git push origin HEAD
+git remote -v
+git remote set-url origin git@github.com:jasonschulte/pve-live-usb.git
+git remote -v
+git push origin HEAD
+git status
+cd /etc/apt/
+ls -al
+cat sources.list
+nano sources.list
+nano sources.list.d/pve-enterprise.list
+apt update
+apt dist-upgrade
+cd /root/pve-live-usb/
+./build.sh 
+cd rootfs/
+nano build.sh
+ls -al
+chmod 700 build.sh 
+cd ..
+nano build.sh 
+cat rootfs/build.sh 
+nano build.sh 
+rm build.sh 
+git checkout build.sh
+nano build.sh 
+rm rootfs/build.sh 
+cat build.sh 
+nano build.sh 
+ls -l /boot/
+apt autoremove
+dpkg -l | grep linux
+dpkg -l | grep kernel
+apt purge
+dpkg -l | grep "4.15.17"
+cat build.sh 
+man update-initramfs
+man mount
+git status
+cat build.sh 
+./build.sh 
+nano build.sh 
+./build.sh 
+nano build.sh 
+./build.sh 
+umount rootfs/prog
+umount rootfs/proc
+umount rootfs/dev
+mount
+mount | grep proc
+./build.sh 
+umount rootfs/sys
+umount rootfs/proc
+umount rootfs/dev
+umount rootfs/run
+./build.sh 
+reboot
+LANG=
+depmod -a 4.15.18-3-pve
+update-initramfs -u -k 4.15.18-3-pve
+apt clean

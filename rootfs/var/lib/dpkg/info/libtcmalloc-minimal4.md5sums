@@ -1,0 +1,9 @@
+4ca8fada75e9f91bb832a2407abfb38b  usr/lib/libtcmalloc_minimal.so.4.3.0
+45306106fb9be7eee1cfb76caa99afc0  usr/lib/libtcmalloc_minimal_debug.so.4.3.0
+1c9aafd693d7a53a9d8a7b0d369cdc83  usr/share/doc/libtcmalloc-minimal4/AUTHORS
+0b88c6bb606be2b429bbd71138cc40ba  usr/share/doc/libtcmalloc-minimal4/NEWS.gz
+d9f849f888211e58670a80469768a6db  usr/share/doc/libtcmalloc-minimal4/README.gz
+d0aa185b868731e7c14282a9d4ec514a  usr/share/doc/libtcmalloc-minimal4/TODO
+a8d268e53ec6f68c62d094eb527b3baa  usr/share/doc/libtcmalloc-minimal4/changelog.Debian.gz
+53455453cb615d335fe5a99c1558e776  usr/share/doc/libtcmalloc-minimal4/changelog.gz
+aa67a330db413f65c3e732abc034e40e  usr/share/doc/libtcmalloc-minimal4/copyright
