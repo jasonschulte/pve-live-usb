@@ -11,7 +11,7 @@ rootfs/var/lib/postfix/master.lock
 rootfs/var/lib/pve-cluster/config.db-shm
 rootfs/var/lib/pve-cluster/config.db-wal
 rootfs/var/lib/pve-cluster/.pmxcfs.lockfile
-rootfs/var/spool/postfix/pid
+rootfs/var/spool/postfix/*
 rootfs/var/log/pve/tasks
 rootfs/etc/lvm/archive
 rootfs/etc/lvm/backup

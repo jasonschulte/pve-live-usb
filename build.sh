@@ -5,7 +5,7 @@ BOOTDISK=./bootdisk
 ROOTFS=./rootfs
 
 cd ${DIR}
-
+mkdir -p ${BOOTDISK}
 apt clean
 
 systemctl stop pve-cluster.service
