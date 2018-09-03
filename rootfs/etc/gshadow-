@@ -44,7 +44,7 @@ systemd-resolve:!::
 systemd-bus-proxy:!::
 input:!::
 crontab:!::
-netdev:!::
+netdev:!::ubuntu
 ssh:!::
 ssl-cert:!::
 messagebus:!::

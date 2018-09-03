@@ -121,7 +121,7 @@ Owners: console-setup
 
 Name: console-setup/codesetcode
 Template: console-setup/codesetcode
-Value: Lat15
+Value: 
 Owners: console-setup
 
 Name: console-setup/fontface47
@@ -367,7 +367,7 @@ Owners: keyboard-configuration
 
 Name: keyboard-configuration/layoutcode
 Template: keyboard-configuration/layoutcode
-Value: us
+Value: 
 Owners: keyboard-configuration
 
 Name: keyboard-configuration/model
@@ -379,7 +379,7 @@ Variables:
 
 Name: keyboard-configuration/modelcode
 Template: keyboard-configuration/modelcode
-Value: pc105
+Value: 
 Owners: keyboard-configuration
 
 Name: keyboard-configuration/optionscode
@@ -593,14 +593,17 @@ Owners: user-setup
 
 Name: passwd/user-fullname
 Template: passwd/user-fullname
+Value: 10 passwd/user-fullname-casper-backup doesn't exist
 Owners: user-setup
 
 Name: passwd/user-uid
 Template: passwd/user-uid
+Value: 10 passwd/user-uid-casper-backup doesn't exist
 Owners: user-setup
 
 Name: passwd/username
 Template: passwd/username
+Value: 10 passwd/username-casper-backup doesn't exist
 Owners: user-setup
 
 Name: passwd/username-bad
