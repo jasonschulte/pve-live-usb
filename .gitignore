@@ -2,5 +2,11 @@ rootfs/boot/initrd.*
 rootfs/var/lib/initramfs-tools/*
 rootfs/var/lib/smartmontools/*.state*
 rootfs/var/lib/smartmontools/*.csv
+rootfs/var/lib/rrdcached
+rootfs/var/lib/systemd/random-seed
+rootfs/var/lib/apt/lists
+rootfs/var/log/pve/tasks
+rootfs/etc/lvm/archive
+rootfs/etc/lvm/backup
 rootfs/root/.nano
 rootfs/root/.bash_history
