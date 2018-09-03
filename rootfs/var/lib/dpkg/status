@@ -9113,6 +9113,32 @@ Description: small, friendly text editor inspired by Pico
   - full internationalization support.
 Homepage: https://www.nano-editor.org/
 
+Package: libsgutils2-2
+Status: install ok installed
+Priority: optional
+Section: libs
+Installed-Size: 241
+Maintainer: Ritesh Raj Sarraf <rrs@debian.org>
+Architecture: amd64
+Source: sg3-utils
+Version: 1.42-2
+Replaces: libsgutils2
+Depends: libc6 (>= 2.14)
+Suggests: sg3-utils
+Conflicts: libsgutils2
+Description: utilities for devices using the SCSI command set (shared libraries)
+ Most OSes have SCSI pass-through interfaces that enable user space programs
+ to send SCSI commands to a device and fetch the response. With SCSI to ATA
+ Translation (SAT) many ATA disks now can process SCSI commands. Typically
+ each utility in this package implements one SCSI command. See the draft
+ standards at www.t10.org for SCSI command definitions plus SAT. ATA
+ commands are defined in the draft standards at www.t13.org . For a mapping
+ between supported SCSI and ATA commands and utility names in this package
+ see the COVERAGE file
+ .
+ Shared library used by the utilities in the sg3-utils package.
+Homepage: http://sg.danny.cz/sg/
+
 Package: libxml-sax-base-perl
 Status: install ok installed
 Priority: optional
@@ -12666,6 +12692,28 @@ Description: Binary firmware code for the pve-kernel
  This package contains the binary firmware for various modules used in
  the pve-kernel.
 Homepage: http://www.proxmox.com
+
+Package: sg3-utils
+Status: install ok installed
+Priority: optional
+Section: admin
+Installed-Size: 2117
+Maintainer: Ritesh Raj Sarraf <rrs@debian.org>
+Architecture: amd64
+Version: 1.42-2
+Replaces: sg-utils
+Depends: libc6 (>= 2.14), libsgutils2-2 (>= 1.42)
+Conflicts: cdwrite, sg-utils
+Description: utilities for devices using the SCSI command set
+ Most OSes have SCSI pass-through interfaces that enable user space programs
+ to send SCSI commands to a device and fetch the response. With SCSI to ATA
+ Translation (SAT) many ATA disks now can process SCSI commands. Typically
+ each utility in this package implements one SCSI command. See the draft
+ standards at www.t10.org for SCSI command definitions plus SAT. ATA
+ commands are defined in the draft standards at www.t13.org . For a mapping
+ between supported SCSI and ATA commands and utility names in this package
+ see the COVERAGE file.
+Homepage: http://sg.danny.cz/sg/
 
 Package: libcomerr2
 Status: install ok installed
