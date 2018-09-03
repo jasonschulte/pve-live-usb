@@ -1,3 +1,6 @@
 rootfs/boot/initrd.*
-rootfs/root/.nano
 rootfs/var/lib/initramfs-tools/*
+rootfs/var/lib/smartmontools/*.state
+rootfs/var/lib/smartmontools/*.csv
+rootfs/root/.nano
+rootfs/root/.bash_history
