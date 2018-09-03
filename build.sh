@@ -5,15 +5,19 @@ BOOTDISK=./bootdisk
 ROOTFS=./rootfs
 
 cd ${DIR}
-mkdir -p ${BOOTDISK}/{casper,boot/grub}
 
 apt clean
+
+systemctl stop pve-cluster.service
+
 rsync -av --one-file-system --delete --exclude=/proc/* --exclude=/dev/* \
 --exclude=/sys/* --exclude=/tmp/* --exclude=/lost+found --exclude=/var/tmp/* \
 --exclude=/boot/grub/* --exclude=/var/mail/* --exclude=/media/* \
 --exclude=/etc/fstab --exclude=/etc/mtab --exclude=/etc/hosts \
 --exclude=/var/lib/libvirt/images \
 --exclude=${DIR} / ${ROOTFS}
+
+systemctl stop pve-cluster.service
 
 find ${ROOTFS}/var/log -type f | while read file
 do

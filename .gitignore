@@ -5,6 +5,7 @@ rootfs/var/lib/smartmontools/*.csv
 rootfs/var/lib/rrdcached
 rootfs/var/lib/systemd/random-seed
 rootfs/var/lib/apt/lists
+rootfs/var/lib/postfix/master.lock
 rootfs/var/log/pve/tasks
 rootfs/etc/lvm/archive
 rootfs/etc/lvm/backup
