@@ -1,0 +1,27 @@
+#!/bin/sh
+
+PREREQ=""
+DESCRIPTION="Configuring persistent fstab..."
+FSTAB=/root/etc/fstab
+FSTAB_PERSIST=/root/etc/fstab.persist
+
+prereqs()
+{
+       echo "$PREREQ"
+}
+
+case $1 in
+# get pre-requisites
+prereqs)
+       prereqs
+       exit 0
+       ;;
+esac
+
+. /scripts/casper-functions
+
+log_begin_msg "$DESCRIPTION"
+
+cat $FSTAB_PERSIST >> $FSTAB
+
+log_end_msg

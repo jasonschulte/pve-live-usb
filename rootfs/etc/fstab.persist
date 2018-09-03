@@ -1,3 +1,1 @@
-overlay / overlay rw 0 0
-tmpfs /tmp tmpfs nosuid,nodev 0 0
 UUID=eae4ec4b-3664-4176-9865-7a13cafa30c2 /mnt/iso ext4 rw 0 0

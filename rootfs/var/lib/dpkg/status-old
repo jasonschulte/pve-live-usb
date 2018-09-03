@@ -7102,7 +7102,7 @@ Description: GNU core utilities
 Homepage: http://gnu.org/software/coreutils
 
 Package: lshw
-Status: install ok installed
+Status: install ok unpacked
 Priority: optional
 Section: utils
 Installed-Size: 671
@@ -9114,7 +9114,7 @@ Description: small, friendly text editor inspired by Pico
 Homepage: https://www.nano-editor.org/
 
 Package: libsgutils2-2
-Status: install ok unpacked
+Status: install ok installed
 Priority: optional
 Section: libs
 Installed-Size: 241
@@ -9916,7 +9916,7 @@ Homepage: http://web.mit.edu/kerberos/
 
 Package: libc-bin
 Essential: yes
-Status: install ok triggers-pending
+Status: install ok installed
 Priority: required
 Section: libs
 Installed-Size: 3631
@@ -9943,7 +9943,6 @@ Description: GNU C Library: Binaries
   * ldd, ldconfig: print/configure shared library dependencies
   * locale, localedef: show/generate locale definitions
   * tzselect, zdump, zic: select/dump/compile time zones
-Triggers-Pending: ldconfig
 Homepage: https://www.gnu.org/software/libc/libc.html
 Original-Maintainer: GNU Libc Maintainers <debian-glibc@lists.debian.org>
 
@@ -12696,7 +12695,7 @@ Description: Binary firmware code for the pve-kernel
 Homepage: http://www.proxmox.com
 
 Package: sg3-utils
-Status: install ok unpacked
+Status: install ok installed
 Priority: optional
 Section: admin
 Installed-Size: 2117
