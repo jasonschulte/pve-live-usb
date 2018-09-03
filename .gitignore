@@ -1,0 +1,3 @@
+rootfs/boot/initrd.*
+rootfs/root/.nano
+rootfs/var/lib/initramfs-tools/*
