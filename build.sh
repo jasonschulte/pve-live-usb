@@ -9,9 +9,8 @@ mkdir -p ${BOOTDISK}/{casper,boot/grub}
 
 apt clean
 rsync -av --one-file-system --delete --exclude=/proc/* --exclude=/dev/* \
---exclude=/sys/* --exclude=/tmp/* --exclude=/lost+found \
---exclude=/var/tmp/* --exclude=/boot/grub/* \
---exclude=/var/mail/* --exclude=/var/spool/* --exclude=/media/* \
+--exclude=/sys/* --exclude=/tmp/* --exclude=/lost+found --exclude=/var/tmp/* \
+--exclude=/boot/grub/* --exclude=/var/mail/* --exclude=/media/* \
 --exclude=/etc/fstab --exclude=/etc/mtab --exclude=/etc/hosts \
 --exclude=/var/lib/libvirt/images \
 --exclude=${DIR} / ${ROOTFS}
