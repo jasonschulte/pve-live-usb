@@ -1,4 +1,6 @@
 rootfs/boot/initrd.*
+rootfs/var/backups
+rootfs/var/lib/logrotate
 rootfs/var/lib/initramfs-tools/*
 rootfs/var/lib/smartmontools/*.state*
 rootfs/var/lib/smartmontools/*.csv
@@ -6,7 +8,7 @@ rootfs/var/lib/rrdcached
 rootfs/var/lib/systemd/random-seed
 rootfs/var/lib/apt/lists
 rootfs/var/lib/postfix/master.lock
-rootfs/var/lib/postfix/pid
+rootfs/var/spool/postfix/pid
 rootfs/var/log/pve/tasks
 rootfs/etc/lvm/archive
 rootfs/etc/lvm/backup

@@ -14,7 +14,7 @@ rsync -av --one-file-system --delete --exclude=/proc/* --exclude=/dev/* \
 --exclude=/sys/* --exclude=/tmp/* --exclude=/lost+found --exclude=/var/tmp/* \
 --exclude=/boot/grub/* --exclude=/var/mail/* --exclude=/media/* \
 --exclude=/etc/fstab --exclude=/etc/mtab --exclude=/etc/hosts \
---exclude=/var/lib/libvirt/images \
+--exclude=/var/log/pve/tasks/* \
 --exclude=${DIR} / ${ROOTFS}
 
 systemctl start pve-cluster.service
