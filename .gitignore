@@ -13,3 +13,4 @@ rootfs/etc/lvm/backup
 rootfs/root/.nano
 rootfs/root/.bash_history
 rootfs/root/dead.letter
+bootdisk
