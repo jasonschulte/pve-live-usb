@@ -1,9 +1,15 @@
 /usr/share/apparmor-features/features
 /usr/share/apparmor-features/features.stock
 lxc-pve
+/usr/lib/ubuntu-release-upgrader/check-new-release-gtk
+/usr/lib/ubuntu-release-upgrader/check-new-release-gtk.distrib
+:
 /usr/lib/gnupg1/gpgkeys_hkp
 /usr/lib/gnupg1/gpgkeys_hkp.non_curl
 gnupg1-curl
+/usr/lib/ubuntu-release-upgrader/check-new-release
+/usr/lib/ubuntu-release-upgrader/check-new-release.distrib
+:
 /usr/share/man/man1/sh.1.gz
 /usr/share/man/man1/sh.distrib.1.gz
 dash
@@ -16,3 +22,9 @@ dash
 /usr/share/initramfs-tools/hooks/klibc
 /usr/share/initramfs-tools/hooks/klibc^i-t
 klibc-utils
+/usr/sbin/update-initramfs
+/usr/sbin/update-initramfs.distrib
+:
+/usr/lib/update-notifier/apt-check
+/usr/lib/update-notifier/apt-check.distrib
+:

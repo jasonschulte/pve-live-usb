@@ -1,13 +1,30 @@
 auto lo
 iface lo inet loopback
 
-iface enp0s3 inet manual
+iface enp4s0f0 inet manual
+
+iface enp4s0f1 inet manual
+
+iface enp11s0f0 inet manual
+
+iface enp11s0f1 inet manual
+
+iface bond0 inet manual
+   slaves enp11s0f1 enp11s0f0 enp4s0f1 enp4s0f0
+   bond-mode 802.3ad
 
 auto vmbr0
 iface vmbr0 inet static
-	address 172.23.47.15
-	netmask 255.255.255.0
-	gateway 172.23.47.1
-	bridge_ports enp0s3
-	bridge_stp off
-	bridge_fd 0
+   address 172.23.47.11
+   gateway 172.23.47.1
+   network 172.23.47.0
+   netmask 255.255.255.0
+   broadcast 172.23.47.255
+   dns-nameservers 172.23.47.1 1.1.1.1 1.0.0.1
+   bridge_ports bond0
+   bridge_stp off
+   bridge_fd 0.0
+   pre-up ifup bond0
+   post-down ifdown bond0
+   post-up sed -i "/"$(hostname)"/c$(ip addr | grep -Eo '172.23.47.[0-9]+' | head -1) $(hostname) pvelocalhost" /etc/hosts
+

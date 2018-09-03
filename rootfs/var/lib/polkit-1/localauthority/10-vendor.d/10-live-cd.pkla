@@ -1,0 +1,7 @@
+# Policy to allow the livecd user to bypass policykit
+[Live CD user permissions]
+Identity=unix-user:ubuntu;unix-user:lightdm
+Action=*
+ResultAny=no
+ResultInactive=yes
+ResultActive=yes

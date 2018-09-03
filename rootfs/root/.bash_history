@@ -496,3 +496,8 @@ LANG=
 depmod -a 4.15.18-3-pve
 update-initramfs -u -k 4.15.18-3-pve
 apt clean
+nano /etc/network/interfaces
+LANG=
+depmod -a 4.15.18-3-pve
+update-initramfs -u -k 4.15.18-3-pve
+apt clean

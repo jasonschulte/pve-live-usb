@@ -15,12 +15,12 @@ kmem:*::
 dialout:*::
 fax:*::
 voice:*::
-cdrom:*::
-floppy:*::
+cdrom:*::ubuntu
+floppy:*::ubuntu
 tape:*::
 sudo:*::
-audio:*::
-dip:*::
+audio:*::ubuntu
+dip:*::ubuntu
 www-data:*::
 backup:*::
 operator:*::
@@ -30,9 +30,9 @@ src:*::
 gnats:*::
 shadow:*::
 utmp:*::
-video:*::
+video:*::ubuntu
 sasl:*::
-plugdev:*::
+plugdev:*::ubuntu
 staff:*::
 games:*::
 users:*::
@@ -52,3 +52,5 @@ postfix:!::
 postdrop:!::
 rdma:!::
 ceph:!::
+uuidd:!::
+ubuntu:!::
