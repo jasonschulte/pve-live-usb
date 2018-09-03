@@ -7101,6 +7101,25 @@ Description: GNU core utilities
  uniq unlink users vdir wc who whoami yes
 Homepage: http://gnu.org/software/coreutils
 
+Package: lshw
+Status: install ok installed
+Priority: optional
+Section: utils
+Installed-Size: 671
+Maintainer: Ghe Rivero <ghe@debian.org>
+Architecture: amd64
+Version: 02.18-0.1
+Depends: libc6 (>= 2.14), libgcc1 (>= 1:3.0), libstdc++6 (>= 5.2)
+Recommends: pciutils, usbutils
+Description: information about hardware configuration
+ A small tool to provide detailed information on the hardware
+ configuration of the machine. It can report exact memory
+ configuration, firmware version, mainboard configuration, CPU version
+ and speed, cache configuration, bus speed, etc. on DMI-capable x86
+ systems, on some PowerPC machines (PowerMac G4 is known to work) and AMD64.
+ .
+ Information can be output in plain text, HTML or XML.
+
 Package: gpg-wks-client
 Status: install ok installed
 Priority: optional
