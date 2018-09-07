@@ -19,6 +19,7 @@ rsync -av --one-file-system --delete --exclude=/proc/* --exclude=/dev/* \
 
 systemctl start pve-cluster.service
 
+find /var/log -type f -regex '.*?[0-9].*?' -exec rm -v {} \;
 find ${ROOTFS}/var/log -type f | while read file
 do
         cat /dev/null | tee $file

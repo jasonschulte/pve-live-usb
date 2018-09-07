@@ -4027,7 +4027,7 @@ Description: Internet Storage Name Service - shared libraries
 Homepage: https://github.com/open-iscsi/open-isns
 
 Package: libcurl3-gnutls
-Status: install ok installed
+Status: install ok unpacked
 Priority: optional
 Section: libs
 Installed-Size: 616
@@ -4035,7 +4035,8 @@ Maintainer: Alessandro Ghedini <ghedo@debian.org>
 Architecture: amd64
 Multi-Arch: same
 Source: curl
-Version: 7.52.1-5+deb9u6
+Version: 7.52.1-5+deb9u7
+Config-Version: 7.52.1-5+deb9u6
 Depends: libc6 (>= 2.17), libcomerr2 (>= 1.01), libgnutls30 (>= 3.5.6), libgssapi-krb5-2 (>= 1.14+dfsg), libidn2-0 (>= 0.6), libk5crypto3 (>= 1.6.dfsg.2), libkrb5-3 (>= 1.6.dfsg.2), libldap-2.4-2 (>= 2.4.7), libnettle6, libnghttp2-14 (>= 1.12.0), libpsl5 (>= 0.13.0), librtmp1 (>= 2.4+20131018.git79459a2-3~), libssh2-1 (>= 1.7.0), zlib1g (>= 1:1.1.4)
 Recommends: ca-certificates
 Description: easy-to-use client-side URL transfer library (GnuTLS flavour)
@@ -7102,7 +7103,7 @@ Description: GNU core utilities
 Homepage: http://gnu.org/software/coreutils
 
 Package: lshw
-Status: install ok unpacked
+Status: install ok installed
 Priority: optional
 Section: utils
 Installed-Size: 671
@@ -9916,7 +9917,7 @@ Homepage: http://web.mit.edu/kerberos/
 
 Package: libc-bin
 Essential: yes
-Status: install ok installed
+Status: install ok triggers-pending
 Priority: required
 Section: libs
 Installed-Size: 3631
@@ -9943,6 +9944,7 @@ Description: GNU C Library: Binaries
   * ldd, ldconfig: print/configure shared library dependencies
   * locale, localedef: show/generate locale definitions
   * tzselect, zdump, zic: select/dump/compile time zones
+Triggers-Pending: ldconfig
 Homepage: https://www.gnu.org/software/libc/libc.html
 Original-Maintainer: GNU Libc Maintainers <debian-glibc@lists.debian.org>
 
@@ -12019,7 +12021,7 @@ Description: Proxmox VE HA Manager
  HA Manager Proxmox VE.
 
 Package: man-db
-Status: install ok triggers-pending
+Status: install ok installed
 Priority: important
 Section: doc
 Installed-Size: 2231
@@ -12045,7 +12047,6 @@ Description: on-line manual pager
  manpath utility for determining the manual page search path, and the
  maintenance utilities mandb, catman and zsoelim. man-db uses the groff
  suite of programs to format and display the manual pages.
-Triggers-Pending: /usr/share/man
 Homepage: http://man-db.nongnu.org/
 
 Package: libhttp-message-perl

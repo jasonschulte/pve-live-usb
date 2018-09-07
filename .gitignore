@@ -13,6 +13,8 @@ rootfs/var/lib/pve-cluster/config.db-wal
 rootfs/var/lib/pve-cluster/.pmxcfs.lockfile
 rootfs/var/spool/postfix/*
 rootfs/var/log/pve/tasks
+rootfs/var/log/*.[0-9]*
+rootfs/var/log/*/*.[0-9]*
 rootfs/etc/lvm/archive
 rootfs/etc/lvm/backup
 rootfs/root/.nano
